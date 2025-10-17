@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>lucky-vue</artifactId>
+        <groupId>com.lucky</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <artifactId>lucky-admin</artifactId>
+
+    <description>
+        web服务入口
+    </description>
+
+    <dependencies>
+
+        <!-- spring-doc -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+
+         <!-- Mysql驱动包 -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+        </dependency>
+
+        <!-- 核心模块-->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-framework</artifactId>
+        </dependency>
+
+        <!-- 代码生成-->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-generator</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <!-- 用于打包可执行JAR -->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.5.15</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>  <!-- 重新打包，生成可执行JAR -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <finalName>${project.artifactId}</finalName>
+    </build>
+
+</project>
