@@ -1,24 +1,12 @@
 package com.lucky.framework.web.service;
 
-import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import com.lucky.common.constant.CacheConstants;
 import com.lucky.common.constant.Constants;
 import com.lucky.common.constant.UserConstants;
-import com.lucky.common.core.domain.entity.SysUser;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.redis.RedisCache;
 import com.lucky.common.exception.ServiceException;
-import com.lucky.common.exception.user.BlackListException;
-import com.lucky.common.exception.user.CaptchaException;
-import com.lucky.common.exception.user.CaptchaExpireException;
-import com.lucky.common.exception.user.UserNotExistsException;
-import com.lucky.common.exception.user.UserPasswordNotMatchException;
+import com.lucky.common.exception.user.*;
 import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.MessageUtils;
 import com.lucky.common.utils.StringUtils;
@@ -28,6 +16,13 @@ import com.lucky.framework.manager.factory.AsyncFactory;
 import com.lucky.framework.security.context.AuthenticationContextHolder;
 import com.lucky.system.service.ISysConfigService;
 import com.lucky.system.service.ISysUserService;
+import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 /**
  * 登录校验方法
@@ -154,11 +149,7 @@ public class SysLoginService {
      * @param userId 用户ID
      */
     public void recordLoginInfo(Long userId) {
-        SysUser sysUser = new SysUser();
-        sysUser.setUserId(userId);
-        sysUser.setLoginIp(IpUtils.getIpAddr());
-        sysUser.setLoginDate(DateUtils.getNowDate());
-        userService.updateUserProfile(sysUser);
+        userService.updateLoginInfo(userId, IpUtils.getIpAddr(), DateUtils.getNowDate());
     }
 
 }

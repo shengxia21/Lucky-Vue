@@ -1,16 +1,5 @@
 package com.lucky.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import jakarta.validation.Validator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import com.lucky.common.annotation.DataScope;
 import com.lucky.common.constant.UserConstants;
 import com.lucky.common.core.domain.entity.SysRole;
@@ -23,14 +12,22 @@ import com.lucky.common.utils.spring.SpringUtils;
 import com.lucky.system.domain.SysPost;
 import com.lucky.system.domain.SysUserPost;
 import com.lucky.system.domain.SysUserRole;
-import com.lucky.system.mapper.SysPostMapper;
-import com.lucky.system.mapper.SysRoleMapper;
-import com.lucky.system.mapper.SysUserMapper;
-import com.lucky.system.mapper.SysUserPostMapper;
-import com.lucky.system.mapper.SysUserRoleMapper;
+import com.lucky.system.mapper.*;
 import com.lucky.system.service.ISysConfigService;
 import com.lucky.system.service.ISysDeptService;
 import com.lucky.system.service.ISysUserService;
+import jakarta.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户 业务层处理
@@ -318,6 +315,18 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     public boolean updateUserAvatar(Long userId, String avatar) {
         return userMapper.updateUserAvatar(userId, avatar) > 0;
+    }
+
+    /**
+     * 更新用户登录信息（IP和登录时间）
+     *
+     * @param userId    用户ID
+     * @param loginIp   登录IP地址
+     * @param loginDate 登录时间
+     * @return 结果
+     */
+    public void updateLoginInfo(Long userId, String loginIp, Date loginDate) {
+        userMapper.updateLoginInfo(userId, loginIp, loginDate);
     }
 
     /**
