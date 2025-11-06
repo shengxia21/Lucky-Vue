@@ -6,7 +6,7 @@ lucky:
   version: 1.0.0
   # 版权年份
   copyrightYear: 2025
-  # 文件路径 示例（ Windows配置D:/lucky/uploadPath，Linux配置 /home/lucky/uploadPath）
+  # 文件路径 示例（ Windows配置 D:/lucky/uploadPath，Linux配置 /home/lucky/uploadPath）
   profile: D:/Project/luckyImages/uploadPath
   # 获取ip地址开关
   addressEnabled: false
