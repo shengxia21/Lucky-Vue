@@ -11,48 +11,184 @@
  Target Server Version : 80042
  File Encoding         : 65001
 
- Date: 17/10/2025 03:51:52
+ Date: 15/11/2025 03:17:26
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for ai_conversation
+-- Table structure for ai_api_key
 -- ----------------------------
-DROP TABLE IF EXISTS `ai_conversation`;
-CREATE TABLE `ai_conversation`  (
-  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `user_id` bigint(0) NOT NULL COMMENT '用户ID',
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '对话标题',
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+DROP TABLE IF EXISTS `ai_api_key`;
+CREATE TABLE `ai_api_key`  (
+  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
+  `api_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '密钥',
+  `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'API 地址',
+  `status` tinyint(0) NOT NULL DEFAULT 0 COMMENT '状态（0开启 1关闭）',
+  `del_flag` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
   `create_by` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '创建者',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '对话会话表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI API 秘钥表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of ai_conversation
+-- Records of ai_api_key
+-- ----------------------------
+INSERT INTO `ai_api_key` VALUES (1, 'DeepSeek3.1', '填写你自己的api_key', 'DeepSeek', '', 0, '0', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (2, '通义千问3', '填写你自己的api_key', 'TongYi', '', 0, '0', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (4, '百度千帆', '填写你自己的api_key', 'YiYan', NULL, 0, '0', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (5, '豆包火山引擎', '填写你自己的api_key', 'DouBao', NULL, 0, '0', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (6, '腾讯混元', '填写你自己的api_key', 'HunYuan', NULL, 0, '0', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (7, '讯飞星火', '填写你自己的api_key', 'XingHuo', NULL, 0, '0', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (8, 'Kimi', '填写你自己的api_key', 'Moonshot', NULL, 0, '0', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (9, '百川智能', '填写你自己的api_key', 'BaiChuan', NULL, 0, '0', '', NULL, '', NULL);
+
+-- ----------------------------
+-- Table structure for ai_chat_conversation
+-- ----------------------------
+DROP TABLE IF EXISTS `ai_chat_conversation`;
+CREATE TABLE `ai_chat_conversation`  (
+  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT 'ID 编号，自增',
+  `user_id` bigint(0) NOT NULL COMMENT '用户编号',
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '对话标题',
+  `pinned` tinyint(0) NOT NULL DEFAULT 0 COMMENT '是否置顶（0否 1是）',
+  `pinned_time` datetime(0) NULL DEFAULT NULL COMMENT '置顶时间',
+  `role_id` bigint(0) NULL DEFAULT NULL COMMENT '角色编号',
+  `model_id` bigint(0) NOT NULL COMMENT '模型编号',
+  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
+  `system_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '角色设定',
+  `temperature` double NOT NULL COMMENT '温度参数',
+  `max_tokens` int(0) NOT NULL COMMENT '单条回复的最大 Token 数量',
+  `max_contexts` int(0) NOT NULL COMMENT '上下文的最大 Message 数量',
+  `del_flag` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id`) USING BTREE,
+  INDEX `idx_model_id`(`model_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 聊天对话表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ai_chat_conversation
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for ai_message
+-- Table structure for ai_chat_message
 -- ----------------------------
-DROP TABLE IF EXISTS `ai_message`;
-CREATE TABLE `ai_message`  (
-  `conversation_id` bigint(0) NOT NULL COMMENT '会话ID',
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '消息内容',
-  `role` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '消息角色(USER用户 ASSISTANT助理 SYSTEM系统 TOOL工具)',
-  `timestamp` timestamp(0) NULL DEFAULT NULL COMMENT '时间戳',
-  INDEX `sys_message_conversation_id_timestamp_idx`(`conversation_id`, `timestamp`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '对话消息表' ROW_FORMAT = Dynamic;
+DROP TABLE IF EXISTS `ai_chat_message`;
+CREATE TABLE `ai_chat_message`  (
+  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `conversation_id` bigint(0) NOT NULL COMMENT '对话编号',
+  `reply_id` bigint(0) NULL DEFAULT NULL COMMENT '回复消息编号',
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '消息类型',
+  `user_id` bigint(0) NOT NULL COMMENT '用户编号',
+  `role_id` bigint(0) NULL DEFAULT NULL COMMENT '角色编号',
+  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
+  `model_id` bigint(0) NOT NULL COMMENT '模型编号',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '聊天内容',
+  `reasoning_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '推理内容',
+  `use_context` tinyint(0) NOT NULL DEFAULT 0 COMMENT '是否携带上下文（0否 1是）',
+  `segment_ids` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '知识库段落编号数组',
+  `web_search_pages` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '联网搜索的网页内容数组',
+  `attachment_urls` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '附件 URL 数组',
+  `del_flag` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_conversation_id`(`conversation_id`) USING BTREE,
+  INDEX `idx_reply_id`(`reply_id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id`) USING BTREE,
+  INDEX `idx_role_id`(`role_id`) USING BTREE,
+  INDEX `idx_model_id`(`model_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 109 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 聊天消息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of ai_message
+-- Records of ai_chat_message
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for ai_image
+-- ----------------------------
+DROP TABLE IF EXISTS `ai_image`;
+CREATE TABLE `ai_image`  (
+  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `user_id` bigint(0) NOT NULL COMMENT '用户编号',
+  `prompt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提示词',
+  `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
+  `model_id` bigint(0) NOT NULL COMMENT '模型编号',
+  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标识',
+  `width` int(0) NOT NULL COMMENT '图片宽度',
+  `height` int(0) NOT NULL COMMENT '图片高度',
+  `status` tinyint(0) NOT NULL DEFAULT 10 COMMENT '生成状态（10进行中 20已完成 30已失败）',
+  `finish_time` datetime(0) NULL DEFAULT NULL COMMENT '完成时间',
+  `error_message` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '绘画错误信息',
+  `pic_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片地址',
+  `public_status` tinyint(0) NOT NULL DEFAULT 0 COMMENT '是否公开（0否 1是）',
+  `options` json NULL COMMENT '绘制参数',
+  `buttons` json NULL COMMENT 'mj buttons 按钮',
+  `task_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务编号',
+  `del_flag` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id`) USING BTREE,
+  INDEX `idx_model_id`(`model_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 绘画表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ai_image
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for ai_model
+-- ----------------------------
+DROP TABLE IF EXISTS `ai_model`;
+CREATE TABLE `ai_model`  (
+  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `key_id` bigint(0) NOT NULL COMMENT 'API 秘钥编号',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型名称',
+  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
+  `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
+  `type` tinyint(0) NOT NULL DEFAULT 1 COMMENT '模型类型（1对话 2图片 3语音 4视频 5向量 6重排序）',
+  `status` tinyint(0) NOT NULL DEFAULT 0 COMMENT '状态（0开启 1关闭）',
+  `sort` tinyint(0) NOT NULL COMMENT '排序',
+  `temperature` decimal(20, 2) NULL DEFAULT NULL COMMENT '温度参数',
+  `max_tokens` int(0) NULL DEFAULT NULL COMMENT '单条回复的最大 Token 数量',
+  `max_contexts` int(0) NULL DEFAULT NULL COMMENT '上下文的最大 Message 数量',
+  `del_flag` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_key_id`(`key_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 模型表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ai_model
+-- ----------------------------
+INSERT INTO `ai_model` VALUES (1, 1, 'DeepSeek聊天模型', 'deepseek-chat', 'DeepSeek', 1, 0, 1, 0.70, 2000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (2, 1, 'DeepSeek深度思考模型', 'deepseek-reasoner', 'DeepSeek', 1, 0, 2, 0.90, 2000, 8, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (3, 2, '通义千问-plus', 'qwen-plus', 'TongYi', 1, 0, 3, 0.70, 2000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (4, 2, '通义千问-image-plus', 'qwen-image-plus', 'TongYi', 2, 0, 4, NULL, NULL, NULL, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (5, 2, '通义万相2.2-文生图-plus', 'wan2.2-t2i-plus', 'TongYi', 2, 0, 5, NULL, NULL, NULL, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (6, 5, 'Doubao-Seed-1.6', 'doubao-seed-1-6-251015', 'DouBao', 1, 0, 6, 0.70, 2000, 5, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (7, 4, '千帆5.0', 'ernie-5.0-thinking-preview', 'YiYan', 1, 0, 7, 0.80, 2000, 5, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (8, 6, '混元turbos', 'hunyuan-turbos-latest', 'HunYuan', 1, 0, 8, 0.80, 2000, 5, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (9, 7, '讯飞星火-Max', 'generalv3.5', 'XingHuo', 1, 0, 9, 0.80, 2000, 5, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (10, 8, '月之暗面-kimi', 'kimi-k2-turbo-preview', 'Moonshot', 1, 0, 10, 0.80, 2000, 5, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (11, 9, '百川智能-M2', 'Baichuan-M2', 'BaiChuan', 1, 0, 11, 0.80, 2000, 5, '0', '', NULL, '', NULL);
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -241,6 +377,17 @@ INSERT INTO `sys_dict_data` VALUES (26, 8, '生成代码', '8', 'sys_oper_type',
 INSERT INTO `sys_dict_data` VALUES (27, 9, '清空数据', '9', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2025-08-17 23:07:13', '', NULL, '清空操作');
 INSERT INTO `sys_dict_data` VALUES (28, 1, '成功', '0', 'sys_common_status', '', 'primary', 'N', '0', 'admin', '2025-08-17 23:07:13', '', NULL, '正常状态');
 INSERT INTO `sys_dict_data` VALUES (29, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', 'admin', '2025-08-17 23:07:13', '', NULL, '停用状态');
+INSERT INTO `sys_dict_data` VALUES (31, 2, 'Ollama', 'Ollama', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (32, 3, '文心一言', 'YiYan', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (33, 4, '讯飞星火', 'XingHuo', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (34, 5, '通义千问', 'TongYi', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (38, 9, 'DeepSeek', 'DeepSeek', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (39, 13, '智谱', 'ZhiPu', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (41, 10, '字节豆包', 'DouBao', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (42, 11, '腾讯混元', 'HunYuan', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (43, 12, '硅基流动', 'SiliconFlow', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (45, 15, '月之暗灭', 'Moonshot', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (46, 16, '百川智能', 'BaiChuan', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_dict_type
@@ -273,6 +420,7 @@ INSERT INTO `sys_dict_type` VALUES (7, '通知类型', 'sys_notice_type', '0', '
 INSERT INTO `sys_dict_type` VALUES (8, '通知状态', 'sys_notice_status', '0', 'admin', '2025-08-17 23:07:13', '', NULL, '通知状态列表');
 INSERT INTO `sys_dict_type` VALUES (9, '操作类型', 'sys_oper_type', '0', 'admin', '2025-08-17 23:07:13', '', NULL, '操作类型列表');
 INSERT INTO `sys_dict_type` VALUES (10, '系统状态', 'sys_common_status', '0', 'admin', '2025-08-17 23:07:13', '', NULL, '登录状态列表');
+INSERT INTO `sys_dict_type` VALUES (11, 'AI模型平台', 'ai_platform', '0', 'admin', '2025-11-15 02:15:43', '', NULL, 'AI模型列表');
 
 -- ----------------------------
 -- Table structure for sys_logininfor
@@ -291,7 +439,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 115 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -649,8 +797,8 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '心云', '00', 'lucky@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', NULL, '2025-08-17 23:07:13', 'admin', '2025-08-17 23:07:13', '', NULL, '管理员');
-INSERT INTO `sys_user` VALUES (2, 105, 'lucky', '幸运', '00', 'lucky@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', NULL, '2025-08-17 23:07:13', 'admin', '2025-08-17 23:07:13', '', NULL, '测试员');
+INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '心云', '00', 'lucky@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-10-21 23:02:35', '2025-08-17 23:07:13', 'admin', '2025-08-17 23:07:13', '', NULL, '管理员');
+INSERT INTO `sys_user` VALUES (2, 105, 'lucky', '幸运', '00', 'lucky@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-10-21 23:02:57', '2025-08-17 23:07:13', 'admin', '2025-08-17 23:07:13', '', NULL, '测试员');
 
 -- ----------------------------
 -- Table structure for sys_user_post
