@@ -1,76 +1,5 @@
 package com.lucky.common.utils.poi;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.RegExUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFPicture;
-import org.apache.poi.hssf.usermodel.HSSFPictureData;
-import org.apache.poi.hssf.usermodel.HSSFShape;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ooxml.POIXMLDocumentPart;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.ClientAnchor;
-import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.DataValidation;
-import org.apache.poi.ss.usermodel.DataValidationConstraint;
-import org.apache.poi.ss.usermodel.DataValidationHelper;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Drawing;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Name;
-import org.apache.poi.ss.usermodel.PictureData;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.CellRangeAddressList;
-import org.apache.poi.util.IOUtils;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
-import org.apache.poi.xssf.usermodel.XSSFDataValidation;
-import org.apache.poi.xssf.usermodel.XSSFDrawing;
-import org.apache.poi.xssf.usermodel.XSSFPicture;
-import org.apache.poi.xssf.usermodel.XSSFShape;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTMarker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
 import com.lucky.common.annotation.Excel.Type;
@@ -86,6 +15,32 @@ import com.lucky.common.utils.file.FileTypeUtils;
 import com.lucky.common.utils.file.FileUtils;
 import com.lucky.common.utils.file.ImageUtils;
 import com.lucky.common.utils.reflect.ReflectUtils;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.RegExUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ooxml.POIXMLDocumentPart;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddressList;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
+import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTMarker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Excel相关处理
@@ -1156,17 +1111,32 @@ public class ExcelUtil<T> {
      */
     public void setXSSFValidationWithHidden(Sheet sheet, String[] textlist, String promptContent, int firstRow, int endRow, int firstCol, int endCol) {
         String hideSheetName = "combo_" + firstCol + "_" + endCol;
-        Sheet hideSheet = wb.createSheet(hideSheetName); // 用于存储 下拉菜单数据
-        for (int i = 0; i < textlist.length; i++) {
-            hideSheet.createRow(i).createCell(0).setCellValue(textlist[i]);
+        Sheet hideSheet = null;
+        String hideSheetDataName = hideSheetName + "_data";
+        Name name = wb.getName(hideSheetDataName);
+        if (name != null) {
+            // 名称已存在，尝试从名称的引用中找到sheet名称
+            String refersToFormula = name.getRefersToFormula();
+            if (StringUtils.isNotEmpty(refersToFormula) && refersToFormula.contains("!")) {
+                String sheetNameFromFormula = refersToFormula.substring(0, refersToFormula.indexOf("!"));
+                hideSheet = wb.getSheet(sheetNameFromFormula);
+            }
         }
-        // 创建名称，可被其他单元格引用
-        Name name = wb.createName();
-        name.setNameName(hideSheetName + "_data");
-        name.setRefersToFormula(hideSheetName + "!$A$1:$A$" + textlist.length);
+
+        if (hideSheet == null) {
+            hideSheet = wb.createSheet(hideSheetName); // 用于存储 下拉菜单数据
+            for (int i = 0; i < textlist.length; i++) {
+                hideSheet.createRow(i).createCell(0).setCellValue(textlist[i]);
+            }
+            // 创建名称，可被其他单元格引用
+            name = wb.createName();
+            name.setNameName(hideSheetDataName);
+            name.setRefersToFormula(hideSheetName + "!$A$1:$A$" + textlist.length);
+        }
+
         DataValidationHelper helper = sheet.getDataValidationHelper();
         // 加载下拉列表内容
-        DataValidationConstraint constraint = helper.createFormulaListConstraint(hideSheetName + "_data");
+        DataValidationConstraint constraint = helper.createFormulaListConstraint(hideSheetDataName);
         // 设置数据有效性加载在哪个单元格上,四个参数分别是：起始行、终止行、起始列、终止列
         CellRangeAddressList regions = new CellRangeAddressList(firstRow, endRow, firstCol, endCol);
         // 数据有效性对象
@@ -1417,7 +1387,8 @@ public class ExcelUtil<T> {
         if (sheetNo > 1 && index > 0) {
             this.sheet = wb.createSheet();
             this.createTitle();
-            wb.setSheetName(index, sheetName + index);
+            int actualIndex = wb.getSheetIndex(this.sheet);
+            wb.setSheetName(actualIndex, sheetName + index);
         }
     }
 
