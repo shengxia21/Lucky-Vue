@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.ai.mapper.AiChatConversationMapper">
+
+    <resultMap type="AiChatConversation" id="AiChatConversationResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="title"    column="title"    />
+        <result property="pinned"    column="pinned"    />
+        <result property="pinnedTime"    column="pinned_time"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="model"    column="model"    />
+        <result property="systemMessage"    column="system_message"    />
+        <result property="temperature"    column="temperature"    />
+        <result property="maxTokens"    column="max_tokens"    />
+        <result property="maxContexts"    column="max_contexts"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectAiChatConversationVo">
+        select id, user_id, title, pinned, pinned_time, role_id, model_id, model, system_message, temperature, max_tokens, max_contexts, del_flag, create_by, create_time, update_by, update_time from ai_chat_conversation
+    </sql>
+
+    <select id="selectAiChatConversationList" parameterType="AiChatConversation" resultMap="AiChatConversationResult">
+        <include refid="selectAiChatConversationVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="title != null and title != ''"> and title = #{title}</if>
+            <if test="pinned != null "> and pinned = #{pinned}</if>
+            <if test="pinnedTime != null "> and pinned_time = #{pinnedTime}</if>
+            <if test="roleId != null "> and role_id = #{roleId}</if>
+            <if test="modelId != null "> and model_id = #{modelId}</if>
+            <if test="model != null and model != ''"> and model = #{model}</if>
+            <if test="systemMessage != null  and systemMessage != ''"> and system_message = #{systemMessage}</if>
+            <if test="temperature != null "> and temperature = #{temperature}</if>
+            <if test="maxTokens != null "> and max_tokens = #{maxTokens}</if>
+            <if test="maxContexts != null "> and max_contexts = #{maxContexts}</if>
+        </where>
+    </select>
+
+    <select id="selectAiChatConversationById" parameterType="Long" resultMap="AiChatConversationResult">
+        <include refid="selectAiChatConversationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAiChatConversation" parameterType="AiChatConversation" useGeneratedKeys="true" keyProperty="id">
+        insert into ai_chat_conversation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="pinned != null">pinned,</if>
+            <if test="pinnedTime != null">pinned_time,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="modelId != null">model_id,</if>
+            <if test="model != null and model != ''">model,</if>
+            <if test="systemMessage != null">system_message,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="maxTokens != null">max_tokens,</if>
+            <if test="maxContexts != null">max_contexts,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="pinned != null">#{pinned},</if>
+            <if test="pinnedTime != null">#{pinnedTime},</if>
+            <if test="roleId != null">#{roleId},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="model != null and model != ''">#{model},</if>
+            <if test="systemMessage != null">#{systemMessage},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="maxTokens != null">#{maxTokens},</if>
+            <if test="maxContexts != null">#{maxContexts},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAiChatConversation" parameterType="AiChatConversation">
+        update ai_chat_conversation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="pinned != null">pinned = #{pinned},</if>
+            <if test="pinnedTime != null">pinned_time = #{pinnedTime},</if>
+            <if test="roleId != null">role_id = #{roleId},</if>
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="model != null and model != ''">model = #{model},</if>
+            <if test="systemMessage != null">system_message = #{systemMessage},</if>
+            <if test="temperature != null">temperature = #{temperature},</if>
+            <if test="maxTokens != null">max_tokens = #{maxTokens},</if>
+            <if test="maxContexts != null">max_contexts = #{maxContexts},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAiChatConversationById" parameterType="Long">
+        delete from ai_chat_conversation where id = #{id}
+    </delete>
+
+    <delete id="deleteAiChatConversationByIds" parameterType="String">
+        delete from ai_chat_conversation where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

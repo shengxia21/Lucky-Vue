@@ -29,16 +29,22 @@
             <artifactId>mysql-connector-j</artifactId>
         </dependency>
 
-        <!-- 核心模块-->
+        <!-- 核心模块 -->
         <dependency>
             <groupId>com.lucky</groupId>
             <artifactId>lucky-framework</artifactId>
         </dependency>
 
-        <!-- 代码生成-->
+        <!-- 代码生成 -->
         <dependency>
             <groupId>com.lucky</groupId>
             <artifactId>lucky-generator</artifactId>
+        </dependency>
+
+        <!-- ai大模型 -->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-ai</artifactId>
         </dependency>
 
     </dependencies>

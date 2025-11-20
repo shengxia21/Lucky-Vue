@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.ai.mapper.AiImageMapper">
+
+    <resultMap type="AiImage" id="AiImageResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="prompt"    column="prompt"    />
+        <result property="platform"    column="platform"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="model"    column="model"    />
+        <result property="width"    column="width"    />
+        <result property="height"    column="height"    />
+        <result property="status"    column="status"    />
+        <result property="finishTime"    column="finish_time"    />
+        <result property="errorMessage"    column="error_message"    />
+        <result property="picUrl"    column="pic_url"    />
+        <result property="publicStatus"    column="public_status"    />
+        <result property="options"    column="options"    />
+        <result property="buttons"    column="buttons"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectAiImageVo">
+        select id, user_id, prompt, platform, model_id, model, width, height, status, finish_time, error_message, pic_url, public_status, options, buttons, task_id, del_flag, create_by, create_time, update_by, update_time from ai_image
+    </sql>
+
+    <select id="selectAiImageList" parameterType="AiImage" resultMap="AiImageResult">
+        <include refid="selectAiImageVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="prompt != null and prompt != ''"> and prompt = #{prompt}</if>
+            <if test="platform != null and platform != ''"> and platform = #{platform}</if>
+            <if test="modelId != null "> and model_id = #{modelId}</if>
+            <if test="model != null and model != ''"> and model = #{model}</if>
+            <if test="width != null "> and width = #{width}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="finishTime != null "> and finish_time = #{finishTime}</if>
+            <if test="errorMessage != null and errorMessage != ''"> and error_message = #{errorMessage}</if>
+            <if test="picUrl != null and picUrl != ''"> and pic_url = #{picUrl}</if>
+            <if test="publicStatus != null "> and public_status = #{publicStatus}</if>
+            <if test="options != null and options != ''"> and options = #{options}</if>
+            <if test="buttons != null and buttons != ''"> and buttons = #{buttons}</if>
+            <if test="taskId != null and taskId != ''"> and task_id = #{taskId}</if>
+        </where>
+    </select>
+
+    <select id="selectAiImageById" parameterType="Long" resultMap="AiImageResult">
+        <include refid="selectAiImageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAiImage" parameterType="AiImage" useGeneratedKeys="true" keyProperty="id">
+        insert into ai_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="prompt != null and prompt != ''">prompt,</if>
+            <if test="platform != null and platform != ''">platform,</if>
+            <if test="modelId != null">model_id,</if>
+            <if test="model != null and model != ''">model,</if>
+            <if test="width != null">width,</if>
+            <if test="height != null">height,</if>
+            <if test="status != null">status,</if>
+            <if test="finishTime != null">finish_time,</if>
+            <if test="errorMessage != null">error_message,</if>
+            <if test="picUrl != null">pic_url,</if>
+            <if test="publicStatus != null">public_status,</if>
+            <if test="options != null">options,</if>
+            <if test="buttons != null">buttons,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="prompt != null and prompt != ''">#{prompt},</if>
+            <if test="platform != null and platform != ''">#{platform},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="model != null and model != ''">#{model},</if>
+            <if test="width != null">#{width},</if>
+            <if test="height != null">#{height},</if>
+            <if test="status != null">#{status},</if>
+            <if test="finishTime != null">#{finishTime},</if>
+            <if test="errorMessage != null">#{errorMessage},</if>
+            <if test="picUrl != null">#{picUrl},</if>
+            <if test="publicStatus != null">#{publicStatus},</if>
+            <if test="options != null">#{options},</if>
+            <if test="buttons != null">#{buttons},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAiImage" parameterType="AiImage">
+        update ai_image
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="prompt != null and prompt != ''">prompt = #{prompt},</if>
+            <if test="platform != null and platform != ''">platform = #{platform},</if>
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="model != null and model != ''">model = #{model},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="finishTime != null">finish_time = #{finishTime},</if>
+            <if test="errorMessage != null">error_message = #{errorMessage},</if>
+            <if test="picUrl != null">pic_url = #{picUrl},</if>
+            <if test="publicStatus != null">public_status = #{publicStatus},</if>
+            <if test="options != null">options = #{options},</if>
+            <if test="buttons != null">buttons = #{buttons},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAiImageById" parameterType="Long">
+        delete from ai_image where id = #{id}
+    </delete>
+
+    <delete id="deleteAiImageByIds" parameterType="String">
+        delete from ai_image where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

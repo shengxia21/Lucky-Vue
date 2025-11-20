@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.ai.mapper.AiModelMapper">
+
+    <resultMap type="AiModel" id="AiModelResult">
+        <result property="id"    column="id"    />
+        <result property="keyId"    column="key_id"    />
+        <result property="name"    column="name"    />
+        <result property="model"    column="model"    />
+        <result property="platform"    column="platform"    />
+        <result property="type"    column="type"    />
+        <result property="status"    column="status"    />
+        <result property="sort"    column="sort"    />
+        <result property="temperature"    column="temperature"    />
+        <result property="maxTokens"    column="max_tokens"    />
+        <result property="maxContexts"    column="max_contexts"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectAiModelVo">
+        select id, key_id, name, model, platform, type, status, sort, temperature, max_tokens, max_contexts, del_flag, create_by, create_time, update_by, update_time from ai_model
+    </sql>
+
+    <select id="selectAiModelList" parameterType="AiModel" resultMap="AiModelResult">
+        <include refid="selectAiModelVo"/>
+        <where>  
+            <if test="keyId != null "> and key_id = #{keyId}</if>
+            <if test="name != null and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="model != null and model != ''"> and model = #{model}</if>
+            <if test="platform != null and platform != ''"> and platform = #{platform}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="temperature != null "> and temperature = #{temperature}</if>
+            <if test="maxTokens != null "> and max_tokens = #{maxTokens}</if>
+            <if test="maxContexts != null "> and max_contexts = #{maxContexts}</if>
+        </where>
+    </select>
+
+    <select id="selectAiModelById" parameterType="Long" resultMap="AiModelResult">
+        <include refid="selectAiModelVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAiModel" parameterType="AiModel" useGeneratedKeys="true" keyProperty="id">
+        insert into ai_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="keyId != null">key_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="model != null and model != ''">model,</if>
+            <if test="platform != null and platform != ''">platform,</if>
+            <if test="type != null">type,</if>
+            <if test="status != null">status,</if>
+            <if test="sort != null">sort,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="maxTokens != null">max_tokens,</if>
+            <if test="maxContexts != null">max_contexts,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="keyId != null">#{keyId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="model != null and model != ''">#{model},</if>
+            <if test="platform != null and platform != ''">#{platform},</if>
+            <if test="type != null">#{type},</if>
+            <if test="status != null">#{status},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="maxTokens != null">#{maxTokens},</if>
+            <if test="maxContexts != null">#{maxContexts},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAiModel" parameterType="AiModel">
+        update ai_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="keyId != null">key_id = #{keyId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="model != null and model != ''">model = #{model},</if>
+            <if test="platform != null and platform != ''">platform = #{platform},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="temperature != null">temperature = #{temperature},</if>
+            <if test="maxTokens != null">max_tokens = #{maxTokens},</if>
+            <if test="maxContexts != null">max_contexts = #{maxContexts},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAiModelById" parameterType="Long">
+        delete from ai_model where id = #{id}
+    </delete>
+
+    <delete id="deleteAiModelByIds" parameterType="String">
+        delete from ai_model where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
