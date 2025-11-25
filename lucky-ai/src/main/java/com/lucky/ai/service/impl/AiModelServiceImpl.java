@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * AI 模型Service业务层处理
- * 
+ *
  * @author lucky
  */
 @Service
@@ -41,8 +41,23 @@ public class AiModelServiceImpl implements IAiModelService {
     }
 
     /**
+     * 校验模型是否可使用
+     *
+     * @param id 编号
+     * @return 模型
+     */
+    @Override
+    public AiModel validateModel(Long id) {
+        AiModel model = validateModelExists(id);
+        if (CommonStatusEnum.isDisable(model.getStatus())) {
+            throw new ServiceException(AiErrorConstants.MODEL_DISABLE);
+        }
+        return model;
+    }
+
+    /**
      * 查询AI 模型
-     * 
+     *
      * @param id AI 模型主键
      * @return AI 模型
      */
@@ -53,7 +68,7 @@ public class AiModelServiceImpl implements IAiModelService {
 
     /**
      * 查询AI 模型列表
-     * 
+     *
      * @param aiModel AI 模型
      * @return AI 模型
      */
@@ -64,7 +79,7 @@ public class AiModelServiceImpl implements IAiModelService {
 
     /**
      * 新增AI 模型
-     * 
+     *
      * @param aiModel AI 模型
      * @return 结果
      */
@@ -76,7 +91,7 @@ public class AiModelServiceImpl implements IAiModelService {
 
     /**
      * 修改AI 模型
-     * 
+     *
      * @param aiModel AI 模型
      * @return 结果
      */
@@ -88,7 +103,7 @@ public class AiModelServiceImpl implements IAiModelService {
 
     /**
      * 批量删除AI 模型
-     * 
+     *
      * @param ids 需要删除的AI 模型主键
      * @return 结果
      */
@@ -99,13 +114,21 @@ public class AiModelServiceImpl implements IAiModelService {
 
     /**
      * 删除AI 模型信息
-     * 
+     *
      * @param id AI 模型主键
      * @return 结果
      */
     @Override
     public int deleteAiModelById(Long id) {
         return aiModelMapper.deleteAiModelById(id);
+    }
+
+    private AiModel validateModelExists(Long id) {
+        AiModel model = aiModelMapper.selectAiModelById(id);
+        if (model == null) {
+            throw new ServiceException(AiErrorConstants.MODEL_NOT_EXISTS);
+        }
+        return model;
     }
 
 }

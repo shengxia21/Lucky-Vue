@@ -1,5 +1,6 @@
 package com.lucky.ai.controller.chat;
 
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.service.IAiChatConversationService;
 import com.lucky.common.annotation.Log;
@@ -11,13 +12,14 @@ import com.lucky.common.utils.poi.ExcelUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
  * AI 聊天对话Controller
- * 
+ *
  * @author lucky
  */
 @RestController
@@ -34,6 +36,16 @@ public class AiChatConversationController extends BaseController {
     @PostMapping("/create-my")
     public AjaxResult createChatConversationMy() {
         return success(aiChatConversationService.createChatConversationMy(getUserId()));
+    }
+
+    /**
+     * 更新我的聊天对话
+     */
+    @Log(title = "更新【我的】聊天对话", businessType = BusinessType.UPDATE)
+    @PostMapping("/update-my")
+    public AjaxResult updateChatConversationMy(@Validated @RequestBody AiChatConversationUpdateMyReqVO updateReqVO) {
+        aiChatConversationService.updateChatConversationMy(updateReqVO, getUserId());
+        return success();
     }
 
     /**
@@ -93,7 +105,7 @@ public class AiChatConversationController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:conversation:remove')")
     @Log(title = "AI 聊天对话", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
+    @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(aiChatConversationService.deleteAiChatConversationByIds(ids));
     }

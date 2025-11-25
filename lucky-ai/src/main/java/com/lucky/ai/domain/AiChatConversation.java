@@ -31,7 +31,7 @@ public class AiChatConversation extends BaseEntity {
     private String title;
 
     /** 是否置顶（0否 1是） */
-    @Excel(name = "是否置顶", readConverterExp = "0=否,1=是")
+    @Excel(name = "是否置顶", readConverterExp = "false=否,true=是")
     private Boolean pinned;
 
     /** 置顶时间 */

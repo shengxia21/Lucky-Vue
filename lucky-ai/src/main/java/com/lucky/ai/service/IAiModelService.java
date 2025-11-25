@@ -22,6 +22,14 @@ public interface IAiModelService {
     AiModel getRequiredDefaultModel(Integer type);
 
     /**
+     * 校验模型是否可使用
+     *
+     * @param id 编号
+     * @return 模型
+     */
+    AiModel validateModel(Long id);
+
+    /**
      * 查询AI 模型
      *
      * @param id AI 模型主键
