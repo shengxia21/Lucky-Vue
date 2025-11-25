@@ -42,15 +42,15 @@ public class AiImage extends BaseEntity {
 
     /** 图片宽度 */
     @Excel(name = "图片宽度")
-    private Long width;
+    private Integer width;
 
     /** 图片高度 */
     @Excel(name = "图片高度")
-    private Long height;
+    private Integer height;
 
     /** 生成状态（10进行中 20已完成 30已失败） */
     @Excel(name = "生成状态", readConverterExp = "1=0进行中,2=0已完成,3=0已失败")
-    private Long status;
+    private Integer status;
 
     /** 完成时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -67,7 +67,7 @@ public class AiImage extends BaseEntity {
 
     /** 是否公开（0否 1是） */
     @Excel(name = "是否公开", readConverterExp = "0=否,1=是")
-    private Long publicStatus;
+    private Integer publicStatus;
 
     /** 绘制参数 */
     @Excel(name = "绘制参数")
@@ -132,27 +132,27 @@ public class AiImage extends BaseEntity {
         return model;
     }
 
-    public void setWidth(Long width) {
+    public void setWidth(Integer width) {
         this.width = width;
     }
 
-    public Long getWidth() {
+    public Integer getWidth() {
         return width;
     }
 
-    public void setHeight(Long height) {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 
-    public Long getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public Long getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
@@ -180,11 +180,11 @@ public class AiImage extends BaseEntity {
         return picUrl;
     }
 
-    public void setPublicStatus(Long publicStatus) {
+    public void setPublicStatus(Integer publicStatus) {
         this.publicStatus = publicStatus;
     }
 
-    public Long getPublicStatus() {
+    public Integer getPublicStatus() {
         return publicStatus;
     }
 

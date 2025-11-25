@@ -55,7 +55,7 @@ public class AiChatMessage extends BaseEntity {
 
     /** 是否携带上下文（0否 1是） */
     @Excel(name = "是否携带上下文", readConverterExp = "0=否,1=是")
-    private Long useContext;
+    private Integer useContext;
 
     /** 知识库段落编号数组 */
     @Excel(name = "知识库段落编号数组")
@@ -152,11 +152,11 @@ public class AiChatMessage extends BaseEntity {
         return reasoningContent;
     }
 
-    public void setUseContext(Long useContext) {
+    public void setUseContext(Integer useContext) {
         this.useContext = useContext;
     }
 
-    public Long getUseContext() {
+    public Integer getUseContext() {
         return useContext;
     }
 

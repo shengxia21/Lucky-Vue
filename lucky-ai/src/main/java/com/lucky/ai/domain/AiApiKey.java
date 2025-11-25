@@ -35,7 +35,7 @@ public class AiApiKey extends BaseEntity {
 
     /** 状态（0开启 1关闭） */
     @Excel(name = "状态", readConverterExp = "0=开启,1=关闭")
-    private Long status;
+    private Integer status;
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
@@ -80,11 +80,11 @@ public class AiApiKey extends BaseEntity {
         return url;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public Long getStatus() {
+    public Integer getStatus() {
         return status;
     }
 

@@ -30,6 +30,7 @@ public class AiChatConversationController extends BaseController {
     /**
      * 创建我的聊天对话
      */
+    @Log(title = "创建【我的】聊天对话", businessType = BusinessType.INSERT)
     @PostMapping("/create-my")
     public AjaxResult createChatConversationMy() {
         return success(aiChatConversationService.createChatConversationMy(getUserId()));
