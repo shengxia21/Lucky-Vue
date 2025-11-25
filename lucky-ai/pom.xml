@@ -23,6 +23,12 @@
             <artifactId>lucky-common</artifactId>
         </dependency>
 
+        <!-- hutool工具 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+        </dependency>
+
         <!-- OpenAI模型 -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
