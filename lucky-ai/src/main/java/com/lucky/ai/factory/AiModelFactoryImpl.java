@@ -16,7 +16,6 @@ import org.springframework.ai.deepseek.DeepSeekChatModel;
 import org.springframework.ai.deepseek.DeepSeekChatOptions;
 import org.springframework.ai.deepseek.api.DeepSeekApi;
 import org.springframework.ai.image.ImageModel;
-import org.springframework.ai.openai.OpenAiImageModel;
 import org.springframework.ai.zhipuai.ZhiPuAiChatModel;
 import org.springframework.ai.zhipuai.ZhiPuAiChatOptions;
 import org.springframework.ai.zhipuai.ZhiPuAiImageModel;
@@ -56,7 +55,6 @@ public class AiModelFactoryImpl implements AiModelFactory {
         return switch (platform) {
             case TONG_YI -> SpringUtils.getBean(DashScopeImageModel.class);
             case ZHI_PU -> SpringUtils.getBean(ZhiPuAiImageModel.class);
-            case OPENAI -> SpringUtils.getBean(OpenAiImageModel.class);
             default -> throw new IllegalArgumentException(StrUtil.format("未知平台({})", platform));
         };
     }

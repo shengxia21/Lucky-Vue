@@ -1,4 +1,4 @@
-package com.lucky.ai.controller;
+package com.lucky.ai.controller.chat;
 
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.service.IAiChatConversationService;
@@ -26,6 +26,14 @@ public class AiChatConversationController extends BaseController {
 
     @Autowired
     private IAiChatConversationService aiChatConversationService;
+
+    /**
+     * 创建我的聊天对话
+     */
+    @PostMapping("/create-my")
+    public AjaxResult createChatConversationMy() {
+        return success(aiChatConversationService.createChatConversationMy(getUserId()));
+    }
 
     /**
      * 查询AI 聊天对话列表

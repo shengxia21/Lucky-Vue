@@ -1,4 +1,4 @@
-package com.lucky.ai.controller;
+package com.lucky.ai.controller.model;
 
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.service.IAiApiKeyService;

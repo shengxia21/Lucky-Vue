@@ -1,8 +1,11 @@
 package com.lucky.ai.service.impl;
 
 import com.lucky.ai.domain.AiModel;
+import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.mapper.AiModelMapper;
 import com.lucky.ai.service.IAiModelService;
+import com.lucky.common.constant.AiErrorConstants;
+import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,23 @@ public class AiModelServiceImpl implements IAiModelService {
 
     @Autowired
     private AiModelMapper aiModelMapper;
+
+    /**
+     * 获得默认的模型
+     * <p>
+     * 如果获取不到，则抛出 {@link com.lucky.common.exception.ServiceException}
+     *
+     * @param type 模型类型
+     * @return 模型
+     */
+    @Override
+    public AiModel getRequiredDefaultModel(Integer type) {
+        AiModel aiModel = aiModelMapper.selectFirstByStatus(type, CommonStatusEnum.ENABLE.getStatus());
+        if (aiModel == null) {
+            throw new ServiceException(AiErrorConstants.MODEL_DEFAULT_NOT_EXISTS);
+        }
+        return aiModel;
+    }
 
     /**
      * 查询AI 模型

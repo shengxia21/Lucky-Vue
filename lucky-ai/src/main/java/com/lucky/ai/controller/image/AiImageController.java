@@ -1,4 +1,4 @@
-package com.lucky.ai.controller;
+package com.lucky.ai.controller.image;
 
 import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.service.IAiImageService;

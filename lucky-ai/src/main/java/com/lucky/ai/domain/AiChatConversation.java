@@ -15,6 +15,8 @@ import java.util.Date;
  */
 public class AiChatConversation extends BaseEntity {
 
+    public static final String TITLE_DEFAULT = "新对话";
+
     private static final long serialVersionUID = 1L;
 
     /** ID 编号，自增 */
@@ -30,7 +32,7 @@ public class AiChatConversation extends BaseEntity {
 
     /** 是否置顶（0否 1是） */
     @Excel(name = "是否置顶", readConverterExp = "0=否,1=是")
-    private Long pinned;
+    private Boolean pinned;
 
     /** 置顶时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -55,15 +57,15 @@ public class AiChatConversation extends BaseEntity {
 
     /** 温度参数 */
     @Excel(name = "温度参数")
-    private Long temperature;
+    private Double temperature;
 
     /** 单条回复的最大 Token 数量 */
     @Excel(name = "单条回复的最大 Token 数量")
-    private Long maxTokens;
+    private Integer maxTokens;
 
     /** 上下文的最大 Message 数量 */
     @Excel(name = "上下文的最大 Message 数量")
-    private Long maxContexts;
+    private Integer maxContexts;
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
@@ -92,11 +94,11 @@ public class AiChatConversation extends BaseEntity {
         return title;
     }
 
-    public void setPinned(Long pinned) {
+    public void setPinned(Boolean pinned) {
         this.pinned = pinned;
     }
 
-    public Long getPinned() {
+    public Boolean getPinned() {
         return pinned;
     }
 
@@ -140,27 +142,27 @@ public class AiChatConversation extends BaseEntity {
         return systemMessage;
     }
 
-    public void setTemperature(Long temperature) {
+    public void setTemperature(Double temperature) {
         this.temperature = temperature;
     }
 
-    public Long getTemperature() {
+    public Double getTemperature() {
         return temperature;
     }
 
-    public void setMaxTokens(Long maxTokens) {
+    public void setMaxTokens(Integer maxTokens) {
         this.maxTokens = maxTokens;
     }
 
-    public Long getMaxTokens() {
+    public Integer getMaxTokens() {
         return maxTokens;
     }
 
-    public void setMaxContexts(Long maxContexts) {
+    public void setMaxContexts(Integer maxContexts) {
         this.maxContexts = maxContexts;
     }
 
-    public Long getMaxContexts() {
+    public Integer getMaxContexts() {
         return maxContexts;
     }
 

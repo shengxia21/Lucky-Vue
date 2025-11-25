@@ -48,6 +48,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
+    <select id="selectFirstByStatus" parameterType="Integer" resultMap="AiModelResult">
+        <include refid="selectAiModelVo"/>
+        where type = #{type} and status = #{status}
+        order by sort asc
+        limit 1
+    </select>
+
     <insert id="insertAiModel" parameterType="AiModel" useGeneratedKeys="true" keyProperty="id">
         insert into ai_model
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -5,8 +5,6 @@ import com.lucky.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.math.BigDecimal;
-
 /**
  * AI 模型对象 ai_model
  * 
@@ -37,27 +35,27 @@ public class AiModel extends BaseEntity {
 
     /** 模型类型（1对话 2图片 3语音 4视频 5向量 6重排序） */
     @Excel(name = "模型类型", readConverterExp = "1=对话,2=图片,3=语音,4=视频,5=向量,6=重排序")
-    private Long type;
+    private Integer type;
 
     /** 状态（0开启 1关闭） */
     @Excel(name = "状态", readConverterExp = "0=开启,1=关闭")
-    private Long status;
+    private Integer status;
 
     /** 排序 */
     @Excel(name = "排序")
-    private Long sort;
+    private Integer sort;
 
     /** 温度参数 */
     @Excel(name = "温度参数")
-    private BigDecimal temperature;
+    private Double temperature;
 
     /** 单条回复的最大 Token 数量 */
     @Excel(name = "单条回复的最大 Token 数量")
-    private Long maxTokens;
+    private Integer maxTokens;
 
     /** 上下文的最大 Message 数量 */
     @Excel(name = "上下文的最大 Message 数量")
-    private Long maxContexts;
+    private Integer maxContexts;
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
@@ -102,51 +100,51 @@ public class AiModel extends BaseEntity {
         return platform;
     }
 
-    public void setType(Long type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public Long getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public Long getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setSort(Long sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
     }
 
-    public Long getSort() {
+    public Integer getSort() {
         return sort;
     }
 
-    public void setTemperature(BigDecimal temperature) {
+    public void setTemperature(Double temperature) {
         this.temperature = temperature;
     }
 
-    public BigDecimal getTemperature() {
+    public Double getTemperature() {
         return temperature;
     }
 
-    public void setMaxTokens(Long maxTokens) {
+    public void setMaxTokens(Integer maxTokens) {
         this.maxTokens = maxTokens;
     }
 
-    public Long getMaxTokens() {
+    public Integer getMaxTokens() {
         return maxTokens;
     }
 
-    public void setMaxContexts(Long maxContexts) {
+    public void setMaxContexts(Integer maxContexts) {
         this.maxContexts = maxContexts;
     }
 
-    public Long getMaxContexts() {
+    public Integer getMaxContexts() {
         return maxContexts;
     }
 

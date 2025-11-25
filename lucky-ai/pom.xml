@@ -29,12 +29,6 @@
             <artifactId>hutool-core</artifactId>
         </dependency>
 
-        <!-- OpenAI模型 -->
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-model-openai</artifactId>
-        </dependency>
-
         <!-- DeepSeek模型 -->
         <dependency>
             <groupId>org.springframework.ai</groupId>

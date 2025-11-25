@@ -12,6 +12,15 @@ import java.util.List;
 public interface AiModelMapper {
 
     /**
+     * 查询默认AI 模型
+     *
+     * @param type 模型类型
+     * @param status 状态
+     * @return 模型
+     */
+    AiModel selectFirstByStatus(Integer type, Integer status);
+
+    /**
      * 查询AI 模型
      * 
      * @param id AI 模型主键

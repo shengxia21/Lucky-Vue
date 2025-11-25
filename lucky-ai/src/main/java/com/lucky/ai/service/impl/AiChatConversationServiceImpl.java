@@ -1,9 +1,17 @@
 package com.lucky.ai.service.impl;
 
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ObjectUtil;
 import com.lucky.ai.domain.AiChatConversation;
+import com.lucky.ai.domain.AiModel;
+import com.lucky.ai.enums.model.AiModelTypeEnum;
 import com.lucky.ai.mapper.AiChatConversationMapper;
 import com.lucky.ai.service.IAiChatConversationService;
+import com.lucky.ai.service.IAiModelService;
+import com.lucky.common.constant.AiErrorConstants;
+import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.DateUtils;
+import com.lucky.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +27,35 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
 
     @Autowired
     private AiChatConversationMapper aiChatConversationMapper;
+
+    @Autowired
+    private IAiModelService aiModelService;
+
+    /**
+     * 创建我的聊天对话
+     *
+     * @param userId 用户ID
+     * @return 聊天对话ID
+     */
+    @Override
+    public Long createChatConversationMy(Long userId) {
+        AiModel model = aiModelService.getRequiredDefaultModel(AiModelTypeEnum.CHAT.getType());
+        Assert.notNull(model, "必须找到默认模型");
+        validateChatModel(model);
+        AiChatConversation conversation = new AiChatConversation();
+        conversation.setUserId(userId);
+        conversation.setPinned(false);
+        conversation.setModelId(model.getId());
+        conversation.setModel(model.getModel());
+        conversation.setTemperature(model.getTemperature());
+        conversation.setMaxTokens(model.getMaxTokens());
+        conversation.setMaxContexts(model.getMaxContexts());
+        conversation.setTitle(AiChatConversation.TITLE_DEFAULT);
+        conversation.setCreateTime(DateUtils.getNowDate());
+        conversation.setCreateBy(SecurityUtils.getUsername());
+        aiChatConversationMapper.insertAiChatConversation(conversation);
+        return conversation.getId();
+    }
 
     /**
      * 查询AI 聊天对话
@@ -86,6 +123,14 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
     @Override
     public int deleteAiChatConversationById(Long id) {
         return aiChatConversationMapper.deleteAiChatConversationById(id);
+    }
+
+    private void validateChatModel(AiModel model) {
+        if (ObjectUtil.isAllNotEmpty(model.getTemperature(), model.getMaxTokens(), model.getMaxContexts())) {
+            return;
+        }
+        Assert.equals(model.getType(), AiModelTypeEnum.CHAT.getType(), "模型类型不正确：" + model);
+        throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_MODEL_ERROR);
     }
 
 }

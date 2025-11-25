@@ -1,4 +1,4 @@
-package com.lucky.ai.controller;
+package com.lucky.ai.controller.model;
 
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.service.IAiModelService;

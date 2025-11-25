@@ -90,6 +90,10 @@ spring:
   ai:
     deepseek:
       api-key: ${DEEPSEEK_API_KEY}
+    dashscope:
+      api-key: ${DASHSCOPE_API_KEY}
+    zhipuai:
+      api-key: ${ZHIPUAI_API_KEY}
 
 # token配置
 token:

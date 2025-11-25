@@ -1,4 +1,4 @@
-package com.lucky.ai.controller;
+package com.lucky.ai.controller.chat;
 
 import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.service.IAiChatMessageService;

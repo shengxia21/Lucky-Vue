@@ -12,6 +12,14 @@ import java.util.List;
 public interface IAiChatConversationService {
 
     /**
+     * 创建我的聊天对话
+     *
+     * @param userId 用户ID
+     * @return 聊天对话ID
+     */
+    Long createChatConversationMy(Long userId);
+
+    /**
      * 查询AI 聊天对话
      * 
      * @param id AI 聊天对话主键
