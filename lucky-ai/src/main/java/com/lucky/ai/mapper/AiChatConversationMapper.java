@@ -6,14 +6,22 @@ import java.util.List;
 
 /**
  * AI 聊天对话Mapper接口
- * 
+ *
  * @author lucky
  */
 public interface AiChatConversationMapper {
 
     /**
+     * 根据用户ID查询聊天对话列表
+     *
+     * @param userId 用户ID
+     * @return 聊天对话列表
+     */
+    List<AiChatConversation> selectListByUserId(Long userId);
+
+    /**
      * 查询AI 聊天对话
-     * 
+     *
      * @param id AI 聊天对话主键
      * @return AI 聊天对话
      */
@@ -21,7 +29,7 @@ public interface AiChatConversationMapper {
 
     /**
      * 查询AI 聊天对话列表
-     * 
+     *
      * @param aiChatConversation AI 聊天对话
      * @return AI 聊天对话集合
      */
@@ -29,7 +37,7 @@ public interface AiChatConversationMapper {
 
     /**
      * 新增AI 聊天对话
-     * 
+     *
      * @param aiChatConversation AI 聊天对话
      * @return 结果
      */
@@ -37,7 +45,7 @@ public interface AiChatConversationMapper {
 
     /**
      * 修改AI 聊天对话
-     * 
+     *
      * @param aiChatConversation AI 聊天对话
      * @return 结果
      */
@@ -45,7 +53,7 @@ public interface AiChatConversationMapper {
 
     /**
      * 删除AI 聊天对话
-     * 
+     *
      * @param id AI 聊天对话主键
      * @return 结果
      */
@@ -53,7 +61,7 @@ public interface AiChatConversationMapper {
 
     /**
      * 批量删除AI 聊天对话
-     * 
+     *
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */

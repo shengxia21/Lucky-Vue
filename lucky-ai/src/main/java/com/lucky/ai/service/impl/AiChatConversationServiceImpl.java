@@ -70,7 +70,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
      * @param userId      用户ID
      */
     @Override
-    public void updateChatConversationMy(AiChatConversationUpdateMyReqVO updateReqVO, Long userId) {
+    public int updateChatConversationMy(AiChatConversationUpdateMyReqVO updateReqVO, Long userId) {
         // 1.1 校验对话是否存在
         AiChatConversation conversation = validateChatConversationExists(updateReqVO.getId());
         if (ObjUtil.notEqual(conversation.getUserId(), userId)) {
@@ -92,7 +92,18 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         }
         updateObj.setUpdateBy(SecurityUtils.getUsername());
         updateObj.setUpdateTime(DateUtils.getNowDate());
-        aiChatConversationMapper.updateAiChatConversation(updateObj);
+        return aiChatConversationMapper.updateAiChatConversation(updateObj);
+    }
+
+    /**
+     * 获得我的聊天对话列表
+     *
+     * @param userId 用户ID
+     * @return 聊天对话列表
+     */
+    @Override
+    public List<AiChatConversation> getChatConversationListByUserId(Long userId) {
+        return aiChatConversationMapper.selectListByUserId(userId);
     }
 
     /**

@@ -3,6 +3,8 @@ package com.lucky.ai.controller.chat.vo.conversation;
 import jakarta.validation.constraints.NotNull;
 
 /**
+ * 更新我的聊天对话请求VO
+ *
  * @author lucky
  */
 public class AiChatConversationUpdateMyReqVO {

@@ -1,5 +1,7 @@
 package com.lucky.ai.controller.chat;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.service.IAiChatConversationService;
@@ -44,8 +46,16 @@ public class AiChatConversationController extends BaseController {
     @Log(title = "更新【我的】聊天对话", businessType = BusinessType.UPDATE)
     @PostMapping("/update-my")
     public AjaxResult updateChatConversationMy(@Validated @RequestBody AiChatConversationUpdateMyReqVO updateReqVO) {
-        aiChatConversationService.updateChatConversationMy(updateReqVO, getUserId());
-        return success();
+        return toAjax(aiChatConversationService.updateChatConversationMy(updateReqVO, getUserId()));
+    }
+
+    /**
+     * 获得我的聊天对话列表
+     */
+    @GetMapping("/my-list")
+    public AjaxResult getChatConversationMyList() {
+        List<AiChatConversation> list = aiChatConversationService.getChatConversationListByUserId(getUserId());
+        return success(BeanUtil.copyToList(list, AiChatConversationRespVO.class));
     }
 
     /**

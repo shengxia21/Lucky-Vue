@@ -26,7 +26,15 @@ public interface IAiChatConversationService {
      * @param updateReqVO 更新对象
      * @param userId      用户ID
      */
-    void updateChatConversationMy(AiChatConversationUpdateMyReqVO updateReqVO, Long userId);
+    int updateChatConversationMy(AiChatConversationUpdateMyReqVO updateReqVO, Long userId);
+
+    /**
+     * 获得我的聊天对话列表
+     *
+     * @param userId 用户ID
+     * @return 聊天对话列表
+     */
+    List<AiChatConversation> getChatConversationListByUserId(Long userId);
 
     /**
      * 查询AI 聊天对话
