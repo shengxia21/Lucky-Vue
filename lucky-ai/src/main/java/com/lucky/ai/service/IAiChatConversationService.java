@@ -37,51 +37,28 @@ public interface IAiChatConversationService {
     List<AiChatConversation> getChatConversationListByUserId(Long userId);
 
     /**
-     * 查询AI 聊天对话
+     * 获得我的聊天对话
      *
-     * @param id AI 聊天对话主键
-     * @return AI 聊天对话
+     * @param id 对话ID
+     * @return 聊天对话
      */
-    AiChatConversation selectAiChatConversationById(Long id);
+    AiChatConversation getChatConversation(Long id);
 
     /**
-     * 查询AI 聊天对话列表
+     * 删除我的聊天对话
      *
-     * @param aiChatConversation AI 聊天对话
-     * @return AI 聊天对话集合
+     * @param id     对话ID
+     * @param userId 用户ID
+     * @return 是否成功
      */
-    List<AiChatConversation> selectAiChatConversationList(AiChatConversation aiChatConversation);
+    int deleteChatConversationMy(Long id, Long userId);
 
     /**
-     * 新增AI 聊天对话
+     * 删除我的未置顶聊天对话
      *
-     * @param aiChatConversation AI 聊天对话
-     * @return 结果
+     * @param userId 用户ID
+     * @return 是否成功
      */
-    int insertAiChatConversation(AiChatConversation aiChatConversation);
-
-    /**
-     * 修改AI 聊天对话
-     *
-     * @param aiChatConversation AI 聊天对话
-     * @return 结果
-     */
-    int updateAiChatConversation(AiChatConversation aiChatConversation);
-
-    /**
-     * 批量删除AI 聊天对话
-     *
-     * @param ids 需要删除的AI 聊天对话主键集合
-     * @return 结果
-     */
-    int deleteAiChatConversationByIds(Long[] ids);
-
-    /**
-     * 删除AI 聊天对话信息
-     *
-     * @param id AI 聊天对话主键
-     * @return 结果
-     */
-    int deleteAiChatConversationById(Long id);
+    int deleteChatConversationMyByUnpinned(Long userId);
 
 }

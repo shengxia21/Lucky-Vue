@@ -1,6 +1,7 @@
 package com.lucky.ai.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.lucky.ai.util.CollectionUtils.convertList;
 
 /**
  * AI 聊天对话Service业务层处理
@@ -107,71 +110,47 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
     }
 
     /**
-     * 查询AI 聊天对话
+     * 获得我的聊天对话
      *
-     * @param id AI 聊天对话主键
-     * @return AI 聊天对话
+     * @param id 对话ID
+     * @return 聊天对话
      */
     @Override
-    public AiChatConversation selectAiChatConversationById(Long id) {
+    public AiChatConversation getChatConversation(Long id) {
         return aiChatConversationMapper.selectAiChatConversationById(id);
     }
 
     /**
-     * 查询AI 聊天对话列表
+     * 删除我的聊天对话
      *
-     * @param aiChatConversation AI 聊天对话
-     * @return AI 聊天对话
+     * @param id     对话ID
+     * @param userId 用户ID
+     * @return 是否成功
      */
     @Override
-    public List<AiChatConversation> selectAiChatConversationList(AiChatConversation aiChatConversation) {
-        return aiChatConversationMapper.selectAiChatConversationList(aiChatConversation);
-    }
-
-    /**
-     * 新增AI 聊天对话
-     *
-     * @param aiChatConversation AI 聊天对话
-     * @return 结果
-     */
-    @Override
-    public int insertAiChatConversation(AiChatConversation aiChatConversation) {
-        aiChatConversation.setCreateTime(DateUtils.getNowDate());
-        return aiChatConversationMapper.insertAiChatConversation(aiChatConversation);
-    }
-
-    /**
-     * 修改AI 聊天对话
-     *
-     * @param aiChatConversation AI 聊天对话
-     * @return 结果
-     */
-    @Override
-    public int updateAiChatConversation(AiChatConversation aiChatConversation) {
-        aiChatConversation.setUpdateTime(DateUtils.getNowDate());
-        return aiChatConversationMapper.updateAiChatConversation(aiChatConversation);
-    }
-
-    /**
-     * 批量删除AI 聊天对话
-     *
-     * @param ids 需要删除的AI 聊天对话主键
-     * @return 结果
-     */
-    @Override
-    public int deleteAiChatConversationByIds(Long[] ids) {
-        return aiChatConversationMapper.deleteAiChatConversationByIds(ids);
-    }
-
-    /**
-     * 删除AI 聊天对话信息
-     *
-     * @param id AI 聊天对话主键
-     * @return 结果
-     */
-    @Override
-    public int deleteAiChatConversationById(Long id) {
+    public int deleteChatConversationMy(Long id, Long userId) {
+        // 1. 校验对话是否存在
+        AiChatConversation conversation = validateChatConversationExists(id);
+        if (conversation == null || ObjUtil.notEqual(conversation.getUserId(), userId)) {
+            throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
+        }
+        // 2. 删除对话
         return aiChatConversationMapper.deleteAiChatConversationById(id);
+    }
+
+    /**
+     * 删除我的未置顶聊天对话
+     *
+     * @param userId 用户ID
+     * @return 是否成功
+     */
+    @Override
+    public int deleteChatConversationMyByUnpinned(Long userId) {
+        List<AiChatConversation> list = aiChatConversationMapper.selectListByUserIdAndPinned(userId, false);
+        if (CollUtil.isEmpty(list)) {
+            return 0;
+        }
+        return aiChatConversationMapper.deleteAiChatConversationByIds(convertList(list, AiChatConversation::getId));
     }
 
     private void validateChatModel(AiModel model) {

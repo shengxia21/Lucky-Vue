@@ -28,31 +28,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, user_id, title, pinned, pinned_time, role_id, model_id, model, system_message, temperature, max_tokens, max_contexts, del_flag, create_by, create_time, update_by, update_time from ai_chat_conversation
     </sql>
 
-    <select id="selectAiChatConversationList" parameterType="AiChatConversation" resultMap="AiChatConversationResult">
-        <include refid="selectAiChatConversationVo"/>
-        <where>  
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="title != null and title != ''"> and title = #{title}</if>
-            <if test="pinned != null "> and pinned = #{pinned}</if>
-            <if test="pinnedTime != null "> and pinned_time = #{pinnedTime}</if>
-            <if test="roleId != null "> and role_id = #{roleId}</if>
-            <if test="modelId != null "> and model_id = #{modelId}</if>
-            <if test="model != null and model != ''"> and model = #{model}</if>
-            <if test="systemMessage != null  and systemMessage != ''"> and system_message = #{systemMessage}</if>
-            <if test="temperature != null "> and temperature = #{temperature}</if>
-            <if test="maxTokens != null "> and max_tokens = #{maxTokens}</if>
-            <if test="maxContexts != null "> and max_contexts = #{maxContexts}</if>
-        </where>
-    </select>
+    <update id="deleteAiChatConversationById" parameterType="Long">
+        update ai_chat_conversation set del_flag = 1 where id = #{id}
+    </update>
+
+    <update id="deleteAiChatConversationByIds" parameterType="List">
+        update ai_chat_conversation set del_flag = 1 where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
 
     <select id="selectAiChatConversationById" parameterType="Long" resultMap="AiChatConversationResult">
         <include refid="selectAiChatConversationVo"/>
         where id = #{id}
+        and del_flag = 0
     </select>
 
     <select id="selectListByUserId" resultMap="AiChatConversationResult">
         <include refid="selectAiChatConversationVo"/>
         where user_id = #{userId}
+        and del_flag = 0
+    </select>
+
+    <select id="selectListByUserIdAndPinned" resultMap="AiChatConversationResult">
+        <include refid="selectAiChatConversationVo"/>
+        where user_id = #{userId}
+        and pinned = #{pinned}
         and del_flag = 0
     </select>
 
@@ -117,16 +119,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
+        and del_flag = 0
     </update>
 
-    <delete id="deleteAiChatConversationById" parameterType="Long">
-        delete from ai_chat_conversation where id = #{id}
-    </delete>
-
-    <delete id="deleteAiChatConversationByIds" parameterType="String">
-        delete from ai_chat_conversation where id in 
-        <foreach item="id" collection="array" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-    </delete>
 </mapper>

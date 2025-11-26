@@ -21,7 +21,7 @@ import java.util.List;
  * @author lucky
  */
 @RestController
-@RequestMapping("/ai/key")
+@RequestMapping("/ai/api-key")
 public class AiApiKeyController extends BaseController {
 
     @Autowired

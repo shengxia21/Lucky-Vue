@@ -1,6 +1,7 @@
 package com.lucky.ai.controller.chat;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
@@ -8,12 +9,8 @@ import com.lucky.ai.service.IAiChatConversationService;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
 import com.lucky.common.core.domain.AjaxResult;
-import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
-import com.lucky.common.utils.poi.ExcelUtil;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +22,7 @@ import java.util.List;
  * @author lucky
  */
 @RestController
-@RequestMapping("/ai/conversation")
+@RequestMapping("/ai/chat/conversation")
 public class AiChatConversationController extends BaseController {
 
     @Autowired
@@ -59,65 +56,33 @@ public class AiChatConversationController extends BaseController {
     }
 
     /**
-     * 查询AI 聊天对话列表
+     * 获得我的聊天对话
      */
-    @PreAuthorize("@ss.hasPermi('ai:conversation:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(AiChatConversation aiChatConversation) {
-        startPage();
-        List<AiChatConversation> list = aiChatConversationService.selectAiChatConversationList(aiChatConversation);
-        return getDataTable(list);
+    @GetMapping("/get-my")
+    public AjaxResult getChatConversationMy(@RequestParam("id") Long id) {
+        AiChatConversation conversation = aiChatConversationService.getChatConversation(id);
+        if (conversation != null && ObjUtil.notEqual(conversation.getUserId(), getUserId())) {
+            conversation = null;
+        }
+        return success(BeanUtil.toBean(conversation, AiChatConversationRespVO.class));
     }
 
     /**
-     * 导出AI 聊天对话列表
+     * 删除我的聊天对话
      */
-    @PreAuthorize("@ss.hasPermi('ai:conversation:export')")
-    @Log(title = "AI 聊天对话", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, AiChatConversation aiChatConversation) {
-        List<AiChatConversation> list = aiChatConversationService.selectAiChatConversationList(aiChatConversation);
-        ExcelUtil<AiChatConversation> util = new ExcelUtil<AiChatConversation>(AiChatConversation.class);
-        util.exportExcel(response, list, "AI 聊天对话数据");
+    @Log(title = "删除【我的】聊天对话", businessType = BusinessType.DELETE)
+    @DeleteMapping("/delete-my")
+    public AjaxResult deleteChatConversationMy(@RequestParam("id") Long id) {
+        return toAjax(aiChatConversationService.deleteChatConversationMy(id, getUserId()));
     }
 
     /**
-     * 获取AI 聊天对话详细信息
+     * 删除未置顶的聊天对话
      */
-    @PreAuthorize("@ss.hasPermi('ai:conversation:query')")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id) {
-        return success(aiChatConversationService.selectAiChatConversationById(id));
-    }
-
-    /**
-     * 新增AI 聊天对话
-     */
-    @PreAuthorize("@ss.hasPermi('ai:conversation:add')")
-    @Log(title = "AI 聊天对话", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody AiChatConversation aiChatConversation) {
-        return toAjax(aiChatConversationService.insertAiChatConversation(aiChatConversation));
-    }
-
-    /**
-     * 修改AI 聊天对话
-     */
-    @PreAuthorize("@ss.hasPermi('ai:conversation:edit')")
-    @Log(title = "AI 聊天对话", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody AiChatConversation aiChatConversation) {
-        return toAjax(aiChatConversationService.updateAiChatConversation(aiChatConversation));
-    }
-
-    /**
-     * 删除AI 聊天对话
-     */
-    @PreAuthorize("@ss.hasPermi('ai:conversation:remove')")
-    @Log(title = "AI 聊天对话", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids) {
-        return toAjax(aiChatConversationService.deleteAiChatConversationByIds(ids));
+    @Log(title = "删除未置顶的聊天对话", businessType = BusinessType.DELETE)
+    @DeleteMapping("/delete-by-unpinned")
+    public AjaxResult deleteChatConversationMyByUnpinned() {
+        return toAjax(aiChatConversationService.deleteChatConversationMyByUnpinned(getUserId()));
     }
 
 }

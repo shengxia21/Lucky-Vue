@@ -1,7 +1,6 @@
 package com.lucky.ai.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lucky.common.annotation.Excel;
 import com.lucky.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -23,48 +22,37 @@ public class AiChatConversation extends BaseEntity {
     private Long id;
 
     /** 用户编号 */
-    @Excel(name = "用户编号")
     private Long userId;
 
     /** 对话标题 */
-    @Excel(name = "对话标题")
     private String title;
 
     /** 是否置顶（0否 1是） */
-    @Excel(name = "是否置顶", readConverterExp = "false=否,true=是")
     private Boolean pinned;
 
     /** 置顶时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "置顶时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date pinnedTime;
 
     /** 角色编号 */
-    @Excel(name = "角色编号")
     private Long roleId;
 
     /** 模型编号 */
-    @Excel(name = "模型编号")
     private Long modelId;
 
     /** 模型标志 */
-    @Excel(name = "模型标志")
     private String model;
 
     /** 角色设定 */
-    @Excel(name = "角色设定")
     private String systemMessage;
 
     /** 温度参数 */
-    @Excel(name = "温度参数")
     private Double temperature;
 
     /** 单条回复的最大 Token 数量 */
-    @Excel(name = "单条回复的最大 Token 数量")
     private Integer maxTokens;
 
     /** 上下文的最大 Message 数量 */
-    @Excel(name = "上下文的最大 Message 数量")
     private Integer maxContexts;
 
     /** 删除标志（0代表存在 2代表删除） */

@@ -21,7 +21,7 @@ import java.util.List;
  * @author lucky
  */
 @RestController
-@RequestMapping("/ai/message")
+@RequestMapping("/ai/chat/message")
 public class AiChatMessageController extends BaseController {
 
     @Autowired

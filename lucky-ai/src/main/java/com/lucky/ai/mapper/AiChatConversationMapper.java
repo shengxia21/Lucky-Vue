@@ -28,14 +28,6 @@ public interface AiChatConversationMapper {
     AiChatConversation selectAiChatConversationById(Long id);
 
     /**
-     * 查询AI 聊天对话列表
-     *
-     * @param aiChatConversation AI 聊天对话
-     * @return AI 聊天对话集合
-     */
-    List<AiChatConversation> selectAiChatConversationList(AiChatConversation aiChatConversation);
-
-    /**
      * 新增AI 聊天对话
      *
      * @param aiChatConversation AI 聊天对话
@@ -60,11 +52,20 @@ public interface AiChatConversationMapper {
     int deleteAiChatConversationById(Long id);
 
     /**
-     * 批量删除AI 聊天对话
+     * 根据用户ID查询置顶/未置顶的聊天对话列表
      *
-     * @param ids 需要删除的数据主键集合
+     * @param userId 用户ID
+     * @param pinned 是否置顶
+     * @return 聊天对话列表
+     */
+    List<AiChatConversation> selectListByUserIdAndPinned(Long userId, boolean pinned);
+
+    /**
+     * 根据ID列表删除AI 聊天对话
+     *
+     * @param ids ID列表
      * @return 结果
      */
-    int deleteAiChatConversationByIds(Long[] ids);
+    int deleteAiChatConversationByIds(List<Long> ids);
 
 }
