@@ -58,6 +58,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and del_flag = 0
     </select>
 
+    <select id="selectChatConversationPage" parameterType="com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO"
+            resultType="com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO">
+        select
+            c.id,
+            c.user_id as userId,
+            c.title,
+            c.pinned,
+            c.role_id as roleId,
+            c.model_id as modelId,
+            c.model,
+            c.system_message as systemMessage,
+            c.temperature,
+            c.max_tokens as maxTokens,
+            c.max_contexts as maxContexts,
+            c.create_time as createTime,
+            (SELECT COUNT(m.id) FROM ai_chat_message m WHERE m.conversation_id = c.id and m.del_flag = 0) as messageCount
+        from ai_chat_conversation c
+        <where>
+            <if test="userId != null and userId != ''">
+                and c.user_id = #{userId}
+            </if>
+            <if test="title != null and title != ''">
+                and c.title like concat('%', #{title}, '%')
+            </if>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(c.create_time,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(c.create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
+            </if>
+            and c.del_flag = 0
+        </where>
+        order by c.id desc
+    </select>
+
     <insert id="insertAiChatConversation" parameterType="AiChatConversation" useGeneratedKeys="true" keyProperty="id">
         insert into ai_chat_conversation
         <trim prefix="(" suffix=")" suffixOverrides=",">

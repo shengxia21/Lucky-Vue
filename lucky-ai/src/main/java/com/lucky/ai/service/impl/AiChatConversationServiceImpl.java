@@ -5,6 +5,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
@@ -151,6 +153,34 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
             return 0;
         }
         return aiChatConversationMapper.deleteAiChatConversationByIds(convertList(list, AiChatConversation::getId));
+    }
+
+    /**
+     * 获取对话分页列表
+     *
+     * @param pageReqVO 分页查询对象
+     * @return 分页列表
+     */
+    @Override
+    public List<AiChatConversationRespVO> getChatConversationPage(AiChatConversationPageReqVO pageReqVO) {
+        return aiChatConversationMapper.selectChatConversationPage(pageReqVO);
+    }
+
+    /**
+     * 管理员删除对话
+     *
+     * @param id 对话ID
+     * @return 是否成功
+     */
+    @Override
+    public int deleteChatConversationByAdmin(Long id) {
+        // 1. 校验对话是否存在
+        AiChatConversation conversation = validateChatConversationExists(id);
+        if (conversation == null) {
+            throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
+        }
+        // 2. 删除对话
+        return aiChatConversationMapper.deleteAiChatConversationById(id);
     }
 
     private void validateChatModel(AiModel model) {

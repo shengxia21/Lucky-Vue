@@ -1,5 +1,7 @@
 package com.lucky.ai.mapper;
 
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.domain.AiChatConversation;
 
 import java.util.List;
@@ -67,5 +69,13 @@ public interface AiChatConversationMapper {
      * @return 结果
      */
     int deleteAiChatConversationByIds(List<Long> ids);
+
+    /**
+     * 查询AI 聊天对话分页列表
+     *
+     * @param pageReqVO 分页查询对象
+     * @return 聊天对话分页列表
+     */
+    List<AiChatConversationRespVO> selectChatConversationPage(AiChatConversationPageReqVO pageReqVO);
 
 }

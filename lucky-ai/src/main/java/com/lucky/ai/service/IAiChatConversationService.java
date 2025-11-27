@@ -1,5 +1,7 @@
 package com.lucky.ai.service;
 
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
 
@@ -60,5 +62,21 @@ public interface IAiChatConversationService {
      * @return 是否成功
      */
     int deleteChatConversationMyByUnpinned(Long userId);
+
+    /**
+     * 获得对话分页列表
+     *
+     * @param pageReqVO 分页查询对象
+     * @return 对话分页列表
+     */
+    List<AiChatConversationRespVO> getChatConversationPage(AiChatConversationPageReqVO pageReqVO);
+
+    /**
+     * 管理员删除对话
+     *
+     * @param id 对话ID
+     * @return 是否成功
+     */
+    int deleteChatConversationByAdmin(Long id);
 
 }

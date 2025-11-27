@@ -2,6 +2,7 @@ package com.lucky.ai.controller.chat;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
@@ -9,8 +10,10 @@ import com.lucky.ai.service.IAiChatConversationService;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
 import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,6 +86,29 @@ public class AiChatConversationController extends BaseController {
     @DeleteMapping("/delete-by-unpinned")
     public AjaxResult deleteChatConversationMyByUnpinned() {
         return toAjax(aiChatConversationService.deleteChatConversationMyByUnpinned(getUserId()));
+    }
+
+    // ========== 对话管理 ==========
+
+    /**
+     * 获取对话分页列表
+     */
+    @PreAuthorize("@ss.hasPermi('ai:chat-conversation:query')")
+    @GetMapping("/page")
+    public TableDataInfo getChatConversationPage(AiChatConversationPageReqVO pageReqVO) {
+        startPage();
+        List<AiChatConversationRespVO> list = aiChatConversationService.getChatConversationPage(pageReqVO);
+        return getDataTable(list);
+    }
+
+    /**
+     * 管理员删除对话
+     */
+    @Log(title = "管理员删除对话", businessType = BusinessType.DELETE)
+    @DeleteMapping("/delete-by-admin")
+    @PreAuthorize("@ss.hasPermi('ai:chat-conversation:delete')")
+    public AjaxResult deleteChatConversationByAdmin(@RequestParam("id") Long id) {
+        return toAjax(aiChatConversationService.deleteChatConversationByAdmin(id));
     }
 
 }
