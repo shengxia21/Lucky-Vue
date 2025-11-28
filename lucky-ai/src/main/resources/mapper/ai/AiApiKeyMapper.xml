@@ -22,20 +22,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, name, api_key, platform, url, status, del_flag, create_by, create_time, update_by, update_time from ai_api_key
     </sql>
 
-    <select id="selectAiApiKeyList" parameterType="AiApiKey" resultMap="AiApiKeyResult">
+    <select id="selectAiApiKeyList" parameterType="com.lucky.ai.controller.model.vo.apikey.AiApiKeyPageReqVO" resultMap="AiApiKeyResult">
         <include refid="selectAiApiKeyVo"/>
         <where>  
             <if test="name != null and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="apiKey != null and apiKey != ''"> and api_key = #{apiKey}</if>
             <if test="platform != null and platform != ''"> and platform = #{platform}</if>
-            <if test="url != null and url != ''"> and url = #{url}</if>
             <if test="status != null "> and status = #{status}</if>
+            and del_flag = 0
+            order by id desc
         </where>
     </select>
 
     <select id="selectAiApiKeyById" parameterType="Long" resultMap="AiApiKeyResult">
         <include refid="selectAiApiKeyVo"/>
         where id = #{id}
+        and del_flag = 0
+    </select>
+
+    <select id="selectList" resultMap="AiApiKeyResult">
+        <include refid="selectAiApiKeyVo"/>
+        where del_flag = 0
+    </select>
+
+    <select id="selectFirstByPlatformAndStatus" resultMap="AiApiKeyResult">
+        <include refid="selectAiApiKeyVo"/>
+        <where>
+            <if test="platform != null and platform != ''"> and platform = #{platform}</if>
+            <if test="status != null "> and status = #{status}</if>
+            and del_flag = 0
+            order by id asc
+            limit 1
+        </where>
     </select>
 
     <insert id="insertAiApiKey" parameterType="AiApiKey" useGeneratedKeys="true" keyProperty="id">
@@ -81,16 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
+        and del_flag = 0
     </update>
 
-    <delete id="deleteAiApiKeyById" parameterType="Long">
-        delete from ai_api_key where id = #{id}
-    </delete>
-
-    <delete id="deleteAiApiKeyByIds" parameterType="String">
-        delete from ai_api_key where id in 
-        <foreach item="id" collection="array" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-    </delete>
 </mapper>

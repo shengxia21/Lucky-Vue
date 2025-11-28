@@ -44,7 +44,7 @@ public class AiChatConversationController extends BaseController {
      * 更新我的聊天对话
      */
     @Log(title = "更新【我的】聊天对话", businessType = BusinessType.UPDATE)
-    @PostMapping("/update-my")
+    @PutMapping("/update-my")
     public AjaxResult updateChatConversationMy(@Validated @RequestBody AiChatConversationUpdateMyReqVO updateReqVO) {
         return toAjax(aiChatConversationService.updateChatConversationMy(updateReqVO, getUserId()));
     }

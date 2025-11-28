@@ -1,62 +1,72 @@
 package com.lucky.ai.service;
 
+import com.lucky.ai.controller.model.vo.apikey.AiApiKeyPageReqVO;
+import com.lucky.ai.controller.model.vo.apikey.AiApiKeySaveReqVO;
 import com.lucky.ai.domain.AiApiKey;
 
 import java.util.List;
 
 /**
  * AI API 秘钥Service接口
- * 
+ *
  * @author lucky
  */
 public interface IAiApiKeyService {
 
     /**
-     * 查询AI API 秘钥
-     * 
-     * @param id AI API 秘钥主键
-     * @return AI API 秘钥
-     */
-    AiApiKey selectAiApiKeyById(Long id);
-
-    /**
-     * 查询AI API 秘钥列表
-     * 
-     * @param aiApiKey AI API 秘钥
-     * @return AI API 秘钥集合
-     */
-    List<AiApiKey> selectAiApiKeyList(AiApiKey aiApiKey);
-
-    /**
-     * 新增AI API 秘钥
-     * 
-     * @param aiApiKey AI API 秘钥
+     * 创建 API 密钥
+     *
+     * @param createReqVO 创建请求vo
      * @return 结果
      */
-    int insertAiApiKey(AiApiKey aiApiKey);
+    Long createApiKey(AiApiKeySaveReqVO createReqVO);
 
     /**
-     * 修改AI API 秘钥
-     * 
-     * @param aiApiKey AI API 秘钥
+     * 更新 API 密钥
+     *
+     * @param updateReqVO 更新请求vo
      * @return 结果
      */
-    int updateAiApiKey(AiApiKey aiApiKey);
+    int updateApiKey(AiApiKeySaveReqVO updateReqVO);
 
     /**
-     * 批量删除AI API 秘钥
-     * 
-     * @param ids 需要删除的AI API 秘钥主键集合
-     * @return 结果
+     * 查询 API 密钥
+     *
+     * @param id API 密钥主键
+     * @return API 密钥
      */
-    int deleteAiApiKeyByIds(Long[] ids);
+    AiApiKey getApiKey(Long id);
 
     /**
-     * 删除AI API 秘钥信息
-     * 
-     * @param id AI API 秘钥主键
-     * @return 结果
+     * 查询 API 密钥分页
+     *
+     * @param pageReqVO 分页查询请求vo
+     * @return API 密钥分页结果
      */
-    int deleteAiApiKeyById(Long id);
+    List<AiApiKey> getApiKeyPage(AiApiKeyPageReqVO pageReqVO);
+
+    /**
+     * 获得 API 密钥分页列表
+     *
+     * @return API 密钥分页结果
+     */
+    List<AiApiKey> getApiKeyList();
+
+    /**
+     * 获得默认 API 密钥
+     *
+     * @param platform 平台
+     * @param status   状态
+     * @return 默认 API 密钥
+     */
+    AiApiKey getRequiredDefaultApiKey(String platform, Integer status);
+
+    /**
+     * 校验 API 密钥是否有效
+     *
+     * @param id API 密钥主键
+     * @return API 密钥
+     */
+    AiApiKey validateApiKey(Long id);
 
 }

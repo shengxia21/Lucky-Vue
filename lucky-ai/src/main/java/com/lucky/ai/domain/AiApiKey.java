@@ -1,6 +1,5 @@
 package com.lucky.ai.domain;
 
-import com.lucky.common.annotation.Excel;
 import com.lucky.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -18,23 +17,18 @@ public class AiApiKey extends BaseEntity {
     private Long id;
 
     /** 名称 */
-    @Excel(name = "名称")
     private String name;
 
     /** 密钥 */
-    @Excel(name = "密钥")
     private String apiKey;
 
     /** 平台 */
-    @Excel(name = "平台")
     private String platform;
 
     /** API 地址 */
-    @Excel(name = "API 地址")
     private String url;
 
     /** 状态（0开启 1关闭） */
-    @Excel(name = "状态", readConverterExp = "0=开启,1=关闭")
     private Integer status;
 
     /** 删除标志（0代表存在 2代表删除） */

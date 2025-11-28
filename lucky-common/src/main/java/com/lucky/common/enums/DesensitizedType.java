@@ -1,8 +1,8 @@
 package com.lucky.common.enums;
 
-import java.util.function.Function;
-
 import com.lucky.common.utils.DesensitizedUtil;
+
+import java.util.function.Function;
 
 /**
  * 脱敏类型
@@ -10,6 +10,11 @@ import com.lucky.common.utils.DesensitizedUtil;
  * @author lucky
  */
 public enum DesensitizedType {
+    /**
+     * AI大模型的 API 密钥，显示前5位和后3位字符，其他全部用*代替
+     */
+    AI_API_KEY(DesensitizedUtil::aiApiKey),
+
     /**
      * 姓名，第2位星号替换
      */

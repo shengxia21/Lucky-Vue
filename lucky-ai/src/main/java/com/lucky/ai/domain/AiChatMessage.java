@@ -1,6 +1,5 @@
 package com.lucky.ai.domain;
 
-import com.lucky.common.annotation.Excel;
 import com.lucky.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -18,55 +17,42 @@ public class AiChatMessage extends BaseEntity {
     private Long id;
 
     /** 对话编号 */
-    @Excel(name = "对话编号")
     private Long conversationId;
 
     /** 回复消息编号 */
-    @Excel(name = "回复消息编号")
     private Long replyId;
 
     /** 消息类型 */
-    @Excel(name = "消息类型")
     private String type;
 
     /** 用户编号 */
-    @Excel(name = "用户编号")
     private Long userId;
 
     /** 角色编号 */
-    @Excel(name = "角色编号")
     private Long roleId;
 
     /** 模型标志 */
-    @Excel(name = "模型标志")
     private String model;
 
     /** 模型编号 */
-    @Excel(name = "模型编号")
     private Long modelId;
 
     /** 聊天内容 */
-    @Excel(name = "聊天内容")
     private String content;
 
     /** 推理内容 */
-    @Excel(name = "推理内容")
     private String reasoningContent;
 
     /** 是否携带上下文（0否 1是） */
-    @Excel(name = "是否携带上下文", readConverterExp = "0=否,1=是")
     private Integer useContext;
 
     /** 知识库段落编号数组 */
-    @Excel(name = "知识库段落编号数组")
     private String segmentIds;
 
     /** 联网搜索的网页内容数组 */
-    @Excel(name = "联网搜索的网页内容数组")
     private String webSearchPages;
 
     /** 附件 URL 数组 */
-    @Excel(name = "附件 URL 数组")
     private String attachmentUrls;
 
     /** 删除标志（0代表存在 2代表删除） */

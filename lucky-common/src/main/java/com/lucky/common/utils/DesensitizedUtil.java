@@ -40,4 +40,20 @@ public class DesensitizedUtil {
         return carLicense;
     }
 
+    /**
+     * AI大模型的 API 密钥，显示前5位和后3位字符，其他全部用*代替
+     *
+     * @param apiKey AI大模型的 API 密钥
+     * @return 脱敏后的 API 密钥
+     */
+    public static String aiApiKey(String apiKey) {
+        if (StringUtils.isBlank(apiKey)) {
+            return StringUtils.EMPTY;
+        }
+        if (apiKey.length() < 10) {
+            return apiKey;
+        }
+        return StringUtils.hide(apiKey, 5, apiKey.length() - 3);
+    }
+
 }
