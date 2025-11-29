@@ -37,7 +37,7 @@
         <springdoc.version>2.8.9</springdoc.version>
         <spring-ai.version>1.1.0</spring-ai.version>
         <spring-ai-alibaba.version>1.0.0.4</spring-ai-alibaba.version>
-        <hutool-core.version>5.8.9</hutool-core.version>
+        <hutool.version>5.8.9</hutool.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -172,11 +172,11 @@
                 <version>${kaptcha.version}</version>
             </dependency>
 
-            <!-- hutool工具 -->
+            <!-- hutool工具类 -->
             <dependency>
                 <groupId>cn.hutool</groupId>
-                <artifactId>hutool-core</artifactId>
-                <version>${hutool-core.version}</version>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
 
             <!-- 代码生成 -->
