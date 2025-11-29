@@ -1,5 +1,7 @@
 package com.lucky.ai.enums.model;
 
+import com.lucky.common.core.enums.ArrayValuable;
+
 import java.util.Arrays;
 
 /**
@@ -7,7 +9,7 @@ import java.util.Arrays;
  *
  * @author lucky
  */
-public enum AiPlatformEnum {
+public enum AiPlatformEnum implements ArrayValuable<String> {
 
     TONG_YI("TongYi", "通义千问"), // 阿里
     YI_YAN("YiYan", "文心一言"), // 百度
@@ -56,6 +58,7 @@ public enum AiPlatformEnum {
         throw new IllegalArgumentException("非法平台： " + platform);
     }
 
+    @Override
     public String[] array() {
         return ARRAYS;
     }

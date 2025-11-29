@@ -1,6 +1,7 @@
 package com.lucky.ai.enums;
 
 import cn.hutool.core.util.ObjUtil;
+import com.lucky.common.core.enums.ArrayValuable;
 
 import java.util.Arrays;
 
@@ -9,7 +10,7 @@ import java.util.Arrays;
  *
  * @author lucky
  */
-public enum CommonStatusEnum {
+public enum CommonStatusEnum implements ArrayValuable<Integer> {
 
     ENABLE(0, "开启"),
     DISABLE(1, "关闭");
@@ -46,6 +47,7 @@ public enum CommonStatusEnum {
         return ObjUtil.equal(DISABLE.status, status);
     }
 
+    @Override
     public Integer[] array() {
         return ARRAYS;
     }

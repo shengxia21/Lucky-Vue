@@ -1,5 +1,7 @@
 package com.lucky.ai.enums.model;
 
+import com.lucky.common.core.enums.ArrayValuable;
+
 import java.util.Arrays;
 
 /**
@@ -7,7 +9,7 @@ import java.util.Arrays;
  *
  * @author lucky
  */
-public enum AiModelTypeEnum {
+public enum AiModelTypeEnum implements ArrayValuable<Integer> {
 
     CHAT(1, "对话"),
     IMAGE(2, "图片"),
@@ -40,6 +42,7 @@ public enum AiModelTypeEnum {
 
     public static final Integer[] ARRAYS = Arrays.stream(values()).map(AiModelTypeEnum::getType).toArray(Integer[]::new);
 
+    @Override
     public Integer[] array() {
         return ARRAYS;
     }
