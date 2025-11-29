@@ -1,6 +1,10 @@
 package com.lucky.ai.service;
 
+import com.lucky.ai.controller.model.vo.model.AiModelPageReqVO;
+import com.lucky.ai.controller.model.vo.model.AiModelSaveReqVO;
 import com.lucky.ai.domain.AiModel;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.image.ImageModel;
 
 import java.util.List;
 
@@ -30,51 +34,71 @@ public interface IAiModelService {
     AiModel validateModel(Long id);
 
     /**
-     * 查询AI 模型
+     * 创建模型
      *
-     * @param id AI 模型主键
-     * @return AI 模型
+     * @param createReqVO 创建信息
+     * @return 编号
      */
-    AiModel selectAiModelById(Long id);
+    Long createModel(AiModelSaveReqVO createReqVO);
 
     /**
-     * 查询AI 模型列表
+     * 更新模型
      *
-     * @param aiModel AI 模型
-     * @return AI 模型集合
+     * @param updateReqVO 更新信息
+     * @return 影响行数
      */
-    List<AiModel> selectAiModelList(AiModel aiModel);
+    int updateModel(AiModelSaveReqVO updateReqVO);
 
     /**
-     * 新增AI 模型
+     * 删除模型
      *
-     * @param aiModel AI 模型
-     * @return 结果
+     * @param id 编号
+     * @return 影响行数
      */
-    int insertAiModel(AiModel aiModel);
+    int deleteModel(Long id);
 
     /**
-     * 修改AI 模型
+     * 获得模型
      *
-     * @param aiModel AI 模型
-     * @return 结果
+     * @param id 编号
+     * @return 模型
      */
-    int updateAiModel(AiModel aiModel);
+    AiModel getModel(Long id);
 
     /**
-     * 批量删除AI 模型
+     * 获得模型分页
      *
-     * @param ids 需要删除的AI 模型主键集合
-     * @return 结果
+     * @param pageReqVO 分页查询
+     * @return 模型分页
      */
-    int deleteAiModelByIds(Long[] ids);
+    List<AiModel> getModelPage(AiModelPageReqVO pageReqVO);
 
     /**
-     * 删除AI 模型信息
+     * 获得模型列表
      *
-     * @param id AI 模型主键
-     * @return 结果
+     * @param status   状态
+     * @param type     类型
+     * @param platform 平台
+     * @return 模型列表
      */
-    int deleteAiModelById(Long id);
+    List<AiModel> getModelListByStatusAndType(Integer status, Integer type, String platform);
+
+    // ========== 与 Spring AI 集成 ==========
+
+    /**
+     * 获得 ChatModel 对象
+     *
+     * @param id 编号
+     * @return ChatModel 对象
+     */
+    ChatModel getChatModel(Long id);
+
+    /**
+     * 获得 ImageModel 对象
+     *
+     * @param id 编号
+     * @return ImageModel 对象
+     */
+    ImageModel getImageModel(Long id);
 
 }

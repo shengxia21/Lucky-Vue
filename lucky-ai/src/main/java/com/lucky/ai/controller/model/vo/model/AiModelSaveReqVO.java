@@ -1,15 +1,18 @@
 package com.lucky.ai.controller.model.vo.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.util.Date;
+import com.lucky.ai.enums.CommonStatusEnum;
+import com.lucky.ai.enums.model.AiModelTypeEnum;
+import com.lucky.ai.enums.model.AiPlatformEnum;
+import com.lucky.common.validation.InEnum;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 /**
- * AI 模型响应VO
+ * AI 模型保存VO
  *
  * @author lucky
  */
-public class AiModelRespVO {
+public class AiModelSaveReqVO {
 
     /**
      * 编号
@@ -19,36 +22,46 @@ public class AiModelRespVO {
     /**
      * API 秘钥编号
      */
+    @NotNull(message = "API 秘钥编号不能为空")
     private Long keyId;
 
     /**
      * 模型名字
      */
+    @NotEmpty(message = "模型名字不能为空")
     private String name;
 
     /**
      * 模型标识
      */
+    @NotEmpty(message = "模型标识不能为空")
     private String model;
 
     /**
      * 模型平台
      */
+    @InEnum(AiPlatformEnum.class)
+    @NotEmpty(message = "模型平台不能为空")
     private String platform;
 
     /**
      * 模型类型
      */
+    @InEnum(AiModelTypeEnum.class)
+    @NotNull(message = "模型类型不能为空")
     private Integer type;
 
     /**
      * 排序
      */
+    @NotNull(message = "排序不能为空")
     private Integer sort;
 
     /**
      * 状态
      */
+    @InEnum(CommonStatusEnum.class)
+    @NotNull(message = "状态不能为空")
     private Integer status;
 
     /**
@@ -66,118 +79,92 @@ public class AiModelRespVO {
      */
     private Integer maxContexts;
 
-    /**
-     * 创建时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
-
     public Long getId() {
         return id;
     }
 
-    public AiModelRespVO setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     public Long getKeyId() {
         return keyId;
     }
 
-    public AiModelRespVO setKeyId(Long keyId) {
+    public void setKeyId(Long keyId) {
         this.keyId = keyId;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public AiModelRespVO setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
     public String getModel() {
         return model;
     }
 
-    public AiModelRespVO setModel(String model) {
+    public void setModel(String model) {
         this.model = model;
-        return this;
     }
 
     public String getPlatform() {
         return platform;
     }
 
-    public AiModelRespVO setPlatform(String platform) {
+    public void setPlatform(String platform) {
         this.platform = platform;
-        return this;
     }
 
     public Integer getType() {
         return type;
     }
 
-    public AiModelRespVO setType(Integer type) {
+    public void setType(Integer type) {
         this.type = type;
-        return this;
     }
 
     public Integer getSort() {
         return sort;
     }
 
-    public AiModelRespVO setSort(Integer sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
-        return this;
     }
 
     public Integer getStatus() {
         return status;
     }
 
-    public AiModelRespVO setStatus(Integer status) {
+    public void setStatus(Integer status) {
         this.status = status;
-        return this;
     }
 
     public Double getTemperature() {
         return temperature;
     }
 
-    public AiModelRespVO setTemperature(Double temperature) {
+    public void setTemperature(Double temperature) {
         this.temperature = temperature;
-        return this;
     }
 
     public Integer getMaxTokens() {
         return maxTokens;
     }
 
-    public AiModelRespVO setMaxTokens(Integer maxTokens) {
+    public void setMaxTokens(Integer maxTokens) {
         this.maxTokens = maxTokens;
-        return this;
     }
 
     public Integer getMaxContexts() {
         return maxContexts;
     }
 
-    public AiModelRespVO setMaxContexts(Integer maxContexts) {
+    public void setMaxContexts(Integer maxContexts) {
         this.maxContexts = maxContexts;
-        return this;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public AiModelRespVO setCreateTime(Date createTime) {
-        this.createTime = createTime;
-        return this;
     }
 
 }

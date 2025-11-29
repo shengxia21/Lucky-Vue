@@ -27,32 +27,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, key_id, name, model, platform, type, status, sort, temperature, max_tokens, max_contexts, del_flag, create_by, create_time, update_by, update_time from ai_model
     </sql>
 
-    <select id="selectAiModelList" parameterType="AiModel" resultMap="AiModelResult">
-        <include refid="selectAiModelVo"/>
-        <where>  
-            <if test="keyId != null "> and key_id = #{keyId}</if>
-            <if test="name != null and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="model != null and model != ''"> and model = #{model}</if>
-            <if test="platform != null and platform != ''"> and platform = #{platform}</if>
-            <if test="type != null "> and type = #{type}</if>
-            <if test="status != null "> and status = #{status}</if>
-            <if test="sort != null "> and sort = #{sort}</if>
-            <if test="temperature != null "> and temperature = #{temperature}</if>
-            <if test="maxTokens != null "> and max_tokens = #{maxTokens}</if>
-            <if test="maxContexts != null "> and max_contexts = #{maxContexts}</if>
-        </where>
-    </select>
-
     <select id="selectAiModelById" parameterType="Long" resultMap="AiModelResult">
         <include refid="selectAiModelVo"/>
         where id = #{id}
+        and del_flag = 0
     </select>
 
     <select id="selectFirstByStatus" parameterType="Integer" resultMap="AiModelResult">
         <include refid="selectAiModelVo"/>
         where type = #{type} and status = #{status}
+        and del_flag = 0
         order by sort asc
         limit 1
+    </select>
+
+    <select id="selectPage" parameterType="com.lucky.ai.controller.model.vo.model.AiModelPageReqVO" resultMap="AiModelResult">
+        <include refid="selectAiModelVo"/>
+        <where>
+            <if test="name != null and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="model != null and model != ''"> and model = #{model}</if>
+            <if test="platform != null and platform != ''"> and platform = #{platform}</if>
+            and del_flag = 0
+            order by sort asc
+        </where>
+    </select>
+
+    <select id="selectListByStatusAndType"  resultMap="AiModelResult">
+        <include refid="selectAiModelVo"/>
+        <where>
+            <if test="status != null"> and status = #{status}</if>
+            <if test="type != null"> and type = #{type}</if>
+            <if test="platform != null and platform != ''"> and platform = #{platform}</if>
+            and del_flag = 0
+            order by sort asc
+        </where>
     </select>
 
     <insert id="insertAiModel" parameterType="AiModel" useGeneratedKeys="true" keyProperty="id">
@@ -113,16 +121,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
+        and del_flag = 0
     </update>
 
-    <delete id="deleteAiModelById" parameterType="Long">
-        delete from ai_model where id = #{id}
-    </delete>
+    <update id="deleteAiModelById" parameterType="Long">
+        update ai_model set del_flag = 1 where id = #{id}
+    </update>
 
-    <delete id="deleteAiModelByIds" parameterType="String">
-        delete from ai_model where id in 
-        <foreach item="id" collection="array" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-    </delete>
 </mapper>

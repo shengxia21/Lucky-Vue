@@ -12,6 +12,7 @@ public class AiChatConversationUpdateMyReqVO {
     /**
      * 对话编号
      */
+    @NotNull(message = "对话编号不能为空")
     private Long id;
 
     /**
@@ -54,7 +55,6 @@ public class AiChatConversationUpdateMyReqVO {
      */
     private Integer maxContexts;
 
-    @NotNull(message = "对话编号不能为空")
     public Long getId() {
         return id;
     }

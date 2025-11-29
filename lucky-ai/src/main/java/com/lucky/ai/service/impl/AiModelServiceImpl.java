@@ -1,12 +1,22 @@
 package com.lucky.ai.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.lucky.ai.controller.model.vo.model.AiModelPageReqVO;
+import com.lucky.ai.controller.model.vo.model.AiModelSaveReqVO;
+import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.CommonStatusEnum;
+import com.lucky.ai.enums.model.AiPlatformEnum;
+import com.lucky.ai.factory.AiModelFactory;
 import com.lucky.ai.mapper.AiModelMapper;
+import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.constant.AiErrorConstants;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.DateUtils;
+import com.lucky.common.utils.SecurityUtils;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.image.ImageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +32,12 @@ public class AiModelServiceImpl implements IAiModelService {
 
     @Autowired
     private AiModelMapper aiModelMapper;
+
+    @Autowired
+    private IAiApiKeyService aiApiKeyService;
+
+    @Autowired
+    private AiModelFactory modelFactory;
 
     /**
      * 获得默认的模型
@@ -56,71 +72,120 @@ public class AiModelServiceImpl implements IAiModelService {
     }
 
     /**
-     * 查询AI 模型
+     * 创建模型
      *
-     * @param id AI 模型主键
-     * @return AI 模型
+     * @param createReqVO 创建信息
+     * @return 编号
      */
     @Override
-    public AiModel selectAiModelById(Long id) {
+    public Long createModel(AiModelSaveReqVO createReqVO) {
+        // 1. 校验
+        AiPlatformEnum.validatePlatform(createReqVO.getPlatform());
+        aiApiKeyService.validateApiKey(createReqVO.getKeyId());
+
+        // 2. 插入
+        AiModel model = BeanUtil.toBean(createReqVO, AiModel.class);
+        model.setCreateBy(SecurityUtils.getUsername());
+        model.setCreateTime(DateUtils.getNowDate());
+        aiModelMapper.insertAiModel(model);
+        return model.getId();
+    }
+
+    /**
+     * 更新模型
+     *
+     * @param updateReqVO 更新信息
+     * @return 影响行数
+     */
+    @Override
+    public int updateModel(AiModelSaveReqVO updateReqVO) {
+        // 1. 校验
+        validateModelExists(updateReqVO.getId());
+        AiPlatformEnum.validatePlatform(updateReqVO.getPlatform());
+        aiApiKeyService.validateApiKey(updateReqVO.getKeyId());
+
+        // 2. 更新
+        AiModel updateObj = BeanUtil.toBean(updateReqVO, AiModel.class);
+        updateObj.setUpdateBy(SecurityUtils.getUsername());
+        updateObj.setUpdateTime(DateUtils.getNowDate());
+        return aiModelMapper.updateAiModel(updateObj);
+    }
+
+    /**
+     * 删除模型
+     *
+     * @param id 编号
+     * @return 影响行数
+     */
+    @Override
+    public int deleteModel(Long id) {
+        // 校验存在
+        validateModelExists(id);
+        // 删除
+        return aiModelMapper.deleteAiModelById(id);
+    }
+
+    /**
+     * 获得模型
+     *
+     * @param id 编号
+     * @return 模型
+     */
+    @Override
+    public AiModel getModel(Long id) {
         return aiModelMapper.selectAiModelById(id);
     }
 
     /**
-     * 查询AI 模型列表
+     * 获得模型分页
      *
-     * @param aiModel AI 模型
-     * @return AI 模型
+     * @param pageReqVO 分页查询
+     * @return 模型分页
      */
     @Override
-    public List<AiModel> selectAiModelList(AiModel aiModel) {
-        return aiModelMapper.selectAiModelList(aiModel);
+    public List<AiModel> getModelPage(AiModelPageReqVO pageReqVO) {
+        return aiModelMapper.selectPage(pageReqVO);
     }
 
     /**
-     * 新增AI 模型
+     * 获得模型列表
      *
-     * @param aiModel AI 模型
-     * @return 结果
+     * @param status   状态
+     * @param type     类型
+     * @param platform 平台
+     * @return 模型列表
      */
     @Override
-    public int insertAiModel(AiModel aiModel) {
-        aiModel.setCreateTime(DateUtils.getNowDate());
-        return aiModelMapper.insertAiModel(aiModel);
+    public List<AiModel> getModelListByStatusAndType(Integer status, Integer type, String platform) {
+        return aiModelMapper.selectListByStatusAndType(status, type, platform);
     }
 
     /**
-     * 修改AI 模型
+     * 获得 ChatModel 对象
      *
-     * @param aiModel AI 模型
-     * @return 结果
+     * @param id 编号
+     * @return ChatModel 对象
      */
     @Override
-    public int updateAiModel(AiModel aiModel) {
-        aiModel.setUpdateTime(DateUtils.getNowDate());
-        return aiModelMapper.updateAiModel(aiModel);
+    public ChatModel getChatModel(Long id) {
+        AiModel model = validateModel(id);
+        AiApiKey apiKey = aiApiKeyService.validateApiKey(model.getKeyId());
+        AiPlatformEnum platform = AiPlatformEnum.validatePlatform(apiKey.getPlatform());
+        return modelFactory.getOrCreateChatModel(platform, apiKey.getApiKey(), apiKey.getUrl());
     }
 
     /**
-     * 批量删除AI 模型
+     * 获得 ImageModel 对象
      *
-     * @param ids 需要删除的AI 模型主键
-     * @return 结果
+     * @param id 编号
+     * @return ImageModel 对象
      */
     @Override
-    public int deleteAiModelByIds(Long[] ids) {
-        return aiModelMapper.deleteAiModelByIds(ids);
-    }
-
-    /**
-     * 删除AI 模型信息
-     *
-     * @param id AI 模型主键
-     * @return 结果
-     */
-    @Override
-    public int deleteAiModelById(Long id) {
-        return aiModelMapper.deleteAiModelById(id);
+    public ImageModel getImageModel(Long id) {
+        AiModel model = validateModel(id);
+        AiApiKey apiKey = aiApiKeyService.validateApiKey(model.getKeyId());
+        AiPlatformEnum platform = AiPlatformEnum.validatePlatform(apiKey.getPlatform());
+        return modelFactory.getOrCreateImageModel(platform, apiKey.getApiKey(), apiKey.getUrl());
     }
 
     private AiModel validateModelExists(Long id) {

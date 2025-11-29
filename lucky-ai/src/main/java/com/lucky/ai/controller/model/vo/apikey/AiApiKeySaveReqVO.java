@@ -18,16 +18,19 @@ public class AiApiKeySaveReqVO {
     /**
      * 名称
      */
+    @NotEmpty(message = "名称不能为空")
     private String name;
 
     /**
      * 密钥
      */
+    @NotEmpty(message = "密钥不能为空")
     private String apiKey;
 
     /**
      * 平台
      */
+    @NotEmpty(message = "平台不能为空")
     private String platform;
 
     /**
@@ -38,6 +41,7 @@ public class AiApiKeySaveReqVO {
     /**
      * 状态
      */
+    @NotNull(message = "状态不能为空")
     private Integer status;
 
     public Long getId() {
@@ -48,7 +52,6 @@ public class AiApiKeySaveReqVO {
         this.id = id;
     }
 
-    @NotEmpty(message = "名称不能为空")
     public String getName() {
         return name;
     }
@@ -57,7 +60,6 @@ public class AiApiKeySaveReqVO {
         this.name = name;
     }
 
-    @NotEmpty(message = "密钥不能为空")
     public String getApiKey() {
         return apiKey;
     }
@@ -66,7 +68,6 @@ public class AiApiKeySaveReqVO {
         this.apiKey = apiKey;
     }
 
-    @NotEmpty(message = "平台不能为空")
     public String getPlatform() {
         return platform;
     }
@@ -83,7 +84,6 @@ public class AiApiKeySaveReqVO {
         this.url = url;
     }
 
-    @NotNull(message = "状态不能为空")
     public Integer getStatus() {
         return status;
     }
