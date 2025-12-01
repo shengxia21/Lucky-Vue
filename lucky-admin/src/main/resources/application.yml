@@ -110,6 +110,8 @@ mybatis:
   typeAliasesPackage: com.lucky.**.domain
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapperLocations: classpath*:mapper/**/*Mapper.xml
+  # 配置类型处理器的扫描包，找到所有的TypeHandler实现类
+  type-handlers-package: com.lucky.common.handler
   # 全局配置信息
   configuration:
     # 使全局的映射器启用或禁用缓存
