@@ -1,5 +1,10 @@
 package com.lucky.framework.config;
 
+import com.lucky.framework.config.properties.PermitAllUrlProperties;
+import com.lucky.framework.security.filter.JwtAuthenticationTokenFilter;
+import com.lucky.framework.security.handle.AuthenticationEntryPointImpl;
+import com.lucky.framework.security.handle.LogoutSuccessHandlerImpl;
+import jakarta.servlet.DispatcherType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.filter.CorsFilter;
-import com.lucky.framework.config.properties.PermitAllUrlProperties;
-import com.lucky.framework.security.filter.JwtAuthenticationTokenFilter;
-import com.lucky.framework.security.handle.AuthenticationEntryPointImpl;
-import com.lucky.framework.security.handle.LogoutSuccessHandlerImpl;
 
 /**
  * spring security配置
@@ -102,6 +103,8 @@ public class SecurityConfig {
                             // 静态资源，可匿名访问
                             .requestMatchers(HttpMethod.GET, "/", "/*.html", "/**.html", "/**.css", "/**.js", "/profile/**").permitAll()
                             .requestMatchers("/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**", "/druid/**").permitAll()
+                            // 异步请求，可匿名访问
+                            .dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
                             // 除上面外的所有请求全部需要鉴权认证
                             .anyRequest().authenticated();
                 })
