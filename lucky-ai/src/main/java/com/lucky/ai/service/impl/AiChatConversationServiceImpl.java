@@ -183,20 +183,27 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         return aiChatConversationMapper.deleteAiChatConversationById(id);
     }
 
-    private void validateChatModel(AiModel model) {
-        if (ObjectUtil.isAllNotEmpty(model.getTemperature(), model.getMaxTokens(), model.getMaxContexts())) {
-            return;
-        }
-        Assert.equals(model.getType(), AiModelTypeEnum.CHAT.getType(), "模型类型不正确：" + model);
-        throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_MODEL_ERROR);
-    }
-
+    /**
+     * 校验对话是否存在
+     *
+     * @param id 对话ID
+     * @return 对话
+     */
+    @Override
     public AiChatConversation validateChatConversationExists(Long id) {
         AiChatConversation conversation = aiChatConversationMapper.selectAiChatConversationById(id);
         if (conversation == null) {
             throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
         }
         return conversation;
+    }
+
+    private void validateChatModel(AiModel model) {
+        if (ObjectUtil.isAllNotEmpty(model.getTemperature(), model.getMaxTokens(), model.getMaxContexts())) {
+            return;
+        }
+        Assert.equals(model.getType(), AiModelTypeEnum.CHAT.getType(), "模型类型不正确：" + model);
+        throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_MODEL_ERROR);
     }
 
 }

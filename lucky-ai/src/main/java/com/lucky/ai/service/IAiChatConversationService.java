@@ -79,4 +79,12 @@ public interface IAiChatConversationService {
      */
     int deleteChatConversationByAdmin(Long id);
 
+    /**
+     * 校验对话是否存在
+     *
+     * @param id 对话ID
+     * @return 对话
+     */
+    AiChatConversation validateChatConversationExists(Long id);
+
 }

@@ -1,23 +1,33 @@
 package com.lucky.ai.controller.chat;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjUtil;
+import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
+import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
+import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendReqVO;
+import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatMessage;
+import com.lucky.ai.service.IAiChatConversationService;
 import com.lucky.ai.service.IAiChatMessageService;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
 import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
-import com.lucky.common.utils.poi.ExcelUtil;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * AI 聊天消息Controller
- * 
+ *
  * @author lucky
  */
 @RestController
@@ -27,66 +37,85 @@ public class AiChatMessageController extends BaseController {
     @Autowired
     private IAiChatMessageService aiChatMessageService;
 
+    @Autowired
+    private IAiChatConversationService aiChatConversationService;
+
     /**
-     * 查询AI 聊天消息列表
+     * 发送消息（段式）
      */
-    @PreAuthorize("@ss.hasPermi('ai:message:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(AiChatMessage aiChatMessage) {
+    @PostMapping("/send")
+    public AjaxResult sendMessage(@Validated @RequestBody AiChatMessageSendReqVO sendReqVO) {
+        return success(aiChatMessageService.sendMessage(sendReqVO, getUserId()));
+    }
+
+    /**
+     * 发送消息（流式）
+     */
+    @PostMapping(value = "/send-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<AjaxResult> sendChatMessageStream(@Validated @RequestBody AiChatMessageSendReqVO sendReqVO) {
+        return aiChatMessageService.sendChatMessageStream(sendReqVO, getUserId());
+    }
+
+    /**
+     * 获得指定对话的消息列表
+     */
+    @GetMapping("/list-by-conversation-id")
+    public AjaxResult getChatMessageListByConversationId(@RequestParam("conversationId") Long conversationId) {
+        AiChatConversation conversation = aiChatConversationService.getChatConversation(conversationId);
+        if (conversation == null || ObjUtil.notEqual(conversation.getUserId(), getUserId())) {
+            return success(Collections.emptyList());
+        }
+        // 1. 获取消息列表
+        List<AiChatMessage> messageList = aiChatMessageService.getChatMessageListByConversationId(conversationId);
+        if (CollUtil.isEmpty(messageList)) {
+            return success(Collections.emptyList());
+        }
+
+        // 2. 拼接数据，主要是知识库段落信息
+
+        List<AiChatMessageRespVO> messageVOList = BeanUtil.copyToList(messageList, AiChatMessageRespVO.class);
+        return success(messageVOList);
+    }
+
+    /**
+     * 删除消息
+     */
+    @Log(title = "删除消息", businessType = BusinessType.DELETE)
+    @DeleteMapping("/delete")
+    public AjaxResult deleteChatMessage(@RequestParam("id") Long id) {
+        return toAjax(aiChatMessageService.deleteChatMessage(id, getUserId()));
+    }
+
+    /**
+     * 删除指定对话的消息
+     */
+    @Log(title = "删除指定对话的消息", businessType = BusinessType.DELETE)
+    @DeleteMapping("/delete-by-conversation-id")
+    public AjaxResult deleteChatMessageByConversationId(@RequestParam("conversationId") Long conversationId) {
+        return toAjax(aiChatMessageService.deleteChatMessageByConversationId(conversationId, getUserId()));
+    }
+
+    // ========== 对话管理 ==========
+
+    /**
+     * 获得消息分页
+     */
+    @PreAuthorize("@ss.hasPermi('ai:chat-conversation:query')")
+    @GetMapping("/page")
+    public TableDataInfo getChatMessagePage(AiChatMessagePageReqVO pageReqVO) {
         startPage();
-        List<AiChatMessage> list = aiChatMessageService.selectAiChatMessageList(aiChatMessage);
-        return getDataTable(list);
+        List<AiChatMessage> list = aiChatMessageService.getChatMessagePage(pageReqVO);
+        return getDataTable(BeanUtil.copyToList(list, AiChatMessageRespVO.class));
     }
 
     /**
-     * 导出AI 聊天消息列表
+     * 删除消息（管理员）
      */
-    @PreAuthorize("@ss.hasPermi('ai:message:export')")
-    @Log(title = "AI 聊天消息", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, AiChatMessage aiChatMessage) {
-        List<AiChatMessage> list = aiChatMessageService.selectAiChatMessageList(aiChatMessage);
-        ExcelUtil<AiChatMessage> util = new ExcelUtil<AiChatMessage>(AiChatMessage.class);
-        util.exportExcel(response, list, "AI 聊天消息数据");
-    }
-
-    /**
-     * 获取AI 聊天消息详细信息
-     */
-    @PreAuthorize("@ss.hasPermi('ai:message:query')")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id) {
-        return success(aiChatMessageService.selectAiChatMessageById(id));
-    }
-
-    /**
-     * 新增AI 聊天消息
-     */
-    @PreAuthorize("@ss.hasPermi('ai:message:add')")
-    @Log(title = "AI 聊天消息", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody AiChatMessage aiChatMessage) {
-        return toAjax(aiChatMessageService.insertAiChatMessage(aiChatMessage));
-    }
-
-    /**
-     * 修改AI 聊天消息
-     */
-    @PreAuthorize("@ss.hasPermi('ai:message:edit')")
-    @Log(title = "AI 聊天消息", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody AiChatMessage aiChatMessage) {
-        return toAjax(aiChatMessageService.updateAiChatMessage(aiChatMessage));
-    }
-
-    /**
-     * 删除AI 聊天消息
-     */
-    @PreAuthorize("@ss.hasPermi('ai:message:remove')")
-    @Log(title = "AI 聊天消息", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids) {
-        return toAjax(aiChatMessageService.deleteAiChatMessageByIds(ids));
+    @Log(title = "删除消息（管理员）", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('ai:chat-message:delete')")
+    @DeleteMapping("/delete-by-admin")
+    public AjaxResult deleteChatMessageByAdmin(@RequestParam("id") Long id) {
+        return toAjax(aiChatMessageService.deleteChatMessageByAdmin(id));
     }
 
 }

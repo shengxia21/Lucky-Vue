@@ -1,4 +1,4 @@
-package com.lucky.ai.factory;
+package com.lucky.ai.core.model;
 
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import org.springframework.ai.chat.model.ChatModel;

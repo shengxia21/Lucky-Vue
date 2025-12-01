@@ -1,4 +1,4 @@
-package com.lucky.ai.factory;
+package com.lucky.ai.core.model;
 
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.lang.func.Func0;

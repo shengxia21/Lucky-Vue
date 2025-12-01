@@ -1,7 +1,7 @@
 package com.lucky.ai.config;
 
-import com.lucky.ai.factory.AiModelFactory;
-import com.lucky.ai.factory.AiModelFactoryImpl;
+import com.lucky.ai.core.model.AiModelFactory;
+import com.lucky.ai.core.model.AiModelFactoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

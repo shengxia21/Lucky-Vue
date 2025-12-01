@@ -30,28 +30,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, conversation_id, reply_id, type, user_id, role_id, model, model_id, content, reasoning_content, use_context, segment_ids, web_search_pages, attachment_urls, del_flag, create_by, create_time, update_by, update_time from ai_chat_message
     </sql>
 
-    <select id="selectAiChatMessageList" parameterType="AiChatMessage" resultMap="AiChatMessageResult">
-        <include refid="selectAiChatMessageVo"/>
-        <where>  
-            <if test="conversationId != null "> and conversation_id = #{conversationId}</if>
-            <if test="replyId != null "> and reply_id = #{replyId}</if>
-            <if test="type != null and type != ''"> and type = #{type}</if>
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="roleId != null "> and role_id = #{roleId}</if>
-            <if test="model != null and model != ''"> and model = #{model}</if>
-            <if test="modelId != null "> and model_id = #{modelId}</if>
-            <if test="content != null and content != ''"> and content = #{content}</if>
-            <if test="reasoningContent != null and reasoningContent != ''"> and reasoning_content = #{reasoningContent}</if>
-            <if test="useContext != null "> and use_context = #{useContext}</if>
-            <if test="segmentIds != null and segmentIds != ''"> and segment_ids = #{segmentIds}</if>
-            <if test="webSearchPages != null and webSearchPages != ''"> and web_search_pages = #{webSearchPages}</if>
-            <if test="attachmentUrls != null and attachmentUrls != ''"> and attachment_urls = #{attachmentUrls}</if>
-        </where>
-    </select>
-
     <select id="selectAiChatMessageById" parameterType="Long" resultMap="AiChatMessageResult">
         <include refid="selectAiChatMessageVo"/>
         where id = #{id}
+        and del_flag = 0
+    </select>
+
+    <select id="selectListByConversationId" parameterType="Long" resultMap="AiChatMessageResult">
+        <include refid="selectAiChatMessageVo"/>
+        where conversation_id = #{id}
+        and del_flag = 0
+        order by id asc
+    </select>
+
+    <select id="selectChatMessagePage" parameterType="com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO" resultMap="AiChatMessageResult">
+        <include refid="selectAiChatMessageVo"/>
+        <where>
+            <if test="conversationId != null"> and conversation_id = #{conversationId}</if>
+            <if test="userId != null"> and user_id = #{userId}</if>
+            <if test="content != null and content != ''"> and content like concat('%', #{content}, '%')</if>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
+            </if>
+            and del_flag = 0
+            order by id desc
+        </where>
     </select>
 
     <insert id="insertAiChatMessage" parameterType="AiChatMessage" useGeneratedKeys="true" keyProperty="id">
@@ -121,16 +127,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
+        and del_flag = 0
     </update>
 
-    <delete id="deleteAiChatMessageById" parameterType="Long">
-        delete from ai_chat_message where id = #{id}
-    </delete>
+    <update id="deleteAiChatMessageById" parameterType="Long">
+        update ai_chat_message set del_flag = 1 where id = #{id}
+    </update>
 
-    <delete id="deleteAiChatMessageByIds" parameterType="String">
-        delete from ai_chat_message where id in 
-        <foreach item="id" collection="array" open="(" separator="," close=")">
+    <update id="deleteAiChatMessageByIds" parameterType="List">
+        update ai_chat_message set del_flag = 1 where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </delete>
+    </update>
 </mapper>

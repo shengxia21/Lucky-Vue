@@ -1,8 +1,11 @@
 package com.lucky.ai.domain;
 
+import com.lucky.ai.core.websearch.AiWebSearchResponse;
 import com.lucky.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.List;
 
 /**
  * AI 聊天消息对象 ai_chat_message
@@ -44,16 +47,16 @@ public class AiChatMessage extends BaseEntity {
     private String reasoningContent;
 
     /** 是否携带上下文（0否 1是） */
-    private Integer useContext;
+    private Boolean useContext;
 
     /** 知识库段落编号数组 */
-    private String segmentIds;
+    private List<Long> segmentIds;
 
     /** 联网搜索的网页内容数组 */
-    private String webSearchPages;
+    private List<AiWebSearchResponse.WebPage> webSearchPages;
 
     /** 附件 URL 数组 */
-    private String attachmentUrls;
+    private List<String> attachmentUrls;
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
@@ -138,35 +141,35 @@ public class AiChatMessage extends BaseEntity {
         return reasoningContent;
     }
 
-    public void setUseContext(Integer useContext) {
+    public void setUseContext(Boolean useContext) {
         this.useContext = useContext;
     }
 
-    public Integer getUseContext() {
+    public Boolean getUseContext() {
         return useContext;
     }
 
-    public void setSegmentIds(String segmentIds) {
+    public void setSegmentIds(List<Long> segmentIds) {
         this.segmentIds = segmentIds;
     }
 
-    public String getSegmentIds() {
+    public List<Long> getSegmentIds() {
         return segmentIds;
     }
 
-    public void setWebSearchPages(String webSearchPages) {
+    public void setWebSearchPages(List<AiWebSearchResponse.WebPage> webSearchPages) {
         this.webSearchPages = webSearchPages;
     }
 
-    public String getWebSearchPages() {
+    public List<AiWebSearchResponse.WebPage> getWebSearchPages() {
         return webSearchPages;
     }
 
-    public void setAttachmentUrls(String attachmentUrls) {
+    public void setAttachmentUrls(List<String> attachmentUrls) {
         this.attachmentUrls = attachmentUrls;
     }
 
-    public String getAttachmentUrls() {
+    public List<String> getAttachmentUrls() {
         return attachmentUrls;
     }
 

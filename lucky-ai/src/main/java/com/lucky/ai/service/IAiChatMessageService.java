@@ -1,62 +1,79 @@
 package com.lucky.ai.service;
 
+import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
+import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendReqVO;
+import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendRespVO;
 import com.lucky.ai.domain.AiChatMessage;
+import com.lucky.common.core.domain.AjaxResult;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
 /**
  * AI 聊天消息Service接口
- * 
+ *
  * @author lucky
  */
 public interface IAiChatMessageService {
 
     /**
-     * 查询AI 聊天消息
-     * 
-     * @param id AI 聊天消息主键
-     * @return AI 聊天消息
+     * 发送消息（段式）
+     *
+     * @param sendReqVO 发送消息（段式）请求VO
+     * @param userId    用户ID
+     * @return 发送消息（段式）响应VO
      */
-    AiChatMessage selectAiChatMessageById(Long id);
+    AiChatMessageSendRespVO sendMessage(AiChatMessageSendReqVO sendReqVO, Long userId);
 
     /**
-     * 查询AI 聊天消息列表
-     * 
-     * @param aiChatMessage AI 聊天消息
-     * @return AI 聊天消息集合
+     * 发送消息（流式）
+     *
+     * @param sendReqVO 发送消息（流式）请求VO
+     * @param userId    用户ID
+     * @return 发送消息（流式）响应VO
      */
-    List<AiChatMessage> selectAiChatMessageList(AiChatMessage aiChatMessage);
+    Flux<AjaxResult> sendChatMessageStream(AiChatMessageSendReqVO sendReqVO, Long userId);
 
     /**
-     * 新增AI 聊天消息
-     * 
-     * @param aiChatMessage AI 聊天消息
+     * 根据会话ID查询聊天消息列表
+     *
+     * @param conversationId 会话ID
+     * @return 聊天消息列表
+     */
+    List<AiChatMessage> getChatMessageListByConversationId(Long conversationId);
+
+    /**
+     * 删除消息
+     *
+     * @param id     消息ID
+     * @param userId 用户ID
      * @return 结果
      */
-    int insertAiChatMessage(AiChatMessage aiChatMessage);
+    int deleteChatMessage(Long id, Long userId);
 
     /**
-     * 修改AI 聊天消息
-     * 
-     * @param aiChatMessage AI 聊天消息
+     * 删除指定对话的消息
+     *
+     * @param conversationId 会话ID
+     * @param userId         用户ID
      * @return 结果
      */
-    int updateAiChatMessage(AiChatMessage aiChatMessage);
+    int deleteChatMessageByConversationId(Long conversationId, Long userId);
 
     /**
-     * 批量删除AI 聊天消息
-     * 
-     * @param ids 需要删除的AI 聊天消息主键集合
-     * @return 结果
+     * 查询聊天消息分页列表
+     *
+     * @param pageReqVO 分页查询请求VO
+     * @return 聊天消息分页列表
      */
-    int deleteAiChatMessageByIds(Long[] ids);
+    List<AiChatMessage> getChatMessagePage(AiChatMessagePageReqVO pageReqVO);
 
     /**
-     * 删除AI 聊天消息信息
-     * 
-     * @param id AI 聊天消息主键
+     * 删除消息（管理员）
+     *
+     * @param id 聊天消息ID
      * @return 结果
      */
-    int deleteAiChatMessageById(Long id);
+    int deleteChatMessageByAdmin(Long id);
 
 }
