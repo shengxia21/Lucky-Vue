@@ -29,8 +29,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="platform != null and platform != ''"> and platform = #{platform}</if>
             <if test="status != null "> and status = #{status}</if>
             and del_flag = 0
-            order by id desc
         </where>
+        order by id desc
     </select>
 
     <select id="selectAiApiKeyById" parameterType="Long" resultMap="AiApiKeyResult">
@@ -50,9 +50,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="platform != null and platform != ''"> and platform = #{platform}</if>
             <if test="status != null "> and status = #{status}</if>
             and del_flag = 0
-            order by id asc
-            limit 1
         </where>
+        order by id asc
+        limit 1
     </select>
 
     <insert id="insertAiApiKey" parameterType="AiApiKey" useGeneratedKeys="true" keyProperty="id">

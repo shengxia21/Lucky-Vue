@@ -1,62 +1,92 @@
 package com.lucky.ai.service;
 
+import com.lucky.ai.controller.image.vo.AiImageDrawReqVO;
+import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
+import com.lucky.ai.controller.image.vo.AiImagePublicPageReqVO;
+import com.lucky.ai.controller.image.vo.AiImageUpdateReqVO;
 import com.lucky.ai.domain.AiImage;
 
 import java.util.List;
 
 /**
  * AI 绘画Service接口
- * 
+ *
  * @author lucky
  */
 public interface IAiImageService {
 
     /**
-     * 查询AI 绘画
-     * 
-     * @param id AI 绘画主键
-     * @return AI 绘画
+     * 获取【我的】绘图分页
+     *
+     * @param pageReqVO 分页查询参数
+     * @return 分页结果
      */
-    AiImage selectAiImageById(Long id);
+    List<AiImage> getImagePageMy(AiImagePageReqVO pageReqVO);
 
     /**
-     * 查询AI 绘画列表
-     * 
-     * @param aiImage AI 绘画
-     * @return AI 绘画集合
+     * 获取公开的绘图列表
+     *
+     * @param pageReqVO 分页查询参数
+     * @return 分页结果
      */
-    List<AiImage> selectAiImageList(AiImage aiImage);
+    List<AiImage> getImagePagePublic(AiImagePublicPageReqVO pageReqVO);
 
     /**
-     * 新增AI 绘画
-     * 
-     * @param aiImage AI 绘画
+     * 根据ID查询绘画详情
+     *
+     * @param id 绘画主键
+     * @return 绘图详情
+     */
+    AiImage getImage(Long id);
+
+    /**
+     * 根据ID列表查询绘画列表
+     *
+     * @param ids 绘画主键列表
+     * @return 绘画列表
+     */
+    List<AiImage> getImageList(List<Long> ids);
+
+    /**
+     * 生成图片
+     *
+     * @param userId    用户ID
+     * @param drawReqVO 绘图参数
+     * @return 绘图记录ID
+     */
+    Long drawImage(Long userId, AiImageDrawReqVO drawReqVO);
+
+    /**
+     * 删除【我的】绘图记录
+     *
+     * @param id     绘图记录ID
+     * @param userId 用户ID
      * @return 结果
      */
-    int insertAiImage(AiImage aiImage);
+    int deleteImageMy(Long id, Long userId);
 
     /**
-     * 修改AI 绘画
-     * 
-     * @param aiImage AI 绘画
-     * @return 结果
+     * 获得绘画列表
+     *
+     * @param pageReqVO 分页查询参数
+     * @return 分页结果
      */
-    int updateAiImage(AiImage aiImage);
+    List<AiImage> getImagePage(AiImagePageReqVO pageReqVO);
 
     /**
-     * 批量删除AI 绘画
-     * 
-     * @param ids 需要删除的AI 绘画主键集合
+     * 更新绘画
+     *
+     * @param updateReqVO 更新参数
      * @return 结果
      */
-    int deleteAiImageByIds(Long[] ids);
+    int updateImage(AiImageUpdateReqVO updateReqVO);
 
     /**
-     * 删除AI 绘画信息
-     * 
-     * @param id AI 绘画主键
+     * 删除绘画
+     *
+     * @param id 绘画主键
      * @return 结果
      */
-    int deleteAiImageById(Long id);
+    int deleteImage(Long id);
 
 }

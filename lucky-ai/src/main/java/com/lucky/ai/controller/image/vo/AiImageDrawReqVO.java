@@ -1,0 +1,92 @@
+package com.lucky.ai.controller.image.vo;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 生成图片请求VO
+ *
+ * @author lucky
+ */
+public class AiImageDrawReqVO {
+
+    /**
+     * 模型编号
+     */
+    @NotNull(message = "模型编号不能为空")
+    private Long modelId;
+
+    /**
+     * 提示词
+     */
+    @NotEmpty(message = "提示词不能为空")
+    @Size(max = 1200, message = "提示词最大 1200")
+    private String prompt;
+
+    /**
+     * 图片高度
+     */
+    @NotNull(message = "图片高度不能为空")
+    private Integer height;
+
+    /**
+     * 图片宽度
+     */
+    @NotNull(message = "图片宽度不能为空")
+    private Integer width;
+
+    // ========== 各平台绘画的拓展参数 ==========
+
+    /**
+     * 绘制参数，不同 platform 的不同参数
+     */
+    private Map<String, String> options;
+
+    public Long getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(Long modelId) {
+        this.modelId = modelId;
+    }
+
+    public String getPrompt() {
+        return prompt;
+    }
+
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    public Map<String, String> getOptions() {
+        if (options == null) {
+            options = new HashMap<>();
+        }
+        return options;
+    }
+
+    public void setOptions(Map<String, String> options) {
+        this.options = options;
+    }
+
+}

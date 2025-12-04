@@ -89,6 +89,13 @@ public class LuckyConfig {
         return getProfile() + "/upload";
     }
 
+    /**
+     * 获取AI绘制图片路径
+     */
+    public static String getDrawImagePath() {
+        return getProfile() + "/drawImage";
+    }
+
     public String getName() {
         return name;
     }

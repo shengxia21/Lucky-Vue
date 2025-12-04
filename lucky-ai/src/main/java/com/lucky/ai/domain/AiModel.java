@@ -1,6 +1,5 @@
 package com.lucky.ai.domain;
 
-import com.lucky.common.annotation.Excel;
 import com.lucky.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -18,43 +17,33 @@ public class AiModel extends BaseEntity {
     private Long id;
 
     /** API 秘钥编号 */
-    @Excel(name = "API 秘钥编号")
     private Long keyId;
 
     /** 模型名称 */
-    @Excel(name = "模型名称")
     private String name;
 
     /** 模型标志 */
-    @Excel(name = "模型标志")
     private String model;
 
     /** 平台 */
-    @Excel(name = "平台")
     private String platform;
 
     /** 模型类型（1对话 2图片 3语音 4视频 5向量 6重排序） */
-    @Excel(name = "模型类型", readConverterExp = "1=对话,2=图片,3=语音,4=视频,5=向量,6=重排序")
     private Integer type;
 
     /** 状态（0开启 1关闭） */
-    @Excel(name = "状态", readConverterExp = "0=开启,1=关闭")
     private Integer status;
 
     /** 排序 */
-    @Excel(name = "排序")
     private Integer sort;
 
     /** 温度参数 */
-    @Excel(name = "温度参数")
     private Double temperature;
 
     /** 单条回复的最大 Token 数量 */
-    @Excel(name = "单条回复的最大 Token 数量")
     private Integer maxTokens;
 
     /** 上下文的最大 Message 数量 */
-    @Excel(name = "上下文的最大 Message 数量")
     private Integer maxContexts;
 
     /** 删除标志（0代表存在 2代表删除） */

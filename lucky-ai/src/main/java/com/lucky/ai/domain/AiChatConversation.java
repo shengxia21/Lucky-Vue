@@ -1,6 +1,5 @@
 package com.lucky.ai.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lucky.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -31,7 +30,6 @@ public class AiChatConversation extends BaseEntity {
     private Boolean pinned;
 
     /** 置顶时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date pinnedTime;
 
     /** 角色编号 */
