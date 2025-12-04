@@ -32,6 +32,7 @@ import org.springframework.ai.image.ImagePrompt;
 import org.springframework.ai.image.ImageResponse;
 import org.springframework.ai.zhipuai.ZhiPuAiImageOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -46,6 +47,9 @@ import java.util.List;
 public class AiImageServiceImpl implements IAiImageService {
 
     private static final Logger log = LoggerFactory.getLogger(AiImageServiceImpl.class);
+
+    @Autowired
+    private ThreadPoolTaskExecutor executor;
 
     @Autowired
     private AiImageMapper aiImageMapper;
@@ -125,8 +129,8 @@ public class AiImageServiceImpl implements IAiImageService {
         image.setCreateTime(DateUtils.getNowDate());
         aiImageMapper.insertAiImage(image);
 
-        // TODO 3. 异步绘制，后续前端通过返回的 id 进行轮询结果
-        executeDrawImage(image, drawReqVO, model);
+        // 3. 异步绘制，后续前端通过返回的 id 进行轮询结果
+        executor.execute(() -> executeDrawImage(image, drawReqVO, model));
         return image.getId();
     }
 
@@ -190,7 +194,7 @@ public class AiImageServiceImpl implements IAiImageService {
         return aiImageMapper.deleteAiImageById(id);
     }
 
-    public void executeDrawImage(AiImage image, AiImageDrawReqVO reqVO, AiModel model) {
+    private void executeDrawImage(AiImage image, AiImageDrawReqVO reqVO, AiModel model) {
         try {
             // 1.1 构建请求
             ImageOptions request = buildImageOptions(reqVO, model);
