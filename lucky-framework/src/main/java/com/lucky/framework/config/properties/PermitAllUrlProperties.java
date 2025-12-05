@@ -1,12 +1,6 @@
 package com.lucky.framework.config.properties;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.regex.Pattern;
-
+import com.lucky.common.annotation.Anonymous;
 import org.apache.commons.lang3.RegExUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,7 +11,9 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import com.lucky.common.annotation.Anonymous;
+
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * 设置Anonymous注解允许匿名访问的url
@@ -34,7 +30,7 @@ public class PermitAllUrlProperties implements InitializingBean, ApplicationCont
 
     @Override
     public void afterPropertiesSet() {
-        RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
+        RequestMappingHandlerMapping mapping = applicationContext.getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> map = mapping.getHandlerMethods();
 
         map.keySet().forEach(info -> {
