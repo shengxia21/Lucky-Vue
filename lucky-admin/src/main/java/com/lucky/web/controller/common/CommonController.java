@@ -1,8 +1,11 @@
 package com.lucky.web.controller.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.lucky.common.config.LuckyConfig;
+import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.utils.StringUtils;
+import com.lucky.common.utils.file.FileUploadUtils;
+import com.lucky.common.utils.file.FileUtils;
+import com.lucky.framework.config.ServerConfig;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.lucky.common.config.LuckyConfig;
-import com.lucky.common.core.domain.AjaxResult;
-import com.lucky.common.utils.StringUtils;
-import com.lucky.common.utils.file.FileUploadUtils;
-import com.lucky.common.utils.file.FileUtils;
-import com.lucky.framework.config.ServerConfig;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 通用请求处理
@@ -30,7 +30,7 @@ import com.lucky.framework.config.ServerConfig;
 public class CommonController {
 
     private static final Logger log = LoggerFactory.getLogger(CommonController.class);
-    private static final String FILE_DELIMETER = ",";
+    private static final String FILE_DELIMITER = ",";
 
     @Autowired
     private ServerConfig serverConfig;
@@ -105,10 +105,10 @@ public class CommonController {
                 originalFilenames.add(file.getOriginalFilename());
             }
             AjaxResult ajax = AjaxResult.success();
-            ajax.put("urls", StringUtils.join(urls, FILE_DELIMETER));
-            ajax.put("fileNames", StringUtils.join(fileNames, FILE_DELIMETER));
-            ajax.put("newFileNames", StringUtils.join(newFileNames, FILE_DELIMETER));
-            ajax.put("originalFilenames", StringUtils.join(originalFilenames, FILE_DELIMETER));
+            ajax.put("urls", StringUtils.join(urls, FILE_DELIMITER));
+            ajax.put("fileNames", StringUtils.join(fileNames, FILE_DELIMITER));
+            ajax.put("newFileNames", StringUtils.join(newFileNames, FILE_DELIMITER));
+            ajax.put("originalFilenames", StringUtils.join(originalFilenames, FILE_DELIMITER));
             return ajax;
         } catch (Exception e) {
             return AjaxResult.error(e.getMessage());

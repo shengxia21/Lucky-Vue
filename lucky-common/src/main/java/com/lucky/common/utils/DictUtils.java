@@ -1,13 +1,15 @@
 package com.lucky.common.utils;
 
-import java.util.Collection;
-import java.util.List;
-
 import com.alibaba.fastjson2.JSONArray;
 import com.lucky.common.constant.CacheConstants;
 import com.lucky.common.core.domain.entity.SysDictData;
 import com.lucky.common.core.redis.RedisCache;
 import com.lucky.common.utils.spring.SpringUtils;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 字典工具类
@@ -82,28 +84,21 @@ public class DictUtils {
      * @return 字典标签
      */
     public static String getDictLabel(String dictType, String dictValue, String separator) {
-        StringBuilder propertyString = new StringBuilder();
         List<SysDictData> datas = getDictCache(dictType);
-        if (StringUtils.isNull(datas)) {
+        if (StringUtils.isNull(datas) || StringUtils.isEmpty(dictValue)) {
             return StringUtils.EMPTY;
         }
-        if (StringUtils.containsAny(separator, dictValue)) {
-            for (SysDictData dict : datas) {
-                for (String value : dictValue.split(separator)) {
-                    if (value.equals(dict.getDictValue())) {
-                        propertyString.append(dict.getDictLabel()).append(separator);
-                        break;
-                    }
-                }
-            }
-        } else {
-            for (SysDictData dict : datas) {
-                if (dictValue.equals(dict.getDictValue())) {
-                    return dict.getDictLabel();
-                }
+        Map<String, String> dictMap = datas.stream().collect(HashMap::new, (map, dict) -> map.put(dict.getDictValue(), dict.getDictLabel()), Map::putAll);
+        if (!StringUtils.contains(dictValue, separator)) {
+            return dictMap.getOrDefault(dictValue, StringUtils.EMPTY);
+        }
+        StringBuilder labelBuilder = new StringBuilder();
+        for (String seperatedValue : dictValue.split(separator)) {
+            if (dictMap.containsKey(seperatedValue)) {
+                labelBuilder.append(dictMap.get(seperatedValue)).append(separator);
             }
         }
-        return StringUtils.stripEnd(propertyString.toString(), separator);
+        return StringUtils.removeEnd(labelBuilder.toString(), separator);
     }
 
     /**
@@ -115,28 +110,21 @@ public class DictUtils {
      * @return 字典值
      */
     public static String getDictValue(String dictType, String dictLabel, String separator) {
-        StringBuilder propertyString = new StringBuilder();
         List<SysDictData> datas = getDictCache(dictType);
-        if (StringUtils.isNull(datas)) {
+        if (StringUtils.isNull(datas) || StringUtils.isEmpty(dictLabel)) {
             return StringUtils.EMPTY;
         }
-        if (StringUtils.containsAny(separator, dictLabel)) {
-            for (SysDictData dict : datas) {
-                for (String label : dictLabel.split(separator)) {
-                    if (label.equals(dict.getDictLabel())) {
-                        propertyString.append(dict.getDictValue()).append(separator);
-                        break;
-                    }
-                }
-            }
-        } else {
-            for (SysDictData dict : datas) {
-                if (dictLabel.equals(dict.getDictLabel())) {
-                    return dict.getDictValue();
-                }
+        Map<String, String> dictMap = datas.stream().collect(HashMap::new, (map, dict) -> map.put(dict.getDictLabel(), dict.getDictValue()), Map::putAll);
+        if (!StringUtils.contains(dictLabel, separator)) {
+            return dictMap.getOrDefault(dictLabel, StringUtils.EMPTY);
+        }
+        StringBuilder valueBuilder = new StringBuilder();
+        for (String seperatedValue : dictLabel.split(separator)) {
+            if (dictMap.containsKey(seperatedValue)) {
+                valueBuilder.append(dictMap.get(seperatedValue)).append(separator);
             }
         }
-        return StringUtils.stripEnd(propertyString.toString(), separator);
+        return StringUtils.removeEnd(valueBuilder.toString(), separator);
     }
 
     /**

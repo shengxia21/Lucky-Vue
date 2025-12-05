@@ -1,18 +1,19 @@
 package com.lucky.framework.web.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
+import com.lucky.common.constant.Constants;
 import com.lucky.common.constant.UserConstants;
 import com.lucky.common.core.domain.entity.SysRole;
 import com.lucky.common.core.domain.entity.SysUser;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.system.service.ISysMenuService;
 import com.lucky.system.service.ISysRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 用户权限处理
@@ -38,7 +39,7 @@ public class SysPermissionService {
         Set<String> roles = new HashSet<String>();
         // 管理员拥有所有权限
         if (user.isAdmin()) {
-            roles.add("admin");
+            roles.add(Constants.SUPER_ADMIN);
         } else {
             roles.addAll(roleService.selectRolePermissionByUserId(user.getUserId()));
         }
@@ -55,7 +56,7 @@ public class SysPermissionService {
         Set<String> perms = new HashSet<String>();
         // 管理员拥有所有权限
         if (user.isAdmin()) {
-            perms.add("*:*:*");
+            perms.add(Constants.ALL_PERMISSION);
         } else {
             List<SysRole> roles = user.getRoles();
             if (!CollectionUtils.isEmpty(roles)) {

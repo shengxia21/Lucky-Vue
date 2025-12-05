@@ -1,15 +1,15 @@
 package com.lucky.framework.web.service;
 
-import java.util.Set;
-
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import com.lucky.common.constant.Constants;
 import com.lucky.common.core.domain.entity.SysRole;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.framework.security.context.PermissionContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.Set;
 
 /**
  * lucky首创 自定义权限实现，ss取自SpringSecurity首字母
@@ -50,7 +50,7 @@ public class PermissionService {
     /**
      * 验证用户是否具有以下任意一个权限
      *
-     * @param permissions 以 PERMISSION_DELIMETER 为分隔符的权限列表
+     * @param permissions 以 PERMISSION_DELIMITER 为分隔符的权限列表
      * @return 用户是否具有以下任意一个权限
      */
     public boolean hasAnyPermi(String permissions) {
@@ -63,7 +63,7 @@ public class PermissionService {
         }
         PermissionContextHolder.setContext(permissions);
         Set<String> authorities = loginUser.getPermissions();
-        for (String permission : permissions.split(Constants.PERMISSION_DELIMETER)) {
+        for (String permission : permissions.split(Constants.PERMISSION_DELIMITER)) {
             if (permission != null && hasPermissions(authorities, permission)) {
                 return true;
             }
@@ -107,7 +107,7 @@ public class PermissionService {
     /**
      * 验证用户是否具有以下任意一个角色
      *
-     * @param roles 以 ROLE_NAMES_DELIMETER 为分隔符的角色列表
+     * @param roles 以 ROLE_DELIMITER 为分隔符的角色列表
      * @return 用户是否具有以下任意一个角色
      */
     public boolean hasAnyRoles(String roles) {
@@ -118,7 +118,7 @@ public class PermissionService {
         if (StringUtils.isNull(loginUser) || CollectionUtils.isEmpty(loginUser.getUser().getRoles())) {
             return false;
         }
-        for (String role : roles.split(Constants.ROLE_DELIMETER)) {
+        for (String role : roles.split(Constants.ROLE_DELIMITER)) {
             if (hasRole(role)) {
                 return true;
             }
