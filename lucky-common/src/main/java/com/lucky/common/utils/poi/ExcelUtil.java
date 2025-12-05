@@ -128,11 +128,11 @@ public class ExcelUtil<T> {
     /**
      * 对象的子列表方法
      */
-    private Method subMethod;
+    private Map<String, Method> subMethods = new HashMap<>();
     /**
      * 对象的子列表属性
      */
-    private List<Field> subFields;
+    private Map<String, List<Field>> subFieldsMap = new HashMap<>();
 
     public ExcelUtil(Class<T> clazz) {
         this.clazz = clazz;
@@ -315,7 +315,7 @@ public class ExcelUtil<T> {
         if (StringUtils.isNotEmpty(title)) {
             int titleLastCol = this.fields.size() - 1;
             if (isSubList()) {
-                titleLastCol = titleLastCol + subFields.size() - 1;
+                titleLastCol = titleLastCol + subFieldsMap.values().size() - 1;
             }
             Row titleRow = sheet.createRow(rownum == 0 ? rownum++ : 0);
             titleRow.setHeightInPoints(30);
@@ -333,14 +333,15 @@ public class ExcelUtil<T> {
         if (isSubList()) {
             Row subRow = sheet.createRow(rownum);
             int column = 0;
-            int subFieldSize = subFields != null ? subFields.size() : 0;
             for (Object[] objects : fields) {
                 Field field = (Field) objects[0];
                 Excel attr = (Excel) objects[1];
+                CellStyle cellStyle = styles.get(StringUtils.format("header_{}_{}", attr.headerColor(), attr.headerBackgroundColor()));
                 if (Collection.class.isAssignableFrom(field.getType())) {
                     Cell cell = subRow.createCell(column);
                     cell.setCellValue(attr.name());
-                    cell.setCellStyle(styles.get(StringUtils.format("header_{}_{}", attr.headerColor(), attr.headerBackgroundColor())));
+                    cell.setCellStyle(cellStyle);
+                    int subFieldSize = subFieldsMap != null ? subFieldsMap.get(field.getName()).size() : 0;
                     if (subFieldSize > 1) {
                         CellRangeAddress cellAddress = new CellRangeAddress(rownum, rownum, column, column + subFieldSize - 1);
                         sheet.addMergedRegion(cellAddress);
@@ -349,7 +350,7 @@ public class ExcelUtil<T> {
                 } else {
                     Cell cell = subRow.createCell(column++);
                     cell.setCellValue(attr.name());
-                    cell.setCellStyle(styles.get(StringUtils.format("header_{}_{}", attr.headerColor(), attr.headerBackgroundColor())));
+                    cell.setCellStyle(cellStyle);
                 }
             }
             rownum++;
@@ -417,13 +418,14 @@ public class ExcelUtil<T> {
             Map<String, Integer> cellMap = new HashMap<String, Integer>();
             // 获取表头
             Row heard = sheet.getRow(titleNum);
-            for (int i = 0; i < heard.getPhysicalNumberOfCells(); i++) {
+            if (heard == null) {
+                throw new UtilException("文件标题行为空，请检查Excel文件格式");
+            }
+            for (int i = 0; i < heard.getLastCellNum(); i++) {
                 Cell cell = heard.getCell(i);
                 if (StringUtils.isNotNull(cell)) {
                     String value = this.getCellValue(heard, i).toString();
                     cellMap.put(value, i);
-                } else {
-                    cellMap.put(null, i);
                 }
             }
             // 有数据时才处理 得到类的所有field.
@@ -672,7 +674,8 @@ public class ExcelUtil<T> {
                 Field field = (Field) os[0];
                 Excel excel = (Excel) os[1];
                 if (Collection.class.isAssignableFrom(field.getType())) {
-                    for (Field subField : subFields) {
+                    List<Field> currentSubFields = subFieldsMap.get(field.getName());
+                    for (Field subField : currentSubFields) {
                         Excel subExcel = subField.getAnnotation(Excel.class);
                         this.createHeadCell(subExcel, row, column++);
                     }
@@ -681,7 +684,7 @@ public class ExcelUtil<T> {
                 }
             }
             if (Type.EXPORT.equals(type)) {
-                fillExcelData(index, row);
+                fillExcelData(index);
                 addStatisticsRow();
             }
         }
@@ -691,17 +694,16 @@ public class ExcelUtil<T> {
      * 填充excel数据
      *
      * @param index 序号
-     * @param row   单元格行
      */
     @SuppressWarnings("unchecked")
-    public void fillExcelData(int index, Row row) {
+    public void fillExcelData(int index) {
         int startNo = index * sheetSize;
         int endNo = Math.min(startNo + sheetSize, list.size());
         int currentRowNum = rownum + 1; // 从标题行后开始
 
         for (int i = startNo; i < endNo; i++) {
-            row = sheet.createRow(currentRowNum);
-            T vo = list.get(i);
+            Row row = sheet.createRow(currentRowNum);
+            T vo = (T) list.get(i);
             int column = 0;
             int maxSubListSize = getCurrentMaxSubListSize(vo);
             for (Object[] os : fields) {
@@ -712,6 +714,7 @@ public class ExcelUtil<T> {
                         Collection<?> subList = (Collection<?>) getTargetValue(vo, field, excel);
                         if (subList != null && !subList.isEmpty()) {
                             int subIndex = 0;
+                            List<Field> currentSubFields = subFieldsMap.get(field.getName());
                             for (Object subVo : subList) {
                                 Row subRow = sheet.getRow(currentRowNum + subIndex);
                                 if (subRow == null) {
@@ -719,13 +722,13 @@ public class ExcelUtil<T> {
                                 }
 
                                 int subColumn = column;
-                                for (Field subField : subFields) {
+                                for (Field subField : currentSubFields) {
                                     Excel subExcel = subField.getAnnotation(Excel.class);
                                     addCell(subExcel, subRow, (T) subVo, subField, subColumn++);
                                 }
                                 subIndex++;
                             }
-                            column += subFields.size();
+                            column += currentSubFields.size();
                         }
                     } catch (Exception e) {
                         log.error("填充集合数据失败", e);
@@ -1026,7 +1029,7 @@ public class ExcelUtil<T> {
             if (attr.isExport()) {
                 // 创建cell
                 cell = row.createCell(column);
-                if (isSubListValue(vo) && getListCellValue(vo).size() > 1 && attr.needMerge()) {
+                if (isSubListValue(vo) && getListCellValue(vo) > 1 && attr.needMerge()) {
                     if (subMergedLastRowNum >= subMergedFirstRowNum) {
                         sheet.addMergedRegion(new CellRangeAddress(subMergedFirstRowNum, subMergedLastRowNum, column, column));
                     }
@@ -1327,10 +1330,11 @@ public class ExcelUtil<T> {
                 fields.add(new Object[]{field, attr});
             }
             if (Collection.class.isAssignableFrom(field.getType())) {
-                subMethod = getSubMethod(field.getName(), clazz);
+                String fieldName = field.getName();
+                subMethods.put(fieldName, getSubMethod(fieldName, clazz));
                 ParameterizedType pt = (ParameterizedType) field.getGenericType();
                 Class<?> subClass = (Class<?>) pt.getActualTypeArguments()[0];
-                this.subFields = FieldUtils.getFieldsListWithAnnotation(subClass, Excel.class);
+                subFieldsMap.put(fieldName, FieldUtils.getFieldsListWithAnnotation(subClass, Excel.class));
             }
         }
 
@@ -1480,27 +1484,33 @@ public class ExcelUtil<T> {
      * 是否有对象的子列表
      */
     public boolean isSubList() {
-        return StringUtils.isNotNull(subFields) && subFields.size() > 0;
+        return !StringUtils.isEmpty(subFieldsMap);
     }
 
     /**
      * 是否有对象的子列表，集合不为空
      */
     public boolean isSubListValue(T vo) {
-        return StringUtils.isNotNull(subFields) && subFields.size() > 0 && StringUtils.isNotNull(getListCellValue(vo)) && getListCellValue(vo).size() > 0;
+        return !StringUtils.isEmpty(subFieldsMap) && getListCellValue(vo) > 0;
     }
 
     /**
      * 获取集合的值
      */
-    public Collection<?> getListCellValue(Object obj) {
-        Object value;
+    public int getListCellValue(Object obj) {
+        Collection<?> value;
+        int max = 0;
         try {
-            value = subMethod.invoke(obj);
+            for (String s : subMethods.keySet()) {
+                value = (Collection<?>) subMethods.get(s).invoke(obj);
+                if (value.size() > max) {
+                    max = value.size();
+                }
+            }
         } catch (Exception e) {
-            return new ArrayList<Object>();
+            return 0;
         }
-        return (Collection<?>) value;
+        return max;
     }
 
     /**
