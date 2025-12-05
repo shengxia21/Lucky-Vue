@@ -1,6 +1,6 @@
 package com.lucky.common.core.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
 import com.lucky.common.annotation.Excel.Type;
@@ -222,7 +222,7 @@ public class SysUser extends BaseEntity {
         this.avatar = avatar;
     }
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getPassword() {
         return password;
     }
