@@ -1,12 +1,5 @@
 package com.lucky.framework.aspectj;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.springframework.stereotype.Component;
 import com.lucky.common.annotation.DataScope;
 import com.lucky.common.constant.UserConstants;
 import com.lucky.common.core.domain.BaseEntity;
@@ -17,6 +10,13 @@ import com.lucky.common.core.text.Convert;
 import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.framework.security.context.PermissionContextHolder;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 数据过滤处理
@@ -71,7 +71,7 @@ public class DataScopeAspect {
         List<String> conditions = new ArrayList<String>();
         List<String> scopeCustomIds = new ArrayList<String>();
         user.getRoles().forEach(role -> {
-            if (DATA_SCOPE_CUSTOM.equals(role.getDataScope()) && StringUtils.equals(role.getStatus(), UserConstants.ROLE_NORMAL) && StringUtils.containsAny(role.getPermissions(), Convert.toStrArray(permission))) {
+            if (DATA_SCOPE_CUSTOM.equals(role.getDataScope()) && StringUtils.equals(role.getStatus(), UserConstants.ROLE_NORMAL) && (StringUtils.isEmpty(permission) || StringUtils.containsAny(role.getPermissions(), Convert.toStrArray(permission)))) {
                 scopeCustomIds.add(Convert.toStr(role.getRoleId()));
             }
         });
@@ -81,7 +81,7 @@ public class DataScopeAspect {
             if (conditions.contains(dataScope) || StringUtils.equals(role.getStatus(), UserConstants.ROLE_DISABLE)) {
                 continue;
             }
-            if (!StringUtils.containsAny(role.getPermissions(), Convert.toStrArray(permission))) {
+            if (StringUtils.isNotEmpty(permission) && !StringUtils.containsAny(role.getPermissions(), Convert.toStrArray(permission))) {
                 continue;
             }
             if (DATA_SCOPE_ALL.equals(dataScope)) {
@@ -117,7 +117,8 @@ public class DataScopeAspect {
 
         if (StringUtils.isNotBlank(sqlString.toString())) {
             Object params = joinPoint.getArgs()[0];
-            if (StringUtils.isNotNull(params) && params instanceof BaseEntity baseEntity) {
+            if (StringUtils.isNotNull(params) && params instanceof BaseEntity) {
+                BaseEntity baseEntity = (BaseEntity) params;
                 baseEntity.getParams().put(DATA_SCOPE, " AND (" + sqlString.substring(4) + ")");
             }
         }
