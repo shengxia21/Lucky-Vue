@@ -1,17 +1,20 @@
 package com.lucky.common.core.domain.entity;
 
-import java.util.Date;
-import java.util.List;
-
-import jakarta.validation.constraints.*;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
 import com.lucky.common.annotation.Excel.Type;
 import com.lucky.common.annotation.Excels;
 import com.lucky.common.core.domain.BaseEntity;
 import com.lucky.common.xss.Xss;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 用户对象 sys_user
@@ -219,6 +222,7 @@ public class SysUser extends BaseEntity {
         this.avatar = avatar;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

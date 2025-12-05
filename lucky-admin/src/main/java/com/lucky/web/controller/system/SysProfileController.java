@@ -1,16 +1,5 @@
 package com.lucky.web.controller.system;
 
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.config.LuckyConfig;
 import com.lucky.common.core.controller.BaseController;
@@ -26,6 +15,11 @@ import com.lucky.common.utils.file.FileUtils;
 import com.lucky.common.utils.file.MimeTypeUtils;
 import com.lucky.framework.web.service.TokenService;
 import com.lucky.system.service.ISysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 /**
  * 个人信息 业务处理
@@ -91,7 +85,8 @@ public class SysProfileController extends BaseController {
         String newPassword = params.get("newPassword");
         LoginUser loginUser = getLoginUser();
         Long userId = loginUser.getUserId();
-        String password = loginUser.getPassword();
+        SysUser user = userService.selectUserById(userId);
+        String password = user.getPassword();
         if (!SecurityUtils.matchesPassword(oldPassword, password)) {
             return error("修改密码失败，旧密码错误");
         }
