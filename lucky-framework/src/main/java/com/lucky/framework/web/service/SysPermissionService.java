@@ -7,7 +7,7 @@ import com.lucky.common.core.domain.entity.SysUser;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.system.service.ISysMenuService;
 import com.lucky.system.service.ISysRoleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -23,10 +23,10 @@ import java.util.Set;
 @Component
 public class SysPermissionService {
 
-    @Autowired
+    @Resource
     private ISysRoleService roleService;
 
-    @Autowired
+    @Resource
     private ISysMenuService menuService;
 
     /**

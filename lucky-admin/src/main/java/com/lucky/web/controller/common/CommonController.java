@@ -6,10 +6,10 @@ import com.lucky.common.utils.StringUtils;
 import com.lucky.common.utils.file.FileUploadUtils;
 import com.lucky.common.utils.file.FileUtils;
 import com.lucky.framework.config.ServerConfig;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +32,7 @@ public class CommonController {
     private static final Logger log = LoggerFactory.getLogger(CommonController.class);
     private static final String FILE_DELIMITER = ",";
 
-    @Autowired
+    @Resource
     private ServerConfig serverConfig;
 
     /**

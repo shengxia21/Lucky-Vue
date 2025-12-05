@@ -4,8 +4,8 @@ import com.lucky.framework.config.properties.PermitAllUrlProperties;
 import com.lucky.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.lucky.framework.security.handle.AuthenticationEntryPointImpl;
 import com.lucky.framework.security.handle.LogoutSuccessHandlerImpl;
+import jakarta.annotation.Resource;
 import jakarta.servlet.DispatcherType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -32,31 +32,31 @@ public class SecurityConfig {
     /**
      * 认证失败处理类
      */
-    @Autowired
+    @Resource
     private AuthenticationEntryPointImpl unauthorizedHandler;
 
     /**
      * 退出处理类
      */
-    @Autowired
+    @Resource
     private LogoutSuccessHandlerImpl logoutSuccessHandler;
 
     /**
      * token认证过滤器
      */
-    @Autowired
+    @Resource
     private JwtAuthenticationTokenFilter authenticationTokenFilter;
 
     /**
      * 跨域过滤器
      */
-    @Autowired
+    @Resource
     private CorsFilter corsFilter;
 
     /**
      * 允许匿名访问的地址
      */
-    @Autowired
+    @Resource
     private PermitAllUrlProperties permitAllUrl;
 
     /**

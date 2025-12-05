@@ -22,6 +22,7 @@ import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.SecurityUtils;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.messages.Message;
@@ -32,7 +33,6 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -54,12 +54,12 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
 
     private static final Logger log = LoggerFactory.getLogger(AiChatMessageServiceImpl.class);
 
-    @Autowired
+    @Resource
     private AiChatMessageMapper aiChatMessageMapper;
 
-    @Autowired
+    @Resource
     private IAiChatConversationService aiChatConversationService;
-    @Autowired
+    @Resource
     private IAiModelService aiModelService;
 
     /**

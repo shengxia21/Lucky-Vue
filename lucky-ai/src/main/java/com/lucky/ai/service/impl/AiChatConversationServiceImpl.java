@@ -18,7 +18,7 @@ import com.lucky.common.constant.AiErrorConstants;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,10 +33,10 @@ import static com.lucky.ai.util.CollectionUtils.convertList;
 @Service
 public class AiChatConversationServiceImpl implements IAiChatConversationService {
 
-    @Autowired
+    @Resource
     private AiChatConversationMapper aiChatConversationMapper;
 
-    @Autowired
+    @Resource
     private IAiModelService aiModelService;
 
     /**

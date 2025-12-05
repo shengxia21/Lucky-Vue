@@ -1,8 +1,5 @@
 package com.lucky.web.core.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import com.lucky.common.config.LuckyConfig;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -10,6 +7,9 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import jakarta.annotation.Resource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Swagger2的接口配置
@@ -22,7 +22,7 @@ public class SwaggerConfig {
     /**
      * 系统基础配置
      */
-    @Autowired
+    @Resource
     private LuckyConfig LuckyConfig;
 
     /**

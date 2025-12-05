@@ -1,14 +1,5 @@
 package com.lucky.system.service.impl;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.lucky.common.constant.UserConstants;
 import com.lucky.common.core.domain.entity.SysDictData;
 import com.lucky.common.core.domain.entity.SysDictType;
@@ -18,6 +9,15 @@ import com.lucky.common.utils.StringUtils;
 import com.lucky.system.mapper.SysDictDataMapper;
 import com.lucky.system.mapper.SysDictTypeMapper;
 import com.lucky.system.service.ISysDictTypeService;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 字典 业务层处理
@@ -27,10 +27,10 @@ import com.lucky.system.service.ISysDictTypeService;
 @Service
 public class SysDictTypeServiceImpl implements ISysDictTypeService {
 
-    @Autowired
+    @Resource
     private SysDictTypeMapper dictTypeMapper;
 
-    @Autowired
+    @Resource
     private SysDictDataMapper dictDataMapper;
 
     /**

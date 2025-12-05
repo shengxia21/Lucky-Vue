@@ -1,13 +1,13 @@
 package com.lucky.system.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.lucky.common.core.domain.entity.SysDictData;
 import com.lucky.common.utils.DictUtils;
 import com.lucky.system.mapper.SysDictDataMapper;
 import com.lucky.system.service.ISysDictDataService;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 字典 业务层处理
@@ -17,7 +17,7 @@ import com.lucky.system.service.ISysDictDataService;
 @Service
 public class SysDictDataServiceImpl implements ISysDictDataService {
 
-    @Autowired
+    @Resource
     private SysDictDataMapper dictDataMapper;
 
     /**

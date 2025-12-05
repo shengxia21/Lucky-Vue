@@ -1,12 +1,5 @@
 package com.lucky.framework.web.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 import com.lucky.common.core.domain.entity.SysUser;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.enums.UserStatus;
@@ -14,6 +7,13 @@ import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.MessageUtils;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.system.service.ISysUserService;
+import jakarta.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 /**
  * 用户验证处理
@@ -25,13 +25,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
-    @Autowired
+    @Resource
     private ISysUserService userService;
 
-    @Autowired
+    @Resource
     private SysPasswordService passwordService;
 
-    @Autowired
+    @Resource
     private SysPermissionService permissionService;
 
     @Override

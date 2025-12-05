@@ -1,18 +1,5 @@
 package com.lucky.web.controller.system;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
 import com.lucky.common.core.domain.AjaxResult;
@@ -20,6 +7,12 @@ import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
 import com.lucky.system.domain.SysNotice;
 import com.lucky.system.service.ISysNoticeService;
+import jakarta.annotation.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 公告 信息操作处理
@@ -30,7 +23,7 @@ import com.lucky.system.service.ISysNoticeService;
 @RequestMapping("/system/notice")
 public class SysNoticeController extends BaseController {
 
-    @Autowired
+    @Resource
     private ISysNoticeService noticeService;
 
     /**

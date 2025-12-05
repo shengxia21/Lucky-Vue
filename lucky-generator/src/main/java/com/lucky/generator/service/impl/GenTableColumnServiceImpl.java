@@ -1,13 +1,13 @@
 package com.lucky.generator.service.impl;
 
-import java.util.List;
-
-import com.lucky.generator.service.IGenTableColumnService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.lucky.common.core.text.Convert;
 import com.lucky.generator.domain.GenTableColumn;
 import com.lucky.generator.mapper.GenTableColumnMapper;
+import com.lucky.generator.service.IGenTableColumnService;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 业务字段 服务层实现
@@ -17,7 +17,7 @@ import com.lucky.generator.mapper.GenTableColumnMapper;
 @Service
 public class GenTableColumnServiceImpl implements IGenTableColumnService {
 
-    @Autowired
+    @Resource
     private GenTableColumnMapper genTableColumnMapper;
 
     /**

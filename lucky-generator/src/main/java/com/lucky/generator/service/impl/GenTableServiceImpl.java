@@ -1,5 +1,31 @@
 package com.lucky.generator.service.impl;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.lucky.common.constant.Constants;
+import com.lucky.common.constant.GenConstants;
+import com.lucky.common.core.text.CharsetKit;
+import com.lucky.common.exception.ServiceException;
+import com.lucky.common.utils.StringUtils;
+import com.lucky.generator.domain.GenTable;
+import com.lucky.generator.domain.GenTableColumn;
+import com.lucky.generator.mapper.GenTableColumnMapper;
+import com.lucky.generator.mapper.GenTableMapper;
+import com.lucky.generator.service.IGenTableService;
+import com.lucky.generator.util.GenUtils;
+import com.lucky.generator.util.VelocityInitializer;
+import com.lucky.generator.util.VelocityUtils;
+import jakarta.annotation.Resource;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -12,32 +38,6 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import com.lucky.generator.service.IGenTableService;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
-import com.lucky.common.constant.Constants;
-import com.lucky.common.constant.GenConstants;
-import com.lucky.common.core.text.CharsetKit;
-import com.lucky.common.exception.ServiceException;
-import com.lucky.common.utils.StringUtils;
-import com.lucky.generator.domain.GenTable;
-import com.lucky.generator.domain.GenTableColumn;
-import com.lucky.generator.mapper.GenTableColumnMapper;
-import com.lucky.generator.mapper.GenTableMapper;
-import com.lucky.generator.util.GenUtils;
-import com.lucky.generator.util.VelocityInitializer;
-import com.lucky.generator.util.VelocityUtils;
-
 /**
  * 业务 服务层实现
  *
@@ -48,10 +48,10 @@ public class GenTableServiceImpl implements IGenTableService {
 
     private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpl.class);
 
-    @Autowired
+    @Resource
     private GenTableMapper genTableMapper;
 
-    @Autowired
+    @Resource
     private GenTableColumnMapper genTableColumnMapper;
 
     /**

@@ -3,7 +3,7 @@ package com.lucky.framework.config;
 import com.lucky.common.config.LuckyConfig;
 import com.lucky.common.constant.Constants;
 import com.lucky.framework.interceptor.RepeatSubmitInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
@@ -26,10 +26,10 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class ResourcesConfig implements WebMvcConfigurer {
 
-    @Autowired
+    @Resource
     private RepeatSubmitInterceptor repeatSubmitInterceptor;
 
-    @Autowired
+    @Resource
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override

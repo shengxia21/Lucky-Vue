@@ -1,12 +1,12 @@
 package com.lucky.system.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.lucky.system.domain.SysNotice;
 import com.lucky.system.mapper.SysNoticeMapper;
 import com.lucky.system.service.ISysNoticeService;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 公告 服务层实现
@@ -16,7 +16,7 @@ import com.lucky.system.service.ISysNoticeService;
 @Service
 public class SysNoticeServiceImpl implements ISysNoticeService {
 
-    @Autowired
+    @Resource
     private SysNoticeMapper noticeMapper;
 
     /**

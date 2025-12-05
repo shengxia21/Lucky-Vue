@@ -15,9 +15,9 @@ import com.lucky.common.constant.AiErrorConstants;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.SecurityUtils;
+import jakarta.annotation.Resource;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.image.ImageModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,13 +30,13 @@ import java.util.List;
 @Service
 public class AiModelServiceImpl implements IAiModelService {
 
-    @Autowired
+    @Resource
     private AiModelMapper aiModelMapper;
 
-    @Autowired
+    @Resource
     private IAiApiKeyService aiApiKeyService;
 
-    @Autowired
+    @Resource
     private AiModelFactory modelFactory;
 
     /**

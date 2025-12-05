@@ -1,12 +1,5 @@
 package com.lucky.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.lucky.common.annotation.DataScope;
 import com.lucky.common.constant.UserConstants;
 import com.lucky.common.core.domain.TreeSelect;
@@ -21,6 +14,13 @@ import com.lucky.common.utils.spring.SpringUtils;
 import com.lucky.system.mapper.SysDeptMapper;
 import com.lucky.system.mapper.SysRoleMapper;
 import com.lucky.system.service.ISysDeptService;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 部门管理 服务实现
@@ -30,10 +30,10 @@ import com.lucky.system.service.ISysDeptService;
 @Service
 public class SysDeptServiceImpl implements ISysDeptService {
 
-    @Autowired
+    @Resource
     private SysDeptMapper deptMapper;
 
-    @Autowired
+    @Resource
     private SysRoleMapper roleMapper;
 
     /**

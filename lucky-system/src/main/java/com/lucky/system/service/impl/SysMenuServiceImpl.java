@@ -1,16 +1,5 @@
 package com.lucky.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.lucky.common.constant.Constants;
 import com.lucky.common.constant.UserConstants;
 import com.lucky.common.core.domain.TreeSelect;
@@ -25,6 +14,11 @@ import com.lucky.system.mapper.SysMenuMapper;
 import com.lucky.system.mapper.SysRoleMapper;
 import com.lucky.system.mapper.SysRoleMenuMapper;
 import com.lucky.system.service.ISysMenuService;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 菜单 业务层处理
@@ -36,13 +30,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
 
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";
 
-    @Autowired
+    @Resource
     private SysMenuMapper menuMapper;
 
-    @Autowired
+    @Resource
     private SysRoleMapper roleMapper;
 
-    @Autowired
+    @Resource
     private SysRoleMenuMapper roleMenuMapper;
 
     /**

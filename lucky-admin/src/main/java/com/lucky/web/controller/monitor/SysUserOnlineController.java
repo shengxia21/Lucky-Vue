@@ -1,17 +1,5 @@
 package com.lucky.web.controller.monitor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.constant.CacheConstants;
 import com.lucky.common.core.controller.BaseController;
@@ -23,6 +11,14 @@ import com.lucky.common.enums.BusinessType;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.system.domain.SysUserOnline;
 import com.lucky.system.service.ISysUserOnlineService;
+import jakarta.annotation.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 在线用户监控
@@ -33,10 +29,10 @@ import com.lucky.system.service.ISysUserOnlineService;
 @RequestMapping("/monitor/online")
 public class SysUserOnlineController extends BaseController {
 
-    @Autowired
+    @Resource
     private ISysUserOnlineService userOnlineService;
 
-    @Autowired
+    @Resource
     private RedisCache redisCache;
 
     @PreAuthorize("@ss.hasPermi('monitor:online:list')")

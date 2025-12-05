@@ -1,9 +1,5 @@
 package com.lucky.system.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.lucky.common.constant.UserConstants;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.StringUtils;
@@ -11,6 +7,10 @@ import com.lucky.system.domain.SysPost;
 import com.lucky.system.mapper.SysPostMapper;
 import com.lucky.system.mapper.SysUserPostMapper;
 import com.lucky.system.service.ISysPostService;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 岗位信息 服务层处理
@@ -20,10 +20,10 @@ import com.lucky.system.service.ISysPostService;
 @Service
 public class SysPostServiceImpl implements ISysPostService {
 
-    @Autowired
+    @Resource
     private SysPostMapper postMapper;
 
-    @Autowired
+    @Resource
     private SysUserPostMapper userPostMapper;
 
     /**

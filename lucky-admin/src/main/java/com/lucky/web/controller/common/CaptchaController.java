@@ -1,17 +1,5 @@
 package com.lucky.web.controller.common;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import jakarta.annotation.Resource;
-
-import javax.imageio.ImageIO;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.FastByteArrayOutputStream;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.google.code.kaptcha.Producer;
 import com.lucky.common.config.LuckyConfig;
 import com.lucky.common.constant.CacheConstants;
@@ -21,6 +9,15 @@ import com.lucky.common.core.redis.RedisCache;
 import com.lucky.common.utils.sign.Base64;
 import com.lucky.common.utils.uuid.IdUtils;
 import com.lucky.system.service.ISysConfigService;
+import jakarta.annotation.Resource;
+import org.springframework.util.FastByteArrayOutputStream;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 验证码操作处理
@@ -36,10 +33,10 @@ public class CaptchaController {
     @Resource(name = "captchaProducerMath")
     private Producer captchaProducerMath;
 
-    @Autowired
+    @Resource
     private RedisCache redisCache;
 
-    @Autowired
+    @Resource
     private ISysConfigService configService;
 
     /**

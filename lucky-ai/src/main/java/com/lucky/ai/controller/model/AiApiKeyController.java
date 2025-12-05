@@ -12,7 +12,7 @@ import com.lucky.common.core.controller.BaseController;
 import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +30,7 @@ import static com.lucky.ai.util.CollectionUtils.convertList;
 @RequestMapping("/ai/api-key")
 public class AiApiKeyController extends BaseController {
 
-    @Autowired
+    @Resource
     private IAiApiKeyService aiApiKeyService;
 
     /**

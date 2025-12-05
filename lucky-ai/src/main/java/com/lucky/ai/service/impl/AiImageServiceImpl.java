@@ -24,6 +24,7 @@ import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.file.FileUtils;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.image.ImageModel;
@@ -31,7 +32,6 @@ import org.springframework.ai.image.ImageOptions;
 import org.springframework.ai.image.ImagePrompt;
 import org.springframework.ai.image.ImageResponse;
 import org.springframework.ai.zhipuai.ZhiPuAiImageOptions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
@@ -48,13 +48,13 @@ public class AiImageServiceImpl implements IAiImageService {
 
     private static final Logger log = LoggerFactory.getLogger(AiImageServiceImpl.class);
 
-    @Autowired
+    @Resource
     private ThreadPoolTaskExecutor executor;
 
-    @Autowired
+    @Resource
     private AiImageMapper aiImageMapper;
 
-    @Autowired
+    @Resource
     private IAiModelService aiModelService;
 
     /**

@@ -1,16 +1,5 @@
 package com.lucky.web.controller.monitor;
 
-import java.util.List;
-
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
 import com.lucky.common.core.domain.AjaxResult;
@@ -19,6 +8,12 @@ import com.lucky.common.enums.BusinessType;
 import com.lucky.common.utils.poi.ExcelUtil;
 import com.lucky.system.domain.SysOperLog;
 import com.lucky.system.service.ISysOperLogService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 操作日志记录
@@ -29,7 +24,7 @@ import com.lucky.system.service.ISysOperLogService;
 @RequestMapping("/monitor/operlog")
 public class SysOperlogController extends BaseController {
 
-    @Autowired
+    @Resource
     private ISysOperLogService operLogService;
 
     @PreAuthorize("@ss.hasPermi('monitor:operlog:list')")

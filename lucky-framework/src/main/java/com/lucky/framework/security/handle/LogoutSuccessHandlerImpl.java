@@ -1,14 +1,5 @@
 package com.lucky.framework.security.handle;
 
-import java.io.IOException;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import com.alibaba.fastjson2.JSON;
 import com.lucky.common.constant.Constants;
 import com.lucky.common.core.domain.AjaxResult;
@@ -19,6 +10,15 @@ import com.lucky.common.utils.StringUtils;
 import com.lucky.framework.manager.AsyncManager;
 import com.lucky.framework.manager.factory.AsyncFactory;
 import com.lucky.framework.web.service.TokenService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import java.io.IOException;
 
 /**
  * 自定义退出处理类 返回成功
@@ -28,7 +28,7 @@ import com.lucky.framework.web.service.TokenService;
 @Configuration
 public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
 
-    @Autowired
+    @Resource
     private TokenService tokenService;
 
     /**

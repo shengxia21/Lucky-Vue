@@ -15,7 +15,7 @@ import com.lucky.common.utils.file.FileUtils;
 import com.lucky.common.utils.file.MimeTypeUtils;
 import com.lucky.framework.web.service.TokenService;
 import com.lucky.system.service.ISysUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,10 +30,10 @@ import java.util.Map;
 @RequestMapping("/system/user/profile")
 public class SysProfileController extends BaseController {
 
-    @Autowired
+    @Resource
     private ISysUserService userService;
 
-    @Autowired
+    @Resource
     private TokenService tokenService;
 
     /**

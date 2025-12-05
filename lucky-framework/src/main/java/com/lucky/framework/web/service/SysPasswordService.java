@@ -1,11 +1,5 @@
 package com.lucky.framework.web.service;
 
-import java.util.concurrent.TimeUnit;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import com.lucky.common.constant.CacheConstants;
 import com.lucky.common.core.domain.entity.SysUser;
 import com.lucky.common.core.redis.RedisCache;
@@ -13,6 +7,12 @@ import com.lucky.common.exception.user.UserPasswordNotMatchException;
 import com.lucky.common.exception.user.UserPasswordRetryLimitExceedException;
 import com.lucky.common.utils.SecurityUtils;
 import com.lucky.framework.security.context.AuthenticationContextHolder;
+import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 登录密码方法
@@ -22,7 +22,7 @@ import com.lucky.framework.security.context.AuthenticationContextHolder;
 @Component
 public class SysPasswordService {
 
-    @Autowired
+    @Resource
     private RedisCache redisCache;
 
     @Value(value = "${user.password.maxRetryCount}")

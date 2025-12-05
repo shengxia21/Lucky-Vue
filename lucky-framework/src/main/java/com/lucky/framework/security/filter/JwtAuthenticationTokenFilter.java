@@ -1,21 +1,21 @@
 package com.lucky.framework.security.filter;
 
-import java.io.IOException;
-
+import com.lucky.common.core.domain.model.LoginUser;
+import com.lucky.common.utils.SecurityUtils;
+import com.lucky.common.utils.StringUtils;
+import com.lucky.framework.web.service.TokenService;
+import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.lucky.common.core.domain.model.LoginUser;
-import com.lucky.common.utils.SecurityUtils;
-import com.lucky.common.utils.StringUtils;
-import com.lucky.framework.web.service.TokenService;
+
+import java.io.IOException;
 
 /**
  * token过滤器 验证token有效性
@@ -25,7 +25,7 @@ import com.lucky.framework.web.service.TokenService;
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
+    @Resource
     private TokenService tokenService;
 
     @Override

@@ -15,7 +15,7 @@ import com.lucky.common.core.controller.BaseController;
 import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -34,10 +34,10 @@ import java.util.List;
 @RequestMapping("/ai/chat/message")
 public class AiChatMessageController extends BaseController {
 
-    @Autowired
+    @Resource
     private IAiChatMessageService aiChatMessageService;
 
-    @Autowired
+    @Resource
     private IAiChatConversationService aiChatConversationService;
 
     /**

@@ -1,7 +1,5 @@
 package com.lucky.framework.web.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import com.lucky.common.constant.CacheConstants;
 import com.lucky.common.constant.Constants;
 import com.lucky.common.constant.UserConstants;
@@ -18,6 +16,8 @@ import com.lucky.framework.manager.AsyncManager;
 import com.lucky.framework.manager.factory.AsyncFactory;
 import com.lucky.system.service.ISysConfigService;
 import com.lucky.system.service.ISysUserService;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Component;
 
 /**
  * 注册校验方法
@@ -27,13 +27,13 @@ import com.lucky.system.service.ISysUserService;
 @Component
 public class SysRegisterService {
 
-    @Autowired
+    @Resource
     private ISysUserService userService;
 
-    @Autowired
+    @Resource
     private ISysConfigService configService;
 
-    @Autowired
+    @Resource
     private RedisCache redisCache;
 
     /**

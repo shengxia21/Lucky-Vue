@@ -1,14 +1,5 @@
 package com.lucky.web.controller.system;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import com.lucky.common.constant.Constants;
 import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.domain.entity.SysMenu;
@@ -24,6 +15,15 @@ import com.lucky.framework.web.service.SysPermissionService;
 import com.lucky.framework.web.service.TokenService;
 import com.lucky.system.service.ISysConfigService;
 import com.lucky.system.service.ISysMenuService;
+import jakarta.annotation.Resource;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 登录验证
@@ -33,19 +33,19 @@ import com.lucky.system.service.ISysMenuService;
 @RestController
 public class SysLoginController {
 
-    @Autowired
+    @Resource
     private SysLoginService loginService;
 
-    @Autowired
+    @Resource
     private ISysMenuService menuService;
 
-    @Autowired
+    @Resource
     private SysPermissionService permissionService;
 
-    @Autowired
+    @Resource
     private TokenService tokenService;
 
-    @Autowired
+    @Resource
     private ISysConfigService configService;
 
     /**

@@ -1,11 +1,5 @@
 package com.lucky.system.service.impl;
 
-import java.util.Collection;
-import java.util.List;
-
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.lucky.common.annotation.DataSource;
 import com.lucky.common.constant.CacheConstants;
 import com.lucky.common.constant.UserConstants;
@@ -17,6 +11,12 @@ import com.lucky.common.utils.StringUtils;
 import com.lucky.system.domain.SysConfig;
 import com.lucky.system.mapper.SysConfigMapper;
 import com.lucky.system.service.ISysConfigService;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 参数配置 服务层实现
@@ -26,10 +26,10 @@ import com.lucky.system.service.ISysConfigService;
 @Service
 public class SysConfigServiceImpl implements ISysConfigService {
 
-    @Autowired
+    @Resource
     private SysConfigMapper configMapper;
 
-    @Autowired
+    @Resource
     private RedisCache redisCache;
 
     /**
