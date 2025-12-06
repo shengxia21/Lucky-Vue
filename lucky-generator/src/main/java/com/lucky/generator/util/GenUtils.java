@@ -1,13 +1,13 @@
 package com.lucky.generator.util;
 
-import java.util.Arrays;
-
-import org.apache.commons.lang3.RegExUtils;
 import com.lucky.common.constant.GenConstants;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.generator.config.GenConfig;
 import com.lucky.generator.domain.GenTable;
 import com.lucky.generator.domain.GenTableColumn;
+import org.apache.commons.lang3.RegExUtils;
+
+import java.util.Arrays;
 
 /**
  * 代码生成器 工具类
@@ -21,6 +21,7 @@ public class GenUtils {
      */
     public static void initTable(GenTable genTable, String operName) {
         genTable.setClassName(convertClassName(genTable.getTableName()));
+        genTable.setTplWebType("element-plus");
         genTable.setPackageName(GenConfig.getPackageName());
         genTable.setModuleName(getModuleName(GenConfig.getPackageName()));
         genTable.setBusinessName(getBusinessName(genTable.getTableName()));
