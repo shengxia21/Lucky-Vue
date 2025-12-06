@@ -24,7 +24,7 @@ public class CacheController {
 
     private final static List<SysCache> caches = new ArrayList<>();
 
-    @Resource
+    @Resource(name = "stringRedisTemplate")
     private RedisTemplate<String, String> redisTemplate;
 
     {
