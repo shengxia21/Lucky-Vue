@@ -6,6 +6,7 @@ import com.lucky.common.constant.Constants;
 import com.lucky.common.constant.GenConstants;
 import com.lucky.common.core.text.CharsetKit;
 import com.lucky.common.exception.ServiceException;
+import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.generator.domain.GenTable;
 import com.lucky.generator.domain.GenTableColumn;
@@ -136,9 +137,12 @@ public class GenTableServiceImpl implements IGenTableService {
     public void updateGenTable(GenTable genTable) {
         String options = JSON.toJSONString(genTable.getParams());
         genTable.setOptions(options);
+        String username = SecurityUtils.getUsername();
+        genTable.setUpdateBy(username);
         int row = genTableMapper.updateGenTable(genTable);
         if (row > 0) {
             for (GenTableColumn genTableColumn : genTable.getColumns()) {
+                genTableColumn.setUpdateBy(username);
                 genTableColumnMapper.updateGenTableColumn(genTableColumn);
             }
         }
