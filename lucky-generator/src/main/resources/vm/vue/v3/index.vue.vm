@@ -343,7 +343,7 @@
 </template>
 
 <script setup name="${BusinessName}">
-import {get${BusinessName}, list${BusinessName}} from "@/api/${moduleName}/${businessName}"
+import { get${BusinessName}, list${BusinessName} } from "@/api/${moduleName}/${businessName}"
 
 const { proxy } = getCurrentInstance()
 #if(${dicts} != '')
