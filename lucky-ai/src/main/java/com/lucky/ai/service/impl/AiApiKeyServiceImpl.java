@@ -62,6 +62,20 @@ public class AiApiKeyServiceImpl implements IAiApiKeyService {
     }
 
     /**
+     * 删除 API 密钥
+     *
+     * @param id API 密钥主键
+     * @return 结果
+     */
+    @Override
+    public int deleteApiKey(Long id) {
+        // 校验存在
+        validateApiKeyExists(id);
+        // 删除
+        return aiApiKeyMapper.deleteAiApiKeyById(id);
+    }
+
+    /**
      * 查询 API 密钥
      *
      * @param id API 密钥主键

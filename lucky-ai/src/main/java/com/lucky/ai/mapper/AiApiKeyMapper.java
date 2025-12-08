@@ -45,6 +45,14 @@ public interface AiApiKeyMapper {
     int updateAiApiKey(AiApiKey aiApiKey);
 
     /**
+     * 删除 AI API 秘钥
+     *
+     * @param id AI API 秘钥主键
+     * @return 结果
+     */
+    int deleteAiApiKeyById(Long id);
+
+    /**
      * 获得 API 密钥分页列表
      *
      * @return API 密钥分页结果

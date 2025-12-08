@@ -29,6 +29,14 @@ public interface IAiApiKeyService {
      */
     int updateApiKey(AiApiKeySaveReqVO updateReqVO);
 
+     /**
+     * 删除 API 密钥
+     *
+     * @param id API 密钥主键
+     * @return 结果
+     */
+    int deleteApiKey(Long id);
+
     /**
      * 查询 API 密钥
      *

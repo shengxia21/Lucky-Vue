@@ -54,6 +54,16 @@ public class AiApiKeyController extends BaseController {
     }
 
     /**
+     * 删除 API 密钥
+     */
+    @Log(title = "删除 API 密钥", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('ai:api-key:delete')")
+    @DeleteMapping("/delete")
+    public AjaxResult deleteApiKey(@RequestParam("id") Long id) {
+        return toAjax(aiApiKeyService.deleteApiKey(id));
+    }
+
+    /**
      * 获取 API 密钥
      */
     @PreAuthorize("@ss.hasPermi('ai:api-key:query')")
@@ -66,7 +76,7 @@ public class AiApiKeyController extends BaseController {
     /**
      * 获得 API 密钥分页
      */
-    @PreAuthorize("@ss.hasPermi('ai:api-key:query')")
+    @PreAuthorize("@ss.hasPermi('ai:api-key:list')")
     @GetMapping("/page")
     public TableDataInfo getApiKeyPage(AiApiKeyPageReqVO pageReqVO) {
         startPage();
