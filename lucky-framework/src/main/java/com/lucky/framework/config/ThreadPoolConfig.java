@@ -30,6 +30,9 @@ public class ThreadPoolConfig {
     // 线程池维护线程所允许的空闲时间
     private final int keepAliveSeconds = 200;
 
+    // 线程池关闭等待任务时间
+    private final int awaitTerminationSeconds = 120;
+
     @Bean(name = "threadPoolTaskExecutor")
     public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -38,6 +41,8 @@ public class ThreadPoolConfig {
         executor.setQueueCapacity(queueCapacity);
         executor.setKeepAliveSeconds(keepAliveSeconds);
         executor.setThreadNamePrefix("thread-pool-");
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setAwaitTerminationSeconds(awaitTerminationSeconds);
         // 线程池对拒绝任务(无线程可用)的处理策略
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();

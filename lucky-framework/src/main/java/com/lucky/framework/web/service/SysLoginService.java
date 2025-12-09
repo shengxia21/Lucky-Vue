@@ -7,13 +7,13 @@ import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.redis.RedisCache;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.exception.user.*;
+import com.lucky.common.manager.AsyncManager;
 import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.MessageUtils;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.common.utils.ip.IpUtils;
-import com.lucky.framework.manager.AsyncManager;
-import com.lucky.framework.manager.factory.AsyncFactory;
 import com.lucky.framework.security.context.AuthenticationContextHolder;
+import com.lucky.system.factory.AsyncSystemFactory;
 import com.lucky.system.service.ISysConfigService;
 import com.lucky.system.service.ISysUserService;
 import jakarta.annotation.Resource;
@@ -69,16 +69,16 @@ public class SysLoginService {
             authentication = authenticationManager.authenticate(authenticationToken);
         } catch (Exception e) {
             if (e instanceof BadCredentialsException) {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+                AsyncManager.me().execute(AsyncSystemFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
                 throw new UserPasswordNotMatchException();
             } else {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
+                AsyncManager.me().execute(AsyncSystemFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
                 throw new ServiceException(e.getMessage());
             }
         } finally {
             AuthenticationContextHolder.clearContext();
         }
-        AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
+        AsyncManager.me().execute(AsyncSystemFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         recordLoginInfo(loginUser.getUserId());
         // 生成token
@@ -99,12 +99,12 @@ public class SysLoginService {
             String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
             String captcha = redisCache.getCacheObject(verifyKey);
             if (captcha == null) {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
+                AsyncManager.me().execute(AsyncSystemFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
                 throw new CaptchaExpireException();
             }
             redisCache.deleteObject(verifyKey);
             if (!code.equalsIgnoreCase(captcha)) {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
+                AsyncManager.me().execute(AsyncSystemFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
                 throw new CaptchaException();
             }
         }
@@ -119,25 +119,25 @@ public class SysLoginService {
     public void loginPreCheck(String username, String password) {
         // 用户名或密码为空 错误
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("not.null")));
+            AsyncManager.me().execute(AsyncSystemFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("not.null")));
             throw new UserNotExistsException();
         }
         // 密码如果不在指定范围内 错误
         if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
                 || password.length() > UserConstants.PASSWORD_MAX_LENGTH) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+            AsyncManager.me().execute(AsyncSystemFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
             throw new UserPasswordNotMatchException();
         }
         // 用户名不在指定范围内 错误
         if (username.length() < UserConstants.USERNAME_MIN_LENGTH
                 || username.length() > UserConstants.USERNAME_MAX_LENGTH) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+            AsyncManager.me().execute(AsyncSystemFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
             throw new UserPasswordNotMatchException();
         }
         // IP黑名单校验
         String blackStr = configService.selectConfigByKey("sys.login.blackIPList");
         if (IpUtils.isMatchedIp(blackStr, IpUtils.getIpAddr())) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("login.blocked")));
+            AsyncManager.me().execute(AsyncSystemFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("login.blocked")));
             throw new BlackListException();
         }
     }

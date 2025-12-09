@@ -1,9 +1,5 @@
-package com.lucky.framework.manager.factory;
+package com.lucky.system.factory;
 
-import java.util.TimerTask;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.lucky.common.constant.Constants;
 import com.lucky.common.utils.LogUtils;
 import com.lucky.common.utils.ServletUtils;
@@ -16,13 +12,17 @@ import com.lucky.system.domain.SysOperLog;
 import com.lucky.system.service.ISysLogininforService;
 import com.lucky.system.service.ISysOperLogService;
 import eu.bitwalker.useragentutils.UserAgent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.TimerTask;
 
 /**
  * 异步工厂（产生任务用）
  *
  * @author lucky
  */
-public class AsyncFactory {
+public class AsyncSystemFactory {
 
     private static final Logger sys_user_logger = LoggerFactory.getLogger("sys-user");
 

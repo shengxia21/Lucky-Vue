@@ -1,0 +1,73 @@
+package com.lucky.common.manager;
+
+import com.lucky.common.utils.Threads;
+import com.lucky.common.utils.spring.SpringUtils;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * 异步任务管理器
+ *
+ * @author lucky
+ */
+public class AsyncManager {
+
+    private static final AsyncManager me = new AsyncManager();
+
+    /**
+     * 操作延迟10毫秒
+     */
+    private final int OPERATE_DELAY_TIME = 10;
+
+    /**
+     * 异步操作任务调度线程池
+     */
+    private final ScheduledExecutorService scheduledExecutor = SpringUtils.getBean("scheduledExecutorService");
+
+    /**
+     * 异步操作任务执行线程池
+     */
+    private final ThreadPoolTaskExecutor taskExecutor = SpringUtils.getBean("threadPoolTaskExecutor");
+
+    /**
+     * 单例模式
+     */
+    private AsyncManager() {
+    }
+
+    public static AsyncManager me() {
+        return me;
+    }
+
+    /**
+     * 执行任务
+     *
+     * @param task 任务
+     */
+    public void execute(TimerTask task) {
+        scheduledExecutor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * 执行任务
+     *
+     * @param task 任务
+     */
+    public void execute(Runnable task) {
+        taskExecutor.execute(task);
+    }
+
+    /**
+     * 停止任务线程池
+     */
+    public void shutdown() {
+        // 停止定时任务线程池
+        Threads.shutdownAndAwaitTermination(scheduledExecutor);
+        // 停止异步操作任务执行线程池
+        Threads.shutdownAndAwaitTermination(taskExecutor);
+    }
+
+}

@@ -1,11 +1,8 @@
 package com.lucky.ai.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpUtil;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageOptions;
 import com.lucky.ai.controller.image.vo.AiImageDrawReqVO;
 import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
@@ -15,24 +12,18 @@ import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.image.AiImageStatusEnum;
 import com.lucky.ai.enums.model.AiPlatformEnum;
+import com.lucky.ai.factory.AsyncAiFactory;
 import com.lucky.ai.mapper.AiImageMapper;
 import com.lucky.ai.service.IAiImageService;
 import com.lucky.ai.service.IAiModelService;
-import com.lucky.common.config.LuckyConfig;
 import com.lucky.common.constant.AiErrorConstants;
 import com.lucky.common.exception.ServiceException;
+import com.lucky.common.manager.AsyncManager;
 import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.SecurityUtils;
-import com.lucky.common.utils.file.FileUtils;
 import jakarta.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.ai.image.ImageModel;
 import org.springframework.ai.image.ImageOptions;
-import org.springframework.ai.image.ImagePrompt;
-import org.springframework.ai.image.ImageResponse;
 import org.springframework.ai.zhipuai.ZhiPuAiImageOptions;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -45,11 +36,6 @@ import java.util.List;
  */
 @Service
 public class AiImageServiceImpl implements IAiImageService {
-
-    private static final Logger log = LoggerFactory.getLogger(AiImageServiceImpl.class);
-
-    @Resource
-    private ThreadPoolTaskExecutor executor;
 
     @Resource
     private AiImageMapper aiImageMapper;
@@ -130,7 +116,7 @@ public class AiImageServiceImpl implements IAiImageService {
         aiImageMapper.insertAiImage(image);
 
         // 3. 异步绘制，后续前端通过返回的 id 进行轮询结果
-        executor.execute(() -> executeDrawImage(image, drawReqVO, model));
+        AsyncManager.me().execute(AsyncAiFactory.executeDrawImage(image, drawReqVO, model));
         return image.getId();
     }
 
@@ -194,48 +180,7 @@ public class AiImageServiceImpl implements IAiImageService {
         return aiImageMapper.deleteAiImageById(id);
     }
 
-    private void executeDrawImage(AiImage image, AiImageDrawReqVO reqVO, AiModel model) {
-        try {
-            // 1.1 构建请求
-            ImageOptions request = buildImageOptions(reqVO, model);
-            // 1.2 执行请求
-            ImageModel imageModel = aiModelService.getImageModel(model.getId());
-            ImageResponse response = imageModel.call(new ImagePrompt(reqVO.getPrompt(), request));
-            if (response.getResult() == null) {
-                AiImage aiImage = new AiImage();
-                aiImage.setId(image.getId());
-                aiImage.setTaskId(response.getMetadata().getRawMap().get("taskId").toString());
-                aiImageMapper.updateAiImage(aiImage);
-                throw new IllegalArgumentException("生成结果为空");
-            }
-
-            // 2. 上传到文件服务
-            String b64Json = response.getResult().getOutput().getB64Json();
-            byte[] fileContent = StrUtil.isNotEmpty(b64Json) ? Base64.decode(b64Json)
-                    : HttpUtil.downloadBytes(response.getResult().getOutput().getUrl());
-            String filePath = FileUtils.writeBytes(fileContent, LuckyConfig.getDrawImagePath());
-
-            // 3. 更新数据库
-            AiImage aiImage = new AiImage();
-            aiImage.setId(image.getId());
-            aiImage.setStatus(AiImageStatusEnum.SUCCESS.getStatus());
-            aiImage.setPicUrl(filePath);
-            aiImage.setFinishTime(DateUtils.getNowDate());
-            aiImageMapper.updateAiImage(aiImage);
-        } catch (Exception ex) {
-            log.error("执行异步绘制图片失败, imageId={}, modelId={}", image.getId(), model.getId(), ex);
-            AiImage aiImage = new AiImage();
-            aiImage.setId(image.getId());
-            aiImage.setStatus(AiImageStatusEnum.FAIL.getStatus());
-            aiImage.setErrorMessage(ex.getMessage());
-            aiImage.setFinishTime(DateUtils.getNowDate());
-            aiImage.setUpdateBy(SecurityUtils.getUsername());
-            aiImage.setUpdateTime(DateUtils.getNowDate());
-            aiImageMapper.updateAiImage(aiImage);
-        }
-    }
-
-    private static ImageOptions buildImageOptions(AiImageDrawReqVO draw, AiModel model) {
+    public static ImageOptions buildImageOptions(AiImageDrawReqVO draw, AiModel model) {
         if (ObjUtil.equal(model.getPlatform(), AiPlatformEnum.TONG_YI.getPlatform())) {
             return DashScopeImageOptions.builder()
                     .withModel(model.getModel()).withN(1)

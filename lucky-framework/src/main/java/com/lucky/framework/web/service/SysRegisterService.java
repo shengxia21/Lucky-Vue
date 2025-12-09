@@ -8,12 +8,12 @@ import com.lucky.common.core.domain.model.RegisterBody;
 import com.lucky.common.core.redis.RedisCache;
 import com.lucky.common.exception.user.CaptchaException;
 import com.lucky.common.exception.user.CaptchaExpireException;
+import com.lucky.common.manager.AsyncManager;
 import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.MessageUtils;
 import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.StringUtils;
-import com.lucky.framework.manager.AsyncManager;
-import com.lucky.framework.manager.factory.AsyncFactory;
+import com.lucky.system.factory.AsyncSystemFactory;
 import com.lucky.system.service.ISysConfigService;
 import com.lucky.system.service.ISysUserService;
 import jakarta.annotation.Resource;
@@ -70,7 +70,7 @@ public class SysRegisterService {
             if (!regFlag) {
                 msg = "注册失败,请联系系统管理人员";
             } else {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.REGISTER, MessageUtils.message("user.register.success")));
+                AsyncManager.me().execute(AsyncSystemFactory.recordLogininfor(username, Constants.REGISTER, MessageUtils.message("user.register.success")));
             }
         }
         return msg;

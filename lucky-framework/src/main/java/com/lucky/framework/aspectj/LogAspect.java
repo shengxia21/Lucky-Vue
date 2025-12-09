@@ -8,14 +8,14 @@ import com.lucky.common.core.text.Convert;
 import com.lucky.common.enums.BusinessStatus;
 import com.lucky.common.enums.HttpMethod;
 import com.lucky.common.filter.PropertyPreExcludeFilter;
+import com.lucky.common.manager.AsyncManager;
 import com.lucky.common.utils.ExceptionUtil;
 import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.ServletUtils;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.common.utils.ip.IpUtils;
-import com.lucky.framework.manager.AsyncManager;
-import com.lucky.framework.manager.factory.AsyncFactory;
 import com.lucky.system.domain.SysOperLog;
+import com.lucky.system.factory.AsyncSystemFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.ArrayUtils;
@@ -117,7 +117,7 @@ public class LogAspect {
             // 设置消耗时间
             operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
             // 保存数据库
-            AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
+            AsyncManager.me().execute(AsyncSystemFactory.recordOper(operLog));
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("异常信息:{}", exp.getMessage());
