@@ -81,7 +81,7 @@ public class AiApiKeyController extends BaseController {
     public TableDataInfo getApiKeyPage(AiApiKeyPageReqVO pageReqVO) {
         startPage();
         List<AiApiKey> list = aiApiKeyService.getApiKeyPage(pageReqVO);
-        return getDataTable(BeanUtil.copyToList(list, AiApiKeyRespVO.class));
+        return getDataTable(list, AiApiKeyRespVO.class);
     }
 
     /**

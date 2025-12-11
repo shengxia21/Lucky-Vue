@@ -76,12 +76,12 @@ public class AiModelController extends BaseController {
     /**
      * 获得模型分页
      */
-    @PreAuthorize("@ss.hasPermi('ai:model:query')")
+    @PreAuthorize("@ss.hasPermi('ai:model:list')")
     @GetMapping("/page")
     public TableDataInfo getModelPage(AiModelPageReqVO pageReqVO) {
         startPage();
-        List<AiModel> pageResult = aiModelService.getModelPage(pageReqVO);
-        return getDataTable(BeanUtil.copyToList(pageResult, AiModelRespVO.class));
+        List<AiModel> list = aiModelService.getModelPage(pageReqVO);
+        return getDataTable(list, AiModelRespVO.class);
     }
 
     /**

@@ -93,7 +93,7 @@ public class AiChatConversationController extends BaseController {
     /**
      * 获取对话分页列表
      */
-    @PreAuthorize("@ss.hasPermi('ai:chat-conversation:query')")
+    @PreAuthorize("@ss.hasPermi('ai:chat-conversation:list')")
     @GetMapping("/page")
     public TableDataInfo getChatConversationPage(AiChatConversationPageReqVO pageReqVO) {
         startPage();

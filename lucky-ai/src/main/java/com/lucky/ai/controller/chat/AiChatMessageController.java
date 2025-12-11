@@ -100,12 +100,12 @@ public class AiChatMessageController extends BaseController {
     /**
      * 获得消息分页
      */
-    @PreAuthorize("@ss.hasPermi('ai:chat-conversation:query')")
+    @PreAuthorize("@ss.hasPermi('ai:chat-conversation:list')")
     @GetMapping("/page")
     public TableDataInfo getChatMessagePage(AiChatMessagePageReqVO pageReqVO) {
         startPage();
         List<AiChatMessage> list = aiChatMessageService.getChatMessagePage(pageReqVO);
-        return getDataTable(BeanUtil.copyToList(list, AiChatMessageRespVO.class));
+        return getDataTable(list, AiChatMessageRespVO.class);
     }
 
     /**

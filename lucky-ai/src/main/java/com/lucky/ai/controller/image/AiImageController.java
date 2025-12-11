@@ -35,8 +35,8 @@ public class AiImageController extends BaseController {
     @GetMapping("/my-page")
     public TableDataInfo getImagePageMy(@Validated AiImagePageReqVO pageReqVO) {
         startPage();
-        List<AiImage> pageResult = aiImageService.getImagePageMy(pageReqVO);
-        return getDataTable(BeanUtil.copyToList(pageResult, AiImageRespVO.class));
+        List<AiImage> list = aiImageService.getImagePageMy(pageReqVO);
+        return getDataTable(list, AiImageRespVO.class);
     }
 
     /**
@@ -45,8 +45,8 @@ public class AiImageController extends BaseController {
     @GetMapping("/public-page")
     public TableDataInfo getImagePagePublic(AiImagePublicPageReqVO pageReqVO) {
         startPage();
-        List<AiImage> pageResult = aiImageService.getImagePagePublic(pageReqVO);
-        return getDataTable(BeanUtil.copyToList(pageResult, AiImageRespVO.class));
+        List<AiImage> list = aiImageService.getImagePagePublic(pageReqVO);
+        return getDataTable(list, AiImageRespVO.class);
     }
 
     /**
@@ -93,12 +93,12 @@ public class AiImageController extends BaseController {
     /**
      * 获得绘画分页
      */
-    @PreAuthorize("@ss.hasPermi('ai:image:query')")
+    @PreAuthorize("@ss.hasPermi('ai:image:list')")
     @GetMapping("/page")
     public TableDataInfo getImagePage(AiImagePageReqVO pageReqVO) {
         startPage();
         List<AiImage> list = aiImageService.getImagePage(pageReqVO);
-        return getDataTable(BeanUtil.copyToList(list, AiImageRespVO.class));
+        return getDataTable(list, AiImageRespVO.class);
     }
 
     /**

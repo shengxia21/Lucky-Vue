@@ -1,13 +1,6 @@
 package com.lucky.common.core.controller;
 
-import java.beans.PropertyEditorSupport;
-import java.util.Date;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
+import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lucky.common.constant.HttpStatus;
@@ -21,6 +14,14 @@ import com.lucky.common.utils.PageUtils;
 import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.common.utils.sql.SqlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+
+import java.beans.PropertyEditorSupport;
+import java.util.Date;
+import java.util.List;
 
 /**
  * web层通用数据处理
@@ -79,6 +80,18 @@ public class BaseController {
         rspData.setCode(HttpStatus.SUCCESS);
         rspData.setMsg("查询成功");
         rspData.setRows(list);
+        rspData.setTotal(new PageInfo(list).getTotal());
+        return rspData;
+    }
+
+    /**
+     * 响应请求分页数据(转换为指定类型)
+     */
+    protected TableDataInfo getDataTable(List<?> list, Class<?> clazz) {
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(HttpStatus.SUCCESS);
+        rspData.setMsg("查询成功");
+        rspData.setRows(BeanUtil.copyToList(list, clazz));
         rspData.setTotal(new PageInfo(list).getTotal());
         return rspData;
     }
