@@ -19,11 +19,10 @@ public enum AiPlatformEnum implements ArrayValuable<String> {
     DOU_BAO("DouBao", "豆包"), // 字节
     HUN_YUAN("HunYuan", "混元"), // 腾讯
     SILICON_FLOW("SiliconFlow", "硅基流动"), // 硅基流动
-    MINI_MAX("MiniMax", "MiniMax"), // 稀宇科技
     MOONSHOT("Moonshot", "月之暗灭"), // KIMI
     BAI_CHUAN("BaiChuan", "百川智能"), // 百川智能
 
-    OPENAI("OpenAI", "OpenAI");
+    OLLAMA("Ollama", "Ollama");
 
     /**
      * 平台
