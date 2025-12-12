@@ -166,8 +166,8 @@ public interface ISysUserService {
     /**
      * 更新用户登录信息（IP和登录时间）
      *
-     * @param userId 用户ID
-     * @param loginIp 登录IP地址
+     * @param userId    用户ID
+     * @param loginIp   登录IP地址
      * @param loginDate 登录时间
      * @return 结果
      */
@@ -215,5 +215,12 @@ public interface ISysUserService {
      * @return 结果
      */
     String importUser(List<SysUser> userList, Boolean isUpdateSupport, String operName);
+
+    /**
+     * 查询所有用户信息
+     *
+     * @return 用户信息集合
+     */
+    List<SysUser> selectUserAll();
 
 }

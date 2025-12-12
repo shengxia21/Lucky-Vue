@@ -497,4 +497,14 @@ public class SysUserServiceImpl implements ISysUserService {
         return successMsg.toString();
     }
 
+    /**
+     * 查询所有用户信息
+     *
+     * @return 用户信息集合
+     */
+    @Override
+    public List<SysUser> selectUserAll() {
+        return userMapper.selectUserAll();
+    }
+
 }

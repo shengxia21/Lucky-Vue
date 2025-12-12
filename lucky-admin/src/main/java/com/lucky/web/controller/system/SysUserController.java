@@ -223,4 +223,13 @@ public class SysUserController extends BaseController {
         return success(deptService.selectDeptTreeList(dept));
     }
 
+    /**
+     * 获取用户选择框列表
+     */
+    @GetMapping("/optionselect")
+    public AjaxResult optionselect() {
+        List<SysUser> users = userService.selectUserAll();
+        return success(users);
+    }
+
 }
