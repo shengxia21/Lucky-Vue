@@ -50,25 +50,26 @@
     </dependencies>
 
     <build>
-        <!-- 用于打包可执行JAR -->
+        <!-- 设置构建的 jar 包名 -->
+        <finalName>${project.artifactId}</finalName>
         <plugins>
+            <!-- 用于打包可执行JAR -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.5.4</version>
+                <version>${springboot.version}</version>
                 <configuration>
-                    <addResources>true</addResources>   <!-- 将resources目录下的资源文件重新添加到JAR包中 -->
+                    <addResources>true</addResources>   <!-- 将resources目录下的资源文件添加到JAR包中 -->
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>repackage</goal>  <!-- 重新打包，生成可执行JAR -->
+                            <goal>repackage</goal>  <!-- 将引入的 jar 打入其中 -->
                         </goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
-        <finalName>${project.artifactId}</finalName>
     </build>
 
 </project>
