@@ -46,23 +46,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectListByUserId" resultType="com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO">
-        select
-            id,
-            user_id as userId,
-            title,
-            pinned,
-            role_id as roleId,
-            model_id as modelId,
-            model,
-            (SELECT name FROM ai_model WHERE id = model_id) as modelName,
-            system_message as systemMessage,
-            temperature,
-            max_tokens as maxTokens,
-            max_contexts as maxContexts,
-            create_time as createTime
-        from ai_chat_conversation
-        where user_id = #{userId}
-        and del_flag = 0
+        SELECT
+            c.id,
+            c.user_id as userId,
+            c.title,
+            c.pinned,
+            c.role_id as roleId,
+            c.model_id as modelId,
+            c.model,
+            m.name as modelName,
+            c.system_message as systemMessage,
+            c.temperature,
+            c.max_tokens as maxTokens,
+            c.max_contexts as maxContexts,
+            c.create_time as createTime
+        FROM ai_chat_conversation c
+            LEFT JOIN ai_model m ON c.model_id = m.id
+        WHERE c.user_id = #{userId}
+        AND c.del_flag = 0
     </select>
 
     <select id="selectListByUserIdAndPinned" resultMap="AiChatConversationResult">
@@ -87,8 +88,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             c.max_tokens as maxTokens,
             c.max_contexts as maxContexts,
             c.create_time as createTime,
-            (SELECT COUNT(m.id) FROM ai_chat_message m WHERE m.conversation_id = c.id and m.del_flag = 0) as messageCount
+            COALESCE(m.msg_count, 0) as messageCount
         from ai_chat_conversation c
+            LEFT JOIN (
+                SELECT
+                conversation_id,
+                COUNT(id) as msg_count
+                FROM ai_chat_message
+                WHERE del_flag = 0
+                GROUP BY conversation_id
+            ) m ON c.id = m.conversation_id
         <where>
             <if test="userId != null and userId != ''">
                 and c.user_id = #{userId}
