@@ -107,7 +107,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
      * @return 聊天对话列表
      */
     @Override
-    public List<AiChatConversation> getChatConversationListByUserId(Long userId) {
+    public List<AiChatConversationRespVO> getChatConversationListByUserId(Long userId) {
         return aiChatConversationMapper.selectListByUserId(userId);
     }
 

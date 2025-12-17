@@ -36,7 +36,7 @@ public interface IAiChatConversationService {
      * @param userId 用户ID
      * @return 聊天对话列表
      */
-    List<AiChatConversation> getChatConversationListByUserId(Long userId);
+    List<AiChatConversationRespVO> getChatConversationListByUserId(Long userId);
 
     /**
      * 获得我的聊天对话

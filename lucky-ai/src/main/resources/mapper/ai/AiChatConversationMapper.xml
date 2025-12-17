@@ -45,8 +45,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and del_flag = 0
     </select>
 
-    <select id="selectListByUserId" resultMap="AiChatConversationResult">
-        <include refid="selectAiChatConversationVo"/>
+    <select id="selectListByUserId" resultType="com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO">
+        select
+            id,
+            user_id as userId,
+            title,
+            pinned,
+            role_id as roleId,
+            model_id as modelId,
+            model,
+            (SELECT name FROM ai_model WHERE id = model_id) as modelName,
+            system_message as systemMessage,
+            temperature,
+            max_tokens as maxTokens,
+            max_contexts as maxContexts,
+            create_time as createTime
+        from ai_chat_conversation
         where user_id = #{userId}
         and del_flag = 0
     </select>

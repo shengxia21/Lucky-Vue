@@ -54,8 +54,8 @@ public class AiChatConversationController extends BaseController {
      */
     @GetMapping("/my-list")
     public AjaxResult getChatConversationMyList() {
-        List<AiChatConversation> list = aiChatConversationService.getChatConversationListByUserId(getUserId());
-        return success(BeanUtil.copyToList(list, AiChatConversationRespVO.class));
+        List<AiChatConversationRespVO> list = aiChatConversationService.getChatConversationListByUserId(getUserId());
+        return success(list);
     }
 
     /**

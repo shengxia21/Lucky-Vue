@@ -19,7 +19,7 @@ public interface AiChatConversationMapper {
      * @param userId 用户ID
      * @return 聊天对话列表
      */
-    List<AiChatConversation> selectListByUserId(Long userId);
+    List<AiChatConversationRespVO> selectListByUserId(Long userId);
 
     /**
      * 查询AI 聊天对话
