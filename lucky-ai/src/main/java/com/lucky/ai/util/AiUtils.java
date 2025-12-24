@@ -37,9 +37,9 @@ public class AiUtils {
         toolContext = ObjUtil.defaultIfNull(toolContext, Collections.emptyMap());
         return switch (platform) {
             case TONG_YI ->
-                    DashScopeChatOptions.builder().withModel(model).withTemperature(temperature).withMaxToken(maxTokens)
-                            .withEnableThinking(true)
-                            .withToolCallbacks(toolCallbacks).withToolContext(toolContext).build();
+                    DashScopeChatOptions.builder().model(model).temperature(temperature).maxToken(maxTokens)
+                            .enableThinking(true)
+                            .toolCallbacks(toolCallbacks).toolContext(toolContext).build();
             // 复用 DeepSeek 客户端
             case DEEP_SEEK, DOU_BAO, HUN_YUAN, SILICON_FLOW, XING_HUO ->
                     DeepSeekChatOptions.builder().model(model).temperature(temperature).maxTokens(maxTokens)
@@ -89,8 +89,9 @@ public class AiUtils {
         }
         if (response.getResult().getOutput() instanceof DeepSeekAssistantMessage) {
             return ((DeepSeekAssistantMessage) (response.getResult().getOutput())).getReasoningContent();
+        } else {
+            return (String) response.getResult().getOutput().getMetadata().getOrDefault("reasoningContent", "");
         }
-        return null;
     }
 
 }
