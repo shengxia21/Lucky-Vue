@@ -349,7 +349,7 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
     private List<AiChatMessage> filterContextMessages(List<AiChatMessage> messages,
                                                       AiChatConversation conversation,
                                                       AiChatMessageSendReqVO sendReqVO) {
-        if (conversation.getMaxContexts() == null || ObjUtil.notEqual(sendReqVO.getUseContext(), Boolean.TRUE)) {
+        if (conversation.getMaxContexts() == null || conversation.getMaxContexts() <= 0 || ObjUtil.notEqual(sendReqVO.getUseContext(), Boolean.TRUE)) {
             return Collections.emptyList();
         }
         List<AiChatMessage> contextMessages = new ArrayList<>(conversation.getMaxContexts() * 2);
