@@ -387,6 +387,17 @@ INSERT INTO `sys_dict_data` VALUES (42, 11, '腾讯混元', 'HunYuan', 'ai_platf
 INSERT INTO `sys_dict_data` VALUES (43, 12, '硅基流动', 'SiliconFlow', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
 INSERT INTO `sys_dict_data` VALUES (45, 15, '月之暗灭', 'Moonshot', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
 INSERT INTO `sys_dict_data` VALUES (46, 16, '百川智能', 'BaiChuan', 'ai_platform', '', NULL, 'N', '0', 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (47, 1, '进行中', '10', 'ai_image_status', NULL, 'primary', 'N', '0', 'admin', '2025-12-09 02:26:57', '', NULL, '绘制中');
+INSERT INTO `sys_dict_data` VALUES (48, 2, '已完成', '20', 'ai_image_status', NULL, 'success', 'N', '0', 'admin', '2025-12-09 02:27:18', '', NULL, '绘制完成');
+INSERT INTO `sys_dict_data` VALUES (49, 3, '已失败', '30', 'ai_image_status', NULL, 'danger', 'N', '0', 'admin', '2025-12-09 02:27:39', '', NULL, '绘制失败');
+INSERT INTO `sys_dict_data` VALUES (50, 1, '聊天', '1', 'ai_model_type', NULL, 'info', 'N', '0', 'admin', '2025-12-09 02:29:44', '', NULL, '聊天模型');
+INSERT INTO `sys_dict_data` VALUES (51, 2, '图像', '2', 'ai_model_type', NULL, 'primary', 'N', '0', 'admin', '2025-12-09 02:30:16', '', NULL, '图像模型');
+INSERT INTO `sys_dict_data` VALUES (52, 3, '音频', '3', 'ai_model_type', NULL, 'success', 'N', '0', 'admin', '2025-12-09 02:30:34', '', NULL, '音频模型');
+INSERT INTO `sys_dict_data` VALUES (53, 4, '视频', '4', 'ai_model_type', NULL, 'warning', 'N', '0', 'admin', '2025-12-09 02:30:59', '', NULL, '视频模型');
+INSERT INTO `sys_dict_data` VALUES (54, 5, '向量', '5', 'ai_model_type', NULL, 'danger', 'N', '0', 'admin', '2025-12-09 02:31:17', '', NULL, '向量模型');
+INSERT INTO `sys_dict_data` VALUES (55, 6, '重排', '6', 'ai_model_type', NULL, 'danger', 'N', '0', 'admin', '2025-12-09 02:31:34', '', NULL, '重排模型');
+INSERT INTO `sys_dict_data` VALUES (56, 1, '是', 'true', 'boolean_string', NULL, 'primary', 'N', '0', 'admin', '2025-12-12 23:28:48', '', NULL, '是');
+INSERT INTO `sys_dict_data` VALUES (57, 2, '否', 'false', 'boolean_string', NULL, 'danger', 'N', '0', 'admin', '2025-12-12 23:29:03', '', NULL, '否');
 
 -- ----------------------------
 -- Table structure for sys_dict_type
@@ -419,7 +430,10 @@ INSERT INTO `sys_dict_type` VALUES (7, '通知类型', 'sys_notice_type', '0', '
 INSERT INTO `sys_dict_type` VALUES (8, '通知状态', 'sys_notice_status', '0', 'admin', '2025-08-17 23:07:13', '', NULL, '通知状态列表');
 INSERT INTO `sys_dict_type` VALUES (9, '操作类型', 'sys_oper_type', '0', 'admin', '2025-08-17 23:07:13', '', NULL, '操作类型列表');
 INSERT INTO `sys_dict_type` VALUES (10, '系统状态', 'sys_common_status', '0', 'admin', '2025-08-17 23:07:13', '', NULL, '登录状态列表');
-INSERT INTO `sys_dict_type` VALUES (11, 'AI模型平台', 'ai_platform', '0', 'admin', '2025-11-15 02:15:43', '', NULL, 'AI模型列表');
+INSERT INTO `sys_dict_type` VALUES (11, 'AI 模型平台', 'ai_platform', '0', 'admin', '2025-11-15 02:15:43', '', NULL, 'AI 模型列表');
+INSERT INTO `sys_dict_type` VALUES (12, 'AI 绘画状态', 'ai_image_status', '0', 'admin', '2025-12-09 02:24:51', '', NULL, '绘画状态列表');
+INSERT INTO `sys_dict_type` VALUES (13, 'AI 模型类型', 'ai_model_type', '0', 'admin', '2025-12-09 02:28:46', '', NULL, 'AI 模型类型列表');
+INSERT INTO `sys_dict_type` VALUES (14, 'Bool是否类型', 'boolean_string', '0', 'admin', '2025-12-12 23:28:06', '', NULL, '是否类型列表');
 
 -- ----------------------------
 -- Table structure for sys_logininfor
@@ -486,13 +500,13 @@ INSERT INTO `sys_menu` VALUES (104, '岗位管理', 1, 5, 'post', 'system/post/i
 INSERT INTO `sys_menu` VALUES (105, '字典管理', 1, 6, 'dict', 'system/dict/index', '', '', 1, 0, 'C', '0', '0', 'system:dict:list', 'dict', 'admin', '2025-08-17 23:07:13', '', NULL, '字典管理菜单');
 INSERT INTO `sys_menu` VALUES (106, '参数设置', 1, 7, 'config', 'system/config/index', '', '', 1, 0, 'C', '0', '0', 'system:config:list', 'edit', 'admin', '2025-08-17 23:07:13', '', NULL, '参数设置菜单');
 INSERT INTO `sys_menu` VALUES (107, '通知公告', 1, 8, 'notice', 'system/notice/index', '', '', 1, 0, 'C', '0', '0', 'system:notice:list', 'message', 'admin', '2025-08-17 23:07:13', '', NULL, '通知公告菜单');
-INSERT INTO `sys_menu` VALUES (108, '日志管理', 2, 4, 'log', '', '', '', 1, 0, 'M', '0', '0', '', 'log', 'admin', '2025-08-17 23:07:13', '', NULL, '日志管理菜单');
+INSERT INTO `sys_menu` VALUES (108, '日志管理', 2, 5, 'log', '', '', '', 1, 0, 'M', '0', '0', '', 'log', 'admin', '2025-08-17 23:07:13', '', NULL, '日志管理菜单');
 INSERT INTO `sys_menu` VALUES (109, '在线用户', 2, 1, 'online', 'monitor/online/index', '', '', 1, 0, 'C', '0', '0', 'monitor:online:list', 'online', 'admin', '2025-08-17 23:07:13', '', NULL, '在线用户菜单');
 INSERT INTO `sys_menu` VALUES (111, '数据监控', 2, 3, 'druid', 'monitor/druid/index', '', '', 1, 0, 'C', '0', '0', 'monitor:druid:list', 'druid', 'admin', '2025-10-15 23:09:30', '', NULL, '数据监控菜单');
 INSERT INTO `sys_menu` VALUES (112, '服务监控', 2, 2, 'server', 'monitor/server/index', '', '', 1, 0, 'C', '0', '0', 'monitor:server:list', 'server', 'admin', '2025-09-25 01:58:09', '', NULL, '服务监控菜单');
-INSERT INTO `sys_menu` VALUES (114, '缓存列表', 2, 3, 'cacheList', 'monitor/cache/list', '', '', 1, 0, 'C', '0', '0', 'monitor:cache:list', 'redis-list', 'admin', '2025-08-17 23:07:13', '', NULL, '缓存列表菜单');
+INSERT INTO `sys_menu` VALUES (114, '缓存列表', 2, 4, 'cacheList', 'monitor/cache/list', '', '', 1, 0, 'C', '0', '0', 'monitor:cache:list', 'redis-list', 'admin', '2025-08-17 23:07:13', '', NULL, '缓存列表菜单');
 INSERT INTO `sys_menu` VALUES (116, '代码生成', 3, 1, 'gen', 'tool/gen/index', '', '', 1, 0, 'C', '0', '0', 'tool:gen:list', 'code', 'admin', '2025-08-17 23:07:13', '', NULL, '代码生成菜单');
-INSERT INTO `sys_menu` VALUES (117, '系统接口', 3, 3, 'swagger', 'tool/swagger/index', '', '', 1, 0, 'C', '0', '0', 'tool:swagger:list', 'swagger', 'admin', '2025-10-17 02:00:00', '', NULL, '系统接口菜单');
+INSERT INTO `sys_menu` VALUES (117, '系统接口', 3, 2, 'swagger', 'tool/swagger/index', '', '', 1, 0, 'C', '0', '0', 'tool:swagger:list', 'swagger', 'admin', '2025-10-17 02:00:00', '', NULL, '系统接口菜单');
 INSERT INTO `sys_menu` VALUES (500, '操作日志', 108, 1, 'operlog', 'monitor/operlog/index', '', '', 1, 0, 'C', '0', '0', 'monitor:operlog:list', 'form', 'admin', '2025-08-17 23:07:13', '', NULL, '操作日志菜单');
 INSERT INTO `sys_menu` VALUES (501, '登录日志', 108, 2, 'logininfor', 'monitor/logininfor/index', '', '', 1, 0, 'C', '0', '0', 'monitor:logininfor:list', 'logininfor', 'admin', '2025-08-17 23:07:13', '', NULL, '登录日志菜单');
 INSERT INTO `sys_menu` VALUES (1000, '用户查询', 100, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:query', '#', 'admin', '2025-08-17 23:07:13', '', NULL, '');
@@ -550,6 +564,26 @@ INSERT INTO `sys_menu` VALUES (1057, '生成删除', 116, 3, '#', '', '', '', 1,
 INSERT INTO `sys_menu` VALUES (1058, '导入代码', 116, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:import', '#', 'admin', '2025-08-17 23:07:13', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1059, '预览代码', 116, 5, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:preview', '#', 'admin', '2025-08-17 23:07:13', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1060, '生成代码', 116, 6, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:code', '#', 'admin', '2025-08-17 23:07:13', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1061, 'AI 大模型', 0, 4, 'ai', NULL, NULL, '', 1, 0, 'M', '0', '0', '', 'ai', 'admin', '2025-12-08 00:21:07', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1062, 'AI 对话', 1061, 1, 'chat', 'ai/chat/index', NULL, '', 1, 0, 'C', '0', '0', '', 'chat', 'admin', '2025-12-08 00:35:48', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1063, 'AI 绘画', 1061, 2, 'image', 'ai/image/index', NULL, '', 1, 0, 'C', '0', '0', '', 'image', 'admin', '2025-12-08 00:36:50', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1064, '控制台', 1061, 5, 'console', NULL, NULL, '', 1, 0, 'M', '0', '0', NULL, 'console', 'admin', '2025-12-08 00:41:30', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1065, '模型配置', 1064, 2, 'model', 'ai/console/model/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:model:list', 'model', 'admin', '2025-12-08 00:43:28', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1066, '聊天管理', 1064, 3, 'chatManager', 'ai/console/chat/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:chat-conversation:list', 'chatManager', 'admin', '2025-12-08 01:46:58', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1067, 'API 密钥', 1064, 1, 'api-key', 'ai/console/apiKey/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:api-key:list', 'key', 'admin', '2025-12-08 01:55:05', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1068, '绘画管理', 1064, 4, 'image', 'ai/console/image/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:image:list', 'imageManager', 'admin', '2025-12-08 02:01:52', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1069, 'API 密钥查询', 1067, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:query', '#', 'admin', '2025-12-08 02:25:55', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1070, 'API 密钥创建', 1067, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:create', '#', 'admin', '2025-12-08 02:26:19', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1071, 'API 密钥更新', 1067, 3, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:update', '#', 'admin', '2025-12-08 02:26:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1072, 'API 密钥删除', 1067, 4, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:delete', '#', 'admin', '2025-12-09 03:06:49', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1073, '模型配置查询', 1065, 1, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:model:query', '#', 'admin', '2025-12-10 18:07:13', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1074, '模型配置新增', 1065, 2, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:model:create', '#', 'admin', '2025-12-10 18:07:13', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1075, '模型配置修改', 1065, 3, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:model:update', '#', 'admin', '2025-12-10 18:07:13', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1076, '模型配置删除', 1065, 4, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:model:delete', '#', 'admin', '2025-12-10 18:07:13', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1077, '绘图更新', 1068, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:image:update', '#', 'admin', '2025-12-13 06:17:21', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1078, '绘画删除', 1068, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:image:delete', '#', 'admin', '2025-12-13 06:18:51', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1079, '对话删除', 1066, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-conversation:delete', '#', 'admin', '2025-12-13 18:50:55', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1080, '消息删除', 1066, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-message:delete', '#', 'admin', '2025-12-13 18:51:22', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -712,42 +746,24 @@ INSERT INTO `sys_role_menu` VALUES (2, 117);
 INSERT INTO `sys_role_menu` VALUES (2, 500);
 INSERT INTO `sys_role_menu` VALUES (2, 501);
 INSERT INTO `sys_role_menu` VALUES (2, 1000);
-INSERT INTO `sys_role_menu` VALUES (2, 1001);
 INSERT INTO `sys_role_menu` VALUES (2, 1002);
-INSERT INTO `sys_role_menu` VALUES (2, 1003);
 INSERT INTO `sys_role_menu` VALUES (2, 1004);
-INSERT INTO `sys_role_menu` VALUES (2, 1005);
 INSERT INTO `sys_role_menu` VALUES (2, 1006);
 INSERT INTO `sys_role_menu` VALUES (2, 1007);
-INSERT INTO `sys_role_menu` VALUES (2, 1008);
-INSERT INTO `sys_role_menu` VALUES (2, 1009);
-INSERT INTO `sys_role_menu` VALUES (2, 1010);
 INSERT INTO `sys_role_menu` VALUES (2, 1011);
 INSERT INTO `sys_role_menu` VALUES (2, 1012);
-INSERT INTO `sys_role_menu` VALUES (2, 1013);
-INSERT INTO `sys_role_menu` VALUES (2, 1014);
-INSERT INTO `sys_role_menu` VALUES (2, 1015);
 INSERT INTO `sys_role_menu` VALUES (2, 1016);
-INSERT INTO `sys_role_menu` VALUES (2, 1017);
 INSERT INTO `sys_role_menu` VALUES (2, 1018);
 INSERT INTO `sys_role_menu` VALUES (2, 1019);
 INSERT INTO `sys_role_menu` VALUES (2, 1020);
-INSERT INTO `sys_role_menu` VALUES (2, 1021);
 INSERT INTO `sys_role_menu` VALUES (2, 1022);
 INSERT INTO `sys_role_menu` VALUES (2, 1023);
 INSERT INTO `sys_role_menu` VALUES (2, 1024);
 INSERT INTO `sys_role_menu` VALUES (2, 1025);
-INSERT INTO `sys_role_menu` VALUES (2, 1026);
-INSERT INTO `sys_role_menu` VALUES (2, 1027);
-INSERT INTO `sys_role_menu` VALUES (2, 1028);
 INSERT INTO `sys_role_menu` VALUES (2, 1029);
 INSERT INTO `sys_role_menu` VALUES (2, 1030);
-INSERT INTO `sys_role_menu` VALUES (2, 1031);
-INSERT INTO `sys_role_menu` VALUES (2, 1032);
-INSERT INTO `sys_role_menu` VALUES (2, 1033);
 INSERT INTO `sys_role_menu` VALUES (2, 1034);
 INSERT INTO `sys_role_menu` VALUES (2, 1035);
-INSERT INTO `sys_role_menu` VALUES (2, 1036);
 INSERT INTO `sys_role_menu` VALUES (2, 1037);
 INSERT INTO `sys_role_menu` VALUES (2, 1038);
 INSERT INTO `sys_role_menu` VALUES (2, 1039);
@@ -766,6 +782,17 @@ INSERT INTO `sys_role_menu` VALUES (2, 1057);
 INSERT INTO `sys_role_menu` VALUES (2, 1058);
 INSERT INTO `sys_role_menu` VALUES (2, 1059);
 INSERT INTO `sys_role_menu` VALUES (2, 1060);
+INSERT INTO `sys_role_menu` VALUES (2, 1061);
+INSERT INTO `sys_role_menu` VALUES (2, 1062);
+INSERT INTO `sys_role_menu` VALUES (2, 1063);
+INSERT INTO `sys_role_menu` VALUES (2, 1064);
+INSERT INTO `sys_role_menu` VALUES (2, 1065);
+INSERT INTO `sys_role_menu` VALUES (2, 1066);
+INSERT INTO `sys_role_menu` VALUES (2, 1067);
+INSERT INTO `sys_role_menu` VALUES (2, 1068);
+INSERT INTO `sys_role_menu` VALUES (2, 1069);
+INSERT INTO `sys_role_menu` VALUES (2, 1073);
+INSERT INTO `sys_role_menu` VALUES (2, 1077);
 
 -- ----------------------------
 -- Table structure for sys_user
