@@ -6,7 +6,7 @@
 	<a href="https://gitee.com/fushengxuyu/lucky-vue/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
 </p>
 <p align="center">
-    <img src="https://img.shields.io/badge/Spring%20Boot-3.5.4-blue.svg" alt="Downloads">
+    <img src="https://img.shields.io/badge/Spring%20Boot-3.5.8-blue.svg" alt="Downloads">
     <img src="https://img.shields.io/badge/Vue-3.5-blue.svg" alt="Downloads">
 </p>
 
