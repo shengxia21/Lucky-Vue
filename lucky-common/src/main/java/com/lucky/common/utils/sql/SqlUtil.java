@@ -6,7 +6,7 @@ import com.lucky.common.utils.StringUtils;
 /**
  * sql操作工具类
  *
- * @author lucky
+ * @author ruoyi
  */
 public class SqlUtil {
 

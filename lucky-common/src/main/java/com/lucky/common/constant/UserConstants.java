@@ -3,7 +3,7 @@ package com.lucky.common.constant;
 /**
  * 用户常量信息
  *
- * @author lucky
+ * @author ruoyi
  */
 public class UserConstants {
 

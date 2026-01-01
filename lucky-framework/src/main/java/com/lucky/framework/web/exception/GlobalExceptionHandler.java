@@ -1,5 +1,12 @@
 package com.lucky.framework.web.exception;
 
+import com.lucky.common.constant.HttpStatus;
+import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.text.Convert;
+import com.lucky.common.exception.DemoModeException;
+import com.lucky.common.exception.ServiceException;
+import com.lucky.common.utils.StringUtils;
+import com.lucky.common.utils.html.EscapeUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,18 +18,11 @@ import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import com.lucky.common.constant.HttpStatus;
-import com.lucky.common.core.domain.AjaxResult;
-import com.lucky.common.core.text.Convert;
-import com.lucky.common.exception.DemoModeException;
-import com.lucky.common.exception.ServiceException;
-import com.lucky.common.utils.StringUtils;
-import com.lucky.common.utils.html.EscapeUtil;
 
 /**
  * 全局异常处理器
  *
- * @author lucky
+ * @author ruoyi
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {

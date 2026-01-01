@@ -5,7 +5,7 @@ import com.lucky.common.utils.StringUtils;
 /**
  * 分页数据
  *
- * @author lucky
+ * @author ruoyi
  */
 public class PageDomain {
 

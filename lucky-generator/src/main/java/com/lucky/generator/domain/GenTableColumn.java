@@ -1,13 +1,13 @@
 package com.lucky.generator.domain;
 
-import jakarta.validation.constraints.NotBlank;
 import com.lucky.common.core.domain.BaseEntity;
 import com.lucky.common.utils.StringUtils;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * 代码生成业务字段表 gen_table_column
  *
- * @author lucky
+ * @author ruoyi
  */
 public class GenTableColumn extends BaseEntity {
 

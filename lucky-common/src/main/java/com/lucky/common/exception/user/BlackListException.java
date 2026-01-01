@@ -3,7 +3,7 @@ package com.lucky.common.exception.user;
 /**
  * 黑名单IP异常类
  *
- * @author lucky
+ * @author ruoyi
  */
 public class BlackListException extends UserException {
 

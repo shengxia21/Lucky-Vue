@@ -3,7 +3,7 @@ package com.lucky.common.utils;
 /**
  * 脱敏工具类
  *
- * @author lucky
+ * @author ruoyi
  */
 public class DesensitizedUtil {
 

@@ -1,13 +1,13 @@
 package com.lucky.system.service;
 
-import java.util.List;
-
 import com.lucky.system.domain.SysPost;
+
+import java.util.List;
 
 /**
  * 岗位信息 服务层
  *
- * @author lucky
+ * @author ruoyi
  */
 public interface ISysPostService {
 

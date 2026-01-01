@@ -3,7 +3,7 @@ package com.lucky.common.utils.uuid;
 /**
  * ID生成器工具类
  *
- * @author lucky
+ * @author ruoyi
  */
 public class IdUtils {
 

@@ -1,14 +1,14 @@
 package com.lucky.framework.datasource;
 
-import java.util.Map;
-import javax.sql.DataSource;
-
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+
+import javax.sql.DataSource;
+import java.util.Map;
 
 /**
  * 动态数据源
  *
- * @author lucky
+ * @author ruoyi
  */
 public class DynamicDataSource extends AbstractRoutingDataSource {
 

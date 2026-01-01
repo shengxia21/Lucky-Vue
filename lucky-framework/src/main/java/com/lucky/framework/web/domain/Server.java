@@ -1,17 +1,8 @@
 package com.lucky.framework.web.domain;
 
-import java.net.UnknownHostException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
-
 import com.lucky.common.utils.Arith;
 import com.lucky.common.utils.ip.IpUtils;
-import com.lucky.framework.web.domain.server.Cpu;
-import com.lucky.framework.web.domain.server.Jvm;
-import com.lucky.framework.web.domain.server.Mem;
-import com.lucky.framework.web.domain.server.Sys;
-import com.lucky.framework.web.domain.server.SysFile;
+import com.lucky.framework.web.domain.server.*;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.CentralProcessor.TickType;
@@ -22,10 +13,15 @@ import oshi.software.os.OSFileStore;
 import oshi.software.os.OperatingSystem;
 import oshi.util.Util;
 
+import java.net.UnknownHostException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Properties;
+
 /**
  * 服务器相关信息
  *
- * @author lucky
+ * @author ruoyi
  */
 public class Server {
 

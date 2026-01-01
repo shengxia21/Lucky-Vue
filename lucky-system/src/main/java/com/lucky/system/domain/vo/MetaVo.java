@@ -5,7 +5,7 @@ import com.lucky.common.utils.StringUtils;
 /**
  * 路由显示信息
  *
- * @author lucky
+ * @author ruoyi
  */
 public class MetaVo {
 

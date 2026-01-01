@@ -5,7 +5,7 @@ import com.lucky.common.exception.base.BaseException;
 /**
  * 文件信息异常类
  *
- * @author lucky
+ * @author ruoyi
  */
 public class FileException extends BaseException {
 

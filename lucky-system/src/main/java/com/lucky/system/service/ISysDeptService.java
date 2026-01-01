@@ -1,14 +1,14 @@
 package com.lucky.system.service;
 
-import java.util.List;
-
 import com.lucky.common.core.domain.TreeSelect;
 import com.lucky.common.core.domain.entity.SysDept;
+
+import java.util.List;
 
 /**
  * 部门管理 服务层
  *
- * @author lucky
+ * @author ruoyi
  */
 public interface ISysDeptService {
 

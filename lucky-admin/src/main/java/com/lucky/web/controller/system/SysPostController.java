@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 岗位信息操作处理
  *
- * @author lucky
+ * @author ruoyi
  */
 @RestController
 @RequestMapping("/system/post")

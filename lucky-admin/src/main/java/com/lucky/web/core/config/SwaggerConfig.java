@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Swagger2的接口配置
  *
- * @author lucky
+ * @author ruoyi
  */
 @Configuration
 public class SwaggerConfig {

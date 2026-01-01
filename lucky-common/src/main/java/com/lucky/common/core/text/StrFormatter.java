@@ -5,7 +5,7 @@ import com.lucky.common.utils.StringUtils;
 /**
  * 字符串格式化
  *
- * @author lucky
+ * @author ruoyi
  */
 public class StrFormatter {
 

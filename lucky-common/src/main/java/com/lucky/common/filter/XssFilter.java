@@ -1,25 +1,20 @@
 package com.lucky.common.filter;
 
+import com.lucky.common.enums.HttpMethod;
+import com.lucky.common.utils.StringUtils;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import com.lucky.common.utils.StringUtils;
-import com.lucky.common.enums.HttpMethod;
-
 /**
  * 防止XSS攻击的过滤器
  *
- * @author lucky
+ * @author ruoyi
  */
 public class XssFilter implements Filter {
 

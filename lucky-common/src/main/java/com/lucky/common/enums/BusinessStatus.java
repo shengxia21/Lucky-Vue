@@ -3,7 +3,7 @@ package com.lucky.common.enums;
 /**
  * 操作状态
  *
- * @author lucky
+ * @author ruoyi
  */
 public enum BusinessStatus {
     /**

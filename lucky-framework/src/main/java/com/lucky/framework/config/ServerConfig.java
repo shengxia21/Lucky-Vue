@@ -1,13 +1,13 @@
 package com.lucky.framework.config;
 
+import com.lucky.common.utils.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
-import com.lucky.common.utils.ServletUtils;
 
 /**
  * 服务相关配置
  *
- * @author lucky
+ * @author ruoyi
  */
 @Component
 public class ServerConfig {

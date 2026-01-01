@@ -3,7 +3,7 @@ package com.lucky.common.constant;
 /**
  * 代码生成通用常量
  *
- * @author lucky
+ * @author ruoyi
  */
 public class GenConstants {
 

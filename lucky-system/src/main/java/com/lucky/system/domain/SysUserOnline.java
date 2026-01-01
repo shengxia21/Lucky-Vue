@@ -3,7 +3,7 @@ package com.lucky.system.domain;
 /**
  * 当前在线会话
  *
- * @author lucky
+ * @author ruoyi
  */
 public class SysUserOnline {
 

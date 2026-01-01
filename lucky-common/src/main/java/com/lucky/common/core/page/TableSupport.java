@@ -6,7 +6,7 @@ import com.lucky.common.utils.ServletUtils;
 /**
  * 表格数据处理
  *
- * @author lucky
+ * @author ruoyi
  */
 public class TableSupport {
 

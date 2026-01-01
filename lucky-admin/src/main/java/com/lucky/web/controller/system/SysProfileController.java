@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * 个人信息 业务处理
  *
- * @author lucky
+ * @author ruoyi
  */
 @RestController
 @RequestMapping("/system/user/profile")

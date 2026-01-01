@@ -3,7 +3,7 @@ package com.lucky.common.exception.job;
 /**
  * 计划策略异常
  *
- * @author lucky
+ * @author ruoyi
  */
 public class TaskException extends Exception {
 

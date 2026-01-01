@@ -1,13 +1,13 @@
 package com.lucky.system.mapper;
 
-import java.util.List;
-
 import com.lucky.system.domain.SysPost;
+
+import java.util.List;
 
 /**
  * 岗位信息 数据层
  *
- * @author lucky
+ * @author ruoyi
  */
 public interface SysPostMapper {
 

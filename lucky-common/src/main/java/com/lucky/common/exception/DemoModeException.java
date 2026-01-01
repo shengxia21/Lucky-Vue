@@ -3,7 +3,7 @@ package com.lucky.common.exception;
 /**
  * 演示模式异常
  *
- * @author lucky
+ * @author ruoyi
  */
 public class DemoModeException extends RuntimeException {
 

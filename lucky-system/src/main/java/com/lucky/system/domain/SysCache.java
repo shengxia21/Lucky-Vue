@@ -5,7 +5,7 @@ import com.lucky.common.utils.StringUtils;
 /**
  * 缓存信息
  *
- * @author lucky
+ * @author ruoyi
  */
 public class SysCache {
 

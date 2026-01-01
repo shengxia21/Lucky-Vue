@@ -1,14 +1,14 @@
 package com.lucky.common.core.text;
 
+import com.lucky.common.utils.StringUtils;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-
-import com.lucky.common.utils.StringUtils;
 
 /**
  * 字符集工具类
  *
- * @author lucky
+ * @author ruoyi
  */
 public class CharsetKit {
 

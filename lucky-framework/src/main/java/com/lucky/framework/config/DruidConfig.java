@@ -1,16 +1,5 @@
 package com.lucky.framework.config;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import javax.sql.DataSource;
-
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot3.autoconfigure.DruidDataSourceBuilder;
 import com.alibaba.druid.spring.boot3.autoconfigure.properties.DruidStatProperties;
@@ -19,16 +8,23 @@ import com.lucky.common.enums.DataSourceType;
 import com.lucky.common.utils.spring.SpringUtils;
 import com.lucky.framework.config.properties.DruidProperties;
 import com.lucky.framework.datasource.DynamicDataSource;
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * druid 配置多数据源
  *
- * @author lucky
+ * @author ruoyi
  */
 @Configuration
 public class DruidConfig {

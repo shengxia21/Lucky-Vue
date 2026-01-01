@@ -1,14 +1,14 @@
 package com.lucky.common.enums;
 
+import org.springframework.lang.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.lang.Nullable;
 
 /**
  * 请求方式
  *
- * @author lucky
+ * @author ruoyi
  */
 public enum HttpMethod {
     GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACE;

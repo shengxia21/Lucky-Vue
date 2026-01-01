@@ -3,7 +3,7 @@ package com.lucky.common.constant;
 /**
  * 缓存的key 常量
  *
- * @author lucky
+ * @author ruoyi
  */
 public class CacheConstants {
 

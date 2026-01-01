@@ -1,20 +1,15 @@
 package com.lucky.common.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.springframework.util.AntPathMatcher;
 import com.lucky.common.constant.Constants;
 import com.lucky.common.core.text.StrFormatter;
+import org.springframework.util.AntPathMatcher;
+
+import java.util.*;
 
 /**
  * 字符串工具类
  *
- * @author lucky
+ * @author ruoyi
  */
 @SuppressWarnings("deprecation")
 public class StringUtils extends org.apache.commons.lang3.StringUtils {

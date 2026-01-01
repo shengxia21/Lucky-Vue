@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 验证码操作处理
  *
- * @author lucky
+ * @author ruoyi
  */
 @RestController
 public class CaptchaController {

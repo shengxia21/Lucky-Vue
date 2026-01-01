@@ -1,17 +1,17 @@
 package com.lucky.system.domain;
 
+import com.lucky.common.annotation.Excel;
+import com.lucky.common.annotation.Excel.ColumnType;
+import com.lucky.common.core.domain.BaseEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.lucky.common.annotation.Excel;
-import com.lucky.common.annotation.Excel.ColumnType;
-import com.lucky.common.core.domain.BaseEntity;
 
 /**
  * 参数配置表 sys_config
  *
- * @author lucky
+ * @author ruoyi
  */
 public class SysConfig extends BaseEntity {
 

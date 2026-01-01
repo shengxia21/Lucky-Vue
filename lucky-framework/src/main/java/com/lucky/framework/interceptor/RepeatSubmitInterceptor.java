@@ -1,21 +1,21 @@
 package com.lucky.framework.interceptor;
 
-import java.lang.reflect.Method;
-
+import com.alibaba.fastjson2.JSON;
+import com.lucky.common.annotation.RepeatSubmit;
+import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.utils.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-import com.alibaba.fastjson2.JSON;
-import com.lucky.common.annotation.RepeatSubmit;
-import com.lucky.common.core.domain.AjaxResult;
-import com.lucky.common.utils.ServletUtils;
+
+import java.lang.reflect.Method;
 
 /**
  * 防止重复提交拦截器
  *
- * @author lucky
+ * @author ruoyi
  */
 @Component
 public abstract class RepeatSubmitInterceptor implements HandlerInterceptor {

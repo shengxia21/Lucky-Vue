@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * 代码生成 操作处理
  *
- * @author lucky
+ * @author ruoyi
  */
 @RestController
 @RequestMapping("/tool/gen")

@@ -1,8 +1,5 @@
 package com.lucky.common.config.serializer;
 
-import java.io.IOException;
-import java.util.Objects;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -14,10 +11,13 @@ import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.enums.DesensitizedType;
 import com.lucky.common.utils.SecurityUtils;
 
+import java.io.IOException;
+import java.util.Objects;
+
 /**
  * 数据脱敏序列化过滤
  *
- * @author lucky
+ * @author ruoyi
  */
 public class SensitiveJsonSerializer extends JsonSerializer<String> implements ContextualSerializer {
 

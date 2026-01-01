@@ -1,13 +1,13 @@
 package com.lucky.system.service;
 
-import java.util.List;
-
 import com.lucky.system.domain.SysConfig;
+
+import java.util.List;
 
 /**
  * 参数配置 服务层
  *
- * @author lucky
+ * @author ruoyi
  */
 public interface ISysConfigService {
 

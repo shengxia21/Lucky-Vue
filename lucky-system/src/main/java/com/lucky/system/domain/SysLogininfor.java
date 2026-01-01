@@ -1,16 +1,16 @@
 package com.lucky.system.domain;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
 import com.lucky.common.core.domain.BaseEntity;
 
+import java.util.Date;
+
 /**
  * 系统访问记录表 sys_logininfor
  *
- * @author lucky
+ * @author ruoyi
  */
 public class SysLogininfor extends BaseEntity {
 

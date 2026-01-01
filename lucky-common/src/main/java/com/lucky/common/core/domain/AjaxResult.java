@@ -1,15 +1,15 @@
 package com.lucky.common.core.domain;
 
-import java.util.HashMap;
-import java.util.Objects;
-
 import com.lucky.common.constant.HttpStatus;
 import com.lucky.common.utils.StringUtils;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * 操作消息提醒
  *
- * @author lucky
+ * @author ruoyi
  */
 public class AjaxResult extends HashMap<String, Object> {
 

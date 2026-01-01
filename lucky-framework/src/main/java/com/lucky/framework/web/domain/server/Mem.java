@@ -5,7 +5,7 @@ import com.lucky.common.utils.Arith;
 /**
  * 內存相关信息
  *
- * @author lucky
+ * @author ruoyi
  */
 public class Mem {
 

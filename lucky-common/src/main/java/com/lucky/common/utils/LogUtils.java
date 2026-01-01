@@ -3,7 +3,7 @@ package com.lucky.common.utils;
 /**
  * 处理并记录日志文件
  *
- * @author lucky
+ * @author ruoyi
  */
 public class LogUtils {
 

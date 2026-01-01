@@ -1,18 +1,18 @@
 package com.lucky.system.domain;
 
+import com.lucky.common.annotation.Excel;
+import com.lucky.common.annotation.Excel.ColumnType;
+import com.lucky.common.core.domain.BaseEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.lucky.common.annotation.Excel;
-import com.lucky.common.annotation.Excel.ColumnType;
-import com.lucky.common.core.domain.BaseEntity;
 
 /**
  * 岗位表 sys_post
  *
- * @author lucky
+ * @author ruoyi
  */
 public class SysPost extends BaseEntity {
 

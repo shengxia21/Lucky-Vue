@@ -1,13 +1,13 @@
 package com.lucky.system.mapper;
 
-import java.util.List;
-
 import com.lucky.system.domain.SysOperLog;
+
+import java.util.List;
 
 /**
  * 操作日志 数据层
  *
- * @author lucky
+ * @author ruoyi
  */
 public interface SysOperLogMapper {
 

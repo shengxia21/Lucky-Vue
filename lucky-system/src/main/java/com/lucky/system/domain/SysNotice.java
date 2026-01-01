@@ -1,16 +1,16 @@
 package com.lucky.system.domain;
 
+import com.lucky.common.core.domain.BaseEntity;
+import com.lucky.common.xss.Xss;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.lucky.common.core.domain.BaseEntity;
-import com.lucky.common.xss.Xss;
 
 /**
  * 通知公告表 sys_notice
  *
- * @author lucky
+ * @author ruoyi
  */
 public class SysNotice extends BaseEntity {
 

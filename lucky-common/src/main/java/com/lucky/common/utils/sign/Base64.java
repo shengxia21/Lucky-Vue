@@ -3,7 +3,7 @@ package com.lucky.common.utils.sign;
 /**
  * Base64工具类
  *
- * @author lucky
+ * @author ruoyi
  */
 public final class Base64 {
 

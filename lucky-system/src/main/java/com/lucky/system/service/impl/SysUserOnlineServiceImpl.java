@@ -1,15 +1,15 @@
 package com.lucky.system.service.impl;
 
-import org.springframework.stereotype.Service;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.system.domain.SysUserOnline;
 import com.lucky.system.service.ISysUserOnlineService;
+import org.springframework.stereotype.Service;
 
 /**
  * 在线用户 服务层处理
  *
- * @author lucky
+ * @author ruoyi
  */
 @Service
 public class SysUserOnlineServiceImpl implements ISysUserOnlineService {

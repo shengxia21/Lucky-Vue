@@ -3,7 +3,7 @@ package com.lucky.common.exception.user;
 /**
  * 用户错误最大次数异常类
  *
- * @author lucky
+ * @author ruoyi
  */
 public class UserPasswordRetryLimitExceedException extends UserException {
 

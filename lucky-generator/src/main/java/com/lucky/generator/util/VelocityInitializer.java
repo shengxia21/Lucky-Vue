@@ -1,14 +1,14 @@
 package com.lucky.generator.util;
 
-import java.util.Properties;
-
-import org.apache.velocity.app.Velocity;
 import com.lucky.common.constant.Constants;
+import org.apache.velocity.app.Velocity;
+
+import java.util.Properties;
 
 /**
  * VelocityEngine工厂
  *
- * @author lucky
+ * @author ruoyi
  */
 public class VelocityInitializer {
 

@@ -3,7 +3,7 @@ package com.lucky.common.enums;
 /**
  * 业务操作类型
  *
- * @author lucky
+ * @author ruoyi
  */
 public enum BusinessType {
     /**

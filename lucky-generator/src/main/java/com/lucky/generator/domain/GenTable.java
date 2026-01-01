@@ -1,18 +1,18 @@
 package com.lucky.generator.domain;
 
-import java.util.List;
-
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import org.apache.commons.lang3.ArrayUtils;
 import com.lucky.common.constant.GenConstants;
 import com.lucky.common.core.domain.BaseEntity;
 import com.lucky.common.utils.StringUtils;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.List;
 
 /**
  * 业务表 gen_table
  *
- * @author lucky
+ * @author ruoyi
  */
 public class GenTable extends BaseEntity {
 

@@ -1,16 +1,16 @@
 package com.lucky.system.domain;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
 import com.lucky.common.core.domain.BaseEntity;
 
+import java.util.Date;
+
 /**
  * 操作日志记录表 oper_log
  *
- * @author lucky
+ * @author ruoyi
  */
 public class SysOperLog extends BaseEntity {
 

@@ -1,14 +1,14 @@
 package com.lucky.framework.web.domain.server;
 
-import java.lang.management.ManagementFactory;
-
 import com.lucky.common.utils.Arith;
 import com.lucky.common.utils.DateUtils;
+
+import java.lang.management.ManagementFactory;
 
 /**
  * JVM相关信息
  *
- * @author lucky
+ * @author ruoyi
  */
 public class Jvm {
 

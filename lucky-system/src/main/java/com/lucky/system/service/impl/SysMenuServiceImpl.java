@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 /**
  * 菜单 业务层处理
  *
- * @author lucky
+ * @author ruoyi
  */
 @Service
 public class SysMenuServiceImpl implements ISysMenuService {

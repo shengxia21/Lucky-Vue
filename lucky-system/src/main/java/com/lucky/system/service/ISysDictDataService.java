@@ -1,13 +1,13 @@
 package com.lucky.system.service;
 
-import java.util.List;
-
 import com.lucky.common.core.domain.entity.SysDictData;
+
+import java.util.List;
 
 /**
  * 字典 业务层
  *
- * @author lucky
+ * @author ruoyi
  */
 public interface ISysDictDataService {
 

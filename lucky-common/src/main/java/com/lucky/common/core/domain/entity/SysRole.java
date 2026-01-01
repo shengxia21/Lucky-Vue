@@ -1,20 +1,20 @@
 package com.lucky.common.core.domain.entity;
 
-import java.util.Set;
-
+import com.lucky.common.annotation.Excel;
+import com.lucky.common.annotation.Excel.ColumnType;
+import com.lucky.common.core.domain.BaseEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.lucky.common.annotation.Excel;
-import com.lucky.common.annotation.Excel.ColumnType;
-import com.lucky.common.core.domain.BaseEntity;
+
+import java.util.Set;
 
 /**
  * 角色表 sys_role
  *
- * @author lucky
+ * @author ruoyi
  */
 public class SysRole extends BaseEntity {
 

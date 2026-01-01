@@ -1,13 +1,13 @@
 package com.lucky.system.mapper;
 
-import java.util.List;
-
 import com.lucky.system.domain.SysNotice;
+
+import java.util.List;
 
 /**
  * 通知公告表 数据层
  *
- * @author lucky
+ * @author ruoyi
  */
 public interface SysNoticeMapper {
 

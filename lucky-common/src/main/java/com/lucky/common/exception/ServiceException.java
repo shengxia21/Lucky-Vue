@@ -3,7 +3,7 @@ package com.lucky.common.exception;
 /**
  * 业务异常
  *
- * @author lucky
+ * @author ruoyi
  */
 public final class ServiceException extends RuntimeException {
 

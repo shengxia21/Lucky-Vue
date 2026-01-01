@@ -6,7 +6,7 @@ import com.lucky.common.utils.StringUtils;
 /**
  * 基础异常
  *
- * @author lucky
+ * @author ruoyi
  */
 public class BaseException extends RuntimeException {
 

@@ -1,12 +1,12 @@
 package com.lucky.common.utils.uuid;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.StringUtils;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
- * @author lucky 序列生成类
+ * @author ruoyi 序列生成类
  */
 public class Seq {
 

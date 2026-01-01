@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 字典 业务层处理
  *
- * @author lucky
+ * @author ruoyi
  */
 @Service
 public class SysDictDataServiceImpl implements ISysDictDataService {

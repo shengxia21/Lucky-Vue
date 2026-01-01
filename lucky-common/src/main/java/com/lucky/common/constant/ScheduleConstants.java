@@ -3,7 +3,7 @@ package com.lucky.common.constant;
 /**
  * 任务调度通用常量
  *
- * @author lucky
+ * @author ruoyi
  */
 public class ScheduleConstants {
 

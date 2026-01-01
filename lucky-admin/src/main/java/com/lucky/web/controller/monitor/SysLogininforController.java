@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 系统访问记录
  *
- * @author lucky
+ * @author ruoyi
  */
 @RestController
 @RequestMapping("/monitor/logininfor")

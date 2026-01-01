@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * web层通用数据处理
  *
- * @author lucky
+ * @author ruoyi
  */
 public class BaseController {
 

@@ -3,7 +3,7 @@ package com.lucky.common.core.domain.model;
 /**
  * 用户登录对象
  *
- * @author lucky
+ * @author ruoyi
  */
 public class LoginBody {
 

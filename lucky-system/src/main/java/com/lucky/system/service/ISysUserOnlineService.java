@@ -6,7 +6,7 @@ import com.lucky.system.domain.SysUserOnline;
 /**
  * 在线用户 服务层
  *
- * @author lucky
+ * @author ruoyi
  */
 public interface ISysUserOnlineService {
 

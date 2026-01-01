@@ -1,5 +1,7 @@
 package com.lucky.common.core.text;
 
+import com.lucky.common.utils.StringUtils;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -8,12 +10,10 @@ import java.nio.charset.Charset;
 import java.text.NumberFormat;
 import java.util.Set;
 
-import com.lucky.common.utils.StringUtils;
-
 /**
  * 类型转换器
  *
- * @author lucky
+ * @author ruoyi
  */
 public class Convert {
 

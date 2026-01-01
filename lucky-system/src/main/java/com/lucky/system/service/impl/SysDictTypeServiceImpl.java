@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * 字典 业务层处理
  *
- * @author lucky
+ * @author ruoyi
  */
 @Service
 public class SysDictTypeServiceImpl implements ISysDictTypeService {

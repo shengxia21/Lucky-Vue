@@ -1,13 +1,13 @@
 package com.lucky.generator.service;
 
-import java.util.List;
-
 import com.lucky.generator.domain.GenTableColumn;
+
+import java.util.List;
 
 /**
  * 业务字段 服务层
  *
- * @author lucky
+ * @author ruoyi
  */
 public interface IGenTableColumnService {
 

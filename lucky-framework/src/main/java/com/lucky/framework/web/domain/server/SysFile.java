@@ -3,7 +3,7 @@ package com.lucky.framework.web.domain.server;
 /**
  * 系统文件相关信息
  *
- * @author lucky
+ * @author ruoyi
  */
 public class SysFile {
 

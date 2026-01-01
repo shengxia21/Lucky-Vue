@@ -1,23 +1,23 @@
 package com.lucky.framework.security.handle;
 
-import java.io.IOException;
-import java.io.Serializable;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
 import com.alibaba.fastjson2.JSON;
 import com.lucky.common.constant.HttpStatus;
 import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.utils.ServletUtils;
 import com.lucky.common.utils.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * 认证失败处理类 返回未授权
  *
- * @author lucky
+ * @author ruoyi
  */
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint, Serializable {

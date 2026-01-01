@@ -1,13 +1,13 @@
 package com.lucky.common.utils.file;
 
-import java.io.File;
-
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
 
 /**
  * 文件类型工具类
  *
- * @author lucky
+ * @author ruoyi
  */
 public class FileTypeUtils {
 

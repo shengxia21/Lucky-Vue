@@ -1,12 +1,5 @@
 package com.lucky.common.utils.file;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Objects;
-
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.web.multipart.MultipartFile;
 import com.lucky.common.config.LuckyConfig;
 import com.lucky.common.constant.Constants;
 import com.lucky.common.exception.file.FileNameLengthLimitExceededException;
@@ -16,11 +9,18 @@ import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.common.utils.uuid.IdUtils;
 import com.lucky.common.utils.uuid.Seq;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 /**
  * 文件上传工具类
  *
- * @author lucky
+ * @author ruoyi
  */
 public class FileUploadUtils {
 

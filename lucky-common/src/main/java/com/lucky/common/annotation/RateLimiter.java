@@ -1,18 +1,14 @@
 package com.lucky.common.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import com.lucky.common.constant.CacheConstants;
 import com.lucky.common.enums.LimitType;
+
+import java.lang.annotation.*;
 
 /**
  * 限流注解
  *
- * @author lucky
+ * @author ruoyi
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

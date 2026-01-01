@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 /**
  * 用户信息
  *
- * @author lucky
+ * @author ruoyi
  */
 @RestController
 @RequestMapping("/system/user")

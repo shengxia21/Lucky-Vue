@@ -1,13 +1,13 @@
 package com.lucky.framework.security.context;
 
+import com.lucky.common.core.text.Convert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-import com.lucky.common.core.text.Convert;
 
 /**
  * 权限信息
  *
- * @author lucky
+ * @author ruoyi
  */
 public class PermissionContextHolder {
 

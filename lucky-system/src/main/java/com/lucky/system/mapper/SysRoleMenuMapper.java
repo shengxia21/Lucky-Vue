@@ -1,13 +1,13 @@
 package com.lucky.system.mapper;
 
-import java.util.List;
-
 import com.lucky.system.domain.SysRoleMenu;
+
+import java.util.List;
 
 /**
  * 角色与菜单关联表 数据层
  *
- * @author lucky
+ * @author ruoyi
  */
 public interface SysRoleMenuMapper {
 

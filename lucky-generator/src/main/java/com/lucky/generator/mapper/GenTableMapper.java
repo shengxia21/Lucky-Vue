@@ -1,13 +1,13 @@
 package com.lucky.generator.mapper;
 
-import java.util.List;
-
 import com.lucky.generator.domain.GenTable;
+
+import java.util.List;
 
 /**
  * 业务 数据层
  *
- * @author lucky
+ * @author ruoyi
  */
 public interface GenTableMapper {
 

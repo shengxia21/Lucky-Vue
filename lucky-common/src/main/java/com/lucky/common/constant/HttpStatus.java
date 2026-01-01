@@ -3,7 +3,7 @@ package com.lucky.common.constant;
 /**
  * 返回状态码
  *
- * @author lucky
+ * @author ruoyi
  */
 public class HttpStatus {
 

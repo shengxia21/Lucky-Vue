@@ -5,7 +5,7 @@ import com.lucky.common.utils.StringUtils;
 /**
  * 转义和反转义工具类
  *
- * @author lucky
+ * @author ruoyi
  */
 public class EscapeUtil {
 

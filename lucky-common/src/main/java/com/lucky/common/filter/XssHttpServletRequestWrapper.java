@@ -1,9 +1,7 @@
 package com.lucky.common.filter;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
+import com.lucky.common.utils.StringUtils;
+import com.lucky.common.utils.html.EscapeUtil;
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,13 +9,15 @@ import jakarta.servlet.http.HttpServletRequestWrapper;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import com.lucky.common.utils.StringUtils;
-import com.lucky.common.utils.html.EscapeUtil;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * XSS过滤处理
  *
- * @author lucky
+ * @author ruoyi
  */
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 

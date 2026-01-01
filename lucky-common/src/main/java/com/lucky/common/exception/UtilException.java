@@ -3,7 +3,7 @@ package com.lucky.common.exception;
 /**
  * 工具类异常
  *
- * @author lucky
+ * @author ruoyi
  */
 public class UtilException extends RuntimeException {
 
