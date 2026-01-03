@@ -137,6 +137,7 @@ pagehelper:
 # Springdoc配置
 springdoc:
   api-docs:
+    enabled: true
     # Swagger的文档json数据访问地址
     path: /v3/api-docs
   swagger-ui:
