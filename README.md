@@ -84,21 +84,22 @@ Lucky-Vue是一套专注于AI大模型应用开发的开源项目。
 
 <table>
     <tr>
-        <td><img src="./image/AI对话1.png"/></td>
-        <td><img src="./image/AI对话2.png"/></td>
+        <td><img src=".image/AI对话1.png"/></td>
+        <td><img src=".image/AI对话2.png"/></td>
     </tr>
     <tr>
-        <td><img src="./image/API密钥.png"/></td>
-        <td><img src="./image/模型配置.png"/></td>
+        <td><img src=".image/API密钥.png"/></td>
+        <td><img src=".image/模型配置.png"/></td>
     </tr>
     <tr>
-        <td><img src="./image/聊天管理-对话列表.png"/></td>
-        <td><img src="./image/聊天管理-消息列表.png"/></td>
+        <td><img src=".image/聊天管理-对话列表.png"/></td>
+        <td><img src=".image/聊天管理-消息列表.png"/></td>
     </tr>
     <tr>
-        <td><img src="./image/绘画管理.png"/></td>
+        <td><img src=".image/绘画管理.png"/></td>
     </tr>
 </table>
 
 ## 特此声明
+
 本项目是基于[RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue)项目进行的二次开发，感谢作者提供的优秀代码。
