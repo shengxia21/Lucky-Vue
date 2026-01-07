@@ -3,7 +3,6 @@ package com.lucky.system.service.impl;
 import com.lucky.common.annotation.DataScope;
 import com.lucky.common.constant.UserConstants;
 import com.lucky.common.core.domain.entity.SysRole;
-import com.lucky.common.core.domain.entity.SysUser;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.StringUtils;
@@ -176,7 +175,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
      */
     @Override
     public void checkRoleDataScope(Long... roleIds) {
-        if (!SysUser.isAdmin(SecurityUtils.getUserId())) {
+        if (!SecurityUtils.isAdmin()) {
             for (Long roleId : roleIds) {
                 SysRole role = new SysRole();
                 role.setRoleId(roleId);

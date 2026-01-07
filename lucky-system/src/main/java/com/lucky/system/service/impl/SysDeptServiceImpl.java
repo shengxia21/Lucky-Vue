@@ -5,7 +5,6 @@ import com.lucky.common.constant.UserConstants;
 import com.lucky.common.core.domain.TreeSelect;
 import com.lucky.common.core.domain.entity.SysDept;
 import com.lucky.common.core.domain.entity.SysRole;
-import com.lucky.common.core.domain.entity.SysUser;
 import com.lucky.common.core.text.Convert;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.SecurityUtils;
@@ -176,7 +175,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
     public void checkDeptDataScope(Long deptId) {
-        if (!SysUser.isAdmin(SecurityUtils.getUserId()) && StringUtils.isNotNull(deptId)) {
+        if (!SecurityUtils.isAdmin() && StringUtils.isNotNull(deptId)) {
             SysDept dept = new SysDept();
             dept.setDeptId(deptId);
             List<SysDept> depts = SpringUtils.getAopProxy(this).selectDeptList(dept);

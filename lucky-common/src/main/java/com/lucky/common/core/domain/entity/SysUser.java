@@ -6,6 +6,7 @@ import com.lucky.common.annotation.Excel.ColumnType;
 import com.lucky.common.annotation.Excel.Type;
 import com.lucky.common.annotation.Excels;
 import com.lucky.common.core.domain.BaseEntity;
+import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.xss.Xss;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -142,10 +143,6 @@ public class SysUser extends BaseEntity {
         this.userId = userId;
     }
 
-    public static boolean isAdmin(Long userId) {
-        return userId != null && 1L == userId;
-    }
-
     public Long getUserId() {
         return userId;
     }
@@ -155,7 +152,7 @@ public class SysUser extends BaseEntity {
     }
 
     public boolean isAdmin() {
-        return isAdmin(this.userId);
+        return SecurityUtils.isAdmin(this.userId);
     }
 
     public Long getDeptId() {
