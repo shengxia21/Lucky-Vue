@@ -91,6 +91,20 @@ public class SysConfigServiceImpl implements ISysConfigService {
     }
 
     /**
+     * 获取注册开关
+     *
+     * @return true开启，false关闭
+     */
+    @Override
+    public boolean selectRegisterEnabled() {
+        String registerEnabled = selectConfigByKey("sys.account.registerUser");
+        if (StringUtils.isEmpty(registerEnabled)) {
+            return false;
+        }
+        return Convert.toBool(registerEnabled);
+    }
+
+    /**
      * 查询参数配置列表
      *
      * @param config 参数配置信息

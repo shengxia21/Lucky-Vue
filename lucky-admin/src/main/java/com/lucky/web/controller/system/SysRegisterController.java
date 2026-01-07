@@ -7,9 +7,7 @@ import com.lucky.common.utils.StringUtils;
 import com.lucky.framework.web.service.SysRegisterService;
 import com.lucky.system.service.ISysConfigService;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 注册验证
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ruoyi
  */
 @RestController
+@RequestMapping("/register")
 public class SysRegisterController extends BaseController {
 
     @Resource
@@ -25,7 +24,26 @@ public class SysRegisterController extends BaseController {
     @Resource
     private ISysConfigService configService;
 
-    @PostMapping("/register")
+    /**
+     * 获取注册状态
+     *
+     * @return 结果
+     */
+    @GetMapping("/enabled")
+    public AjaxResult getRegisterEnabled() {
+        AjaxResult ajax = AjaxResult.success();
+        boolean registerEnabled = configService.selectRegisterEnabled();
+        ajax.put("registerEnabled", registerEnabled);
+        return ajax;
+    }
+
+    /**
+     * 注册
+     *
+     * @param user 注册信息
+     * @return 结果
+     */
+    @PostMapping
     public AjaxResult register(@RequestBody RegisterBody user) {
         if (!("true".equals(configService.selectConfigByKey("sys.account.registerUser")))) {
             return error("当前系统没有开启注册功能！");
