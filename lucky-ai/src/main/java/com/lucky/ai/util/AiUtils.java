@@ -73,18 +73,14 @@ public class AiUtils {
     }
 
     public static String getChatResponseContent(ChatResponse response) {
-        if (response == null
-                || response.getResult() == null
-                || response.getResult().getOutput() == null) {
+        if (response == null) {
             return null;
         }
         return response.getResult().getOutput().getText();
     }
 
     public static String getChatResponseReasoningContent(ChatResponse response) {
-        if (response == null
-                || response.getResult() == null
-                || response.getResult().getOutput() == null) {
+        if (response == null) {
             return null;
         }
         if (response.getResult().getOutput() instanceof DeepSeekAssistantMessage) {
