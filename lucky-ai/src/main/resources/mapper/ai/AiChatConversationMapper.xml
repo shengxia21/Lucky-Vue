@@ -88,8 +88,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             c.max_tokens as maxTokens,
             c.max_contexts as maxContexts,
             c.create_time as createTime,
+            cr.name as roleName,
+            cr.avatar as roleAvatar,
             COALESCE(m.msg_count, 0) as messageCount
         from ai_chat_conversation c
+            LEFT JOIN ai_chat_role cr ON c.role_id = cr.id
             LEFT JOIN (
                 SELECT
                 conversation_id,
