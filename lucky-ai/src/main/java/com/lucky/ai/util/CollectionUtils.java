@@ -35,7 +35,7 @@ public class CollectionUtils {
         if (CollUtil.isEmpty(from)) {
             return new ArrayList<>();
         }
-        return from.stream().filter(predicate).collect(Collectors.toList());
+        return from.stream().filter(predicate).toList();
     }
 
     public static <T, R> List<T> distinct(Collection<T> from, Function<T, R> keyMapper) {
@@ -63,14 +63,14 @@ public class CollectionUtils {
         if (CollUtil.isEmpty(from)) {
             return new ArrayList<>();
         }
-        return from.stream().map(func).filter(Objects::nonNull).collect(Collectors.toList());
+        return from.stream().map(func).filter(Objects::nonNull).toList();
     }
 
     public static <T, U> List<U> convertList(Collection<T> from, Function<T, U> func, Predicate<T> filter) {
         if (CollUtil.isEmpty(from)) {
             return new ArrayList<>();
         }
-        return from.stream().filter(filter).map(func).filter(Objects::nonNull).collect(Collectors.toList());
+        return from.stream().filter(filter).map(func).filter(Objects::nonNull).toList();
     }
 
     public static <T, U> List<U> convertListByFlatMap(Collection<T> from,
@@ -78,7 +78,7 @@ public class CollectionUtils {
         if (CollUtil.isEmpty(from)) {
             return new ArrayList<>();
         }
-        return from.stream().filter(Objects::nonNull).flatMap(func).filter(Objects::nonNull).collect(Collectors.toList());
+        return from.stream().filter(Objects::nonNull).flatMap(func).filter(Objects::nonNull).toList();
     }
 
     public static <T, U, R> List<R> convertListByFlatMap(Collection<T> from,
@@ -87,14 +87,14 @@ public class CollectionUtils {
         if (CollUtil.isEmpty(from)) {
             return new ArrayList<>();
         }
-        return from.stream().map(mapper).filter(Objects::nonNull).flatMap(func).filter(Objects::nonNull).collect(Collectors.toList());
+        return from.stream().map(mapper).filter(Objects::nonNull).flatMap(func).filter(Objects::nonNull).toList();
     }
 
     public static <K, V> List<V> mergeValuesFromMap(Map<K, List<V>> map) {
         return map.values()
                 .stream()
                 .flatMap(List::stream)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static <T> Set<T> convertSet(Collection<T> from) {
@@ -276,7 +276,7 @@ public class CollectionUtils {
         if (CollUtil.isEmpty(from)) {
             return null;
         }
-        assert from.size() > 0; // 断言，避免告警
+        assert !from.isEmpty(); // 断言，避免告警
         T t = from.stream().min(Comparator.comparing(valueFunc)).get();
         return valueFunc.apply(t);
     }
@@ -285,7 +285,7 @@ public class CollectionUtils {
         if (CollUtil.isEmpty(from)) {
             return null;
         }
-        assert from.size() > 0; // 断言，避免告警
+        assert !from.isEmpty(); // 断言，避免告警
         return from.stream().min(Comparator.comparing(valueFunc)).get();
     }
 
@@ -315,7 +315,7 @@ public class CollectionUtils {
     }
 
     public static <T> List<T> newArrayList(List<List<T>> list) {
-        return list.stream().filter(Objects::nonNull).flatMap(Collection::stream).collect(Collectors.toList());
+        return list.stream().filter(Objects::nonNull).flatMap(Collection::stream).toList();
     }
 
     /**
