@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
+import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendReqVO;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendRespVO;
 import com.lucky.ai.core.websearch.AiWebSearchResponse;
@@ -251,7 +252,7 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
      * @return 聊天消息分页列表
      */
     @Override
-    public List<AiChatMessage> getChatMessagePage(AiChatMessagePageReqVO pageReqVO) {
+    public List<AiChatMessageRespVO> getChatMessagePage(AiChatMessagePageReqVO pageReqVO) {
         return aiChatMessageMapper.selectChatMessagePage(pageReqVO);
     }
 

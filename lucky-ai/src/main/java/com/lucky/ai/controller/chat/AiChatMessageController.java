@@ -104,8 +104,8 @@ public class AiChatMessageController extends BaseController {
     @GetMapping("/page")
     public TableDataInfo getChatMessagePage(AiChatMessagePageReqVO pageReqVO) {
         startPage();
-        List<AiChatMessage> list = aiChatMessageService.getChatMessagePage(pageReqVO);
-        return getDataTable(list, AiChatMessageRespVO.class);
+        List<AiChatMessageRespVO> list = aiChatMessageService.getChatMessagePage(pageReqVO);
+        return getDataTable(list);
     }
 
     /**

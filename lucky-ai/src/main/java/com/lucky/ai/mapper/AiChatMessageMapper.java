@@ -1,6 +1,7 @@
 package com.lucky.ai.mapper;
 
 import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
+import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
 import com.lucky.ai.domain.AiChatMessage;
 
 import java.util.List;
@@ -66,6 +67,6 @@ public interface AiChatMessageMapper {
      * @param pageReqVO 分页查询参数
      * @return 聊天消息分页列表
      */
-    List<AiChatMessage> selectChatMessagePage(AiChatMessagePageReqVO pageReqVO);
+    List<AiChatMessageRespVO> selectChatMessagePage(AiChatMessagePageReqVO pageReqVO);
 
 }

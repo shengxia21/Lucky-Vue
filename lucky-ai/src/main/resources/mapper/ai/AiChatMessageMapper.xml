@@ -43,21 +43,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by id asc
     </select>
 
-    <select id="selectChatMessagePage" parameterType="com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO" resultMap="AiChatMessageResult">
-        <include refid="selectAiChatMessageVo"/>
+    <select id="selectChatMessagePage" parameterType="com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO"
+            resultType="com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO">
+        select
+            cm.id,
+            cm.conversation_id as conversationId,
+            cm.reply_id as replyId,
+            cm.type,
+            cm.user_id as userId,
+            cm.role_id as roleId,
+            cm.model,
+            cm.model_id as modelId,
+            cm.content,
+            cm.reasoning_content as reasoningContent,
+            cm.use_context as useContext,
+            cm.segment_ids as segmentIds,
+            cm.web_search_pages as webSearchPages,
+            cm.attachment_urls as attachmentUrls,
+            cm.create_time as createTime,
+            cr.name as roleName
+        from ai_chat_message cm
+            left join ai_chat_role cr on cm.role_id = cr.id
         <where>
             <if test="conversationId != null"> and conversation_id = #{conversationId}</if>
-            <if test="userId != null"> and user_id = #{userId}</if>
+            <if test="userId != null"> and cm.user_id = #{userId}</if>
             <if test="content != null and content != ''"> and content like concat('%', #{content}, '%')</if>
             <if test="params.beginTime != null and params.beginTime != ''">
-                and date_format(create_time,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
+                and date_format(cm.create_time,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
             </if>
             <if test="params.endTime != null and params.endTime != ''">
-                and date_format(create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
+                and date_format(cm.create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
             </if>
-            and del_flag = 0
+            and cm.del_flag = 0
         </where>
-        order by id desc
+        order by cm.id desc
     </select>
 
     <insert id="insertAiChatMessage" parameterType="AiChatMessage" useGeneratedKeys="true" keyProperty="id">

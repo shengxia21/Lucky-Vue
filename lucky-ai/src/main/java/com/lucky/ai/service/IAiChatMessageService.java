@@ -1,6 +1,7 @@
 package com.lucky.ai.service;
 
 import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
+import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendReqVO;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendRespVO;
 import com.lucky.ai.domain.AiChatMessage;
@@ -66,7 +67,7 @@ public interface IAiChatMessageService {
      * @param pageReqVO 分页查询请求VO
      * @return 聊天消息分页列表
      */
-    List<AiChatMessage> getChatMessagePage(AiChatMessagePageReqVO pageReqVO);
+    List<AiChatMessageRespVO> getChatMessagePage(AiChatMessagePageReqVO pageReqVO);
 
     /**
      * 删除消息（管理员）
