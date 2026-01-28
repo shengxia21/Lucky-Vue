@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.ai.mapper.AiChatRoleMapper">
+
+    <resultMap type="AiChatRole" id="AiChatRoleResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="category"    column="category"    />
+        <result property="description"    column="description"    />
+        <result property="systemMessage"    column="system_message"    />
+        <result property="userId"    column="user_id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="knowledgeIds"    column="knowledge_ids"    />
+        <result property="toolIds"    column="tool_ids"    />
+        <result property="mcpClientNames"    column="mcp_client_names"    />
+        <result property="publicStatus"    column="public_status"    />
+        <result property="sort"    column="sort"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectAiChatRoleVo">
+        select id, name, avatar, category, description, system_message, user_id, model_id, knowledge_ids, tool_ids, mcp_client_names, public_status, sort, status, del_flag, create_by, create_time, update_by, update_time from ai_chat_role
+    </sql>
+
+    <sql id="selectAiChatRoleRespVo">
+        select
+            cr.id,
+            cr.name,
+            cr.avatar,
+            cr.category,
+            cr.description,
+            cr.system_message as systemMessage,
+            cr.user_id as userId,
+            cr.model_id as modelId,
+            m.model,
+            m.name as modelName,
+            cr.knowledge_ids as knowledgeIds,
+            cr.tool_ids as toolIds,
+            cr.mcp_client_names as mcpClientNames,
+            cr.public_status as publicStatus,
+            cr.sort,
+            cr.status,
+            cr.create_time as createTime
+        from ai_chat_role cr
+            left join ai_model m on cr.model_id = m.id
+    </sql>
+
+    <select id="selectById" parameterType="Long" resultMap="AiChatRoleResult">
+        <include refid="selectAiChatRoleVo" />
+        where id = #{id}
+    </select>
+
+    <select id="selectAiChatRoleById" parameterType="Long" resultType="com.lucky.ai.controller.model.vo.chatRole.AiChatRoleRespVO">
+        <include refid="selectAiChatRoleRespVo" />
+        where cr.id = #{id}
+    </select>
+
+    <insert id="insertAiChatRole" parameterType="AiChatRole" useGeneratedKeys="true" keyProperty="id">
+        insert into ai_chat_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="avatar != null">avatar,</if>
+            <if test="category != null">category,</if>
+            <if test="description != null">description,</if>
+            <if test="systemMessage != null">system_message,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="modelId != null">model_id,</if>
+            <if test="knowledgeIds != null">knowledge_ids,</if>
+            <if test="toolIds != null">tool_ids,</if>
+            <if test="mcpClientNames != null">mcp_client_names,</if>
+            <if test="publicStatus != null">public_status,</if>
+            <if test="sort != null">sort,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="avatar != null">#{avatar},</if>
+            <if test="category != null">#{category},</if>
+            <if test="description != null">#{description},</if>
+            <if test="systemMessage != null">#{systemMessage},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="knowledgeIds != null">#{knowledgeIds},</if>
+            <if test="toolIds != null">#{toolIds},</if>
+            <if test="mcpClientNames != null">#{mcpClientNames},</if>
+            <if test="publicStatus != null">#{publicStatus},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAiChatRoleById" parameterType="AiChatRole">
+        update ai_chat_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="systemMessage != null">system_message = #{systemMessage},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="knowledgeIds != null">knowledge_ids = #{knowledgeIds},</if>
+            <if test="toolIds != null">tool_ids = #{toolIds},</if>
+            <if test="mcpClientNames != null">mcp_client_names = #{mcpClientNames},</if>
+            <if test="publicStatus != null">public_status = #{publicStatus},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="deleteAiChatRoleById" parameterType="Long">
+        update ai_chat_role set del_flag = '1' where id = #{id}
+    </update>
+
+    <select id="selectByIds" parameterType="java.util.Collection" resultMap="AiChatRoleResult">
+        <include refid="selectAiChatRoleVo"/>
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectPage" parameterType="com.lucky.ai.controller.model.vo.chatRole.AiChatRolePageReqVO"
+            resultType="com.lucky.ai.controller.model.vo.chatRole.AiChatRoleRespVO">
+        <include refid="selectAiChatRoleRespVo" />
+        <where>
+            <if test="name != null and name != ''">
+                and cr.name like concat('%', #{name}, '%')
+            </if>
+            <if test="category != null and category != ''">
+                and category = #{category}
+            </if>
+            <if test="publicStatus != null">
+                and public_status = #{publicStatus}
+            </if>
+            and cr.del_flag = '0'
+        </where>
+        order by cr.sort asc
+    </select>
+
+    <select id="selectPageByMy" parameterType="com.lucky.ai.controller.model.vo.chatRole.AiChatRolePageReqVO"
+            resultType="com.lucky.ai.controller.model.vo.chatRole.AiChatRoleRespVO">
+        <include refid="selectAiChatRoleRespVo" />
+        <where>
+            <if test="pageReqVO.name != null and pageReqVO.name != ''">
+                and cr.name like concat('%', #{pageReqVO.name}, '%')
+            </if>
+            <if test="pageReqVO.category != null and pageReqVO.category != ''">
+                and category = #{pageReqVO.category}
+            </if>
+            <if test="pageReqVO.publicStatus != null and pageReqVO.publicStatus == true">
+                and public_status = #{pageReqVO.publicStatus}
+            </if>
+            <if test="pageReqVO.publicStatus != null and pageReqVO.publicStatus == false">
+                and user_id = #{userId}
+                and cr.status = '0'
+            </if>
+            and cr.del_flag = '0'
+        </where>
+        order by cr.sort asc
+    </select>
+
+    <select id="selectListGroupByCategory" parameterType="Integer" resultType="String">
+        select category from ai_chat_role
+        <where>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            and del_flag = '0'
+        </where>
+        group by category
+    </select>
+
+    <select id="selectListByName" parameterType="String" resultMap="AiChatRoleResult">
+        <include refid="selectAiChatRoleVo"/>
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            and del_flag = '0'
+        </where>
+        order by sort asc
+    </select>
+
+</mapper>
