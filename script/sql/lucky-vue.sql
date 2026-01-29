@@ -116,6 +116,39 @@ CREATE TABLE `ai_chat_message`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for ai_chat_role
+-- ----------------------------
+DROP TABLE IF EXISTS `ai_chat_role`;
+CREATE TABLE `ai_chat_role`  (
+  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色名称',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色头像',
+  `category` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色分类',
+  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色描述',
+  `system_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '角色设定',
+  `user_id` bigint(0) NULL DEFAULT NULL COMMENT '用户编号',
+  `model_id` bigint(0) NULL DEFAULT NULL COMMENT '模型编号',
+  `knowledge_ids` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '引用的知识库编号列表',
+  `tool_ids` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '引用的工具编号列表',
+  `mcp_client_names` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '引用的 MCP Client 名字列表',
+  `public_status` tinyint(0) NULL DEFAULT 1 COMMENT '是否公开（0否 1是）',
+  `sort` int(0) NULL DEFAULT NULL COMMENT '排序',
+  `status` tinyint(0) NULL DEFAULT 0 COMMENT '状态（0开启 1关闭）',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id`) USING BTREE,
+  INDEX `idx_model_id`(`model_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 聊天角色表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ai_chat_role
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for ai_image
 -- ----------------------------
 DROP TABLE IF EXISTS `ai_image`;
@@ -342,7 +375,7 @@ CREATE TABLE `sys_dict_data`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 59 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -398,6 +431,7 @@ INSERT INTO `sys_dict_data` VALUES (54, 5, '向量', '5', 'ai_model_type', NULL,
 INSERT INTO `sys_dict_data` VALUES (55, 6, '重排', '6', 'ai_model_type', NULL, 'danger', 'N', '0', 'admin', '2025-12-09 02:31:34', '', NULL, '重排模型');
 INSERT INTO `sys_dict_data` VALUES (56, 1, '是', 'true', 'boolean_string', NULL, 'primary', 'N', '0', 'admin', '2025-12-12 23:28:48', '', NULL, '是');
 INSERT INTO `sys_dict_data` VALUES (57, 2, '否', 'false', 'boolean_string', NULL, 'danger', 'N', '0', 'admin', '2025-12-12 23:29:03', '', NULL, '否');
+INSERT INTO `sys_dict_data` VALUES (58, 1, '文件系统', 'filesystem', 'ai_mcp_client_name', NULL, 'primary', 'N', '0', 'admin', '2026-01-28 20:23:12', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_dict_type
@@ -415,7 +449,7 @@ CREATE TABLE `sys_dict_type`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`) USING BTREE,
   UNIQUE INDEX `dict_type`(`dict_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_type
@@ -434,6 +468,7 @@ INSERT INTO `sys_dict_type` VALUES (11, 'AI 模型平台', 'ai_platform', '0', '
 INSERT INTO `sys_dict_type` VALUES (12, 'AI 绘画状态', 'ai_image_status', '0', 'admin', '2025-12-09 02:24:51', '', NULL, '绘画状态列表');
 INSERT INTO `sys_dict_type` VALUES (13, 'AI 模型类型', 'ai_model_type', '0', 'admin', '2025-12-09 02:28:46', '', NULL, 'AI 模型类型列表');
 INSERT INTO `sys_dict_type` VALUES (14, 'Bool是否类型', 'boolean_string', '0', 'admin', '2025-12-12 23:28:06', '', NULL, '是否类型列表');
+INSERT INTO `sys_dict_type` VALUES (15, 'AI MCP 客户端名称', 'ai_mcp_client_name', '0', 'admin', '2026-01-28 20:22:46', '', NULL, 'AI MCP 客户端名称列表');
 
 -- ----------------------------
 -- Table structure for sys_logininfor
@@ -484,7 +519,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1061 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1086 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -584,6 +619,11 @@ INSERT INTO `sys_menu` VALUES (1077, '绘图更新', 1068, 1, '', NULL, NULL, ''
 INSERT INTO `sys_menu` VALUES (1078, '绘画删除', 1068, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:image:delete', '#', 'admin', '2025-12-13 06:18:51', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1079, '对话删除', 1066, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-conversation:delete', '#', 'admin', '2025-12-13 18:50:55', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1080, '消息删除', 1066, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-message:delete', '#', 'admin', '2025-12-13 18:51:22', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1081, '聊天角色', 1064, 5, 'chatRole', 'ai/console/chatRole/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:chat-role:list', 'chatRole', 'admin', '2026-01-27 22:25:08', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1082, '聊天角色查询', 1081, 1, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-role:query', '#', 'admin', '2026-01-27 22:25:08', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1083, '聊天角色新增', 1081, 2, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-role:create', '#', 'admin', '2026-01-27 22:25:08', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1084, '聊天角色修改', 1081, 3, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-role:update', '#', 'admin', '2026-01-27 22:25:08', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1085, '聊天角色删除', 1081, 4, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-role:delete', '#', 'admin', '2026-01-27 22:25:08', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -746,24 +786,42 @@ INSERT INTO `sys_role_menu` VALUES (2, 117);
 INSERT INTO `sys_role_menu` VALUES (2, 500);
 INSERT INTO `sys_role_menu` VALUES (2, 501);
 INSERT INTO `sys_role_menu` VALUES (2, 1000);
+INSERT INTO `sys_role_menu` VALUES (2, 1001);
 INSERT INTO `sys_role_menu` VALUES (2, 1002);
+INSERT INTO `sys_role_menu` VALUES (2, 1003);
 INSERT INTO `sys_role_menu` VALUES (2, 1004);
+INSERT INTO `sys_role_menu` VALUES (2, 1005);
 INSERT INTO `sys_role_menu` VALUES (2, 1006);
 INSERT INTO `sys_role_menu` VALUES (2, 1007);
+INSERT INTO `sys_role_menu` VALUES (2, 1008);
+INSERT INTO `sys_role_menu` VALUES (2, 1009);
+INSERT INTO `sys_role_menu` VALUES (2, 1010);
 INSERT INTO `sys_role_menu` VALUES (2, 1011);
 INSERT INTO `sys_role_menu` VALUES (2, 1012);
+INSERT INTO `sys_role_menu` VALUES (2, 1013);
+INSERT INTO `sys_role_menu` VALUES (2, 1014);
+INSERT INTO `sys_role_menu` VALUES (2, 1015);
 INSERT INTO `sys_role_menu` VALUES (2, 1016);
+INSERT INTO `sys_role_menu` VALUES (2, 1017);
 INSERT INTO `sys_role_menu` VALUES (2, 1018);
 INSERT INTO `sys_role_menu` VALUES (2, 1019);
 INSERT INTO `sys_role_menu` VALUES (2, 1020);
+INSERT INTO `sys_role_menu` VALUES (2, 1021);
 INSERT INTO `sys_role_menu` VALUES (2, 1022);
 INSERT INTO `sys_role_menu` VALUES (2, 1023);
 INSERT INTO `sys_role_menu` VALUES (2, 1024);
 INSERT INTO `sys_role_menu` VALUES (2, 1025);
+INSERT INTO `sys_role_menu` VALUES (2, 1026);
+INSERT INTO `sys_role_menu` VALUES (2, 1027);
+INSERT INTO `sys_role_menu` VALUES (2, 1028);
 INSERT INTO `sys_role_menu` VALUES (2, 1029);
 INSERT INTO `sys_role_menu` VALUES (2, 1030);
+INSERT INTO `sys_role_menu` VALUES (2, 1031);
+INSERT INTO `sys_role_menu` VALUES (2, 1032);
+INSERT INTO `sys_role_menu` VALUES (2, 1033);
 INSERT INTO `sys_role_menu` VALUES (2, 1034);
 INSERT INTO `sys_role_menu` VALUES (2, 1035);
+INSERT INTO `sys_role_menu` VALUES (2, 1036);
 INSERT INTO `sys_role_menu` VALUES (2, 1037);
 INSERT INTO `sys_role_menu` VALUES (2, 1038);
 INSERT INTO `sys_role_menu` VALUES (2, 1039);
@@ -791,8 +849,21 @@ INSERT INTO `sys_role_menu` VALUES (2, 1066);
 INSERT INTO `sys_role_menu` VALUES (2, 1067);
 INSERT INTO `sys_role_menu` VALUES (2, 1068);
 INSERT INTO `sys_role_menu` VALUES (2, 1069);
+INSERT INTO `sys_role_menu` VALUES (2, 1070);
+INSERT INTO `sys_role_menu` VALUES (2, 1072);
 INSERT INTO `sys_role_menu` VALUES (2, 1073);
+INSERT INTO `sys_role_menu` VALUES (2, 1074);
+INSERT INTO `sys_role_menu` VALUES (2, 1075);
+INSERT INTO `sys_role_menu` VALUES (2, 1076);
 INSERT INTO `sys_role_menu` VALUES (2, 1077);
+INSERT INTO `sys_role_menu` VALUES (2, 1078);
+INSERT INTO `sys_role_menu` VALUES (2, 1079);
+INSERT INTO `sys_role_menu` VALUES (2, 1080);
+INSERT INTO `sys_role_menu` VALUES (2, 1081);
+INSERT INTO `sys_role_menu` VALUES (2, 1082);
+INSERT INTO `sys_role_menu` VALUES (2, 1083);
+INSERT INTO `sys_role_menu` VALUES (2, 1084);
+INSERT INTO `sys_role_menu` VALUES (2, 1085);
 
 -- ----------------------------
 -- Table structure for sys_user
