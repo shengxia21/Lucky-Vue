@@ -6,9 +6,11 @@ import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleRespVO;
 import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleSaveMyReqVO;
 import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleSaveReqVO;
 import com.lucky.ai.service.IAiChatRoleService;
+import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
 import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.page.TableDataInfo;
+import com.lucky.common.enums.BusinessType;
 import jakarta.annotation.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -53,6 +55,7 @@ public class AiChatRoleController extends BaseController {
     /**
      * 创建【我的】聊天角色
      */
+    @Log(title = "创建【我的】聊天角色", businessType = BusinessType.INSERT)
     @PostMapping("/create-my")
     public AjaxResult createChatRoleMy(@Validated @RequestBody AiChatRoleSaveMyReqVO createReqVO) {
         return success(aiChatRoleService.createChatRoleMy(createReqVO, getUserId()));
@@ -61,6 +64,7 @@ public class AiChatRoleController extends BaseController {
     /**
      * 更新【我的】聊天角色
      */
+    @Log(title = "更新【我的】聊天角色", businessType = BusinessType.UPDATE)
     @PutMapping("/update-my")
     public AjaxResult updateChatRoleMy(@Validated @RequestBody AiChatRoleSaveMyReqVO updateReqVO) {
         return success(aiChatRoleService.updateChatRoleMy(updateReqVO, getUserId()));
@@ -69,6 +73,7 @@ public class AiChatRoleController extends BaseController {
     /**
      * 删除【我的】聊天角色
      */
+    @Log(title = "删除【我的】聊天角色", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
     public AjaxResult deleteChatRoleMy(@RequestParam("id") Long id) {
         return success(aiChatRoleService.deleteChatRoleMy(id, getUserId()));
@@ -87,8 +92,9 @@ public class AiChatRoleController extends BaseController {
     /**
      * 创建聊天角色
      */
-    @PostMapping("/create")
+    @Log(title = "创建聊天角色", businessType = BusinessType.INSERT)
     @PreAuthorize("@ss.hasPermi('ai:chat-role:create')")
+    @PostMapping("/create")
     public AjaxResult createChatRole(@Validated @RequestBody AiChatRoleSaveReqVO createReqVO) {
         return success(aiChatRoleService.createChatRole(createReqVO));
     }
@@ -96,8 +102,9 @@ public class AiChatRoleController extends BaseController {
     /**
      * 更新聊天角色
      */
-    @PutMapping("/update")
+    @Log(title = "更新聊天角色", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('ai:chat-role:update')")
+    @PutMapping("/update")
     public AjaxResult updateChatRole(@Validated @RequestBody AiChatRoleSaveReqVO updateReqVO) {
         return success(aiChatRoleService.updateChatRole(updateReqVO));
     }
@@ -105,8 +112,9 @@ public class AiChatRoleController extends BaseController {
     /**
      * 删除聊天角色
      */
-    @DeleteMapping("/delete")
+    @Log(title = "删除聊天角色", businessType = BusinessType.DELETE)
     @PreAuthorize("@ss.hasPermi('ai:chat-role:delete')")
+    @DeleteMapping("/delete")
     public AjaxResult deleteChatRole(@RequestParam("id") Long id) {
         return success(aiChatRoleService.deleteChatRole(id));
     }
@@ -114,8 +122,8 @@ public class AiChatRoleController extends BaseController {
     /**
      * 获得聊天角色
      */
-    @GetMapping("/get")
     @PreAuthorize("@ss.hasPermi('ai:chat-role:query')")
+    @GetMapping("/get")
     public AjaxResult getChatRole(@RequestParam("id") Long id) {
         AiChatRoleRespVO chatRole = aiChatRoleService.getChatRole(id);
         return success(chatRole);
@@ -124,8 +132,8 @@ public class AiChatRoleController extends BaseController {
     /**
      * 获得聊天角色分页
      */
-    @GetMapping("/page")
     @PreAuthorize("@ss.hasPermi('ai:chat-role:list')")
+    @GetMapping("/page")
     public TableDataInfo getChatRolePage(AiChatRolePageReqVO pageReqVO) {
         startPage();
         List<AiChatRoleRespVO> list = aiChatRoleService.getChatRolePage(pageReqVO);
