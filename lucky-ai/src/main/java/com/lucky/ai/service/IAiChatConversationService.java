@@ -1,5 +1,6 @@
 package com.lucky.ai.service;
 
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationCreateMyReqVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
@@ -20,7 +21,7 @@ public interface IAiChatConversationService {
      * @param userId 用户ID
      * @return 聊天对话ID
      */
-    Long createChatConversationMy(Long userId);
+    Long createChatConversationMy(AiChatConversationCreateMyReqVO createReqVO, Long userId);
 
     /**
      * 更新我的聊天对话

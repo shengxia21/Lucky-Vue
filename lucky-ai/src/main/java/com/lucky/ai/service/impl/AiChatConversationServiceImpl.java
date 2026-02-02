@@ -5,14 +5,17 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationCreateMyReqVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
+import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiModelTypeEnum;
 import com.lucky.ai.mapper.AiChatConversationMapper;
 import com.lucky.ai.service.IAiChatConversationService;
+import com.lucky.ai.service.IAiChatRoleService;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.constant.AiErrorConstants;
 import com.lucky.common.exception.ServiceException;
@@ -38,6 +41,8 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
 
     @Resource
     private IAiModelService aiModelService;
+    @Resource
+    private IAiChatRoleService aiChatRoleService;
 
     /**
      * 创建我的聊天对话
@@ -46,11 +51,16 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
      * @return 聊天对话ID
      */
     @Override
-    public Long createChatConversationMy(Long userId) {
-        // 1 获得 AiModel 聊天模型
-        AiModel model = aiModelService.getRequiredDefaultModel(AiModelTypeEnum.CHAT.getType());
+    public Long createChatConversationMy(AiChatConversationCreateMyReqVO createReqVO, Long userId) {
+        // 1.1 获得 AiChatRoleDO 聊天角色
+        AiChatRole role = createReqVO.getRoleId() != null ? aiChatRoleService.validateChatRole(createReqVO.getRoleId()) : null;
+        // 1.2 获得 AiModelDO 聊天模型
+        AiModel model = role != null && role.getModelId() != null ? aiModelService.validateModel(role.getModelId())
+                : aiModelService.getRequiredDefaultModel(AiModelTypeEnum.CHAT.getType());
         Assert.notNull(model, "必须找到默认模型");
         validateChatModel(model);
+
+        // 1.3 校验知识库
 
         // 2. 创建 AiChatConversation 聊天对话
         AiChatConversation conversation = new AiChatConversation();
@@ -61,9 +71,15 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         conversation.setTemperature(model.getTemperature());
         conversation.setMaxTokens(model.getMaxTokens());
         conversation.setMaxContexts(model.getMaxContexts());
-        conversation.setTitle(AiChatConversation.TITLE_DEFAULT);
         conversation.setCreateTime(DateUtils.getNowDate());
         conversation.setCreateBy(SecurityUtils.getUsername());
+        if (role != null) {
+            conversation.setTitle(role.getName());
+            conversation.setRoleId(role.getId());
+            conversation.setSystemMessage(role.getSystemMessage());
+        } else {
+            conversation.setTitle(AiChatConversation.TITLE_DEFAULT);
+        }
         aiChatConversationMapper.insertAiChatConversation(conversation);
         return conversation.getId();
     }
@@ -86,6 +102,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         if (updateReqVO.getModelId() != null) {
             model = aiModelService.validateModel(updateReqVO.getModelId());
         }
+        // 1.3 校验知识库是否存在
 
         // 2. 更新对话信息
         AiChatConversation updateObj = BeanUtil.toBean(updateReqVO, AiChatConversation.class);

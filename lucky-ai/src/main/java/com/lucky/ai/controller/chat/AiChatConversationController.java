@@ -2,6 +2,7 @@ package com.lucky.ai.controller.chat;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
+import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationCreateMyReqVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
@@ -36,8 +37,8 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "创建【我的】聊天对话", businessType = BusinessType.INSERT)
     @PostMapping("/create-my")
-    public AjaxResult createChatConversationMy() {
-        return success(aiChatConversationService.createChatConversationMy(getUserId()));
+    public AjaxResult createChatConversationMy(@RequestBody AiChatConversationCreateMyReqVO createReqVO) {
+        return success(aiChatConversationService.createChatConversationMy(createReqVO, getUserId()));
     }
 
     /**
