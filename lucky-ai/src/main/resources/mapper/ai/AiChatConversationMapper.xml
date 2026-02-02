@@ -52,6 +52,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             c.title,
             c.pinned,
             c.role_id as roleId,
+            cr.name as roleName,
+            cr.avatar as roleAvatar,
             c.model_id as modelId,
             c.model,
             m.name as modelName,
@@ -62,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             c.create_time as createTime
         FROM ai_chat_conversation c
             LEFT JOIN ai_model m ON c.model_id = m.id
+            LEFT JOIN ai_chat_role cr ON c.role_id = cr.id
         WHERE c.user_id = #{userId}
         AND c.del_flag = 0
     </select>
