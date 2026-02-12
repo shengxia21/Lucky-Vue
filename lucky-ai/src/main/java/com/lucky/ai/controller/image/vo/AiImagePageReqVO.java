@@ -1,7 +1,5 @@
 package com.lucky.ai.controller.image.vo;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +33,6 @@ public class AiImagePageReqVO {
     /**
      * 是否发布
      */
-    @NotNull(message = "发布状态不能为空")
     private Boolean publicStatus;
 
     /**

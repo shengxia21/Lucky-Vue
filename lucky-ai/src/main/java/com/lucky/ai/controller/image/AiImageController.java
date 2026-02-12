@@ -33,7 +33,7 @@ public class AiImageController extends BaseController {
      * 获取【我的】绘图分页
      */
     @GetMapping("/my-page")
-    public TableDataInfo getImagePageMy(@Validated AiImagePageReqVO pageReqVO) {
+    public TableDataInfo getImagePageMy(AiImagePageReqVO pageReqVO) {
         startPage();
         List<AiImage> list = aiImageService.getImagePageMy(pageReqVO);
         return getDataTable(list, AiImageRespVO.class);
