@@ -185,6 +185,9 @@ public class AiImageServiceImpl implements IAiImageService {
             return DashScopeImageOptions.builder()
                     .model(model.getModel()).n(1)
                     .height(draw.getHeight()).width(draw.getWidth())
+                    .promptExtend(Boolean.parseBoolean(draw.getOptions().getOrDefault("promptExtend", "false")))
+                    .negativePrompt(draw.getOptions().getOrDefault("negativePrompt", ""))
+                    .enableInterleave(true)
                     .build();
         } else if (ObjUtil.equal(model.getPlatform(), AiPlatformEnum.ZHI_PU.getPlatform())) {
             return ZhiPuAiImageOptions.builder()
