@@ -155,7 +155,7 @@ DROP TABLE IF EXISTS `ai_image`;
 CREATE TABLE `ai_image`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '编号',
   `user_id` bigint(0) NOT NULL COMMENT '用户编号',
-  `prompt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提示词',
+  `prompt` varchar(1200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提示词',
   `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
   `model_id` bigint(0) NOT NULL COMMENT '模型编号',
   `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标识',
@@ -210,17 +210,17 @@ CREATE TABLE `ai_model`  (
 -- ----------------------------
 -- Records of ai_model
 -- ----------------------------
-INSERT INTO `ai_model` VALUES (1, 1, 'DeepSeek聊天模型', 'deepseek-chat', 'DeepSeek', 1, 0, 1, 0.70, 2000, 10, '0', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (2, 1, 'DeepSeek深度思考模型', 'deepseek-reasoner', 'DeepSeek', 1, 0, 2, 0.90, 2000, 8, '0', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (3, 2, '通义千问-plus', 'qwen-plus', 'TongYi', 1, 0, 3, 0.70, 2000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (1, 1, 'DeepSeek聊天模型', 'deepseek-chat', 'DeepSeek', 1, 0, 1, 1, 2000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (2, 1, 'DeepSeek深度思考模型', 'deepseek-reasoner', 'DeepSeek', 1, 0, 2, 1, 2000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (3, 2, '通义千问-plus', 'qwen-plus', 'TongYi', 1, 0, 3, 1, 4000, 10, '0', '', NULL, '', NULL);
 INSERT INTO `ai_model` VALUES (4, 2, '通义千问-image-plus', 'qwen-image-plus', 'TongYi', 2, 0, 4, NULL, NULL, NULL, '0', '', NULL, '', NULL);
 INSERT INTO `ai_model` VALUES (5, 2, '通义万相2.2-文生图-plus', 'wan2.2-t2i-plus', 'TongYi', 2, 0, 5, NULL, NULL, NULL, '0', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (6, 5, 'Doubao-Seed-1.6', 'doubao-seed-1-6-251015', 'DouBao', 1, 0, 6, 0.70, 2000, 5, '0', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (7, 4, '千帆5.0', 'ernie-5.0-thinking-preview', 'YiYan', 1, 0, 7, 0.80, 2000, 5, '0', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (8, 6, '混元turbos', 'hunyuan-turbos-latest', 'HunYuan', 1, 0, 8, 0.80, 2000, 5, '0', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (9, 7, '讯飞星火-Max', 'generalv3.5', 'XingHuo', 1, 0, 9, 0.80, 2000, 5, '0', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (10, 8, '月之暗面-kimi', 'kimi-k2-turbo-preview', 'Moonshot', 1, 0, 10, 0.80, 2000, 5, '0', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (11, 9, '百川智能-M2', 'Baichuan-M2', 'BaiChuan', 1, 0, 11, 0.80, 2000, 5, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (6, 5, 'Doubao-Seed-1.6', 'doubao-seed-1-6-251015', 'DouBao', 1, 0, 6, 1, 4000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (7, 4, '千帆5.0', 'ernie-5.0-thinking-preview', 'YiYan', 1, 0, 7, 1, 4000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (8, 6, '混元turbos', 'hunyuan-turbos-latest', 'HunYuan', 1, 0, 8, 1, 4000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (9, 7, '讯飞星火-Max', 'generalv3.5', 'XingHuo', 1, 0, 9, 1, 4000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (10, 8, '月之暗面-kimi', 'kimi-k2-turbo-preview', 'Moonshot', 1, 0, 10, 1, 4000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (11, 9, '百川智能-M2', 'Baichuan-M2', 'BaiChuan', 1, 0, 11, 1, 4000, 10, '0', '', NULL, '', NULL);
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -606,7 +606,7 @@ INSERT INTO `sys_menu` VALUES (1064, '控制台', 1061, 5, 'console', NULL, NULL
 INSERT INTO `sys_menu` VALUES (1065, '模型配置', 1064, 2, 'model', 'ai/console/model/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:model:list', 'model', 'admin', '2025-12-08 00:43:28', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1066, '聊天管理', 1064, 3, 'chatManager', 'ai/console/chat/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:chat-conversation:list', 'chatManager', 'admin', '2025-12-08 01:46:58', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1067, 'API 密钥', 1064, 1, 'api-key', 'ai/console/apiKey/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:api-key:list', 'key', 'admin', '2025-12-08 01:55:05', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1068, '绘画管理', 1064, 4, 'image', 'ai/console/image/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:image:list', 'imageManager', 'admin', '2025-12-08 02:01:52', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1068, '绘画管理', 1064, 4, 'imageManager', 'ai/console/image/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:image:list', 'imageManager', 'admin', '2025-12-08 02:01:52', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1069, 'API 密钥查询', 1067, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:query', '#', 'admin', '2025-12-08 02:25:55', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1070, 'API 密钥创建', 1067, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:create', '#', 'admin', '2025-12-08 02:26:19', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1071, 'API 密钥更新', 1067, 3, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:update', '#', 'admin', '2025-12-08 02:26:54', '', NULL, '');
