@@ -11,7 +11,6 @@ import com.lucky.ai.mapper.AiImageMapper;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.config.LuckyConfig;
 import com.lucky.common.utils.DateUtils;
-import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.file.FileUtils;
 import com.lucky.common.utils.spring.SpringUtils;
 import org.slf4j.Logger;
@@ -51,11 +50,8 @@ public class AsyncAiFactory {
                 ImageModel imageModel = aiModelService.getImageModel(model.getId());
                 ImageResponse response = imageModel.call(new ImagePrompt(reqVO.getPrompt(), request));
                 if (response.getResult() == null) {
-                    AiImage aiImage = new AiImage();
-                    aiImage.setId(image.getId());
-                    aiImage.setTaskId(response.getMetadata().getRawMap().get("taskId").toString());
-                    aiImageMapper.updateAiImage(aiImage);
-                    throw new IllegalArgumentException("生成结果为空");
+                    String message = response.getMetadata().getRawMap().getOrDefault("message", "生成结果为空").toString();
+                    throw new IllegalArgumentException(message);
                 }
 
                 // 2. 上传到文件服务
@@ -77,9 +73,6 @@ public class AsyncAiFactory {
                 aiImage.setId(image.getId());
                 aiImage.setStatus(AiImageStatusEnum.FAIL.getStatus());
                 aiImage.setErrorMessage(ex.getMessage());
-                aiImage.setFinishTime(DateUtils.getNowDate());
-                aiImage.setUpdateBy(SecurityUtils.getUsername());
-                aiImage.setUpdateTime(DateUtils.getNowDate());
                 aiImageMapper.updateAiImage(aiImage);
             }
         };
