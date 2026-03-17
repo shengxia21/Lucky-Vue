@@ -57,7 +57,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${springboot.version}</version>
                 <configuration>
                     <addResources>true</addResources>   <!-- 将resources目录下的资源文件添加到JAR包中 -->
                 </configuration>
