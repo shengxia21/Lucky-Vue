@@ -1,11 +1,9 @@
 package com.lucky.system.service.impl;
 
-import com.lucky.common.annotation.DataSource;
 import com.lucky.common.constant.CacheConstants;
 import com.lucky.common.constant.UserConstants;
 import com.lucky.common.core.redis.RedisCache;
 import com.lucky.common.core.text.Convert;
-import com.lucky.common.enums.DataSourceType;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.system.domain.SysConfig;
@@ -47,7 +45,6 @@ public class SysConfigServiceImpl implements ISysConfigService {
      * @return 参数配置信息
      */
     @Override
-    @DataSource(DataSourceType.MASTER)
     public SysConfig selectConfigById(Long configId) {
         SysConfig config = new SysConfig();
         config.setConfigId(configId);
