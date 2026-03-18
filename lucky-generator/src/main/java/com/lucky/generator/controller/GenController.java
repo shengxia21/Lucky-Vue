@@ -102,11 +102,11 @@ public class GenController extends BaseController {
     @PreAuthorize("@ss.hasPermi('tool:gen:import')")
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
     @PostMapping("/importTable")
-    public AjaxResult importTableSave(String tables) {
+    public AjaxResult importTableSave(@RequestParam("tables") String tables, @RequestParam("tplWebType") String tplWebType) {
         String[] tableNames = Convert.toStrArray(tables);
         // 查询表信息
         List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
-        genTableService.importGenTable(tableList, SecurityUtils.getUsername());
+        genTableService.importGenTable(tableList, tplWebType, SecurityUtils.getUsername());
         return success();
     }
 
@@ -116,13 +116,14 @@ public class GenController extends BaseController {
     @PreAuthorize("@ss.hasRole('admin')")
     @Log(title = "创建表", businessType = BusinessType.OTHER)
     @PostMapping("/createTable")
-    public AjaxResult createTableSave(String sql) {
+    public AjaxResult createTableSave(@RequestParam("sql") String sql, @RequestParam("tplWebType") String tplWebType) {
         try {
             SqlUtil.filterKeyword(sql);
             List<SQLStatement> sqlStatements = SQLUtils.parseStatements(sql, DbType.mysql);
             List<String> tableNames = new ArrayList<>();
             for (SQLStatement sqlStatement : sqlStatements) {
-                if (sqlStatement instanceof MySqlCreateTableStatement createTableStatement) {
+                if (sqlStatement instanceof MySqlCreateTableStatement) {
+                    MySqlCreateTableStatement createTableStatement = (MySqlCreateTableStatement) sqlStatement;
                     if (genTableService.createTable(createTableStatement.toString())) {
                         String tableName = createTableStatement.getTableName().replaceAll("`", "");
                         tableNames.add(tableName);
@@ -131,7 +132,7 @@ public class GenController extends BaseController {
             }
             List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames.toArray(new String[tableNames.size()]));
             String operName = SecurityUtils.getUsername();
-            genTableService.importGenTable(tableList, operName);
+            genTableService.importGenTable(tableList, tplWebType, operName);
             return AjaxResult.success();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
