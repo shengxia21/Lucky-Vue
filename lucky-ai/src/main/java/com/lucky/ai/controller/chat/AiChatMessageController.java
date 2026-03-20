@@ -41,14 +41,6 @@ public class AiChatMessageController extends BaseController {
     private IAiChatConversationService aiChatConversationService;
 
     /**
-     * 发送消息（段式）
-     */
-    @PostMapping("/send")
-    public AjaxResult sendMessage(@Validated @RequestBody AiChatMessageSendReqVO sendReqVO) {
-        return success(aiChatMessageService.sendMessage(sendReqVO, getUserId()));
-    }
-
-    /**
      * 发送消息（流式）
      */
     @PostMapping(value = "/send-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)

@@ -35,7 +35,6 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -82,54 +81,6 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
     private static final String Attachment_USER_MESSAGE_TEMPLATE = "使用 <Attachment></Attachment> 标记用户对话上传的附件内容:\n\n" +
             "%s\n\n" + // 多个 <Attachment></Attachment> 的拼接
             "回答要求：\n- 避免提及 <Attachment></Attachment> 附件的编码格式。";
-
-    /**
-     * 发送消息（段式）
-     *
-     * @param sendReqVO 发送消息（段式）请求VO
-     * @param userId    用户ID
-     * @return 发送消息（段式）响应VO
-     */
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public AiChatMessageSendRespVO sendMessage(AiChatMessageSendReqVO sendReqVO, Long userId) {
-        // 1.1 校验对话存在
-        AiChatConversation conversation = aiChatConversationService.validateChatConversationExists(sendReqVO.getConversationId());
-        if (ObjUtil.notEqual(conversation.getUserId(), userId)) {
-            throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
-        }
-        List<AiChatMessage> historyMessages = aiChatMessageMapper.selectListByConversationId(conversation.getId());
-        // 1.2 校验模型
-        AiModel model = aiModelService.validateModel(conversation.getModelId());
-        ChatModel chatModel = aiModelService.getChatModel(model.getId());
-
-        // 2.1 知识库召回
-        // 2.2 联网搜索
-
-        // 3. 插入 user 发送消息
-        AiChatMessage userMessage = createChatMessage(conversation.getId(), null, model,
-                userId, conversation.getRoleId(), MessageType.USER, sendReqVO.getContent(), sendReqVO.getUseContext(),
-                sendReqVO.getAttachmentUrls(), null);
-
-        // 4.1 插入 assistant 接收消息
-        AiChatMessage assistantMessage = createChatMessage(conversation.getId(), userMessage.getId(), model,
-                userId, conversation.getRoleId(), MessageType.ASSISTANT, "", sendReqVO.getUseContext(),
-                null, null);
-
-        // 4.2 创建 chat 需要的 Prompt
-        Prompt prompt = buildPrompt(conversation, historyMessages, null, model, sendReqVO);
-        ChatResponse chatResponse = chatModel.call(prompt);
-
-        // 4.3 更新响应内容
-        String newContent = AiUtils.getChatResponseContent(chatResponse);
-        String newReasoningContent = AiUtils.getChatResponseReasoningContent(chatResponse);
-        updateOrCreateAssistantMessage(assistantMessage, newContent, newReasoningContent, SecurityUtils.getUsername());
-        // 4.4 响应结果
-        AiChatMessageSendRespVO respVO = new AiChatMessageSendRespVO();
-        respVO.setSend(BeanUtil.toBean(userMessage, AiChatMessageSendRespVO.Message.class));
-        respVO.setReceive(BeanUtil.toBean(assistantMessage, AiChatMessageSendRespVO.Message.class).setContent(newContent));
-        return respVO;
-    }
 
     /**
      * 发送消息（流式）

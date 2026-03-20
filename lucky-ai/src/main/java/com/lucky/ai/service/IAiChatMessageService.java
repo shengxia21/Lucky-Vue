@@ -3,7 +3,6 @@ package com.lucky.ai.service;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendReqVO;
-import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendRespVO;
 import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.common.core.domain.AjaxResult;
 import reactor.core.publisher.Flux;
@@ -16,15 +15,6 @@ import java.util.List;
  * @author lucky
  */
 public interface IAiChatMessageService {
-
-    /**
-     * 发送消息（段式）
-     *
-     * @param sendReqVO 发送消息（段式）请求VO
-     * @param userId    用户ID
-     * @return 发送消息（段式）响应VO
-     */
-    AiChatMessageSendRespVO sendMessage(AiChatMessageSendReqVO sendReqVO, Long userId);
 
     /**
      * 发送消息（流式）
