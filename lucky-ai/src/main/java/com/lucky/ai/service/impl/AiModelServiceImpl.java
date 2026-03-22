@@ -3,8 +3,6 @@ package com.lucky.ai.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.lucky.ai.controller.model.vo.model.AiModelPageReqVO;
 import com.lucky.ai.controller.model.vo.model.AiModelSaveReqVO;
-import com.lucky.ai.core.model.AiModelFactory;
-import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.enums.model.AiPlatformEnum;
@@ -16,8 +14,6 @@ import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.SecurityUtils;
 import jakarta.annotation.Resource;
-import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.image.ImageModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,9 +31,6 @@ public class AiModelServiceImpl implements IAiModelService {
 
     @Resource
     private IAiApiKeyService aiApiKeyService;
-
-    @Resource
-    private AiModelFactory modelFactory;
 
     /**
      * 获得默认的模型
@@ -158,34 +151,6 @@ public class AiModelServiceImpl implements IAiModelService {
     @Override
     public List<AiModel> getModelListByStatusAndType(Integer status, Integer type, String platform) {
         return aiModelMapper.selectListByStatusAndType(status, type, platform);
-    }
-
-    /**
-     * 获得 ChatModel 对象
-     *
-     * @param id 编号
-     * @return ChatModel 对象
-     */
-    @Override
-    public ChatModel getChatModel(Long id) {
-        AiModel model = validateModel(id);
-        AiApiKey apiKey = aiApiKeyService.validateApiKey(model.getKeyId());
-        AiPlatformEnum platform = AiPlatformEnum.validatePlatform(apiKey.getPlatform());
-        return modelFactory.getOrCreateChatModel(platform, apiKey.getApiKey(), apiKey.getUrl());
-    }
-
-    /**
-     * 获得 ImageModel 对象
-     *
-     * @param id 编号
-     * @return ImageModel 对象
-     */
-    @Override
-    public ImageModel getImageModel(Long id) {
-        AiModel model = validateModel(id);
-        AiApiKey apiKey = aiApiKeyService.validateApiKey(model.getKeyId());
-        AiPlatformEnum platform = AiPlatformEnum.validatePlatform(apiKey.getPlatform());
-        return modelFactory.getOrCreateImageModel(platform, apiKey.getApiKey(), apiKey.getUrl());
     }
 
     private AiModel validateModelExists(Long id) {

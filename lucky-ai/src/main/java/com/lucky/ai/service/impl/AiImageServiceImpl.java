@@ -3,17 +3,18 @@ package com.lucky.ai.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
-import com.alibaba.cloud.ai.dashscope.image.DashScopeImageOptions;
 import com.lucky.ai.controller.image.vo.AiImageDrawReqVO;
 import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
 import com.lucky.ai.controller.image.vo.AiImagePublicPageReqVO;
 import com.lucky.ai.controller.image.vo.AiImageUpdateReqVO;
+import com.lucky.ai.core.context.ImageContext;
+import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.image.AiImageStatusEnum;
-import com.lucky.ai.enums.model.AiPlatformEnum;
 import com.lucky.ai.factory.AsyncAiFactory;
 import com.lucky.ai.mapper.AiImageMapper;
+import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiImageService;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.constant.AiErrorConstants;
@@ -22,8 +23,6 @@ import com.lucky.common.manager.AsyncManager;
 import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.SecurityUtils;
 import jakarta.annotation.Resource;
-import org.springframework.ai.image.ImageOptions;
-import org.springframework.ai.zhipuai.ZhiPuAiImageOptions;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -42,6 +41,8 @@ public class AiImageServiceImpl implements IAiImageService {
 
     @Resource
     private IAiModelService aiModelService;
+    @Resource
+    private IAiApiKeyService aiApiKeyService;
 
     /**
      * 获取【我的】绘图分页
@@ -100,10 +101,12 @@ public class AiImageServiceImpl implements IAiImageService {
      */
     @Override
     public Long drawImage(Long userId, AiImageDrawReqVO drawReqVO) {
-        // 1. 校验模型
+        // 校验模型是否存在
         AiModel model = aiModelService.validateModel(drawReqVO.getModelId());
+        // 校验apiKey是否存在
+        AiApiKey apiKey = aiApiKeyService.validateApiKey(model.getKeyId());
 
-        // 2. 保存数据库
+        // 保存数据库
         AiImage image = BeanUtil.toBean(drawReqVO, AiImage.class);
         image.setUserId(userId);
         image.setPlatform(model.getPlatform());
@@ -115,8 +118,15 @@ public class AiImageServiceImpl implements IAiImageService {
         image.setCreateTime(DateUtils.getNowDate());
         aiImageMapper.insertAiImage(image);
 
-        // 3. 异步绘制，后续前端通过返回的 id 进行轮询结果
-        AsyncManager.me().execute(AsyncAiFactory.executeDrawImage(image, drawReqVO, model));
+        // 构建图片上下文
+        ImageContext imageContext = new ImageContext();
+        imageContext.setImage(image);
+        imageContext.setDrawReqVO(drawReqVO);
+        imageContext.setModel(model);
+        imageContext.setApiKey(apiKey);
+
+        // 异步绘制，后续前端通过返回的 id 进行轮询结果
+        AsyncManager.me().execute(AsyncAiFactory.executeDrawImage(imageContext));
         return image.getId();
     }
 
@@ -178,23 +188,6 @@ public class AiImageServiceImpl implements IAiImageService {
         validateImageExists(id);
         // 2. 删除
         return aiImageMapper.deleteAiImageById(id);
-    }
-
-    public static ImageOptions buildImageOptions(AiImageDrawReqVO draw, AiModel model) {
-        if (ObjUtil.equal(model.getPlatform(), AiPlatformEnum.TONG_YI.getPlatform())) {
-            return DashScopeImageOptions.builder()
-                    .model(model.getModel()).n(1)
-                    .height(draw.getHeight()).width(draw.getWidth())
-                    .promptExtend(Boolean.parseBoolean(draw.getOptions().getOrDefault("promptExtend", "false")))
-                    .negativePrompt(draw.getOptions().getOrDefault("negativePrompt", ""))
-                    .enableInterleave(true)
-                    .build();
-        } else if (ObjUtil.equal(model.getPlatform(), AiPlatformEnum.ZHI_PU.getPlatform())) {
-            return ZhiPuAiImageOptions.builder()
-                    .model(model.getModel())
-                    .build();
-        }
-        throw new IllegalArgumentException("不支持的 AI 平台：" + model.getPlatform());
     }
 
     private AiImage validateImageExists(Long id) {

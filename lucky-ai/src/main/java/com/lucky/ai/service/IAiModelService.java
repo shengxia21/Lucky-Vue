@@ -3,8 +3,6 @@ package com.lucky.ai.service;
 import com.lucky.ai.controller.model.vo.model.AiModelPageReqVO;
 import com.lucky.ai.controller.model.vo.model.AiModelSaveReqVO;
 import com.lucky.ai.domain.AiModel;
-import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.image.ImageModel;
 
 import java.util.List;
 
@@ -82,23 +80,5 @@ public interface IAiModelService {
      * @return 模型列表
      */
     List<AiModel> getModelListByStatusAndType(Integer status, Integer type, String platform);
-
-    // ========== 与 Spring AI 集成 ==========
-
-    /**
-     * 获得 ChatModel 对象
-     *
-     * @param id 编号
-     * @return ChatModel 对象
-     */
-    ChatModel getChatModel(Long id);
-
-    /**
-     * 获得 ImageModel 对象
-     *
-     * @param id 编号
-     * @return ImageModel 对象
-     */
-    ImageModel getImageModel(Long id);
 
 }
