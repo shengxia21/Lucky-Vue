@@ -14,151 +14,135 @@ import java.util.List;
 public class AiChatMessageSendRespVO {
 
     /**
-     * 发送消息
+     * 消息id
      */
-    private Message send;
+    private Long id;
 
     /**
-     * 接收消息
+     * 聊天内容
      */
-    private Message receive;
-
-    public Message getSend() {
-        return send;
-    }
-
-    public AiChatMessageSendRespVO setSend(Message send) {
-        this.send = send;
-        return this;
-    }
-
-    public Message getReceive() {
-        return receive;
-    }
-
-    public AiChatMessageSendRespVO setReceive(Message receive) {
-        this.receive = receive;
-        return this;
-    }
+    private String content;
 
     /**
-     * 消息
+     * 推理内容
      */
-    public static class Message {
+    private String reasoningContent;
 
-        /**
-         * 编号
-         */
-        private Long id;
+    /**
+     * 知识库段落编号数组
+     */
+    private List<Long> segmentIds;
 
-        /**
-         * 消息类型
-         */
-        private String type; // 参见 MessageType 枚举类
+    /**
+     * 知识库段落数组
+     */
+    private List<AiChatMessageRespVO.KnowledgeSegment> segments;
 
-        /**
-         * 聊天内容
-         */
-        private String content;
+    /**
+     * 联网搜索的网页内容数组
+     */
+    private List<AiWebSearchResponse.WebPage> webSearchPages;
 
-        /**
-         * 推理内容
-         */
-        private String reasoningContent;
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
-        /**
-         * 知识库段落编号数组
-         */
-        private List<Long> segmentIds;
+    /**
+     * 发送消息id
+     */
+    private Long sendId;
 
-        /**
-         * 知识库段落数组
-         */
-        private List<AiChatMessageRespVO.KnowledgeSegment> segments;
+    /**
+     * 发送内容
+     */
+    private String sendContent;
 
-        /**
-         * 联网搜索的网页内容数组
-         */
-        private List<AiWebSearchResponse.WebPage> webSearchPages;
+    /**
+     * 发送时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date sendTime;
 
-        /**
-         * 创建时间
-         */
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        private Date createTime;
+    public Long getId() {
+        return id;
+    }
 
-        public Long getId() {
-            return id;
-        }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-        public Message setId(Long id) {
-            this.id = id;
-            return this;
-        }
+    public String getContent() {
+        return content;
+    }
 
-        public String getType() {
-            return type;
-        }
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-        public Message setType(String type) {
-            this.type = type;
-            return this;
-        }
+    public String getReasoningContent() {
+        return reasoningContent;
+    }
 
-        public String getContent() {
-            return content;
-        }
+    public void setReasoningContent(String reasoningContent) {
+        this.reasoningContent = reasoningContent;
+    }
 
-        public Message setContent(String content) {
-            this.content = content;
-            return this;
-        }
+    public List<Long> getSegmentIds() {
+        return segmentIds;
+    }
 
-        public String getReasoningContent() {
-            return reasoningContent;
-        }
+    public void setSegmentIds(List<Long> segmentIds) {
+        this.segmentIds = segmentIds;
+    }
 
-        public Message setReasoningContent(String reasoningContent) {
-            this.reasoningContent = reasoningContent;
-            return this;
-        }
+    public List<AiChatMessageRespVO.KnowledgeSegment> getSegments() {
+        return segments;
+    }
 
-        public List<Long> getSegmentIds() {
-            return segmentIds;
-        }
+    public void setSegments(List<AiChatMessageRespVO.KnowledgeSegment> segments) {
+        this.segments = segments;
+    }
 
-        public Message setSegmentIds(List<Long> segmentIds) {
-            this.segmentIds = segmentIds;
-            return this;
-        }
+    public List<AiWebSearchResponse.WebPage> getWebSearchPages() {
+        return webSearchPages;
+    }
 
-        public List<AiChatMessageRespVO.KnowledgeSegment> getSegments() {
-            return segments;
-        }
+    public void setWebSearchPages(List<AiWebSearchResponse.WebPage> webSearchPages) {
+        this.webSearchPages = webSearchPages;
+    }
 
-        public Message setSegments(List<AiChatMessageRespVO.KnowledgeSegment> segments) {
-            this.segments = segments;
-            return this;
-        }
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-        public List<AiWebSearchResponse.WebPage> getWebSearchPages() {
-            return webSearchPages;
-        }
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
-        public Message setWebSearchPages(List<AiWebSearchResponse.WebPage> webSearchPages) {
-            this.webSearchPages = webSearchPages;
-            return this;
-        }
+    public Long getSendId() {
+        return sendId;
+    }
 
-        public Date getCreateTime() {
-            return createTime;
-        }
+    public void setSendId(Long sendId) {
+        this.sendId = sendId;
+    }
 
-        public Message setCreateTime(Date createTime) {
-            this.createTime = createTime;
-            return this;
-        }
+    public String getSendContent() {
+        return sendContent;
+    }
 
+    public void setSendContent(String sendContent) {
+        this.sendContent = sendContent;
+    }
+
+    public Date getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(Date sendTime) {
+        this.sendTime = sendTime;
     }
 
 }

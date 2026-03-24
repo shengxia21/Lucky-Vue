@@ -5,7 +5,9 @@ import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.ai.zhipuai.ZhiPuAiAssistantMessage;
 import org.springframework.ai.zhipuai.ZhiPuAiChatModel;
 import org.springframework.ai.zhipuai.ZhiPuAiChatOptions;
 import org.springframework.ai.zhipuai.api.ZhiPuAiApi;
@@ -37,6 +39,11 @@ public class ZhiPuChatProcessor extends AbstractChatProcessor {
     @Override
     public String getProcessorName() {
         return AiPlatformEnum.ZHI_PU.getPlatform();
+    }
+
+    @Override
+    protected String extractChatResponseReasoningContent(ChatResponse response) {
+        return ((ZhiPuAiAssistantMessage) (response.getResult().getOutput())).getReasoningContent();
     }
 
 }

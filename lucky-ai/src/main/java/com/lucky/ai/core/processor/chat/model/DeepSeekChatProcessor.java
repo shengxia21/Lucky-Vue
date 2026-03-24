@@ -5,7 +5,9 @@ import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.ai.deepseek.DeepSeekAssistantMessage;
 import org.springframework.ai.deepseek.DeepSeekChatModel;
 import org.springframework.ai.deepseek.DeepSeekChatOptions;
 import org.springframework.ai.deepseek.api.DeepSeekApi;
@@ -39,6 +41,11 @@ public class DeepSeekChatProcessor extends AbstractChatProcessor {
     @Override
     public String getProcessorName() {
         return AiPlatformEnum.DEEP_SEEK.getPlatform();
+    }
+
+    @Override
+    protected String extractChatResponseReasoningContent(ChatResponse response) {
+        return ((DeepSeekAssistantMessage) (response.getResult().getOutput())).getReasoningContent();
     }
 
 }

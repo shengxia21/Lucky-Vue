@@ -40,7 +40,7 @@ public enum AiImageStatusEnum {
                 return statusEnum;
             }
         }
-        throw new IllegalArgumentException("未知会话状态： " + status);
+        throw new IllegalArgumentException("未知绘画状态： " + status);
     }
 
 }

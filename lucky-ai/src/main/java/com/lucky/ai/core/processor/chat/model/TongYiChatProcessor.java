@@ -8,6 +8,7 @@ import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +41,11 @@ public class TongYiChatProcessor extends AbstractChatProcessor {
     @Override
     public String getProcessorName() {
         return AiPlatformEnum.TONG_YI.getPlatform();
+    }
+
+    @Override
+    protected String extractChatResponseReasoningContent(ChatResponse response) {
+        return (String) response.getResult().getOutput().getMetadata().getOrDefault("reasoningContent", "");
     }
 
 }
