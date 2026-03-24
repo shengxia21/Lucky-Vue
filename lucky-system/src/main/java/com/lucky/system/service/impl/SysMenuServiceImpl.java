@@ -5,6 +5,8 @@ import com.lucky.common.constant.UserConstants;
 import com.lucky.common.core.domain.TreeSelect;
 import com.lucky.common.core.domain.entity.SysMenu;
 import com.lucky.common.core.domain.entity.SysRole;
+import com.lucky.common.core.text.Convert;
+import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.system.domain.vo.MetaVo;
@@ -17,6 +19,7 @@ import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -280,6 +283,27 @@ public class SysMenuServiceImpl implements ISysMenuService {
     @Override
     public int updateMenu(SysMenu menu) {
         return menuMapper.updateMenu(menu);
+    }
+
+    /**
+     * 保存菜单排序
+     *
+     * @param menuIds   菜单ID
+     * @param orderNums 排序ID
+     */
+    @Override
+    @Transactional
+    public void updateMenuSort(String[] menuIds, String[] orderNums) {
+        try {
+            for (int i = 0; i < menuIds.length; i++) {
+                SysMenu menu = new SysMenu();
+                menu.setMenuId(Convert.toLong(menuIds[i]));
+                menu.setOrderNum(Convert.toInt(orderNums[i]));
+                menuMapper.updateMenuSort(menu);
+            }
+        } catch (Exception e) {
+            throw new ServiceException("保存排序异常，请联系管理员");
+        }
     }
 
     /**

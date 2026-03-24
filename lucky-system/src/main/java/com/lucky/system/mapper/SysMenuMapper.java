@@ -108,6 +108,13 @@ public interface SysMenuMapper {
     int updateMenu(SysMenu menu);
 
     /**
+     * 保存菜单排序
+     *
+     * @param menu 菜单信息
+     */
+    void updateMenuSort(SysMenu menu);
+
+    /**
      * 删除菜单管理信息
      *
      * @param menuId 菜单ID

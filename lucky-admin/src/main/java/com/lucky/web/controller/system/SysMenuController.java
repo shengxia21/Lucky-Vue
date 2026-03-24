@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 菜单信息
@@ -103,6 +104,18 @@ public class SysMenuController extends BaseController {
         }
         menu.setUpdateBy(getUsername());
         return toAjax(menuService.updateMenu(menu));
+    }
+
+    /**
+     * 保存菜单排序
+     */
+    @Log(title = "保存菜单排序", businessType = BusinessType.UPDATE)
+    @PutMapping("/updateSort")
+    public AjaxResult updateSort(@RequestBody Map<String, String> params) {
+        String[] menuIds = params.get("menuIds").split(",");
+        String[] orderNums = params.get("orderNums").split(",");
+        menuService.updateMenuSort(menuIds, orderNums);
+        return success();
     }
 
     /**
