@@ -15,6 +15,7 @@ import com.lucky.system.mapper.SysRoleMapper;
 import com.lucky.system.service.ISysDeptService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -252,6 +253,27 @@ public class SysDeptServiceImpl implements ISysDeptService {
         }
         if (children.size() > 0) {
             deptMapper.updateDeptChildren(children);
+        }
+    }
+
+    /**
+     * 保存部门排序
+     *
+     * @param deptIds   部门ID数组
+     * @param orderNums 排序数组
+     */
+    @Override
+    @Transactional
+    public void updateDeptSort(String[] deptIds, String[] orderNums) {
+        try {
+            for (int i = 0; i < deptIds.length; i++) {
+                SysDept dept = new SysDept();
+                dept.setDeptId(Convert.toLong(deptIds[i]));
+                dept.setOrderNum(Convert.toInt(orderNums[i]));
+                deptMapper.updateDeptSort(dept);
+            }
+        } catch (Exception e) {
+            throw new ServiceException("保存排序异常，请联系管理员");
         }
     }
 
