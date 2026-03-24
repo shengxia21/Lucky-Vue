@@ -1,12 +1,12 @@
 package com.lucky.ai.core.processor.chat;
 
-import com.lucky.common.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 聊天处理器工厂
@@ -16,17 +16,17 @@ import java.util.stream.Collectors;
  * @author lucky
  */
 @Component
-public class ChatProcessorFactory {
+public class ChatProcessorFactory implements ApplicationContextAware {
 
-    private final Map<String, ChatProcessor> processorMap;
+    private final Map<String, AbstractChatProcessor> chatProcessorMap = new ConcurrentHashMap<>();
 
-    @Autowired
-    public ChatProcessorFactory(List<ChatProcessor> processors) {
-        this.processorMap = processors.stream()
-                .collect(Collectors.toMap(
-                        ChatProcessor::getProcessorName,
-                        processor -> processor)
-                );
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        // 初始化时收集所有ChatProcessor的实现
+        Map<String, AbstractChatProcessor> processorMap = applicationContext.getBeansOfType(AbstractChatProcessor.class);
+        for (AbstractChatProcessor processor : processorMap.values()) {
+            chatProcessorMap.put(processor.getProcessorName(), processor);
+        }
     }
 
     /**
@@ -35,10 +35,10 @@ public class ChatProcessorFactory {
      * @param platform 平台枚举
      * @return 聊天处理器
      */
-    public ChatProcessor getProcessor(String platform) {
-        ChatProcessor processor = processorMap.get(platform);
+    public AbstractChatProcessor getOriginalProcessor(String platform) {
+        AbstractChatProcessor processor = chatProcessorMap.get(platform);
         if (processor == null) {
-            throw new ServiceException("暂不支持 " + platform + " 平台的聊天功能");
+            throw new IllegalArgumentException("暂不支持 " + platform + " 平台的聊天功能");
         }
         return processor;
     }

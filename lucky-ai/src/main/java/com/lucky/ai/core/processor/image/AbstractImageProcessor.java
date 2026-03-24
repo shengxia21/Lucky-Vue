@@ -55,10 +55,8 @@ public abstract class AbstractImageProcessor implements ImageProcessor {
             ImageOptions request = buildImageOptions(model, drawReqVO);
             // 构建 ImageModel
             ImageModel imageModel = buildImageModel(apiKey.getApiKey());
-
             // 执行请求
             ImageResponse response = imageModel.call(new ImagePrompt(drawReqVO.getPrompt(), request));
-
             if (response.getResult() == null) {
                 String message = response.getMetadata().getRawMap().getOrDefault("message", "生成结果为空").toString();
                 throw new IllegalArgumentException(message);

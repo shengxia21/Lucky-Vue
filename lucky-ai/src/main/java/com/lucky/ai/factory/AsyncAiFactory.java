@@ -26,7 +26,7 @@ public class AsyncAiFactory {
             ImageProcessorFactory imageProcessorFactory = SpringUtils.getBean(ImageProcessorFactory.class);
 
             // 根据平台获取图片处理器
-            ImageProcessor imageProcessor = imageProcessorFactory.getProcessor(platform);
+            ImageProcessor imageProcessor = imageProcessorFactory.getOriginalProcessor(platform);
             // 执行图片生成任务
             imageProcessor.processImage(imageContext);
         };

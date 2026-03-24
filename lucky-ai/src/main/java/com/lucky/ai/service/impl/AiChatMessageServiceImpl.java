@@ -69,7 +69,7 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
         AiApiKey apiKey = aiApiKeyService.validateApiKey(model.getKeyId());
 
         // 使用聊天处理器工厂获取对应的处理器
-        ChatProcessor chatProcessor = chatProcessorFactory.getProcessor(model.getPlatform());
+        ChatProcessor chatProcessor = chatProcessorFactory.getOriginalProcessor(model.getPlatform());
 
         // 构建聊天上下文
         ChatContext chatContext = new ChatContext();

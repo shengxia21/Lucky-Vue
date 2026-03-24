@@ -1,12 +1,12 @@
 package com.lucky.ai.core.processor.image;
 
-import com.lucky.common.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 图片处理器工厂
@@ -16,29 +16,29 @@ import java.util.stream.Collectors;
  * @author lucky
  */
 @Component
-public class ImageProcessorFactory {
+public class ImageProcessorFactory implements ApplicationContextAware {
 
-    private final Map<String, ImageProcessor> processorMap;
+    private final Map<String, AbstractImageProcessor> imageProcessorMap = new ConcurrentHashMap<>();
 
-    @Autowired
-    public ImageProcessorFactory(List<ImageProcessor> processors) {
-        this.processorMap = processors.stream()
-                .collect(Collectors.toMap(
-                        ImageProcessor::getProcessorName,
-                        processor -> processor)
-                );
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        // 初始化时收集所有ImageProcessor的实现
+        Map<String, AbstractImageProcessor> processorMap = applicationContext.getBeansOfType(AbstractImageProcessor.class);
+        for (AbstractImageProcessor processor : processorMap.values()) {
+            imageProcessorMap.put(processor.getProcessorName(), processor);
+        }
     }
 
     /**
-     * 根据平台获取图片处理器
+     * 根据平台获取图片处理器（不包装代理）
      *
      * @param platform 平台枚举
      * @return 图片处理器
      */
-    public ImageProcessor getProcessor(String platform) {
-        ImageProcessor processor = processorMap.get(platform);
+    public AbstractImageProcessor getOriginalProcessor(String platform) {
+        AbstractImageProcessor processor = imageProcessorMap.get(platform);
         if (processor == null) {
-            throw new ServiceException("暂不支持 " + platform + " 平台的图片生成功能");
+            throw new IllegalArgumentException("暂不支持 " + platform + " 平台的图片生成功能");
         }
         return processor;
     }
