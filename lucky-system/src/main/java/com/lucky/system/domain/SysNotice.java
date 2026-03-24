@@ -1,5 +1,6 @@
 package com.lucky.system.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lucky.common.core.domain.BaseEntity;
 import com.lucky.common.xss.Xss;
 import jakarta.validation.constraints.NotBlank;
@@ -41,12 +42,22 @@ public class SysNotice extends BaseEntity {
      */
     private String status;
 
+    /**
+     * 是否已读
+     */
+    @JsonProperty("isRead")
+    private boolean isRead;
+
     public Long getNoticeId() {
         return noticeId;
     }
 
     public void setNoticeId(Long noticeId) {
         this.noticeId = noticeId;
+    }
+
+    public void setNoticeTitle(String noticeTitle) {
+        this.noticeTitle = noticeTitle;
     }
 
     @Xss(message = "公告标题不能包含脚本字符")
@@ -56,32 +67,36 @@ public class SysNotice extends BaseEntity {
         return noticeTitle;
     }
 
-    public void setNoticeTitle(String noticeTitle) {
-        this.noticeTitle = noticeTitle;
+    public void setNoticeType(String noticeType) {
+        this.noticeType = noticeType;
     }
 
     public String getNoticeType() {
         return noticeType;
     }
 
-    public void setNoticeType(String noticeType) {
-        this.noticeType = noticeType;
+    public void setNoticeContent(String noticeContent) {
+        this.noticeContent = noticeContent;
     }
 
     public String getNoticeContent() {
         return noticeContent;
     }
 
-    public void setNoticeContent(String noticeContent) {
-        this.noticeContent = noticeContent;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public boolean getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
     }
 
     @Override

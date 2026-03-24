@@ -650,6 +650,23 @@ INSERT INTO `sys_notice` VALUES (1, '温馨提醒：2025-07-01 lucky新版本发
 INSERT INTO `sys_notice` VALUES (2, '维护通知：2025-07-01 lucky系统凌晨维护', '1', 0xE7BBB4E68AA4E58685E5AEB9, '0', 'admin', '2025-08-17 23:07:13', '', NULL, '管理员');
 
 -- ----------------------------
+-- Table structure for sys_notice_read
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_notice_read`;
+CREATE TABLE `sys_notice_read`  (
+  `read_id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '已读主键',
+  `notice_id` int(0) NOT NULL COMMENT '公告id',
+  `user_id` bigint(0) NOT NULL COMMENT '用户id',
+  `read_time` datetime(0) NOT NULL COMMENT '阅读时间',
+  PRIMARY KEY (`read_id`) USING BTREE,
+  UNIQUE INDEX `uk_user_notice`(`user_id`, `notice_id`) USING BTREE COMMENT '同一用户同一公告只记录一次'
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '公告已读记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_oper_log
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_oper_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_oper_log`;
