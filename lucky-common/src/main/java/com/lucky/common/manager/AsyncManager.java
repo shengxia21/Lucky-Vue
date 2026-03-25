@@ -66,8 +66,6 @@ public class AsyncManager {
     public void shutdown() {
         // 停止定时任务线程池
         Threads.shutdownAndAwaitTermination(scheduledExecutor);
-        // 停止异步操作任务执行线程池
-        Threads.shutdownAndAwaitTermination(taskExecutor);
     }
 
 }

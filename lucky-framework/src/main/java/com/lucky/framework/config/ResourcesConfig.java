@@ -57,6 +57,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
      */
     @Override
     public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+        // 生产环境下,让 MVC 异步使用可控线程池,而不是默认的SimpleAsyncTaskExecutor
         configurer.setTaskExecutor(threadPoolTaskExecutor);
     }
 
