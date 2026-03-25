@@ -1,85 +1,114 @@
-<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">lucky v1.0.0</h1>
-<h4 align="center">基于SpringBoot+Vue前后端分离的Java快速开发框架</h4>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">Lucky-Vue</h1>
+<h4 align="center">基于SpringBoot+Spring AI的一站式AI应用开发框架</h4>
 <p align="center">
 	<a href="https://gitee.com/fushengxuyu/lucky-vue/stargazers"><img src="https://gitee.com/fushengxuyu/lucky-vue/badge/star.svg?theme=dark"></a>
 	<a href="https://gitee.com/fushengxuyu/lucky-vue"><img src="https://img.shields.io/badge/lucky-v1.0.0-brightgreen.svg"></a>
 	<a href="https://gitee.com/fushengxuyu/lucky-vue/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
 </p>
-<p align="center">
-    <img src="https://img.shields.io/badge/Spring%20Boot-3.5.8-blue.svg" alt="Downloads">
-    <img src="https://img.shields.io/badge/Vue-3.5-blue.svg" alt="Downloads">
-</p>
 
-## 平台简介
+## ✨ 核心亮点
 
-Lucky-Vue是一套专注于AI大模型应用开发的开源项目。
+|     模块     | 现有能力 
+|:----------:|---
+|  **模型管理**  | 多模型接入(DeepSeek/通义千问/智谱AI)、多模态理解  
+|  **知识管理**  | 本地RAG + 向量库 + 文档解析  
+|  **工具管理**  | Mcp协议集成、Skills能力 + 可扩展工具生态  
+|  **多智能体**  | 基于Spring AI的Agent框架，支持多种决策模型  
 
-* 前端采用Vue3、Element Plus。
-* 后端采用Spring Boot、Spring Security、Redis & Jwt。
-* 集成多款主流AI大模型，支持DeepSeek、通义千问、抖音豆包、腾讯混元等。
-* 提供完整的AI对话、绘画、知识库等核心功能模块。
+## 🚀 快速体验
 
-## 内置功能
+### 在线演示
 
-1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
-2.  部门管理：配置系统组织机构（公司、部门、小组），树结构展现支持数据权限。
-3.  岗位管理：配置系统用户所属担任职务。
-4.  菜单管理：配置系统菜单，操作权限，按钮权限标识等。
-5.  角色管理：角色菜单权限分配、设置角色按机构进行数据范围权限划分。
-6.  字典管理：对系统中经常使用的一些较为固定的数据进行维护。
-7.  参数管理：对系统动态配置常用参数。
-8.  通知公告：系统通知公告信息发布维护。
-9.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
-10. 登录日志：系统登录日志记录查询包含登录异常。
-11. 在线用户：当前系统中活跃用户状态监控。
-12. 代码生成：前后端代码的生成（java、html、xml、sql）支持CRUD下载 。
-13. 系统接口：根据业务代码自动生成相关的api接口文档。
-14. 服务监控：监视当前系统CPU、内存、磁盘、堆栈等相关信息。
-15. 缓存监控：对系统的缓存信息查询，命令统计等。
-16. 连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
-17. AI 对话：集成AI对话功能，用户可以与系统进行自然语言交互。
-18. AI 绘画：集成AI绘画功能，用户可以通过自然语言描述生成对应的图片。
-19. API 密钥：配置自己的API密钥，以使用AI功能。
-20. 模型配置：配置使用的AI模型，如DeepSeek、通义千问等。
-21. 聊天管理：查看和管理AI对话的聊天记录。
-22. 绘画管理：查看和管理AI生成的绘画记录。
-23. 聊天角色：配置AI聊天角色，每个角色拥有自己的系统提示词。
+|   平台   | 地址                                             | 账号 |
+|:------:|------------------------------------------------|---|
+|  用户端   | 待实现                                            | admin / admin123 |
+| 管理后台 | [www.lucky.com](http://121.40.230.117/login) | admin / admin123 |
 
-## 后续实现功能
+### 项目源码
 
-1. AI聊天角色：配置AI聊天角色，每个角色拥有自己的系统提示词。(已实现)
-2. 文件上传：AI对话聊天支持用户上传文件、图片等。
-3. 联网功能：集成大模型联网搜索功能，联网后AI模型可以根据网络搜索结果进行回答。
-4. AI思维导图：集成AI思维导图功能，用户可以通过自然语言描述生成对应的思维导图。
-5. AI知识库：配置AI知识库，AI大模型会根据知识库的内容进行智能问答。
-6. 视频创作：集成AI视频，用户可以通过自然语言描述生成对应的视频。
-7. RAG功能：集成RAG功能，提供应用场景。
-8. MCP功能：集成MCP功能，提供应用场景。
-9. Agent功能：集成Agent功能，提供应用场景。
+| 项目模块     | Gitee 仓库                                             |
+|----------|------------------------------------------------------|
+| 🔧 后端服务  | [lucky-vue](https://gitee.com/fushengxuyu/lucky-vue) |
+| 🎨 用户前端  | 待实现                                                  |
+| 🛠️ 管理后台 | [lucky-ui](https://gitee.com/fushengxuyu/lucky-ui)   |
 
-## AI技术说明及区别
+## 🛠️ 技术架构
 
-| 技术名称 | 核心角色 / 比喻 | 解决的主要问题 | 典型应用场景 |
-|----------|-----------------|----------------|-------------|
-| RAG | 知识管家 | 大模型知识陈旧、易产生"幻觉"（胡说八道）。 | 企业智能客服、法律/医疗知识问答、内部文档查询。 |
-| MCP | 万能转换器 / 统一插座 | 大模型与外部工具、数据源连接困难，接口不统一。 | 让Agent能一键调用浏览器查资料、读取Excel表格、发送邮件等。 |
-| Agent | 智能助理 | 大模型只能被动回答，无法主动规划并执行复杂任务。 | 自动旅行规划、智能编码助手、自动化数据分析与报告生成。 |
+### 核心框架
+- **后端架构**：Spring Boot 3.5 + Spring ai 1.1
+- **数据存储**：MySQL 8.0 + Redis + 向量数据库
+- **前端技术**：Vue 3 + pinia + element-plus
+- **安全认证**：Spring Security + JWT
 
-- RAG：为AI注入最新、可信的知识
-- MCP：打破AI与外部工具的壁垒
-- Agent：让AI从“答”到“做”
+## 环境要求
 
-在实际应用中，这三项技术往往协同工作，组成强大的AI应用“黄金三角”：
-- Agent作为“大脑”和“指挥者”，负责规划任务流程。
-- MCP作为“手和脚”，为Agent提供统一的方式来调用各种外部工具。
-- RAG作为“记忆库”，为决策和生成提供精准、最新的知识支持。
+- **Java 17+**: 核心运行环境
+- **Maven 3.9+**：项目构建工具
+- **MySQL 8.0+**：数据库
+- **Redis 8.0+**：缓存数据库
+- **Node.js 20+**：前端开发环境
+- **pnpm 10.13+**：前端依赖管理工具
 
-## 在线体验
+## 🐳 部署方式
 
-- 演示账号：lucky
-- 演示密码：admin123
+本项目提供两种部署方式：
 
-演示地址：https://yuanlin.asia
+### 方式一：Docker 容器化部署
+
+使用 `docker-compose.yaml` 可以一键启动所有服务
+
+```bash
+# 自行查看script目录下的docker脚本文件，根据实际情况修改
+
+# 具体操作步骤作者已经忘了，嘿嘿嘿，不好意思😝😵(...就用过一次)
+```
+
+### 方式二：本地部署
+
+如果您需要从源码构建后端服务，请按照以下步骤操作：
+
+#### 第一步：部署后端服务
+
+```bash
+# 1.在mysql中创建lucky-vue数据库
+
+# 2.运行script目录下的sql脚本文件
+
+# 3.修改application-dev.yml文件，配置redis和数据库连接信息
+
+# 4.在环境变量中添加AI模型的API密钥
+# （DeepSeek[DEEPSEEK_API_KEY]/通义千问[DASHSCOPE_API_KEY]/智谱AI[ZHIPUAI_API_KEY]）
+
+# 5.启动后端服务
+# 后端服务地址: http://localhost:8082
+```
+
+#### 第二步：部署管理端
+
+```bash
+# 进入管理端项目目录
+cd lucky-ui
+
+# 安装依赖（或使用npm install）
+pnpm install --registry=https://registry.npmmirror.com
+
+# 启动服务（或使用npm run dev）
+pnpm run dev
+
+# 访问管理端
+# 地址: http://localhost:82
+```
+
+### 服务端口说明
+
+| 服务 | 本地部署端口 | 说明 |
+|------|--------|------|
+| 管理端 | 82     | 管理后台访问地址 |
+| 用户端 | 待实现    | 用户前端访问地址 |
+| 后端服务 | 8082   | 后端 API 服务 |
+| MySQL | 3308   | 数据库服务 |
+| Redis | 6379   | 缓存服务 |
+
 
 ## 演示图
 
@@ -89,19 +118,37 @@ Lucky-Vue是一套专注于AI大模型应用开发的开源项目。
         <td><img src=".image/AI对话2.png"/></td>
     </tr>
     <tr>
+        <td><img src=".image/AI角色对话1.png"/></td>
+        <td><img src=".image/AI角色对话2.png"/></td>
+    </tr>
+    <tr>
+        <td><img src=".image/AI对话角色仓库1.png"/></td>
+        <td><img src=".image/AI对话角色仓库2.png"/></td>
+    </tr>
+    <tr>
+        <td><img src=".image/AI绘画1.png"/></td>
+        <td><img src=".image/AI绘画2.png"/></td>
+    </tr>
+    <tr>
         <td><img src=".image/API密钥.png"/></td>
         <td><img src=".image/模型配置.png"/></td>
     </tr>
-    <tr>
-        <td><img src=".image/聊天管理-对话列表.png"/></td>
-        <td><img src=".image/聊天管理-消息列表.png"/></td>
-    </tr>
-    <tr>
-        <td><img src=".image/绘画管理.png"/></td>
-        <td><img src=".image/AI绘画.png"/></td>
-    </tr>
 </table>
 
-## 特此声明
+## 🤝 参与贡献
 
-本项目是基于[RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue)项目进行的二次开发，感谢作者提供的优秀代码。
+热烈欢迎社区贡献！无论您是资深开发者还是初学者，都可以为项目贡献力量 💪
+
+### 贡献方式
+
+1. **Fork** 项目到您的账户
+2. **创建分支** (`git checkout -b feature/新功能名称`)
+3. **提交代码** (`git commit -m '添加某某功能'`)
+4. **推送分支** (`git push origin feature/新功能名称`)
+5. **发起 Pull Request**
+
+## 🙏 特别鸣谢
+
+感谢以下优秀的开源项目为本项目提供支持：
+- [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue) - 基于基于SpringBoot的Java快速开发框架
+- [RuoYi-Vue3](https://gitcode.com/yangzongzhuan/RuoYi-Vue3) - 现代化的 Vue 后台管理模板

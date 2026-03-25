@@ -663,7 +663,7 @@ CREATE TABLE `sys_notice_read`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '公告已读记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of sys_oper_log
+-- Records of sys_notice_read
 -- ----------------------------
 
 -- ----------------------------
