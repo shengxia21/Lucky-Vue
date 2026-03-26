@@ -1,10 +1,11 @@
-package com.lucky.ai.core.processor.image.model;
+package com.lucky.ai.core.strategy.image;
 
 import com.alibaba.cloud.ai.dashscope.api.DashScopeImageApi;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageModel;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageOptions;
-import com.lucky.ai.controller.image.vo.AiImageDrawReqVO;
-import com.lucky.ai.core.processor.image.AbstractImageProcessor;
+import com.lucky.ai.core.context.ImageContext;
+import com.lucky.ai.core.strategy.ImageModelStrategy;
+import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import org.springframework.ai.image.ImageModel;
@@ -17,10 +18,10 @@ import org.springframework.stereotype.Component;
  * @author lucky
  */
 @Component
-public class TongYiImageProcessor extends AbstractImageProcessor {
+public class TongYiImageStrategy implements ImageModelStrategy {
 
     @Override
-    protected ImageModel buildImageModel(String apiKey) {
+    public ImageModel buildImageModel(String apiKey) {
         DashScopeImageApi dashScopeApi = DashScopeImageApi.builder()
                 .apiKey(apiKey)
                 .build();
@@ -30,18 +31,20 @@ public class TongYiImageProcessor extends AbstractImageProcessor {
     }
 
     @Override
-    protected ImageOptions buildImageOptions(AiModel model, AiImageDrawReqVO drawReqVO) {
+    public ImageOptions buildImageOptions(ImageContext imageContext) {
+        ImageDrawRequest request = imageContext.getRequest();
+        AiModel model = imageContext.getModel();
         return DashScopeImageOptions.builder()
                 .model(model.getModel()).n(1)
-                .height(drawReqVO.getHeight()).width(drawReqVO.getWidth())
-                .promptExtend(Boolean.parseBoolean(drawReqVO.getOptions().getOrDefault("promptExtend", "false")))
-                .negativePrompt(drawReqVO.getOptions().getOrDefault("negativePrompt", ""))
+                .height(request.getHeight()).width(request.getWidth())
+                .promptExtend(Boolean.parseBoolean(request.getOptions().getOrDefault("promptExtend", "false")))
+                .negativePrompt(request.getOptions().getOrDefault("negativePrompt", ""))
                 .enableInterleave(true)
                 .build();
     }
 
     @Override
-    public String getProcessorName() {
+    public String getStrategyName() {
         return AiPlatformEnum.TONG_YI.getPlatform();
     }
 

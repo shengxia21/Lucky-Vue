@@ -1,9 +1,7 @@
 package com.lucky.ai.factory;
 
 import com.lucky.ai.core.context.ImageContext;
-import com.lucky.ai.core.processor.image.ImageProcessor;
-import com.lucky.ai.core.processor.image.ImageProcessorFactory;
-import com.lucky.ai.domain.AiModel;
+import com.lucky.ai.core.facade.ImageServiceFacade;
 import com.lucky.common.utils.spring.SpringUtils;
 
 /**
@@ -21,14 +19,10 @@ public class AsyncAiFactory {
      */
     public static Runnable executeDrawImage(ImageContext imageContext) {
         return () -> {
-            AiModel model = imageContext.getModel();
-            String platform = model.getPlatform();
-            ImageProcessorFactory imageProcessorFactory = SpringUtils.getBean(ImageProcessorFactory.class);
-
-            // 根据平台获取图片处理器
-            ImageProcessor imageProcessor = imageProcessorFactory.getOriginalProcessor(platform);
-            // 执行图片生成任务
-            imageProcessor.processImage(imageContext);
+            // 获取图片服务实例
+            ImageServiceFacade imageService = SpringUtils.getBean(ImageServiceFacade.class);
+            // 生成图片
+            imageService.generateImage(imageContext);
         };
     }
 

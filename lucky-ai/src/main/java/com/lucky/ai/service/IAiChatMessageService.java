@@ -2,9 +2,9 @@ package com.lucky.ai.service;
 
 import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
-import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendReqVO;
+import com.lucky.ai.core.vo.chat.ChatMessageRequest;
+import com.lucky.ai.core.vo.chat.ChatMessageResponse;
 import com.lucky.ai.domain.AiChatMessage;
-import com.lucky.common.core.domain.AjaxResult;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public interface IAiChatMessageService {
      * @param userId    用户ID
      * @return 发送消息（流式）响应VO
      */
-    Flux<AjaxResult> sendChatMessageStream(AiChatMessageSendReqVO sendReqVO, Long userId);
+    Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest sendReqVO, Long userId);
 
     /**
      * 根据会话ID查询聊天消息列表

@@ -1,9 +1,9 @@
 package com.lucky.ai.service;
 
-import com.lucky.ai.controller.image.vo.AiImageDrawReqVO;
 import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
 import com.lucky.ai.controller.image.vo.AiImagePublicPageReqVO;
 import com.lucky.ai.controller.image.vo.AiImageUpdateReqVO;
+import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.AiImage;
 
 import java.util.List;
@@ -50,11 +50,11 @@ public interface IAiImageService {
     /**
      * 生成图片
      *
-     * @param userId    用户ID
-     * @param drawReqVO 绘图参数
+     * @param userId  用户ID
+     * @param request 绘图参数
      * @return 绘图记录ID
      */
-    Long drawImage(Long userId, AiImageDrawReqVO drawReqVO);
+    Long drawImage(Long userId, ImageDrawRequest request);
 
     /**
      * 删除【我的】绘图记录

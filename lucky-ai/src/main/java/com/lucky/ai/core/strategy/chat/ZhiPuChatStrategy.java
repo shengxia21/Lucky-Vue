@@ -1,6 +1,7 @@
-package com.lucky.ai.core.processor.chat.model;
+package com.lucky.ai.core.strategy.chat;
 
-import com.lucky.ai.core.processor.chat.AbstractChatProcessor;
+import com.lucky.ai.core.context.ChatContext;
+import com.lucky.ai.core.strategy.ChatModelStrategy;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiPlatformEnum;
@@ -14,21 +15,23 @@ import org.springframework.ai.zhipuai.api.ZhiPuAiApi;
 import org.springframework.stereotype.Component;
 
 /**
- * 智谱AI聊天处理器
+ * 智普策略
  *
  * @author lucky
  */
 @Component
-public class ZhiPuChatProcessor extends AbstractChatProcessor {
+public class ZhiPuChatStrategy implements ChatModelStrategy {
 
     @Override
-    protected ChatModel buildChatModel(String apiKey) {
+    public ChatModel buildChatModel(String apiKey) {
         ZhiPuAiApi zhiPuApi = ZhiPuAiApi.builder().apiKey(apiKey).build();
         return new ZhiPuAiChatModel(zhiPuApi);
     }
 
     @Override
-    protected ChatOptions buildChatOptions(AiModel model, AiChatConversation conversation) {
+    public ChatOptions buildChatOptions(ChatContext chatContext) {
+        AiChatConversation conversation = chatContext.getConversation();
+        AiModel model = chatContext.getModel();
         return ZhiPuAiChatOptions.builder()
                 .model(model.getModel())
                 .temperature(conversation.getTemperature())
@@ -37,13 +40,13 @@ public class ZhiPuChatProcessor extends AbstractChatProcessor {
     }
 
     @Override
-    public String getProcessorName() {
-        return AiPlatformEnum.ZHI_PU.getPlatform();
+    public String extractChatResponseReasoningContent(ChatResponse response) {
+        return ((ZhiPuAiAssistantMessage) (response.getResult().getOutput())).getReasoningContent();
     }
 
     @Override
-    protected String extractChatResponseReasoningContent(ChatResponse response) {
-        return ((ZhiPuAiAssistantMessage) (response.getResult().getOutput())).getReasoningContent();
+    public String getStrategyName() {
+        return AiPlatformEnum.ZHI_PU.getPlatform();
     }
 
 }

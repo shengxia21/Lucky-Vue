@@ -4,10 +4,10 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
-import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendReqVO;
 import com.lucky.ai.core.context.ChatContext;
-import com.lucky.ai.core.processor.chat.ChatProcessor;
-import com.lucky.ai.core.processor.chat.ChatProcessorFactory;
+import com.lucky.ai.core.facade.ChatServiceFacade;
+import com.lucky.ai.core.vo.chat.ChatMessageRequest;
+import com.lucky.ai.core.vo.chat.ChatMessageResponse;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatMessage;
@@ -18,7 +18,6 @@ import com.lucky.ai.service.IAiChatConversationService;
 import com.lucky.ai.service.IAiChatMessageService;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.constant.AiErrorConstants;
-import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.exception.ServiceException;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -47,19 +46,19 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
     private IAiApiKeyService aiApiKeyService;
 
     @Resource
-    private ChatProcessorFactory chatProcessorFactory;
+    private ChatServiceFacade chatService;
 
     /**
      * 发送消息（流式）
      *
-     * @param sendReqVO 发送消息（流式）请求VO
+     * @param request 发送消息（流式）请求
      * @param userId    用户ID
      * @return 发送消息（流式）响应VO
      */
     @Override
-    public Flux<AjaxResult> sendChatMessageStream(AiChatMessageSendReqVO sendReqVO, Long userId) {
+    public Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest request, Long userId) {
         // 校验对话存在
-        AiChatConversation conversation = aiChatConversationService.validateChatConversationExists(sendReqVO.getConversationId());
+        AiChatConversation conversation = aiChatConversationService.validateChatConversationExists(request.getConversationId());
         if (ObjUtil.notEqual(conversation.getUserId(), userId)) {
             throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
         }
@@ -68,19 +67,15 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
         // 校验key
         AiApiKey apiKey = aiApiKeyService.validateApiKey(model.getKeyId());
 
-        // 使用聊天处理器工厂获取对应的处理器
-        ChatProcessor chatProcessor = chatProcessorFactory.getOriginalProcessor(model.getPlatform());
-
         // 构建聊天上下文
         ChatContext chatContext = new ChatContext();
-        chatContext.setSendReqVO(sendReqVO);
+        chatContext.setRequest(request);
         chatContext.setConversation(conversation);
         chatContext.setModel(model);
         chatContext.setApiKey(apiKey);
         chatContext.setUserId(userId);
-
         // 调用处理器处理流式聊天
-        return chatProcessor.processStream(chatContext);
+        return chatService.chat(chatContext);
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.lucky.ai.controller.chat.vo.message;
+package com.lucky.ai.core.vo.chat;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * AI 聊天消息发送请求VO
+ * 聊天消息请求
  *
  * @author lucky
  */
-public class AiChatMessageSendReqVO {
+public class ChatMessageRequest {
 
     /**
      * 聊天对话编号

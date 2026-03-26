@@ -3,11 +3,11 @@ package com.lucky.ai.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
-import com.lucky.ai.controller.image.vo.AiImageDrawReqVO;
 import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
 import com.lucky.ai.controller.image.vo.AiImagePublicPageReqVO;
 import com.lucky.ai.controller.image.vo.AiImageUpdateReqVO;
 import com.lucky.ai.core.context.ImageContext;
+import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.domain.AiModel;
@@ -95,19 +95,19 @@ public class AiImageServiceImpl implements IAiImageService {
     /**
      * 生成图片
      *
-     * @param userId    用户ID
-     * @param drawReqVO 绘图参数
+     * @param userId  用户ID
+     * @param request 绘图参数
      * @return 结果
      */
     @Override
-    public Long drawImage(Long userId, AiImageDrawReqVO drawReqVO) {
+    public Long drawImage(Long userId, ImageDrawRequest request) {
         // 校验模型是否存在
-        AiModel model = aiModelService.validateModel(drawReqVO.getModelId());
+        AiModel model = aiModelService.validateModel(request.getModelId());
         // 校验apiKey是否存在
         AiApiKey apiKey = aiApiKeyService.validateApiKey(model.getKeyId());
 
         // 保存数据库
-        AiImage image = BeanUtil.toBean(drawReqVO, AiImage.class);
+        AiImage image = BeanUtil.toBean(request, AiImage.class);
         image.setUserId(userId);
         image.setPlatform(model.getPlatform());
         image.setModelId(model.getId());
@@ -121,7 +121,7 @@ public class AiImageServiceImpl implements IAiImageService {
         // 构建图片上下文
         ImageContext imageContext = new ImageContext();
         imageContext.setImage(image);
-        imageContext.setDrawReqVO(drawReqVO);
+        imageContext.setRequest(request);
         imageContext.setModel(model);
         imageContext.setApiKey(apiKey);
 

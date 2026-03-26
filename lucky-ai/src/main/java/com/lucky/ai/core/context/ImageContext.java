@@ -1,6 +1,6 @@
 package com.lucky.ai.core.context;
 
-import com.lucky.ai.controller.image.vo.AiImageDrawReqVO;
+import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.domain.AiModel;
@@ -16,7 +16,7 @@ public class ImageContext {
     /**
      * 绘图请求参数
      */
-    private AiImageDrawReqVO drawReqVO;
+    private ImageDrawRequest request;
 
     /**
      * 图片
@@ -33,12 +33,12 @@ public class ImageContext {
      */
     private AiApiKey apiKey;
 
-    public AiImageDrawReqVO getDrawReqVO() {
-        return drawReqVO;
+    public ImageDrawRequest getRequest() {
+        return request;
     }
 
-    public void setDrawReqVO(AiImageDrawReqVO drawReqVO) {
-        this.drawReqVO = drawReqVO;
+    public void setRequest(ImageDrawRequest request) {
+        this.request = request;
     }
 
     public AiImage getImage() {

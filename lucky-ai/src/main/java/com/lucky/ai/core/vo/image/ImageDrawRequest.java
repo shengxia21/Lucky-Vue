@@ -1,4 +1,4 @@
-package com.lucky.ai.controller.image.vo;
+package com.lucky.ai.core.vo.image;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 生成图片请求VO
+ * 生成图片请求
  *
  * @author lucky
  */
-public class AiImageDrawReqVO {
+public class ImageDrawRequest {
 
     /**
      * 模型编号

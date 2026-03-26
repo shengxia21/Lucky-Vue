@@ -1,6 +1,6 @@
 package com.lucky.ai.core.context;
 
-import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendReqVO;
+import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
@@ -16,7 +16,7 @@ public class ChatContext {
     /**
      * 聊天请求参数
      */
-    private AiChatMessageSendReqVO sendReqVO;
+    private ChatMessageRequest request;
 
     /**
      * 聊天会话信息
@@ -38,12 +38,12 @@ public class ChatContext {
      */
     private Long userId;
 
-    public AiChatMessageSendReqVO getSendReqVO() {
-        return sendReqVO;
+    public ChatMessageRequest getRequest() {
+        return request;
     }
 
-    public void setSendReqVO(AiChatMessageSendReqVO sendReqVO) {
-        this.sendReqVO = sendReqVO;
+    public void setRequest(ChatMessageRequest request) {
+        this.request = request;
     }
 
     public AiChatConversation getConversation() {

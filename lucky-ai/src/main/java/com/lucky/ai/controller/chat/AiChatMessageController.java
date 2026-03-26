@@ -5,7 +5,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
 import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
-import com.lucky.ai.controller.chat.vo.message.AiChatMessageSendReqVO;
+import com.lucky.ai.core.vo.chat.ChatMessageRequest;
+import com.lucky.ai.core.vo.chat.ChatMessageResponse;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.service.IAiChatConversationService;
@@ -44,7 +45,7 @@ public class AiChatMessageController extends BaseController {
      * 发送消息（流式）
      */
     @PostMapping(value = "/send-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<AjaxResult> sendChatMessageStream(@Validated @RequestBody AiChatMessageSendReqVO sendReqVO) {
+    public Flux<ChatMessageResponse> sendChatMessageStream(@Validated @RequestBody ChatMessageRequest sendReqVO) {
         return aiChatMessageService.sendChatMessageStream(sendReqVO, getUserId());
     }
 

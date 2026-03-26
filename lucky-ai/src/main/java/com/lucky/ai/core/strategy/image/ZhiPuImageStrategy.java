@@ -1,7 +1,7 @@
-package com.lucky.ai.core.processor.image.model;
+package com.lucky.ai.core.strategy.image;
 
-import com.lucky.ai.controller.image.vo.AiImageDrawReqVO;
-import com.lucky.ai.core.processor.image.AbstractImageProcessor;
+import com.lucky.ai.core.context.ImageContext;
+import com.lucky.ai.core.strategy.ImageModelStrategy;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import org.springframework.ai.image.ImageModel;
@@ -17,23 +17,24 @@ import org.springframework.stereotype.Component;
  * @author lucky
  */
 @Component
-public class ZhiPuImageProcessor extends AbstractImageProcessor {
+public class ZhiPuImageStrategy implements ImageModelStrategy {
 
     @Override
-    protected ImageModel buildImageModel(String apiKey) {
+    public ImageModel buildImageModel(String apiKey) {
         ZhiPuAiImageApi zhiPuAiImageApi = new ZhiPuAiImageApi(apiKey);
         return new ZhiPuAiImageModel(zhiPuAiImageApi);
     }
 
     @Override
-    protected ImageOptions buildImageOptions(AiModel model, AiImageDrawReqVO drawReqVO) {
+    public ImageOptions buildImageOptions(ImageContext imageContext) {
+        AiModel model = imageContext.getModel();
         return ZhiPuAiImageOptions.builder()
                 .model(model.getModel())
                 .build();
     }
 
     @Override
-    public String getProcessorName() {
+    public String getStrategyName() {
         return AiPlatformEnum.ZHI_PU.getPlatform();
     }
 

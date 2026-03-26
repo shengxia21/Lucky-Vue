@@ -2,7 +2,11 @@ package com.lucky.ai.controller.image;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
-import com.lucky.ai.controller.image.vo.*;
+import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
+import com.lucky.ai.controller.image.vo.AiImagePublicPageReqVO;
+import com.lucky.ai.controller.image.vo.AiImageRespVO;
+import com.lucky.ai.controller.image.vo.AiImageUpdateReqVO;
+import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.service.IAiImageService;
 import com.lucky.common.annotation.Log;
@@ -75,8 +79,8 @@ public class AiImageController extends BaseController {
      * 生成图片
      */
     @PostMapping("/draw")
-    public AjaxResult drawImage(@Validated @RequestBody AiImageDrawReqVO drawReqVO) {
-        return success(aiImageService.drawImage(getUserId(), drawReqVO));
+    public AjaxResult drawImage(@Validated @RequestBody ImageDrawRequest request) {
+        return success(aiImageService.drawImage(getUserId(), request));
     }
 
     /**
