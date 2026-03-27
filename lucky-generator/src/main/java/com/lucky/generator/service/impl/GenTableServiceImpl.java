@@ -31,9 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -239,11 +237,7 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     @Override
     public byte[] downloadCode(String tableName) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ZipOutputStream zip = new ZipOutputStream(outputStream);
-        generatorCode(tableName, zip);
-        IOUtils.closeQuietly(zip);
-        return outputStream.toByteArray();
+        return downloadCode(new String[]{tableName});
     }
 
     /**
@@ -339,8 +333,12 @@ public class GenTableServiceImpl implements IGenTableService {
     public byte[] downloadCode(String[] tableNames) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
+        Map<String, StringBuffer> typeFiles = new HashMap<>();
         for (String tableName : tableNames) {
-            generatorCode(tableName, zip);
+            generatorCode(tableName, zip, typeFiles);
+        }
+        for (Map.Entry<String, StringBuffer> entry : typeFiles.entrySet()) {
+            writeToZip(zip, entry.getKey(), entry.getValue().toString());
         }
         IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();
@@ -349,7 +347,7 @@ public class GenTableServiceImpl implements IGenTableService {
     /**
      * 查询表信息并生成代码
      */
-    private void generatorCode(String tableName, ZipOutputStream zip) {
+    private void generatorCode(String tableName, ZipOutputStream zip, Map<String, StringBuffer> typeFiles) {
         // 查询表信息
         GenTable table = genTableMapper.selectGenTableByName(tableName);
         // 设置主子表信息
@@ -368,16 +366,36 @@ public class GenTableServiceImpl implements IGenTableService {
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template, Constants.UTF8);
             tpl.merge(context, sw);
-            try {
-                // 添加到zip
-                zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(template, table)));
-                IOUtils.write(sw.toString(), zip, Constants.UTF8);
-                IOUtils.closeQuietly(sw);
-                zip.flush();
-                zip.closeEntry();
-            } catch (IOException e) {
-                log.error("渲染模板失败，表名：" + table.getTableName(), e);
+            String fileName = VelocityUtils.getFileName(template, table);
+            // index-bak.ts 模版，追加内容
+            if (fileName.contains("index-bak.ts")) {
+                if (!typeFiles.containsKey(fileName)) {
+                    typeFiles.put(fileName, new StringBuffer(sw.toString()));
+                } else {
+                    Arrays.stream(sw.toString().split("\n")).filter(line -> line.startsWith("export * from")).forEach(line -> typeFiles.get(fileName).append("\n").append(line));
+                }
+            } else {
+                // 其他文件正常添加
+                writeToZip(zip, fileName, sw.toString());
             }
+        }
+    }
+
+    /**
+     * 将字符串内容写入ZIP输出流
+     *
+     * @param zip      ZIP输出流
+     * @param fileName ZIP条目名称（即文件名）
+     * @param content  要写入的内容
+     */
+    private void writeToZip(ZipOutputStream zip, String fileName, String content) {
+        try {
+            zip.putNextEntry(new ZipEntry(fileName));
+            IOUtils.write(content, zip, Constants.UTF8);
+            zip.flush();
+            zip.closeEntry();
+        } catch (IOException e) {
+            log.error("写入ZIP文件失败，文件名: " + fileName, e);
         }
     }
 
