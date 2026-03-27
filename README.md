@@ -26,11 +26,11 @@
 
 ### 项目源码
 
-| 项目模块     | Gitee 仓库                                             |
-|----------|------------------------------------------------------|
-| 🔧 后端服务  | [lucky-vue](https://gitee.com/fushengxuyu/lucky-vue) |
-| 🎨 用户前端  | 待实现                                                  |
-| 🛠️ 管理后台 | [lucky-ui](https://gitee.com/fushengxuyu/lucky-ui)   |
+| 项目模块     | GitHub 仓库                                          | Gitee 仓库                                             | GitCode 仓库                                             |
+|----------|----------------------------------------------------|------------------------------------------------------|--------------------------------------------------------|
+| 🔧 后端服务  | [lucky-vue](https://github.com/shengxia21/Lucky-Vue.git)   | [lucky-vue](https://gitee.com/fushengxuyu/lucky-vue.git)       | [lucky-vue](https://gitcode.com/qq_56585325/lucky-vue.git)       |
+| 🎨 用户前端  | 待实现                                                | 待实现     | 待实现     |
+| 🛠️ 管理后台 | [lucky-ui](https://github.com/shengxia21/Lucky-ui.git) | [lucky-ui](https://gitee.com/fushengxuyu/lucky-ui.git) | [lucky-ui](https://gitcode.com/qq_56585325/lucky-ui.git) |
 
 ## 🛠️ 技术架构
 
@@ -60,7 +60,7 @@
 ```bash
 # 自行查看script目录下的docker脚本文件，根据实际情况修改
 
-# 具体操作步骤作者已经忘了，嘿嘿嘿，不好意思😝😵(...就用过一次)
+# 具体操作步骤作者已经忘了，嘿嘿嘿，不好意思😝😵
 ```
 
 ### 方式二：本地部署
@@ -109,6 +109,17 @@ pnpm run dev
 | MySQL | 3308   | 数据库服务 |
 | Redis | 6379   | 缓存服务 |
 
+## 🤝 参与贡献
+
+热烈欢迎社区贡献！无论您是资深开发者还是初学者，都可以为项目贡献力量 💪
+
+### 贡献方式
+
+1. **Fork** 项目到您的账户
+2. **创建分支** (`git checkout -b feature/新功能名称`)
+3. **提交代码** (`git commit -m '添加某某功能'`)
+4. **推送分支** (`git push origin feature/新功能名称`)
+5. **发起 Pull Request**
 
 ## 演示图
 
@@ -135,20 +146,8 @@ pnpm run dev
     </tr>
 </table>
 
-## 🤝 参与贡献
-
-热烈欢迎社区贡献！无论您是资深开发者还是初学者，都可以为项目贡献力量 💪
-
-### 贡献方式
-
-1. **Fork** 项目到您的账户
-2. **创建分支** (`git checkout -b feature/新功能名称`)
-3. **提交代码** (`git commit -m '添加某某功能'`)
-4. **推送分支** (`git push origin feature/新功能名称`)
-5. **发起 Pull Request**
-
 ## 🙏 特别鸣谢
 
 感谢以下优秀的开源项目为本项目提供支持：
-- [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue) - 基于基于SpringBoot的Java快速开发框架
+- [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue) - 基于SpringBoot的Java快速开发框架
 - [RuoYi-Vue3](https://gitcode.com/yangzongzhuan/RuoYi-Vue3) - 现代化的 Vue 后台管理模板
