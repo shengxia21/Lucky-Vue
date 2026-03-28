@@ -3,6 +3,7 @@ package com.lucky.ai.core.vo.image;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
  *
  * @author lucky
  */
+@Data
 public class ImageDrawRequest {
 
     /**
@@ -46,47 +48,11 @@ public class ImageDrawRequest {
      */
     private Map<String, String> options;
 
-    public Long getModelId() {
-        return modelId;
-    }
-
-    public void setModelId(Long modelId) {
-        this.modelId = modelId;
-    }
-
-    public String getPrompt() {
-        return prompt;
-    }
-
-    public void setPrompt(String prompt) {
-        this.prompt = prompt;
-    }
-
-    public Integer getHeight() {
-        return height;
-    }
-
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
-
-    public Integer getWidth() {
-        return width;
-    }
-
-    public void setWidth(Integer width) {
-        this.width = width;
-    }
-
     public Map<String, String> getOptions() {
         if (options == null) {
             options = new HashMap<>();
         }
         return options;
-    }
-
-    public void setOptions(Map<String, String> options) {
-        this.options = options;
     }
 
 }

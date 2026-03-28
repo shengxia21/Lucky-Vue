@@ -22,11 +22,11 @@ public class GenUtils {
     public static void initTable(GenTable genTable, String operName) {
         genTable.setClassName(convertClassName(genTable.getTableName()));
         genTable.setTplWebType("element-plus");
-        genTable.setPackageName(GenConfig.getPackageName());
-        genTable.setModuleName(getModuleName(GenConfig.getPackageName()));
+        genTable.setPackageName(GenConfig.packageName);
+        genTable.setModuleName(getModuleName(GenConfig.packageName));
         genTable.setBusinessName(getBusinessName(genTable.getTableName()));
         genTable.setFunctionName(replaceText(genTable.getTableComment()));
-        genTable.setFunctionAuthor(GenConfig.getAuthor());
+        genTable.setFunctionAuthor(GenConfig.author);
         genTable.setCreateBy(operName);
     }
 
@@ -155,8 +155,8 @@ public class GenUtils {
      * @return 类名
      */
     public static String convertClassName(String tableName) {
-        boolean autoRemovePre = GenConfig.getAutoRemovePre();
-        String tablePrefix = GenConfig.getTablePrefix();
+        boolean autoRemovePre = GenConfig.autoRemovePre;
+        String tablePrefix = GenConfig.tablePrefix;
         if (autoRemovePre && StringUtils.isNotEmpty(tablePrefix)) {
             String[] searchList = StringUtils.split(tablePrefix, ",");
             tableName = replaceFirst(tableName, searchList);
@@ -169,7 +169,7 @@ public class GenUtils {
      *
      * @param replacementm 替换值
      * @param searchList   替换列表
-     * @return
+     * @return 替换后的值
      */
     public static String replaceFirst(String replacementm, String[] searchList) {
         String text = replacementm;

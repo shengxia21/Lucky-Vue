@@ -81,7 +81,7 @@ public class SysNoticeController extends BaseController {
     public AjaxResult listTop() {
         Long userId = getUserId();
         List<SysNotice> list = noticeReadService.selectNoticeListWithReadStatus(userId, 5);
-        long unreadCount = list.stream().filter(n -> !n.getIsRead()).count();
+        long unreadCount = list.stream().filter(n -> !n.isRead()).count();
         AjaxResult result = AjaxResult.success(list);
         result.put("unreadCount", unreadCount);
         return result;

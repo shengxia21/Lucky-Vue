@@ -8,9 +8,9 @@ import com.lucky.common.utils.http.UserAgentUtils;
 import com.lucky.common.utils.ip.AddressUtils;
 import com.lucky.common.utils.ip.IpUtils;
 import com.lucky.common.utils.spring.SpringUtils;
-import com.lucky.system.domain.SysLogininfor;
+import com.lucky.system.domain.SysLoginInfo;
 import com.lucky.system.domain.SysOperLog;
-import com.lucky.system.service.ISysLogininforService;
+import com.lucky.system.service.ISysLoginInfoService;
 import com.lucky.system.service.ISysOperLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +35,8 @@ public class AsyncSystemFactory {
      * @param args     列表
      * @return 任务task
      */
-    public static TimerTask recordLogininfor(final String username, final String status, final String message,
-                                             final Object... args) {
+    public static TimerTask recordLoginInfo(final String username, final String status, final String message,
+                                            final Object... args) {
         final String userAgent = ServletUtils.getRequest().getHeader("User-Agent");
         final String ip = IpUtils.getIpAddr();
         return new TimerTask() {
@@ -55,21 +55,21 @@ public class AsyncSystemFactory {
                 // 获取客户端浏览器
                 String browser = UserAgentUtils.getBrowser(userAgent);
                 // 封装对象
-                SysLogininfor logininfor = new SysLogininfor();
-                logininfor.setUserName(username);
-                logininfor.setIpaddr(ip);
-                logininfor.setLoginLocation(address);
-                logininfor.setBrowser(browser);
-                logininfor.setOs(os);
-                logininfor.setMsg(message);
+                SysLoginInfo loginInfo = new SysLoginInfo();
+                loginInfo.setUserName(username);
+                loginInfo.setIpaddr(ip);
+                loginInfo.setLoginLocation(address);
+                loginInfo.setBrowser(browser);
+                loginInfo.setOs(os);
+                loginInfo.setMsg(message);
                 // 日志状态
                 if (StringUtils.equalsAny(status, Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER)) {
-                    logininfor.setStatus(Constants.SUCCESS);
+                    loginInfo.setStatus(Constants.SUCCESS);
                 } else if (Constants.LOGIN_FAIL.equals(status)) {
-                    logininfor.setStatus(Constants.FAIL);
+                    loginInfo.setStatus(Constants.FAIL);
                 }
                 // 插入数据
-                SpringUtils.getBean(ISysLogininforService.class).insertLogininfor(logininfor);
+                SpringUtils.getBean(ISysLoginInfoService.class).insertLoginInfo(loginInfo);
             }
         };
     }
@@ -86,7 +86,7 @@ public class AsyncSystemFactory {
             public void run() {
                 // 远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
-                SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
+                SpringUtils.getBean(ISysOperLogService.class).insertOperLog(operLog);
             }
         };
     }

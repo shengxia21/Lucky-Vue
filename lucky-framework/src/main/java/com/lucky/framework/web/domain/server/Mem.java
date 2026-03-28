@@ -1,12 +1,14 @@
 package com.lucky.framework.web.domain.server;
 
 import com.lucky.common.utils.Arith;
+import lombok.Setter;
 
 /**
  * 內存相关信息
  *
  * @author ruoyi
  */
+@Setter
 public class Mem {
 
     /**
@@ -28,24 +30,12 @@ public class Mem {
         return Arith.div(total, (1024 * 1024 * 1024), 2);
     }
 
-    public void setTotal(long total) {
-        this.total = total;
-    }
-
     public double getUsed() {
         return Arith.div(used, (1024 * 1024 * 1024), 2);
     }
 
-    public void setUsed(long used) {
-        this.used = used;
-    }
-
     public double getFree() {
         return Arith.div(free, (1024 * 1024 * 1024), 2);
-    }
-
-    public void setFree(long free) {
-        this.free = free;
     }
 
     public double getUsage() {

@@ -2,6 +2,7 @@ package com.lucky.ai.core.vo.chat;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  *
  * @author lucky
  */
+@Data
 public class ChatMessageRequest {
 
     /**
@@ -38,45 +40,5 @@ public class ChatMessageRequest {
      * 附件 URL 数组
      */
     private List<String> attachmentUrls;
-
-    public Long getConversationId() {
-        return conversationId;
-    }
-
-    public void setConversationId(Long conversationId) {
-        this.conversationId = conversationId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Boolean getUseContext() {
-        return useContext;
-    }
-
-    public void setUseContext(Boolean useContext) {
-        this.useContext = useContext;
-    }
-
-    public Boolean getUseSearch() {
-        return useSearch;
-    }
-
-    public void setUseSearch(Boolean useSearch) {
-        this.useSearch = useSearch;
-    }
-
-    public List<String> getAttachmentUrls() {
-        return attachmentUrls;
-    }
-
-    public void setAttachmentUrls(List<String> attachmentUrls) {
-        this.attachmentUrls = attachmentUrls;
-    }
 
 }

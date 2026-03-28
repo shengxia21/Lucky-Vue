@@ -1,5 +1,7 @@
 package com.lucky.ai.core.websearch;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,7 @@ import java.util.List;
  *
  * @author lucky
  */
+@Data
 public class AiWebSearchResponse {
 
     /**
@@ -19,25 +22,10 @@ public class AiWebSearchResponse {
      */
     private List<WebPage> lists;
 
-    public Long getTotal() {
-        return total;
-    }
-
-    public void setTotal(Long total) {
-        this.total = total;
-    }
-
-    public List<WebPage> getLists() {
-        return lists;
-    }
-
-    public void setLists(List<WebPage> lists) {
-        this.lists = lists;
-    }
-
     /**
      * 网页对象
      */
+    @Data
     public static class WebPage {
 
         /**
@@ -76,54 +64,6 @@ public class AiWebSearchResponse {
          * 内容的文本摘要
          */
         private String summary;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getIcon() {
-            return icon;
-        }
-
-        public void setIcon(String icon) {
-            this.icon = icon;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public String getSnippet() {
-            return snippet;
-        }
-
-        public void setSnippet(String snippet) {
-            this.snippet = snippet;
-        }
-
-        public String getSummary() {
-            return summary;
-        }
-
-        public void setSummary(String summary) {
-            this.summary = summary;
-        }
 
     }
 

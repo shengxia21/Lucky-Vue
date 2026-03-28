@@ -4,6 +4,7 @@ import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
+import lombok.Data;
 
 /**
  * 聊天上下文
@@ -11,6 +12,7 @@ import com.lucky.ai.domain.AiModel;
  *
  * @author lucky
  */
+@Data
 public class ChatContext {
 
     /**
@@ -37,45 +39,5 @@ public class ChatContext {
      * 用户 ID
      */
     private Long userId;
-
-    public ChatMessageRequest getRequest() {
-        return request;
-    }
-
-    public void setRequest(ChatMessageRequest request) {
-        this.request = request;
-    }
-
-    public AiChatConversation getConversation() {
-        return conversation;
-    }
-
-    public void setConversation(AiChatConversation conversation) {
-        this.conversation = conversation;
-    }
-
-    public AiModel getModel() {
-        return model;
-    }
-
-    public void setModel(AiModel model) {
-        this.model = model;
-    }
-
-    public AiApiKey getApiKey() {
-        return apiKey;
-    }
-
-    public void setApiKey(AiApiKey apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
 }

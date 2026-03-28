@@ -3,6 +3,7 @@ package com.lucky.framework.web.domain;
 import com.lucky.common.utils.Arith;
 import com.lucky.common.utils.ip.IpUtils;
 import com.lucky.framework.web.domain.server.*;
+import lombok.Data;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.CentralProcessor.TickType;
@@ -23,6 +24,7 @@ import java.util.Properties;
  *
  * @author ruoyi
  */
+@Data
 public class Server {
 
     private static final int OSHI_WAIT_SECOND = 1000;
@@ -50,47 +52,7 @@ public class Server {
     /**
      * 磁盘相关信息
      */
-    private List<SysFile> sysFiles = new LinkedList<SysFile>();
-
-    public Cpu getCpu() {
-        return cpu;
-    }
-
-    public void setCpu(Cpu cpu) {
-        this.cpu = cpu;
-    }
-
-    public Mem getMem() {
-        return mem;
-    }
-
-    public void setMem(Mem mem) {
-        this.mem = mem;
-    }
-
-    public Jvm getJvm() {
-        return jvm;
-    }
-
-    public void setJvm(Jvm jvm) {
-        this.jvm = jvm;
-    }
-
-    public Sys getSys() {
-        return sys;
-    }
-
-    public void setSys(Sys sys) {
-        this.sys = sys;
-    }
-
-    public List<SysFile> getSysFiles() {
-        return sysFiles;
-    }
-
-    public void setSysFiles(List<SysFile> sysFiles) {
-        this.sysFiles = sysFiles;
-    }
+    private List<SysFile> sysFiles = new LinkedList<>();
 
     /**
      * 设置磁盘信息
