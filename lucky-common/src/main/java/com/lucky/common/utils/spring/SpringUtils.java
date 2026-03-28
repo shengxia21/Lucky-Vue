@@ -7,8 +7,10 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.boot.autoconfigure.thread.Threading;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 /**
@@ -132,6 +134,15 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
      */
     public static String getRequiredProperty(String key) {
         return applicationContext.getEnvironment().getRequiredProperty(key);
+    }
+
+    /**
+     * 判断是否启用了虚拟线程
+     *
+     * @return boolean
+     */
+    public static boolean isVirtual() {
+        return Threading.VIRTUAL.isActive(getBean(Environment.class));
     }
 
     @Override

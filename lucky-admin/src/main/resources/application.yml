@@ -51,6 +51,10 @@ spring:
       max-file-size: 10MB
       # 设置总上传的文件大小
       max-request-size: 20MB
+  threads:
+    # 开启虚拟线程 仅jdk21可用
+    virtual:
+      enabled: false
   # AI模型配置
   ai:
     deepseek:
