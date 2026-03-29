@@ -73,10 +73,12 @@ token:
   # 令牌有效期（默认90分钟）
   expireTime: 90
 
-# MyBatis配置
-mybatis:
+# MyBatis Plus配置
+mybatis-plus:
   # 搜索指定包别名
   typeAliasesPackage: com.lucky.**.domain
+  # 指定要扫描的Mapper类的包的路径
+  mapperPackage: com.lucky.**.mapper
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapperLocations: classpath*:mapper/**/*Mapper.xml
   # 配置类型处理器的扫描包，找到所有的TypeHandler实现类
@@ -93,6 +95,9 @@ mybatis:
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
     # 使用驼峰命名法转换字段
 #    map-underscore-to-camel-case: true
+  global-config:
+    # mybatis-plus启动banner
+    banner: false
 
 # PageHelper分页插件
 pagehelper:

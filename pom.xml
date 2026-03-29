@@ -21,7 +21,7 @@
 
         <!-- 依赖版本 -->
         <spring-boot.version>3.5.11</spring-boot.version>
-        <mybatis-spring-boot.version>3.0.5</mybatis-spring-boot.version>
+        <mybatis-plus.version>3.5.16</mybatis-plus.version>
         <druid.version>1.2.28</druid.version>
         <yauaa.version>8.1.0</yauaa.version>
         <kaptcha.version>2.3.3</kaptcha.version>
@@ -125,10 +125,25 @@
                 <version>${pagehelper.boot.version}</version>
             </dependency>
 
+            <!-- 升级mybatis依赖，与plus版本一致 -->
             <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis-spring-boot.version}</version>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!-- mybatis-plus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!-- mybatis-plus的相关插件 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-jsqlparser</artifactId>
+                <version>${mybatis-plus.version}</version>
             </dependency>
 
             <dependency>
