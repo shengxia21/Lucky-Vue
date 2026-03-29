@@ -1,12 +1,14 @@
 package com.lucky.ai.controller.image.vo;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * 更新绘画请求VO
  *
  * @author lucky
  */
+@Data
 public class AiImageUpdateReqVO {
 
     /**
@@ -19,21 +21,5 @@ public class AiImageUpdateReqVO {
      * 是否发布
      */
     private Boolean publicStatus;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Boolean getPublicStatus() {
-        return publicStatus;
-    }
-
-    public void setPublicStatus(Boolean publicStatus) {
-        this.publicStatus = publicStatus;
-    }
 
 }

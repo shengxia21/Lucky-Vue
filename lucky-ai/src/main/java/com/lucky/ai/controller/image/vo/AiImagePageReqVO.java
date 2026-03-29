@@ -1,5 +1,7 @@
 package com.lucky.ai.controller.image.vo;
 
+import lombok.Data;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +10,7 @@ import java.util.Map;
  *
  * @author lucky
  */
+@Data
 public class AiImagePageReqVO {
 
     /**
@@ -40,55 +43,11 @@ public class AiImagePageReqVO {
      */
     private Map<String, Object> params;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
-
-    public String getPrompt() {
-        return prompt;
-    }
-
-    public void setPrompt(String prompt) {
-        this.prompt = prompt;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Boolean getPublicStatus() {
-        return publicStatus;
-    }
-
-    public void setPublicStatus(Boolean publicStatus) {
-        this.publicStatus = publicStatus;
-    }
-
     public Map<String, Object> getParams() {
         if (params == null) {
             params = new HashMap<>();
         }
         return params;
-    }
-
-    public void setParams(Map<String, Object> params) {
-        this.params = params;
     }
 
 }

@@ -1,5 +1,7 @@
 package com.lucky.ai.controller.chat.vo.conversation;
 
+import lombok.Data;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +10,7 @@ import java.util.Map;
  *
  * @author lucky
  */
+@Data
 public class AiChatConversationPageReqVO {
 
     /**
@@ -25,31 +28,11 @@ public class AiChatConversationPageReqVO {
      */
     private Map<String, Object> params;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public Map<String, Object> getParams() {
         if (params == null) {
             params = new HashMap<>();
         }
         return params;
-    }
-
-    public void setParams(Map<String, Object> params) {
-        this.params = params;
     }
 
 }

@@ -1,5 +1,7 @@
 package com.lucky.ai.controller.model.vo.chatRole;
 
+import lombok.Data;
+
 import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
  *
  * @author lucky
  */
+@Data
 public class AiChatRoleSaveMyReqVO {
 
     /**
@@ -54,69 +57,5 @@ public class AiChatRoleSaveMyReqVO {
      * 引用的 MCP Client 名字列表
      */
     private List<String> mcpClientNames;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getSystemMessage() {
-        return systemMessage;
-    }
-
-    public void setSystemMessage(String systemMessage) {
-        this.systemMessage = systemMessage;
-    }
-
-    public List<Long> getKnowledgeIds() {
-        return knowledgeIds;
-    }
-
-    public void setKnowledgeIds(List<Long> knowledgeIds) {
-        this.knowledgeIds = knowledgeIds;
-    }
-
-    public List<Long> getToolIds() {
-        return toolIds;
-    }
-
-    public void setToolIds(List<Long> toolIds) {
-        this.toolIds = toolIds;
-    }
-
-    public List<String> getMcpClientNames() {
-        return mcpClientNames;
-    }
-
-    public void setMcpClientNames(List<String> mcpClientNames) {
-        this.mcpClientNames = mcpClientNames;
-    }
 
 }

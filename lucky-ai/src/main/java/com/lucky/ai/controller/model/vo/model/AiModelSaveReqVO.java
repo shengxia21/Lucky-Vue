@@ -4,6 +4,8 @@ import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.enums.model.AiModelTypeEnum;
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import com.lucky.common.validation.InEnum;
+import lombok.Data;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,6 +14,7 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author lucky
  */
+@Data
 public class AiModelSaveReqVO {
 
     /**
@@ -78,93 +81,5 @@ public class AiModelSaveReqVO {
      * 上下文的最大 Message 数量
      */
     private Integer maxContexts;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getKeyId() {
-        return keyId;
-    }
-
-    public void setKeyId(Long keyId) {
-        this.keyId = keyId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getSort() {
-        return sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Double getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(Double temperature) {
-        this.temperature = temperature;
-    }
-
-    public Integer getMaxTokens() {
-        return maxTokens;
-    }
-
-    public void setMaxTokens(Integer maxTokens) {
-        this.maxTokens = maxTokens;
-    }
-
-    public Integer getMaxContexts() {
-        return maxContexts;
-    }
-
-    public void setMaxContexts(Integer maxContexts) {
-        this.maxContexts = maxContexts;
-    }
 
 }

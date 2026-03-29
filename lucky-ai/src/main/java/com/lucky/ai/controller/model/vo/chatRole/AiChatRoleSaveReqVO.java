@@ -2,6 +2,8 @@ package com.lucky.ai.controller.model.vo.chatRole;
 
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.common.validation.InEnum;
+import lombok.Data;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,6 +14,7 @@ import java.util.List;
  *
  * @author lucky
  */
+@Data
 public class AiChatRoleSaveReqVO {
 
     /**
@@ -87,109 +90,5 @@ public class AiChatRoleSaveReqVO {
     @NotNull(message = "状态不能为空")
     @InEnum(CommonStatusEnum.class)
     private Integer status;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getModelId() {
-        return modelId;
-    }
-
-    public void setModelId(Long modelId) {
-        this.modelId = modelId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public Integer getSort() {
-        return sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getSystemMessage() {
-        return systemMessage;
-    }
-
-    public void setSystemMessage(String systemMessage) {
-        this.systemMessage = systemMessage;
-    }
-
-    public List<Long> getKnowledgeIds() {
-        return knowledgeIds;
-    }
-
-    public void setKnowledgeIds(List<Long> knowledgeIds) {
-        this.knowledgeIds = knowledgeIds;
-    }
-
-    public List<Long> getToolIds() {
-        return toolIds;
-    }
-
-    public void setToolIds(List<Long> toolIds) {
-        this.toolIds = toolIds;
-    }
-
-    public List<String> getMcpClientNames() {
-        return mcpClientNames;
-    }
-
-    public void setMcpClientNames(List<String> mcpClientNames) {
-        this.mcpClientNames = mcpClientNames;
-    }
-
-    public Boolean getPublicStatus() {
-        return publicStatus;
-    }
-
-    public void setPublicStatus(Boolean publicStatus) {
-        this.publicStatus = publicStatus;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
 
 }

@@ -1,5 +1,7 @@
 package com.lucky.ai.controller.chat.vo.conversation;
 
+import lombok.Data;
+
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -7,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author lucky
  */
+@Data
 public class AiChatConversationUpdateMyReqVO {
 
     /**
@@ -54,77 +57,5 @@ public class AiChatConversationUpdateMyReqVO {
      * 上下文的最大 Message 数量
      */
     private Integer maxContexts;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Boolean getPinned() {
-        return pinned;
-    }
-
-    public void setPinned(Boolean pinned) {
-        this.pinned = pinned;
-    }
-
-    public Long getModelId() {
-        return modelId;
-    }
-
-    public void setModelId(Long modelId) {
-        this.modelId = modelId;
-    }
-
-    public Long getKnowledgeId() {
-        return knowledgeId;
-    }
-
-    public void setKnowledgeId(Long knowledgeId) {
-        this.knowledgeId = knowledgeId;
-    }
-
-    public String getSystemMessage() {
-        return systemMessage;
-    }
-
-    public void setSystemMessage(String systemMessage) {
-        this.systemMessage = systemMessage;
-    }
-
-    public Double getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(Double temperature) {
-        this.temperature = temperature;
-    }
-
-    public Integer getMaxTokens() {
-        return maxTokens;
-    }
-
-    public void setMaxTokens(Integer maxTokens) {
-        this.maxTokens = maxTokens;
-    }
-
-    public Integer getMaxContexts() {
-        return maxContexts;
-    }
-
-    public void setMaxContexts(Integer maxContexts) {
-        this.maxContexts = maxContexts;
-    }
 
 }

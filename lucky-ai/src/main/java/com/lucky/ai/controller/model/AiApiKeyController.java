@@ -90,7 +90,12 @@ public class AiApiKeyController extends BaseController {
     @GetMapping("/simple-list")
     public AjaxResult getApiKeySimpleList() {
         List<AiApiKey> list = aiApiKeyService.getApiKeyList();
-        return success(convertList(list, key -> new AiModelRespVO().setId(key.getId()).setName(key.getName())));
+        return success(convertList(list, key -> {
+            AiApiKeyRespVO respVO = new AiApiKeyRespVO();
+            respVO.setId(key.getId());
+            respVO.setName(key.getName());
+            return respVO;
+        }));
     }
 
 }

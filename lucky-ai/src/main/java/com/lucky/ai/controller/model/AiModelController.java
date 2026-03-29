@@ -93,8 +93,14 @@ public class AiModelController extends BaseController {
             @RequestParam(value = "platform", required = false) String platform) {
         List<AiModel> list = aiModelService.getModelListByStatusAndType(
                 CommonStatusEnum.ENABLE.getStatus(), type, platform);
-        return success(convertList(list, model -> new AiModelRespVO().setId(model.getId())
-                .setName(model.getName()).setModel(model.getModel()).setPlatform(model.getPlatform())));
+        return success(convertList(list, model -> {
+            AiModelRespVO respVO = new AiModelRespVO();
+            respVO.setId(model.getId());
+            respVO.setName(model.getName());
+            respVO.setModel(model.getModel());
+            respVO.setPlatform(model.getPlatform());
+            return respVO;
+        }));
     }
 
 }
