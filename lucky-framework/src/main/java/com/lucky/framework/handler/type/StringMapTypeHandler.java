@@ -1,4 +1,4 @@
-package com.lucky.common.handler;
+package com.lucky.framework.handler.type;
 
 import com.alibaba.fastjson2.JSON;
 import org.apache.ibatis.type.JdbcType;
