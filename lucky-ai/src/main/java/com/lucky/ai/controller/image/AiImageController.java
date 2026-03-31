@@ -2,16 +2,17 @@ package com.lucky.ai.controller.image;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
+import com.lucky.ai.controller.image.vo.AiImagePagePublicReqVO;
 import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
-import com.lucky.ai.controller.image.vo.AiImagePublicPageReqVO;
 import com.lucky.ai.controller.image.vo.AiImageRespVO;
 import com.lucky.ai.controller.image.vo.AiImageUpdateReqVO;
 import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.AiImage;
-import com.lucky.ai.service.IAiImageService;
+import com.lucky.ai.service.AiImageService;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
-import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
+import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
 import jakarta.annotation.Resource;
@@ -31,56 +32,52 @@ import java.util.List;
 public class AiImageController extends BaseController {
 
     @Resource
-    private IAiImageService aiImageService;
+    private AiImageService AiImageService;
 
     /**
      * 获取【我的】绘图分页
      */
     @GetMapping("/my-page")
-    public TableDataInfo getImagePageMy(AiImagePageReqVO pageReqVO) {
-        startPage();
-        List<AiImage> list = aiImageService.getImagePageMy(pageReqVO);
-        return getDataTable(list, AiImageRespVO.class);
+    public TableDataInfo<AiImageRespVO> getImagePageMy(PageQuery pageQuery, AiImagePageReqVO pageReqVO) {
+        return AiImageService.getImagePageMy(pageQuery, pageReqVO, getUserId());
     }
 
     /**
      * 获取公开的绘图分页
      */
     @GetMapping("/public-page")
-    public TableDataInfo getImagePagePublic(AiImagePublicPageReqVO pageReqVO) {
-        startPage();
-        List<AiImage> list = aiImageService.getImagePagePublic(pageReqVO);
-        return getDataTable(list, AiImageRespVO.class);
+    public TableDataInfo<AiImageRespVO> getImagePagePublic(PageQuery pageQuery, AiImagePagePublicReqVO pageReqVO) {
+        return AiImageService.getImagePagePublic(pageQuery, pageReqVO);
     }
 
     /**
      * 获取【我的】绘图记录
      */
     @GetMapping("/get-my")
-    public AjaxResult getImageMy(@RequestParam("id") Long id) {
-        AiImage image = aiImageService.getImage(id);
+    public R<AiImageRespVO> getImageMy(@RequestParam("id") Long id) {
+        AiImage image = AiImageService.getImageById(id);
         if (image == null || ObjUtil.notEqual(getUserId(), image.getUserId())) {
-            return success(null);
+            return R.fail("绘图记录不存在或不属于当前用户");
         }
-        return success(BeanUtil.toBean(image, AiImageRespVO.class));
+        return R.ok(BeanUtil.toBean(image, AiImageRespVO.class));
     }
 
     /**
      * 获取【我的】绘图记录列表
      */
     @GetMapping("/my-list-by-ids")
-    public AjaxResult getImageListMyByIds(@RequestParam("ids") List<Long> ids) {
-        List<AiImage> imageList = aiImageService.getImageList(ids);
+    public R<List<AiImageRespVO>> getImageListMyByIds(@RequestParam("ids") List<Long> ids) {
+        List<AiImage> imageList = AiImageService.getImageListByIds(ids);
         imageList.removeIf(item -> !ObjUtil.equal(getUserId(), item.getUserId()));
-        return success(BeanUtil.copyToList(imageList, AiImageRespVO.class));
+        return R.ok(BeanUtil.copyToList(imageList, AiImageRespVO.class));
     }
 
     /**
      * 生成图片
      */
     @PostMapping("/draw")
-    public AjaxResult drawImage(@Validated @RequestBody ImageDrawRequest request) {
-        return success(aiImageService.drawImage(getUserId(), request));
+    public R<Long> drawImage(@Validated @RequestBody ImageDrawRequest request) {
+        return R.ok(AiImageService.drawImage(getUserId(), request));
     }
 
     /**
@@ -88,8 +85,8 @@ public class AiImageController extends BaseController {
      */
     @Log(title = "删除【我的】绘图记录", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
-    public AjaxResult deleteImageMy(@RequestParam("id") Long id) {
-        return toAjax(aiImageService.deleteImageMy(id, getUserId()));
+    public R<Integer> deleteImageMy(@RequestParam("id") Long id) {
+        return R.ok(AiImageService.deleteImageMy(id, getUserId()));
     }
 
     // ================ 绘图管理 ================
@@ -99,10 +96,8 @@ public class AiImageController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:image:list')")
     @GetMapping("/page")
-    public TableDataInfo getImagePage(AiImagePageReqVO pageReqVO) {
-        startPage();
-        List<AiImage> list = aiImageService.getImagePage(pageReqVO);
-        return getDataTable(list, AiImageRespVO.class);
+    public TableDataInfo<AiImageRespVO> getImagePage(PageQuery pageQuery, AiImagePageReqVO pageReqVO) {
+        return AiImageService.getImagePage(pageQuery, pageReqVO);
     }
 
     /**
@@ -111,8 +106,8 @@ public class AiImageController extends BaseController {
     @Log(title = "更新绘画", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('ai:image:update')")
     @PutMapping("/update")
-    public AjaxResult updateImage(@Validated @RequestBody AiImageUpdateReqVO updateReqVO) {
-        return toAjax(aiImageService.updateImage(updateReqVO));
+    public R<Integer> updateImage(@Validated @RequestBody AiImageUpdateReqVO updateReqVO) {
+        return R.ok(AiImageService.updateImage(updateReqVO));
     }
 
     /**
@@ -121,8 +116,8 @@ public class AiImageController extends BaseController {
     @Log(title = "删除绘画", businessType = BusinessType.DELETE)
     @PreAuthorize("@ss.hasPermi('ai:image:delete')")
     @DeleteMapping("/delete")
-    public AjaxResult deleteImage(@RequestParam("id") Long id) {
-        return toAjax(aiImageService.deleteImage(id));
+    public R<Integer> deleteImage(@RequestParam("id") Long id) {
+        return R.ok(AiImageService.deleteImageById(id));
     }
 
 }

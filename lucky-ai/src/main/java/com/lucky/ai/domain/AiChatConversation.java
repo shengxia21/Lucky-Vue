@@ -1,5 +1,9 @@
 package com.lucky.ai.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.lucky.common.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,6 +18,7 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("ai_chat_conversation")
 public class AiChatConversation extends BaseEntity {
 
     public static final String TITLE_DEFAULT = "新对话";
@@ -24,6 +29,7 @@ public class AiChatConversation extends BaseEntity {
     /**
      * ID 编号，自增
      */
+    @TableId(value = "id")
     private Long id;
 
     /**
@@ -84,6 +90,13 @@ public class AiChatConversation extends BaseEntity {
     /**
      * 删除标志（0代表存在 2代表删除）
      */
+    @TableLogic
     private String delFlag;
+
+    /**
+     * 备注
+     */
+    @TableField(exist = false)
+    private String remark;
 
 }

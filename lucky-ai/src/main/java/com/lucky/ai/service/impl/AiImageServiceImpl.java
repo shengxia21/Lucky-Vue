@@ -3,8 +3,10 @@ package com.lucky.ai.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.lucky.ai.controller.image.vo.AiImagePagePublicReqVO;
 import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
-import com.lucky.ai.controller.image.vo.AiImagePublicPageReqVO;
+import com.lucky.ai.controller.image.vo.AiImageRespVO;
 import com.lucky.ai.controller.image.vo.AiImageUpdateReqVO;
 import com.lucky.ai.core.context.ImageContext;
 import com.lucky.ai.core.vo.image.ImageDrawRequest;
@@ -14,14 +16,14 @@ import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.image.AiImageStatusEnum;
 import com.lucky.ai.factory.AsyncAiFactory;
 import com.lucky.ai.mapper.AiImageMapper;
-import com.lucky.ai.service.IAiApiKeyService;
-import com.lucky.ai.service.IAiImageService;
-import com.lucky.ai.service.IAiModelService;
+import com.lucky.ai.service.AiApiKeyService;
+import com.lucky.ai.service.AiImageService;
+import com.lucky.ai.service.AiModelService;
 import com.lucky.common.constant.AiErrorConstants;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.manager.AsyncManager;
-import com.lucky.common.utils.DateUtils;
-import com.lucky.common.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -34,15 +36,15 @@ import java.util.List;
  * @author lucky
  */
 @Service
-public class AiImageServiceImpl implements IAiImageService {
+public class AiImageServiceImpl implements AiImageService {
 
     @Resource
-    private AiImageMapper aiImageMapper;
+    private AiImageMapper imageMapper;
 
     @Resource
-    private IAiModelService aiModelService;
+    private AiModelService modelService;
     @Resource
-    private IAiApiKeyService aiApiKeyService;
+    private AiApiKeyService apiKeyService;
 
     /**
      * 获取【我的】绘图分页
@@ -51,9 +53,9 @@ public class AiImageServiceImpl implements IAiImageService {
      * @return 分页结果
      */
     @Override
-    public List<AiImage> getImagePageMy(AiImagePageReqVO pageReqVO) {
-        pageReqVO.setUserId(SecurityUtils.getUserId());
-        return aiImageMapper.selectPageMy(pageReqVO);
+    public TableDataInfo<AiImageRespVO> getImagePageMy(PageQuery pageQuery, AiImagePageReqVO pageReqVO, Long userId) {
+        IPage<AiImage> page = imageMapper.selectPageMy(pageQuery.build(), pageReqVO, userId);
+        return TableDataInfo.build(page, AiImageRespVO.class);
     }
 
     /**
@@ -63,8 +65,9 @@ public class AiImageServiceImpl implements IAiImageService {
      * @return 分页结果
      */
     @Override
-    public List<AiImage> getImagePagePublic(AiImagePublicPageReqVO pageReqVO) {
-        return aiImageMapper.selectPage(pageReqVO);
+    public TableDataInfo<AiImageRespVO> getImagePagePublic(PageQuery pageQuery, AiImagePagePublicReqVO pageReqVO) {
+        IPage<AiImage> page = imageMapper.selectPagePublic(pageQuery.build(), pageReqVO);
+        return TableDataInfo.build(page, AiImageRespVO.class);
     }
 
     /**
@@ -74,8 +77,8 @@ public class AiImageServiceImpl implements IAiImageService {
      * @return 绘图详情
      */
     @Override
-    public AiImage getImage(Long id) {
-        return aiImageMapper.selectAiImageById(id);
+    public AiImage getImageById(Long id) {
+        return imageMapper.selectById(id);
     }
 
     /**
@@ -85,11 +88,11 @@ public class AiImageServiceImpl implements IAiImageService {
      * @return 绘画列表
      */
     @Override
-    public List<AiImage> getImageList(List<Long> ids) {
+    public List<AiImage> getImageListByIds(List<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
             return Collections.emptyList();
         }
-        return aiImageMapper.selectByIds(ids);
+        return imageMapper.selectByIds(ids);
     }
 
     /**
@@ -102,9 +105,9 @@ public class AiImageServiceImpl implements IAiImageService {
     @Override
     public Long drawImage(Long userId, ImageDrawRequest request) {
         // 校验模型是否存在
-        AiModel model = aiModelService.validateModel(request.getModelId());
+        AiModel model = modelService.validateModel(request.getModelId());
         // 校验apiKey是否存在
-        AiApiKey apiKey = aiApiKeyService.validateApiKey(model.getKeyId());
+        AiApiKey apiKey = apiKeyService.validateApiKey(model.getKeyId());
 
         // 保存数据库
         AiImage image = BeanUtil.toBean(request, AiImage.class);
@@ -114,9 +117,7 @@ public class AiImageServiceImpl implements IAiImageService {
         image.setModel(model.getModel());
         image.setPublicStatus(false);
         image.setStatus(AiImageStatusEnum.IN_PROGRESS.getStatus());
-        image.setCreateBy(SecurityUtils.getUsername());
-        image.setCreateTime(DateUtils.getNowDate());
-        aiImageMapper.insertAiImage(image);
+        imageMapper.insert(image);
 
         // 构建图片上下文
         ImageContext imageContext = new ImageContext();
@@ -145,7 +146,7 @@ public class AiImageServiceImpl implements IAiImageService {
             throw new ServiceException(AiErrorConstants.IMAGE_NOT_EXISTS);
         }
         // 2. 删除记录
-        return aiImageMapper.deleteAiImageById(id);
+        return imageMapper.deleteById(id);
     }
 
     /**
@@ -155,8 +156,9 @@ public class AiImageServiceImpl implements IAiImageService {
      * @return 分页结果
      */
     @Override
-    public List<AiImage> getImagePage(AiImagePageReqVO pageReqVO) {
-        return aiImageMapper.selectAiImagePage(pageReqVO);
+    public TableDataInfo<AiImageRespVO> getImagePage(PageQuery pageQuery, AiImagePageReqVO pageReqVO) {
+        IPage<AiImage> page = imageMapper.selectPage(pageQuery.build(), pageReqVO);
+        return TableDataInfo.build(page, AiImageRespVO.class);
     }
 
     /**
@@ -171,9 +173,7 @@ public class AiImageServiceImpl implements IAiImageService {
         validateImageExists(updateReqVO.getId());
         // 2. 更新发布状态
         AiImage image = BeanUtil.toBean(updateReqVO, AiImage.class);
-        image.setUpdateBy(SecurityUtils.getUsername());
-        image.setUpdateTime(DateUtils.getNowDate());
-        return aiImageMapper.updateAiImage(image);
+        return imageMapper.updateById(image);
     }
 
     /**
@@ -183,15 +183,15 @@ public class AiImageServiceImpl implements IAiImageService {
      * @return 结果
      */
     @Override
-    public int deleteImage(Long id) {
+    public int deleteImageById(Long id) {
         // 1. 校验存在
         validateImageExists(id);
         // 2. 删除
-        return aiImageMapper.deleteAiImageById(id);
+        return imageMapper.deleteById(id);
     }
 
     private AiImage validateImageExists(Long id) {
-        AiImage image = aiImageMapper.selectAiImageById(id);
+        AiImage image = imageMapper.selectById(id);
         if (image == null) {
             throw new ServiceException(AiErrorConstants.IMAGE_NOT_EXISTS);
         }

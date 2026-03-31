@@ -1,18 +1,20 @@
 package com.lucky.ai.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.ai.controller.model.vo.model.AiModelPageReqVO;
+import com.lucky.ai.controller.model.vo.model.AiModelRespVO;
 import com.lucky.ai.controller.model.vo.model.AiModelSaveReqVO;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import com.lucky.ai.mapper.AiModelMapper;
-import com.lucky.ai.service.IAiApiKeyService;
-import com.lucky.ai.service.IAiModelService;
+import com.lucky.ai.service.AiApiKeyService;
+import com.lucky.ai.service.AiModelService;
 import com.lucky.common.constant.AiErrorConstants;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.exception.ServiceException;
-import com.lucky.common.utils.DateUtils;
-import com.lucky.common.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +26,13 @@ import java.util.List;
  * @author lucky
  */
 @Service
-public class AiModelServiceImpl implements IAiModelService {
+public class AiModelServiceImpl implements AiModelService {
 
     @Resource
-    private AiModelMapper aiModelMapper;
+    private AiModelMapper modelMapper;
 
     @Resource
-    private IAiApiKeyService aiApiKeyService;
+    private AiApiKeyService apiKeyService;
 
     /**
      * 获得默认的模型
@@ -42,7 +44,7 @@ public class AiModelServiceImpl implements IAiModelService {
      */
     @Override
     public AiModel getRequiredDefaultModel(Integer type) {
-        AiModel aiModel = aiModelMapper.selectFirstByStatus(type, CommonStatusEnum.ENABLE.getStatus());
+        AiModel aiModel = modelMapper.selectFirstByStatus(type, CommonStatusEnum.ENABLE.getStatus());
         if (aiModel == null) {
             throw new ServiceException(AiErrorConstants.MODEL_DEFAULT_NOT_EXISTS);
         }
@@ -74,13 +76,10 @@ public class AiModelServiceImpl implements IAiModelService {
     public Long createModel(AiModelSaveReqVO createReqVO) {
         // 1. 校验
         AiPlatformEnum.validatePlatform(createReqVO.getPlatform());
-        aiApiKeyService.validateApiKey(createReqVO.getKeyId());
-
+        apiKeyService.validateApiKey(createReqVO.getKeyId());
         // 2. 插入
         AiModel model = BeanUtil.toBean(createReqVO, AiModel.class);
-        model.setCreateBy(SecurityUtils.getUsername());
-        model.setCreateTime(DateUtils.getNowDate());
-        aiModelMapper.insertAiModel(model);
+        modelMapper.insert(model);
         return model.getId();
     }
 
@@ -95,13 +94,10 @@ public class AiModelServiceImpl implements IAiModelService {
         // 1. 校验
         validateModelExists(updateReqVO.getId());
         AiPlatformEnum.validatePlatform(updateReqVO.getPlatform());
-        aiApiKeyService.validateApiKey(updateReqVO.getKeyId());
-
+        apiKeyService.validateApiKey(updateReqVO.getKeyId());
         // 2. 更新
         AiModel updateObj = BeanUtil.toBean(updateReqVO, AiModel.class);
-        updateObj.setUpdateBy(SecurityUtils.getUsername());
-        updateObj.setUpdateTime(DateUtils.getNowDate());
-        return aiModelMapper.updateAiModel(updateObj);
+        return modelMapper.updateById(updateObj);
     }
 
     /**
@@ -111,11 +107,11 @@ public class AiModelServiceImpl implements IAiModelService {
      * @return 影响行数
      */
     @Override
-    public int deleteModel(Long id) {
+    public int deleteModelById(Long id) {
         // 校验存在
         validateModelExists(id);
         // 删除
-        return aiModelMapper.deleteAiModelById(id);
+        return modelMapper.deleteById(id);
     }
 
     /**
@@ -125,8 +121,8 @@ public class AiModelServiceImpl implements IAiModelService {
      * @return 模型
      */
     @Override
-    public AiModel getModel(Long id) {
-        return aiModelMapper.selectAiModelById(id);
+    public AiModel getModelById(Long id) {
+        return modelMapper.selectById(id);
     }
 
     /**
@@ -136,8 +132,9 @@ public class AiModelServiceImpl implements IAiModelService {
      * @return 模型分页
      */
     @Override
-    public List<AiModel> getModelPage(AiModelPageReqVO pageReqVO) {
-        return aiModelMapper.selectPage(pageReqVO);
+    public TableDataInfo<AiModelRespVO> getModelPage(PageQuery pageQuery, AiModelPageReqVO pageReqVO) {
+        IPage<AiModel> selectPage = modelMapper.selectPage(pageQuery.build(), pageReqVO);
+        return TableDataInfo.build(selectPage, AiModelRespVO.class);
     }
 
     /**
@@ -150,11 +147,11 @@ public class AiModelServiceImpl implements IAiModelService {
      */
     @Override
     public List<AiModel> getModelListByStatusAndType(Integer status, Integer type, String platform) {
-        return aiModelMapper.selectListByStatusAndType(status, type, platform);
+        return modelMapper.selectListByStatusAndType(status, type, platform);
     }
 
     private AiModel validateModelExists(Long id) {
-        AiModel model = aiModelMapper.selectAiModelById(id);
+        AiModel model = modelMapper.selectById(id);
         if (model == null) {
             throw new ServiceException(AiErrorConstants.MODEL_NOT_EXISTS);
         }

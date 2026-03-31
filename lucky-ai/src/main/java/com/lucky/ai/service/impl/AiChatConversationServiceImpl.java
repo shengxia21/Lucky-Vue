@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationCreateMyReqVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
@@ -14,17 +15,21 @@ import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiModelTypeEnum;
 import com.lucky.ai.mapper.AiChatConversationMapper;
-import com.lucky.ai.service.IAiChatConversationService;
-import com.lucky.ai.service.IAiChatRoleService;
-import com.lucky.ai.service.IAiModelService;
+import com.lucky.ai.service.AiChatConversationService;
+import com.lucky.ai.service.AiChatMessageService;
+import com.lucky.ai.service.AiChatRoleService;
+import com.lucky.ai.service.AiModelService;
 import com.lucky.common.constant.AiErrorConstants;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.DateUtils;
-import com.lucky.common.utils.SecurityUtils;
 import jakarta.annotation.Resource;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.lucky.ai.util.CollectionUtils.convertList;
 
@@ -34,15 +39,18 @@ import static com.lucky.ai.util.CollectionUtils.convertList;
  * @author lucky
  */
 @Service
-public class AiChatConversationServiceImpl implements IAiChatConversationService {
+public class AiChatConversationServiceImpl implements AiChatConversationService {
 
     @Resource
-    private AiChatConversationMapper aiChatConversationMapper;
+    private AiChatConversationMapper chatConversationMapper;
 
     @Resource
-    private IAiModelService aiModelService;
+    private AiModelService modelService;
     @Resource
-    private IAiChatRoleService aiChatRoleService;
+    private AiChatRoleService chatRoleService;
+    @Lazy
+    @Resource
+    private AiChatMessageService chatMessageService;
 
     /**
      * 创建我的聊天对话
@@ -53,10 +61,10 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
     @Override
     public Long createChatConversationMy(AiChatConversationCreateMyReqVO createReqVO, Long userId) {
         // 1.1 获得 AiChatRoleDO 聊天角色
-        AiChatRole role = createReqVO.getRoleId() != null ? aiChatRoleService.validateChatRole(createReqVO.getRoleId()) : null;
+        AiChatRole role = createReqVO.getRoleId() != null ? chatRoleService.validateChatRole(createReqVO.getRoleId()) : null;
         // 1.2 获得 AiModelDO 聊天模型
-        AiModel model = role != null && role.getModelId() != null ? aiModelService.validateModel(role.getModelId())
-                : aiModelService.getRequiredDefaultModel(AiModelTypeEnum.CHAT.getType());
+        AiModel model = role != null && role.getModelId() != null ? modelService.validateModel(role.getModelId())
+                : modelService.getRequiredDefaultModel(AiModelTypeEnum.CHAT.getType());
         Assert.notNull(model, "必须找到默认模型");
         validateChatModel(model);
 
@@ -71,8 +79,6 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         conversation.setTemperature(model.getTemperature());
         conversation.setMaxTokens(model.getMaxTokens());
         conversation.setMaxContexts(model.getMaxContexts());
-        conversation.setCreateTime(DateUtils.getNowDate());
-        conversation.setCreateBy(SecurityUtils.getUsername());
         if (role != null) {
             conversation.setTitle(role.getName());
             conversation.setRoleId(role.getId());
@@ -80,7 +86,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         } else {
             conversation.setTitle(AiChatConversation.TITLE_DEFAULT);
         }
-        aiChatConversationMapper.insertAiChatConversation(conversation);
+        chatConversationMapper.insert(conversation);
         return conversation.getId();
     }
 
@@ -100,7 +106,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         // 1.2 校验模型是否存在（修改模型的情况）
         AiModel model = null;
         if (updateReqVO.getModelId() != null) {
-            model = aiModelService.validateModel(updateReqVO.getModelId());
+            model = modelService.validateModel(updateReqVO.getModelId());
         }
         // 1.3 校验知识库是否存在
 
@@ -112,9 +118,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         if (model != null) {
             updateObj.setModel(model.getModel());
         }
-        updateObj.setUpdateBy(SecurityUtils.getUsername());
-        updateObj.setUpdateTime(DateUtils.getNowDate());
-        return aiChatConversationMapper.updateAiChatConversation(updateObj);
+        return chatConversationMapper.updateById(updateObj);
     }
 
     /**
@@ -125,7 +129,8 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
      */
     @Override
     public List<AiChatConversationRespVO> getChatConversationListByUserId(Long userId) {
-        return aiChatConversationMapper.selectListByUserId(userId);
+        List<AiChatConversation> conversationList = chatConversationMapper.selectListByUserId(userId);
+        return convertList(conversationList, u -> BeanUtil.toBean(u, AiChatConversationRespVO.class));
     }
 
     /**
@@ -135,8 +140,8 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
      * @return 聊天对话
      */
     @Override
-    public AiChatConversation getChatConversation(Long id) {
-        return aiChatConversationMapper.selectAiChatConversationById(id);
+    public AiChatConversation getChatConversationById(Long id) {
+        return chatConversationMapper.selectById(id);
     }
 
     /**
@@ -154,7 +159,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
             throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
         }
         // 2. 删除对话
-        return aiChatConversationMapper.deleteAiChatConversationById(id);
+        return chatConversationMapper.deleteById(id);
     }
 
     /**
@@ -164,23 +169,32 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
      * @return 是否成功
      */
     @Override
-    public int deleteChatConversationMyByUnpinned(Long userId) {
-        List<AiChatConversation> list = aiChatConversationMapper.selectListByUserIdAndPinned(userId, false);
+    public int deleteChatConversationMyByUserId(Long userId) {
+        List<AiChatConversation> list = chatConversationMapper.selectListByUserIdAndPinned(userId, false);
         if (CollUtil.isEmpty(list)) {
             return 0;
         }
-        return aiChatConversationMapper.deleteAiChatConversationByIds(convertList(list, AiChatConversation::getId));
+        return chatConversationMapper.deleteByIds(convertList(list, AiChatConversation::getId));
     }
 
     /**
      * 获取对话分页列表
      *
-     * @param pageReqVO 分页查询对象
+     * @param pageQuery 分页查询对象
+     * @param pageReqVO 查询参数
      * @return 分页列表
      */
     @Override
-    public List<AiChatConversationRespVO> getChatConversationPage(AiChatConversationPageReqVO pageReqVO) {
-        return aiChatConversationMapper.selectChatConversationPage(pageReqVO);
+    public TableDataInfo<AiChatConversationRespVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageReqVO pageReqVO) {
+        IPage<AiChatConversation> page = chatConversationMapper.selectPage(pageQuery.build(), pageReqVO);
+        Map<Long, Integer> countMap = chatMessageService.getChatMessageCountMap(convertList(page.getRecords(), AiChatConversation::getId));
+        // 转换为响应VO,并添加消息数量
+        List<AiChatConversationRespVO> list = convertList(page.getRecords(), conversation -> {
+            AiChatConversationRespVO respVO = BeanUtil.toBean(conversation, AiChatConversationRespVO.class);
+            respVO.setMessageCount(countMap.get(conversation.getId()));
+            return respVO;
+        });
+        return TableDataInfo.build(list, page.getTotal());
     }
 
     /**
@@ -190,14 +204,14 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
      * @return 是否成功
      */
     @Override
-    public int deleteChatConversationByAdmin(Long id) {
+    public int deleteChatConversationById(Long id) {
         // 1. 校验对话是否存在
         AiChatConversation conversation = validateChatConversationExists(id);
         if (conversation == null) {
             throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
         }
         // 2. 删除对话
-        return aiChatConversationMapper.deleteAiChatConversationById(id);
+        return chatConversationMapper.deleteById(id);
     }
 
     /**
@@ -208,7 +222,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
      */
     @Override
     public AiChatConversation validateChatConversationExists(Long id) {
-        AiChatConversation conversation = aiChatConversationMapper.selectAiChatConversationById(id);
+        AiChatConversation conversation = chatConversationMapper.selectById(id);
         if (conversation == null) {
             throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
         }

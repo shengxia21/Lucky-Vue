@@ -6,10 +6,11 @@ import com.lucky.ai.controller.model.vo.model.AiModelRespVO;
 import com.lucky.ai.controller.model.vo.model.AiModelSaveReqVO;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.CommonStatusEnum;
-import com.lucky.ai.service.IAiModelService;
+import com.lucky.ai.service.AiModelService;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
-import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
+import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
 import jakarta.annotation.Resource;
@@ -31,7 +32,7 @@ import static com.lucky.ai.util.CollectionUtils.convertList;
 public class AiModelController extends BaseController {
 
     @Resource
-    private IAiModelService aiModelService;
+    private AiModelService modelService;
 
     /**
      * 创建模型
@@ -39,8 +40,8 @@ public class AiModelController extends BaseController {
     @Log(title = "创建模型", businessType = BusinessType.INSERT)
     @PreAuthorize("@ss.hasPermi('ai:model:create')")
     @PostMapping("/create")
-    public AjaxResult createModel(@Validated @RequestBody AiModelSaveReqVO createReqVO) {
-        return success(aiModelService.createModel(createReqVO));
+    public R<Long> createModel(@Validated @RequestBody AiModelSaveReqVO createReqVO) {
+        return R.ok(modelService.createModel(createReqVO));
     }
 
     /**
@@ -49,8 +50,8 @@ public class AiModelController extends BaseController {
     @Log(title = "更新模型", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('ai:model:update')")
     @PutMapping("/update")
-    public AjaxResult updateModel(@Validated @RequestBody AiModelSaveReqVO updateReqVO) {
-        return toAjax(aiModelService.updateModel(updateReqVO));
+    public R<Integer> updateModel(@Validated @RequestBody AiModelSaveReqVO updateReqVO) {
+        return R.ok(modelService.updateModel(updateReqVO));
     }
 
     /**
@@ -59,8 +60,8 @@ public class AiModelController extends BaseController {
     @Log(title = "删除模型", businessType = BusinessType.DELETE)
     @PreAuthorize("@ss.hasPermi('ai:model:delete')")
     @DeleteMapping("/delete")
-    public AjaxResult deleteModel(@RequestParam("id") Long id) {
-        return toAjax(aiModelService.deleteModel(id));
+    public R<Integer> deleteModel(@RequestParam("id") Long id) {
+        return R.ok(modelService.deleteModelById(id));
     }
 
     /**
@@ -68,9 +69,9 @@ public class AiModelController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:model:query')")
     @GetMapping("/get")
-    public AjaxResult getModel(@RequestParam("id") Long id) {
-        AiModel model = aiModelService.getModel(id);
-        return success(BeanUtil.toBean(model, AiModelRespVO.class));
+    public R<AiModelRespVO> getModel(@RequestParam("id") Long id) {
+        AiModel model = modelService.getModelById(id);
+        return R.ok(BeanUtil.toBean(model, AiModelRespVO.class));
     }
 
     /**
@@ -78,22 +79,20 @@ public class AiModelController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:model:list')")
     @GetMapping("/page")
-    public TableDataInfo getModelPage(AiModelPageReqVO pageReqVO) {
-        startPage();
-        List<AiModel> list = aiModelService.getModelPage(pageReqVO);
-        return getDataTable(list, AiModelRespVO.class);
+    public TableDataInfo<AiModelRespVO> getModelPage(PageQuery pageQuery, AiModelPageReqVO pageReqVO) {
+        return modelService.getModelPage(pageQuery, pageReqVO);
     }
 
     /**
      * 获得模型列表
      */
     @GetMapping("/simple-list")
-    public AjaxResult getModelSimpleList(
+    public R<List<AiModelRespVO>> getModelSimpleList(
             @RequestParam("type") Integer type,
             @RequestParam(value = "platform", required = false) String platform) {
-        List<AiModel> list = aiModelService.getModelListByStatusAndType(
+        List<AiModel> list = modelService.getModelListByStatusAndType(
                 CommonStatusEnum.ENABLE.getStatus(), type, platform);
-        return success(convertList(list, model -> {
+        return R.ok(convertList(list, model -> {
             AiModelRespVO respVO = new AiModelRespVO();
             respVO.setId(model.getId());
             respVO.setName(model.getName());

@@ -8,7 +8,7 @@ import lombok.Data;
  * @author lucky
  */
 @Data
-public class AiImagePublicPageReqVO {
+public class AiImagePagePublicReqVO {
 
     /**
      * 提示词

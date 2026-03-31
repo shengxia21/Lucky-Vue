@@ -46,7 +46,7 @@ public class ChatServiceFacade implements ChatService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Resource
-    private AiChatMessageMapper aiChatMessageMapper;
+    private AiChatMessageMapper chatMessageMapper;
 
     @Resource
     private ChatModelFactory chatFactory;
@@ -97,7 +97,7 @@ public class ChatServiceFacade implements ChatService {
             // 流式响应过程中触发异常（包含LLM大模型返回的错误信息）
             log.error("流式响应 - [模型标识({}) 请求过程中发生异常: {}]", chatContext.getModel().getModel(), error.getMessage());
             // 删除创建的assistant聊天消息
-            aiChatMessageMapper.deleteAiChatMessageById(assistantId);
+            chatMessageMapper.deleteById(assistantId);
             // 将异常信息设置为响应内容(有些错误可能是用户的配置问题,需要提示用户)
             response.setContent(error.getMessage());
             return Flux.just(response);
@@ -128,13 +128,13 @@ public class ChatServiceFacade implements ChatService {
         message.setAttachmentUrls(request.getAttachmentUrls());
         message.setCreateBy(SecurityUtils.getUsername());
         message.setCreateTime(DateUtils.getNowDate());
-        aiChatMessageMapper.insertAiChatMessage(message);
+        chatMessageMapper.insert(message);
         // userMessageId
         message.setReplyId(message.getId());
         message.setType(MessageType.ASSISTANT.getValue());
         message.setContent(StringUtils.EMPTY);
         message.setAttachmentUrls(request.getAttachmentUrls());
-        aiChatMessageMapper.insertAiChatMessage(message);
+        chatMessageMapper.insert(message);
         // assistantMessageId
         return message.getId();
     }
@@ -152,7 +152,7 @@ public class ChatServiceFacade implements ChatService {
         message.setContent(content);
         message.setReasoningContent(reasoningContent);
         message.setCreateTime(DateUtils.getNowDate());
-        aiChatMessageMapper.updateAiChatMessage(message);
+        chatMessageMapper.updateById(message);
     }
 
     /**
@@ -189,7 +189,7 @@ public class ChatServiceFacade implements ChatService {
         if (conversation.getMaxContexts() == null || conversation.getMaxContexts() <= 0 || ObjUtil.notEqual(request.getUseContext(), Boolean.TRUE)) {
             return Collections.emptyList();
         }
-        List<AiChatMessage> historyMessages = aiChatMessageMapper.selectListByConversationId(conversation.getId());
+        List<AiChatMessage> historyMessages = chatMessageMapper.selectListByConversationId(conversation.getId());
         if (historyMessages.isEmpty()) {
             return Collections.emptyList();
         }

@@ -1,8 +1,11 @@
 package com.lucky.ai.service;
 
 import com.lucky.ai.controller.model.vo.apikey.AiApiKeyPageReqVO;
+import com.lucky.ai.controller.model.vo.apikey.AiApiKeyRespVO;
 import com.lucky.ai.controller.model.vo.apikey.AiApiKeySaveReqVO;
 import com.lucky.ai.domain.AiApiKey;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 
 import java.util.List;
 
@@ -11,7 +14,7 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface IAiApiKeyService {
+public interface AiApiKeyService {
 
     /**
      * 创建 API 密钥
@@ -35,7 +38,7 @@ public interface IAiApiKeyService {
      * @param id API 密钥主键
      * @return 结果
      */
-    int deleteApiKey(Long id);
+    int deleteApiKeyById(Long id);
 
     /**
      * 查询 API 密钥
@@ -43,31 +46,23 @@ public interface IAiApiKeyService {
      * @param id API 密钥主键
      * @return API 密钥
      */
-    AiApiKey getApiKey(Long id);
+    AiApiKey getApiKeyById(Long id);
 
     /**
      * 查询 API 密钥分页
      *
-     * @param pageReqVO 分页查询请求vo
+     * @param pageQuery 分页查询对象
+     * @param pageReqVO 查询参数
      * @return API 密钥分页结果
      */
-    List<AiApiKey> getApiKeyPage(AiApiKeyPageReqVO pageReqVO);
+    TableDataInfo<AiApiKeyRespVO> getApiKeyPage(PageQuery pageQuery, AiApiKeyPageReqVO pageReqVO);
 
     /**
-     * 获得 API 密钥分页列表
+     * 获得 API 密钥列表
      *
-     * @return API 密钥分页结果
+     * @return API 密钥列表
      */
     List<AiApiKey> getApiKeyList();
-
-    /**
-     * 获得默认 API 密钥
-     *
-     * @param platform 平台
-     * @param status   状态
-     * @return 默认 API 密钥
-     */
-    AiApiKey getRequiredDefaultApiKey(String platform, Integer status);
 
     /**
      * 校验 API 密钥是否有效

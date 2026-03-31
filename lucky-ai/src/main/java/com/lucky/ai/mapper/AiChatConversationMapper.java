@@ -1,8 +1,12 @@
 package com.lucky.ai.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.domain.AiChatConversation;
+import com.lucky.common.utils.StringUtils;
 
 import java.util.List;
 
@@ -11,71 +15,27 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface AiChatConversationMapper {
+public interface AiChatConversationMapper extends BaseMapper<AiChatConversation> {
 
-    /**
-     * 根据用户ID查询聊天对话列表
-     *
-     * @param userId 用户ID
-     * @return 聊天对话列表
-     */
-    List<AiChatConversationRespVO> selectListByUserId(Long userId);
+    default List<AiChatConversation> selectListByUserId(Long userId) {
+        LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
+                .eq(AiChatConversation::getUserId, userId);
+        return selectList(wrapper);
+    }
 
-    /**
-     * 查询AI 聊天对话
-     *
-     * @param id AI 聊天对话主键
-     * @return AI 聊天对话
-     */
-    AiChatConversation selectAiChatConversationById(Long id);
+    default List<AiChatConversation> selectListByUserIdAndPinned(Long userId, Boolean pinned) {
+        LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
+                .eq(AiChatConversation::getUserId, userId)
+                .eq(AiChatConversation::getPinned, pinned);
+        return selectList(wrapper);
+    }
 
-    /**
-     * 新增AI 聊天对话
-     *
-     * @param aiChatConversation AI 聊天对话
-     * @return 结果
-     */
-    int insertAiChatConversation(AiChatConversation aiChatConversation);
-
-    /**
-     * 修改AI 聊天对话
-     *
-     * @param aiChatConversation AI 聊天对话
-     * @return 结果
-     */
-    int updateAiChatConversation(AiChatConversation aiChatConversation);
-
-    /**
-     * 删除AI 聊天对话
-     *
-     * @param id AI 聊天对话主键
-     * @return 结果
-     */
-    int deleteAiChatConversationById(Long id);
-
-    /**
-     * 根据用户ID查询置顶/未置顶的聊天对话列表
-     *
-     * @param userId 用户ID
-     * @param pinned 是否置顶
-     * @return 聊天对话列表
-     */
-    List<AiChatConversation> selectListByUserIdAndPinned(Long userId, boolean pinned);
-
-    /**
-     * 根据ID列表删除AI 聊天对话
-     *
-     * @param ids ID列表
-     * @return 结果
-     */
-    int deleteAiChatConversationByIds(List<Long> ids);
-
-    /**
-     * 查询AI 聊天对话分页列表
-     *
-     * @param pageReqVO 分页查询对象
-     * @return 聊天对话分页列表
-     */
-    List<AiChatConversationRespVO> selectChatConversationPage(AiChatConversationPageReqVO pageReqVO);
+    default IPage<AiChatConversation> selectPage(IPage<AiChatConversation> page, AiChatConversationPageReqVO pageReqVO) {
+        LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
+                .eq(StringUtils.isNotNull(pageReqVO.getUserId()), AiChatConversation::getUserId, pageReqVO.getUserId())
+                .like(StringUtils.isNotEmpty(pageReqVO.getTitle()), AiChatConversation::getTitle, pageReqVO.getTitle())
+                .between(!pageReqVO.getParams().isEmpty(), AiChatConversation::getCreateTime, pageReqVO.getParams().get("beginTime"), pageReqVO.getParams().get("endTime"));
+        return selectPage(page, wrapper);
+    }
 
 }

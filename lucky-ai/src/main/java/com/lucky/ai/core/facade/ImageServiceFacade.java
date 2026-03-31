@@ -28,7 +28,7 @@ public class ImageServiceFacade implements ImageService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Resource
-    private AiImageMapper aiImageMapper;
+    private AiImageMapper imageMapper;
 
     @Resource
     private ImageModelFactory imageFactory;
@@ -58,14 +58,14 @@ public class ImageServiceFacade implements ImageService {
             aiImage.setStatus(AiImageStatusEnum.SUCCESS.getStatus());
             aiImage.setPicUrl(filePath);
             aiImage.setFinishTime(DateUtils.getNowDate());
-            aiImageMapper.updateAiImage(aiImage);
+            imageMapper.updateById(aiImage);
         } catch (Exception ex) {
             log.error("执行异步绘制图片失败, imageId={}, model={}", imageContext.getImage().getId(), imageContext.getModel().getModel());
             AiImage aiImage = new AiImage();
             aiImage.setId(imageContext.getImage().getId());
             aiImage.setStatus(AiImageStatusEnum.FAIL.getStatus());
             aiImage.setErrorMessage(ex.getMessage());
-            aiImageMapper.updateAiImage(aiImage);
+            imageMapper.updateById(aiImage);
         }
     }
 

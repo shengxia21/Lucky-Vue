@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.ai.controller.model.vo.chatRole.AiChatRolePageReqVO;
 import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleRespVO;
 import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleSaveMyReqVO;
@@ -11,12 +12,12 @@ import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleSaveReqVO;
 import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.mapper.AiChatRoleMapper;
-import com.lucky.ai.service.IAiChatRoleService;
+import com.lucky.ai.service.AiChatRoleService;
 import com.lucky.ai.util.CollectionUtils;
 import com.lucky.common.constant.AiErrorConstants;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.exception.ServiceException;
-import com.lucky.common.utils.DateUtils;
-import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.StringUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -31,10 +32,10 @@ import java.util.List;
  * @author lucky
  */
 @Service
-public class AiChatRoleServiceImpl implements IAiChatRoleService {
+public class AiChatRoleServiceImpl implements AiChatRoleService {
 
     @Resource
-    private AiChatRoleMapper aiChatRoleMapper;
+    private AiChatRoleMapper chatRoleMapper;
 
     /**
      * 创建聊天角色
@@ -49,9 +50,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
 
         // 保存角色
         AiChatRole chatRole = BeanUtil.toBean(createReqVO, AiChatRole.class);
-        chatRole.setCreateBy(SecurityUtils.getUsername());
-        chatRole.setCreateTime(DateUtils.getNowDate());
-        aiChatRoleMapper.insertAiChatRole(chatRole);
+        chatRoleMapper.insert(chatRole);
         return chatRole.getId();
     }
 
@@ -72,9 +71,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
         chatRole.setUserId(userId);
         chatRole.setStatus(CommonStatusEnum.ENABLE.getStatus());
         chatRole.setPublicStatus(false);
-        chatRole.setCreateBy(SecurityUtils.getUsername());
-        chatRole.setCreateTime(DateUtils.getNowDate());
-        aiChatRoleMapper.insertAiChatRole(chatRole);
+        chatRoleMapper.insert(chatRole);
         return chatRole.getId();
     }
 
@@ -92,9 +89,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
 
         // 更新角色
         AiChatRole updateObj = BeanUtil.toBean(updateReqVO, AiChatRole.class);
-        updateObj.setUpdateBy(SecurityUtils.getUsername());
-        updateObj.setUpdateTime(DateUtils.getNowDate());
-        return aiChatRoleMapper.updateAiChatRoleById(updateObj);
+        return chatRoleMapper.updateById(updateObj);
     }
 
     /**
@@ -115,9 +110,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
 
         // 更新角色
         AiChatRole updateObj = BeanUtil.toBean(updateReqVO, AiChatRole.class);
-        updateObj.setUpdateBy(SecurityUtils.getUsername());
-        updateObj.setUpdateTime(DateUtils.getNowDate());
-        return aiChatRoleMapper.updateAiChatRoleById(updateObj);
+        return chatRoleMapper.updateById(updateObj);
     }
 
     /**
@@ -126,11 +119,11 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
      * @param id 编号
      */
     @Override
-    public int deleteChatRole(Long id) {
+    public int deleteChatRoleById(Long id) {
         // 校验存在
         validateChatRoleExists(id);
         // 删除
-        return aiChatRoleMapper.deleteAiChatRoleById(id);
+        return chatRoleMapper.deleteById(id);
     }
 
     /**
@@ -147,7 +140,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
             throw new ServiceException(AiErrorConstants.CHAT_ROLE_NOT_EXISTS);
         }
         // 删除
-        return aiChatRoleMapper.deleteAiChatRoleById(id);
+        return chatRoleMapper.deleteById(id);
     }
 
     /**
@@ -157,8 +150,9 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
      * @return AI 聊天角色
      */
     @Override
-    public AiChatRoleRespVO getChatRole(Long id) {
-        return aiChatRoleMapper.selectAiChatRoleById(id);
+    public AiChatRoleRespVO getChatRoleById(Long id) {
+        AiChatRole chatRole = chatRoleMapper.selectById(id);
+        return BeanUtil.toBean(chatRole, AiChatRoleRespVO.class);
     }
 
     /**
@@ -172,7 +166,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
         if (CollUtil.isEmpty(ids)) {
             return Collections.emptyList();
         }
-        return aiChatRoleMapper.selectByIds(ids);
+        return chatRoleMapper.selectByIds(ids);
     }
 
     /**
@@ -192,24 +186,28 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     /**
      * 获得聊天角色分页
      *
+     * @param pageQuery 分页查询
      * @param pageReqVO 分页查询
      * @return 聊天角色分页
      */
     @Override
-    public List<AiChatRoleRespVO> getChatRolePage(AiChatRolePageReqVO pageReqVO) {
-        return aiChatRoleMapper.selectPage(pageReqVO);
+    public TableDataInfo<AiChatRoleRespVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageReqVO pageReqVO) {
+        IPage<AiChatRole> page = chatRoleMapper.selectPage(pageQuery.build(), pageReqVO);
+        return TableDataInfo.build(page, AiChatRoleRespVO.class);
     }
 
     /**
      * 获得【我的】聊天角色分页
      *
+     * @param pageQuery 分页查询
      * @param pageReqVO 分页查询
      * @param userId    用户编号
      * @return 聊天角色分页
      */
     @Override
-    public List<AiChatRoleRespVO> getChatRoleMyPage(AiChatRolePageReqVO pageReqVO, Long userId) {
-        return aiChatRoleMapper.selectPageByMy(pageReqVO, userId);
+    public TableDataInfo<AiChatRoleRespVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageReqVO pageReqVO, Long userId) {
+        IPage<AiChatRole> page = chatRoleMapper.selectMyPage(pageQuery.build(), pageReqVO, userId);
+        return TableDataInfo.build(page, AiChatRoleRespVO.class);
     }
 
     /**
@@ -219,7 +217,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
      */
     @Override
     public List<String> getChatRoleCategoryList() {
-        List<String> list = aiChatRoleMapper.selectListGroupByCategory(CommonStatusEnum.ENABLE.getStatus());
+        List<String> list = chatRoleMapper.selectListGroupByCategory(CommonStatusEnum.ENABLE.getStatus());
         return CollectionUtils.filterList(list, category -> category != null && StrUtil.isNotBlank(category));
     }
 
@@ -231,11 +229,11 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
      */
     @Override
     public List<AiChatRole> getChatRoleListByName(String name) {
-        return aiChatRoleMapper.selectListByName(name);
+        return chatRoleMapper.selectListByName(name);
     }
 
     private AiChatRole validateChatRoleExists(Long id) {
-        AiChatRole chatRole = aiChatRoleMapper.selectById(id);
+        AiChatRole chatRole = chatRoleMapper.selectById(id);
         if (chatRole == null) {
             throw new ServiceException(AiErrorConstants.CHAT_ROLE_NOT_EXISTS);
         }

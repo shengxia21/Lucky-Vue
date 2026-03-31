@@ -1,6 +1,10 @@
 package com.lucky.ai.controller.model.vo.chatRole;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fhs.core.trans.anno.Trans;
+import com.fhs.core.trans.constant.TransType;
+import com.fhs.core.trans.vo.VO;
+import com.lucky.ai.domain.AiModel;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,7 +16,7 @@ import java.util.List;
  * @author lucky
  */
 @Data
-public class AiChatRoleRespVO {
+public class AiChatRoleRespVO implements VO {
 
     /**
      * 编号
@@ -27,6 +31,7 @@ public class AiChatRoleRespVO {
     /**
      * 模型编号
      */
+    @Trans(type = TransType.SIMPLE, target = AiModel.class, fields = {"name", "model"}, refs = {"modelName", "model"})
     private Long modelId;
 
     /**

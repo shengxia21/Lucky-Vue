@@ -1,98 +1,61 @@
 package com.lucky.ai.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.controller.model.vo.chatRole.AiChatRolePageReqVO;
-import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleRespVO;
 import com.lucky.ai.domain.AiChatRole;
+import com.lucky.ai.enums.CommonStatusEnum;
+import com.lucky.common.utils.StringUtils;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * AI 聊天角色Mapper接口
  *
  * @author lucky
  */
-public interface AiChatRoleMapper {
+public interface AiChatRoleMapper extends BaseMapper<AiChatRole> {
 
-    /**
-     * 通过主键查询AI 聊天角色
-     *
-     * @param id 主键
-     * @return AI 聊天角色
-     */
-    AiChatRole selectById(Long id);
+    default IPage<AiChatRole> selectPage(IPage<AiChatRole> page, AiChatRolePageReqVO pageReqVO) {
+        LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
+                .like(StringUtils.isNotEmpty(pageReqVO.getName()), AiChatRole::getName, pageReqVO.getName())
+                .eq(StringUtils.isNotEmpty(pageReqVO.getCategory()), AiChatRole::getCategory, pageReqVO.getCategory())
+                .eq(StringUtils.isNotNull(pageReqVO.getPublicStatus()), AiChatRole::getStatus, pageReqVO.getPublicStatus())
+                .orderByAsc(AiChatRole::getSort);
+        return selectPage(page, wrapper);
+    }
 
-    /**
-     * 通过主键查询AI 聊天角色
-     *
-     * @param id 主键
-     * @return AI 聊天角色
-     */
-    AiChatRoleRespVO selectAiChatRoleById(Long id);
+    default IPage<AiChatRole> selectMyPage(IPage<AiChatRole> page, AiChatRolePageReqVO pageReqVO, Long userId) {
+        LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
+                .like(StringUtils.isNotEmpty(pageReqVO.getName()), AiChatRole::getName, pageReqVO.getName())
+                .eq(StringUtils.isNotEmpty(pageReqVO.getCategory()), AiChatRole::getCategory, pageReqVO.getCategory())
+                // 情况一：公开
+                .eq(Boolean.TRUE.equals(pageReqVO.getPublicStatus()), AiChatRole::getPublicStatus, pageReqVO.getPublicStatus())
+                // 情况二：私有
+                .eq(Boolean.FALSE.equals(pageReqVO.getPublicStatus()), AiChatRole::getUserId, userId)
+                .eq(Boolean.FALSE.equals(pageReqVO.getPublicStatus()), AiChatRole::getStatus, CommonStatusEnum.ENABLE.getStatus())
+                .orderByAsc(AiChatRole::getSort);
+        return selectPage(page, wrapper);
+    }
 
-    /**
-     * 新增AI 聊天角色
-     *
-     * @param aiChatRole AI 聊天角色
-     * @return 结果
-     */
-    int insertAiChatRole(AiChatRole aiChatRole);
+    default List<String> selectListGroupByCategory(Integer status) {
+        LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
+                .select(AiChatRole::getCategory)
+                .eq(StringUtils.isNotNull(status), AiChatRole::getStatus, status)
+                .groupBy(AiChatRole::getCategory);
+        return selectObjs(wrapper).stream()
+                .map(Objects::toString)
+                .toList();
+    }
 
-    /**
-     * 更新AI 聊天角色
-     *
-     * @param aiChatRole AI 聊天角色
-     * @return 结果
-     */
-    int updateAiChatRoleById(AiChatRole aiChatRole);
-
-    /**
-     * 删除AI 聊天角色
-     *
-     * @param id 主键
-     * @return 结果
-     */
-    int deleteAiChatRoleById(Long id);
-
-    /**
-     * 批量查询AI 聊天角色
-     *
-     * @param ids 主键数组
-     * @return AI 聊天角色列表
-     */
-    List<AiChatRole> selectByIds(Collection<Long> ids);
-
-    /**
-     * 查询AI 聊天角色分页
-     *
-     * @param pageReqVO 分页查询
-     * @return AI 聊天角色分页
-     */
-    List<AiChatRoleRespVO> selectPage(AiChatRolePageReqVO pageReqVO);
-
-    /**
-     * 查询【我的】聊天角色分页
-     *
-     * @param pageReqVO 分页查询
-     * @param userId    用户编号
-     * @return AI 聊天角色分页
-     */
-    List<AiChatRoleRespVO> selectPageByMy(AiChatRolePageReqVO pageReqVO, Long userId);
-
-    /**
-     * 查询AI 聊天角色列表
-     *
-     * @param status 角色状态
-     * @return AI 聊天角色列表
-     */
-    List<String> selectListGroupByCategory(Integer status);
-
-    /**
-     * 查询AI 聊天角色列表
-     *
-     * @param name 名称
-     * @return AI 聊天角色列表
-     */
-    List<AiChatRole> selectListByName(String name);
+    default List<AiChatRole> selectListByName(String name) {
+        LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
+                .like(StringUtils.isNotEmpty(name), AiChatRole::getName, name)
+                .orderByAsc(AiChatRole::getSort);
+        return selectList(wrapper);
+    }
 
 }

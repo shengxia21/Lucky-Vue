@@ -7,10 +7,11 @@ import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
-import com.lucky.ai.service.IAiChatConversationService;
+import com.lucky.ai.service.AiChatConversationService;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
-import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
+import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
 import jakarta.annotation.Resource;
@@ -30,15 +31,15 @@ import java.util.List;
 public class AiChatConversationController extends BaseController {
 
     @Resource
-    private IAiChatConversationService aiChatConversationService;
+    private AiChatConversationService chatConversationService;
 
     /**
      * 创建我的聊天对话
      */
     @Log(title = "创建【我的】聊天对话", businessType = BusinessType.INSERT)
     @PostMapping("/create-my")
-    public AjaxResult createChatConversationMy(@RequestBody AiChatConversationCreateMyReqVO createReqVO) {
-        return success(aiChatConversationService.createChatConversationMy(createReqVO, getUserId()));
+    public R<Long> createChatConversationMy(@RequestBody AiChatConversationCreateMyReqVO createReqVO) {
+        return R.ok(chatConversationService.createChatConversationMy(createReqVO, getUserId()));
     }
 
     /**
@@ -46,29 +47,28 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "更新【我的】聊天对话", businessType = BusinessType.UPDATE)
     @PutMapping("/update-my")
-    public AjaxResult updateChatConversationMy(@Validated @RequestBody AiChatConversationUpdateMyReqVO updateReqVO) {
-        return toAjax(aiChatConversationService.updateChatConversationMy(updateReqVO, getUserId()));
+    public R<Integer> updateChatConversationMy(@Validated @RequestBody AiChatConversationUpdateMyReqVO updateReqVO) {
+        return R.ok(chatConversationService.updateChatConversationMy(updateReqVO, getUserId()));
     }
 
     /**
      * 获得我的聊天对话列表
      */
     @GetMapping("/my-list")
-    public AjaxResult getChatConversationMyList() {
-        List<AiChatConversationRespVO> list = aiChatConversationService.getChatConversationListByUserId(getUserId());
-        return success(list);
+    public R<List<AiChatConversationRespVO>> getChatConversationMyList() {
+        return R.ok(chatConversationService.getChatConversationListByUserId(getUserId()));
     }
 
     /**
      * 获得我的聊天对话
      */
     @GetMapping("/get-my")
-    public AjaxResult getChatConversationMy(@RequestParam("id") Long id) {
-        AiChatConversation conversation = aiChatConversationService.getChatConversation(id);
+    public R<AiChatConversationRespVO> getChatConversationMy(@RequestParam("id") Long id) {
+        AiChatConversation conversation = chatConversationService.getChatConversationById(id);
         if (conversation != null && ObjUtil.notEqual(conversation.getUserId(), getUserId())) {
-            conversation = null;
+            return R.fail("对话不存在或不属于当前用户");
         }
-        return success(BeanUtil.toBean(conversation, AiChatConversationRespVO.class));
+        return R.ok(BeanUtil.toBean(conversation, AiChatConversationRespVO.class));
     }
 
     /**
@@ -76,8 +76,8 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "删除【我的】聊天对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
-    public AjaxResult deleteChatConversationMy(@RequestParam("id") Long id) {
-        return toAjax(aiChatConversationService.deleteChatConversationMy(id, getUserId()));
+    public R<Integer> deleteChatConversationMy(@RequestParam("id") Long id) {
+        return R.ok(chatConversationService.deleteChatConversationMy(id, getUserId()));
     }
 
     /**
@@ -85,8 +85,8 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "删除未置顶的聊天对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-by-unpinned")
-    public AjaxResult deleteChatConversationMyByUnpinned() {
-        return toAjax(aiChatConversationService.deleteChatConversationMyByUnpinned(getUserId()));
+    public R<Integer> deleteChatConversationMyByUnpinned() {
+        return R.ok(chatConversationService.deleteChatConversationMyByUserId(getUserId()));
     }
 
     // ========== 对话管理 ==========
@@ -96,10 +96,8 @@ public class AiChatConversationController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:chat-conversation:list')")
     @GetMapping("/page")
-    public TableDataInfo getChatConversationPage(AiChatConversationPageReqVO pageReqVO) {
-        startPage();
-        List<AiChatConversationRespVO> list = aiChatConversationService.getChatConversationPage(pageReqVO);
-        return getDataTable(list);
+    public TableDataInfo<AiChatConversationRespVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageReqVO pageReqVO) {
+        return chatConversationService.getChatConversationPage(pageQuery, pageReqVO);
     }
 
     /**
@@ -108,8 +106,8 @@ public class AiChatConversationController extends BaseController {
     @Log(title = "管理员删除对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-by-admin")
     @PreAuthorize("@ss.hasPermi('ai:chat-conversation:delete')")
-    public AjaxResult deleteChatConversationByAdmin(@RequestParam("id") Long id) {
-        return toAjax(aiChatConversationService.deleteChatConversationByAdmin(id));
+    public R<Integer> deleteChatConversationById(@RequestParam("id") Long id) {
+        return R.ok(chatConversationService.deleteChatConversationById(id));
     }
 
 }

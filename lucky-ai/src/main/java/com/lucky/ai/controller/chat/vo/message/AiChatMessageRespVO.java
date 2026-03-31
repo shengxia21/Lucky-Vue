@@ -1,7 +1,11 @@
 package com.lucky.ai.controller.chat.vo.message;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fhs.core.trans.anno.Trans;
+import com.fhs.core.trans.constant.TransType;
+import com.fhs.core.trans.vo.VO;
 import com.lucky.ai.core.websearch.AiWebSearchResponse;
+import com.lucky.ai.domain.AiChatRole;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,7 +17,7 @@ import java.util.List;
  * @author lucky
  */
 @Data
-public class AiChatMessageRespVO {
+public class AiChatMessageRespVO implements VO {
 
     /**
      * 编号
@@ -43,6 +47,7 @@ public class AiChatMessageRespVO {
     /**
      * 角色编号
      */
+    @Trans(type = TransType.SIMPLE, target = AiChatRole.class, fields = {"name"}, refs = {"roleName"})
     private Long roleId;
 
     /**

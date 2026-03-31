@@ -5,6 +5,8 @@ import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleRespVO;
 import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleSaveMyReqVO;
 import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleSaveReqVO;
 import com.lucky.ai.domain.AiChatRole;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface IAiChatRoleService {
+public interface AiChatRoleService {
 
     /**
      * 创建聊天角色
@@ -53,7 +55,7 @@ public interface IAiChatRoleService {
      *
      * @param id 编号
      */
-    int deleteChatRole(Long id);
+    int deleteChatRoleById(Long id);
 
     /**
      * 删除【我的】聊天角色
@@ -69,7 +71,7 @@ public interface IAiChatRoleService {
      * @param id 编号
      * @return AI 聊天角色
      */
-    AiChatRoleRespVO getChatRole(Long id);
+    AiChatRoleRespVO getChatRoleById(Long id);
 
     /**
      * 获得聊天角色列表
@@ -89,19 +91,21 @@ public interface IAiChatRoleService {
     /**
      * 获得聊天角色分页
      *
-     * @param pageReqVO 分页查询
+     * @param pageQuery 分页查询对象
+     * @param pageReqVO 查询参数
      * @return 聊天角色分页
      */
-    List<AiChatRoleRespVO> getChatRolePage(AiChatRolePageReqVO pageReqVO);
+    TableDataInfo<AiChatRoleRespVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageReqVO pageReqVO);
 
     /**
      * 获得【我的】聊天角色分页
      *
-     * @param pageReqVO 分页查询
+     * @param pageQuery 分页查询对象
+     * @param pageReqVO 查询参数
      * @param userId    用户编号
      * @return 聊天角色分页
      */
-    List<AiChatRoleRespVO> getChatRoleMyPage(AiChatRolePageReqVO pageReqVO, Long userId);
+    TableDataInfo<AiChatRoleRespVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageReqVO pageReqVO, Long userId);
 
     /**
      * 获得聊天角色的分类列表

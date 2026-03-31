@@ -1,8 +1,11 @@
 package com.lucky.ai.service;
 
 import com.lucky.ai.controller.model.vo.model.AiModelPageReqVO;
+import com.lucky.ai.controller.model.vo.model.AiModelRespVO;
 import com.lucky.ai.controller.model.vo.model.AiModelSaveReqVO;
 import com.lucky.ai.domain.AiModel;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 
 import java.util.List;
 
@@ -11,7 +14,7 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface IAiModelService {
+public interface AiModelService {
 
     /**
      * 获得默认的模型
@@ -53,7 +56,7 @@ public interface IAiModelService {
      * @param id 编号
      * @return 影响行数
      */
-    int deleteModel(Long id);
+    int deleteModelById(Long id);
 
     /**
      * 获得模型
@@ -61,15 +64,16 @@ public interface IAiModelService {
      * @param id 编号
      * @return 模型
      */
-    AiModel getModel(Long id);
+    AiModel getModelById(Long id);
 
     /**
      * 获得模型分页
      *
-     * @param pageReqVO 分页查询
+     * @param pageQuery 分页查询
+     * @param pageReqVO 请求参数
      * @return 模型分页
      */
-    List<AiModel> getModelPage(AiModelPageReqVO pageReqVO);
+    TableDataInfo<AiModelRespVO> getModelPage(PageQuery pageQuery, AiModelPageReqVO pageReqVO);
 
     /**
      * 获得模型列表

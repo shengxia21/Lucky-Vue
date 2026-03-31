@@ -5,16 +5,20 @@ import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
 import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.core.vo.chat.ChatMessageResponse;
 import com.lucky.ai.domain.AiChatMessage;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import reactor.core.publisher.Flux;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * AI 聊天消息Service接口
  *
  * @author lucky
  */
-public interface IAiChatMessageService {
+public interface AiChatMessageService {
 
     /**
      * 发送消息（流式）
@@ -54,10 +58,11 @@ public interface IAiChatMessageService {
     /**
      * 查询聊天消息分页列表
      *
-     * @param pageReqVO 分页查询请求VO
+     * @param pageQuery 分页查询参数
+     * @param pageReqVO 查询参数
      * @return 聊天消息分页列表
      */
-    List<AiChatMessageRespVO> getChatMessagePage(AiChatMessagePageReqVO pageReqVO);
+    TableDataInfo<AiChatMessageRespVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageReqVO pageReqVO);
 
     /**
      * 删除消息（管理员）
@@ -65,6 +70,14 @@ public interface IAiChatMessageService {
      * @param id 聊天消息ID
      * @return 结果
      */
-    int deleteChatMessageByAdmin(Long id);
+    int deleteChatMessageById(Long id);
+
+    /**
+     * 获得聊天对话的消息数量 Map
+     *
+     * @param conversationIds 对话编号数组
+     * @return 消息数量 Map
+     */
+    Map<Long, Integer> getChatMessageCountMap(Collection<Long> conversationIds);
 
 }

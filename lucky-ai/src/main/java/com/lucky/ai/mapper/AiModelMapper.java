@@ -1,7 +1,12 @@
 package com.lucky.ai.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.controller.model.vo.model.AiModelPageReqVO;
 import com.lucky.ai.domain.AiModel;
+import com.lucky.common.utils.StringUtils;
 
 import java.util.List;
 
@@ -10,65 +15,32 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface AiModelMapper {
+public interface AiModelMapper extends BaseMapper<AiModel> {
 
-    /**
-     * 查询默认AI 模型
-     *
-     * @param type   模型类型
-     * @param status 状态
-     * @return 模型
-     */
-    AiModel selectFirstByStatus(Integer type, Integer status);
+    default IPage<AiModel> selectPage(IPage<AiModel> page, AiModelPageReqVO pageReqVO) {
+        LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
+                .like(StringUtils.isNotEmpty(pageReqVO.getName()), AiModel::getName, pageReqVO.getName())
+                .eq(StringUtils.isNotEmpty(pageReqVO.getModel()), AiModel::getModel, pageReqVO.getModel())
+                .eq(StringUtils.isNotEmpty(pageReqVO.getPlatform()), AiModel::getPlatform, pageReqVO.getPlatform())
+                .orderByAsc(AiModel::getSort);
+        return selectPage(page, wrapper);
+    }
 
-    /**
-     * 查询AI 模型
-     *
-     * @param id AI 模型主键
-     * @return AI 模型
-     */
-    AiModel selectAiModelById(Long id);
+    default AiModel selectFirstByStatus(Integer type, Integer status) {
+        LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
+                .eq(AiModel::getType, type)
+                .eq(AiModel::getStatus, status)
+                .orderByAsc(AiModel::getSort);
+        return selectOne(wrapper, false);
+    }
 
-    /**
-     * 新增AI 模型
-     *
-     * @param aiModel AI 模型
-     * @return 结果
-     */
-    int insertAiModel(AiModel aiModel);
-
-    /**
-     * 修改AI 模型
-     *
-     * @param aiModel AI 模型
-     * @return 结果
-     */
-    int updateAiModel(AiModel aiModel);
-
-    /**
-     * 删除AI 模型
-     *
-     * @param id AI 模型主键
-     * @return 结果
-     */
-    int deleteAiModelById(Long id);
-
-    /**
-     * 查询AI 模型分页
-     *
-     * @param pageReqVO 分页查询
-     * @return 模型分页
-     */
-    List<AiModel> selectPage(AiModelPageReqVO pageReqVO);
-
-    /**
-     * 查询AI 模型列表
-     *
-     * @param status   状态
-     * @param type     类型
-     * @param platform 平台
-     * @return 模型列表
-     */
-    List<AiModel> selectListByStatusAndType(Integer status, Integer type, String platform);
+    default List<AiModel> selectListByStatusAndType(Integer status, Integer type, String platform) {
+        LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
+                .eq(StringUtils.isNotNull(status), AiModel::getStatus, status)
+                .eq(StringUtils.isNotNull(type), AiModel::getType, type)
+                .eq(StringUtils.isNotEmpty(platform), AiModel::getPlatform, platform)
+                .orderByAsc(AiModel::getSort);
+        return selectList(wrapper);
+    }
 
 }

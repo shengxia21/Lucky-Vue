@@ -1,80 +1,47 @@
 package com.lucky.ai.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.lucky.ai.controller.image.vo.AiImagePagePublicReqVO;
 import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
-import com.lucky.ai.controller.image.vo.AiImagePublicPageReqVO;
 import com.lucky.ai.domain.AiImage;
-
-import java.util.List;
+import com.lucky.common.utils.StringUtils;
 
 /**
  * AI 绘画Mapper接口
  *
  * @author lucky
  */
-public interface AiImageMapper {
+public interface AiImageMapper extends BaseMapper<AiImage> {
 
-    /**
-     * 查询【我的】AI 绘画列表
-     *
-     * @param pageReqVO 分页查询参数
-     * @return 绘画集合
-     */
-    List<AiImage> selectPageMy(AiImagePageReqVO pageReqVO);
+    default IPage<AiImage> selectPageMy(IPage<AiImage> page, AiImagePageReqVO pageReqVO, Long userId) {
+        LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
+                .like(StringUtils.isNotEmpty(pageReqVO.getPrompt()), AiImage::getPrompt, pageReqVO.getPrompt())
+                .eq(StringUtils.isNotNull(pageReqVO.getPublicStatus()), AiImage::getPublicStatus, pageReqVO.getPublicStatus())
+                .eq(AiImage::getUserId, userId)
+                .orderByDesc(AiImage::getCreateTime);
+        return selectPage(page, wrapper);
+    }
 
-    /**
-     * 查询公开的绘图
-     *
-     * @param pageReqVO 分页查询参数
-     * @return 绘画集合
-     */
-    List<AiImage> selectPage(AiImagePublicPageReqVO pageReqVO);
+    default IPage<AiImage> selectPagePublic(IPage<AiImage> page, AiImagePagePublicReqVO pageReqVO) {
+        LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
+                .like(StringUtils.isNotEmpty(pageReqVO.getPrompt()), AiImage::getPrompt, pageReqVO.getPrompt())
+                .eq(AiImage::getPublicStatus, true)
+                .orderByDesc(AiImage::getCreateTime);
+        return selectPage(page, wrapper);
+    }
 
-    /**
-     * 查询AI 绘画
-     *
-     * @param id AI 绘画主键
-     * @return AI 绘画
-     */
-    AiImage selectAiImageById(Long id);
-
-    /**
-     * 查询AI 绘画列表
-     *
-     * @param ids 绘画主键集合
-     * @return 绘画列表
-     */
-    List<AiImage> selectByIds(List<Long> ids);
-
-    /**
-     * 查询AI 绘画列表
-     *
-     * @param pageReqVO 分页查询参数
-     * @return 绘画集合
-     */
-    List<AiImage> selectAiImagePage(AiImagePageReqVO pageReqVO);
-
-    /**
-     * 新增AI 绘画
-     *
-     * @param aiImage AI 绘画
-     * @return 结果
-     */
-    int insertAiImage(AiImage aiImage);
-
-    /**
-     * 修改AI 绘画
-     *
-     * @param aiImage AI 绘画
-     * @return 结果
-     */
-    int updateAiImage(AiImage aiImage);
-
-    /**
-     * 删除AI 绘画
-     *
-     * @param id AI 绘画主键
-     * @return 结果
-     */
-    int deleteAiImageById(Long id);
+    default IPage<AiImage> selectPage(IPage<AiImage> page, AiImagePageReqVO pageReqVO) {
+        LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
+                .eq(StringUtils.isNotNull(pageReqVO.getUserId()), AiImage::getUserId, pageReqVO.getUserId())
+                .eq(StringUtils.isNotEmpty(pageReqVO.getPlatform()), AiImage::getPlatform, pageReqVO.getPlatform())
+                .eq(StringUtils.isNotNull(pageReqVO.getStatus()), AiImage::getStatus, pageReqVO.getStatus())
+                .eq(StringUtils.isNotNull(pageReqVO.getPublicStatus()), AiImage::getPublicStatus, pageReqVO.getPublicStatus())
+                .between(!pageReqVO.getParams().isEmpty(), AiImage::getCreateTime, pageReqVO.getParams().get("beginTime"), pageReqVO.getParams().get("endTime"))
+                .orderByDesc(AiImage::getCreateTime);
+        return selectPage(page, wrapper);
+    }
 
 }

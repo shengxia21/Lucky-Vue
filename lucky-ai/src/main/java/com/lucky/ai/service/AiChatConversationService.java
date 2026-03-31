@@ -5,6 +5,8 @@ import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
 import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface IAiChatConversationService {
+public interface AiChatConversationService {
 
     /**
      * 创建我的聊天对话
@@ -45,7 +47,7 @@ public interface IAiChatConversationService {
      * @param id 对话ID
      * @return 聊天对话
      */
-    AiChatConversation getChatConversation(Long id);
+    AiChatConversation getChatConversationById(Long id);
 
     /**
      * 删除我的聊天对话
@@ -62,15 +64,16 @@ public interface IAiChatConversationService {
      * @param userId 用户ID
      * @return 是否成功
      */
-    int deleteChatConversationMyByUnpinned(Long userId);
+    int deleteChatConversationMyByUserId(Long userId);
 
     /**
      * 获得对话分页列表
      *
-     * @param pageReqVO 分页查询对象
+     * @param pageQuery 分页查询对象
+     * @param pageReqVO 查询参数
      * @return 对话分页列表
      */
-    List<AiChatConversationRespVO> getChatConversationPage(AiChatConversationPageReqVO pageReqVO);
+    TableDataInfo<AiChatConversationRespVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageReqVO pageReqVO);
 
     /**
      * 管理员删除对话
@@ -78,7 +81,7 @@ public interface IAiChatConversationService {
      * @param id 对话ID
      * @return 是否成功
      */
-    int deleteChatConversationByAdmin(Long id);
+    int deleteChatConversationById(Long id);
 
     /**
      * 校验对话是否存在
