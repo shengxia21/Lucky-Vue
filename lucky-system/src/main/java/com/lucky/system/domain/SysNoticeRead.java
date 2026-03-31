@@ -1,5 +1,7 @@
 package com.lucky.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,6 +17,7 @@ public class SysNoticeRead {
     /**
      * 主键
      */
+    @TableId(value = "read_id")
     private Long readId;
 
     /**
@@ -31,5 +34,11 @@ public class SysNoticeRead {
      * 阅读时间
      */
     private Date readTime;
+
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
+    @TableField(exist = false)
+    private String delFlag;
 
 }

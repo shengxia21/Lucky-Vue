@@ -1,5 +1,7 @@
 package com.lucky.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
 import com.lucky.common.core.domain.BaseEntity;
@@ -27,6 +29,7 @@ public class SysPost extends BaseEntity {
      * 岗位序号
      */
     @Excel(name = "岗位序号", cellType = ColumnType.NUMERIC)
+    @TableId(value = "post_id")
     private Long postId;
 
     /**
@@ -57,6 +60,12 @@ public class SysPost extends BaseEntity {
      */
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
     private String status;
+
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
+    @TableField(exist = false)
+    private String delFlag;
 
     /**
      * 用户是否存在此岗位标识 默认不存在

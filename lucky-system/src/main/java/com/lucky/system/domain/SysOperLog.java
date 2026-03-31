@@ -1,5 +1,7 @@
 package com.lucky.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
@@ -26,6 +28,7 @@ public class SysOperLog extends BaseEntity {
      * 日志主键
      */
     @Excel(name = "操作序号", cellType = ColumnType.NUMERIC)
+    @TableId(value = "oper_id")
     private Long operId;
 
     /**
@@ -129,5 +132,11 @@ public class SysOperLog extends BaseEntity {
      */
     @Excel(name = "消耗时间", suffix = "毫秒")
     private Long costTime;
+
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
+    @TableField(exist = false)
+    private String delFlag;
 
 }

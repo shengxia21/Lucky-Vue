@@ -1,5 +1,7 @@
 package com.lucky.common.core.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.lucky.common.core.domain.BaseEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -27,6 +29,7 @@ public class SysDept extends BaseEntity {
     /**
      * 部门ID
      */
+    @TableId(value = "dept_id")
     private Long deptId;
 
     /**
@@ -78,6 +81,7 @@ public class SysDept extends BaseEntity {
     /**
      * 删除标志（0代表存在 2代表删除）
      */
+    @TableLogic
     private String delFlag;
 
     /**

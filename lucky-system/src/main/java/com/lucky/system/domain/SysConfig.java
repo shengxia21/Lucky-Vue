@@ -1,5 +1,7 @@
 package com.lucky.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
 import com.lucky.common.core.domain.BaseEntity;
@@ -26,6 +28,7 @@ public class SysConfig extends BaseEntity {
      * 参数主键
      */
     @Excel(name = "参数主键", cellType = ColumnType.NUMERIC)
+    @TableId(value = "config_id")
     private Long configId;
 
     /**
@@ -57,5 +60,11 @@ public class SysConfig extends BaseEntity {
      */
     @Excel(name = "系统内置", readConverterExp = "Y=是,N=否")
     private String configType;
+
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
+    @TableField(exist = false)
+    private String delFlag;
 
 }

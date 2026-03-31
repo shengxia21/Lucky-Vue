@@ -1,5 +1,7 @@
 package com.lucky.common.core.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.lucky.common.core.domain.BaseEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +28,7 @@ public class SysMenu extends BaseEntity {
     /**
      * 菜单ID
      */
+    @TableId(value = "menu_id")
     private Long menuId;
 
     /**
@@ -114,5 +117,11 @@ public class SysMenu extends BaseEntity {
      * 子菜单
      */
     private List<SysMenu> children = new ArrayList<>();
+
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
+    @TableField(exist = false)
+    private String delFlag;
 
 }

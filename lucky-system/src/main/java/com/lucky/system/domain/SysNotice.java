@@ -1,5 +1,7 @@
 package com.lucky.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lucky.common.core.domain.BaseEntity;
 import com.lucky.common.xss.Xss;
@@ -25,6 +27,7 @@ public class SysNotice extends BaseEntity {
     /**
      * 公告ID
      */
+    @TableId(value = "notice_id")
     private Long noticeId;
 
     /**
@@ -55,5 +58,11 @@ public class SysNotice extends BaseEntity {
      */
     @JsonProperty("isRead")
     private boolean isRead;
+
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
+    @TableField(exist = false)
+    private String delFlag;
 
 }

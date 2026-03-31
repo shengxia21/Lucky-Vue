@@ -1,5 +1,7 @@
 package com.lucky.generator.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.lucky.common.constant.GenConstants;
 import com.lucky.common.core.domain.BaseEntity;
 import com.lucky.common.utils.StringUtils;
@@ -27,6 +29,7 @@ public class GenTable extends BaseEntity {
     /**
      * 编号
      */
+    @TableId(value = "table_id")
     private Long tableId;
 
     /**
@@ -152,6 +155,12 @@ public class GenTable extends BaseEntity {
      * 上级菜单名称字段
      */
     private String parentMenuName;
+
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
+    @TableField(exist = false)
+    private String delFlag;
 
     public static boolean isSub(String tplCategory) {
         return tplCategory != null && StringUtils.equals(GenConstants.TPL_SUB, tplCategory);
