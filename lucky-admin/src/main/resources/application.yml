@@ -111,6 +111,13 @@ mybatis-plus:
       # 逻辑未删除值
       logic-not-delete-value: 0
 
+# VO 转换（数据翻译）相关
+easy-trans:
+  # 是否开启全局翻译
+  # 【QPS > 2000 时建议禁用，启用对性能损耗大】，禁用则需要手动调用 TransService 触发翻译
+  # 启用全局翻译（拦截所有 SpringMVC ResponseBody 进行自动翻译 )
+  is-enable-global: true
+
 # PageHelper分页插件
 pagehelper:
   # 指定分页插件使用的数据库类型

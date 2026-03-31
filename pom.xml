@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.lucky</groupId>
     <artifactId>lucky-vue</artifactId>
@@ -21,7 +21,9 @@
 
         <!-- 依赖版本 -->
         <spring-boot.version>3.5.11</spring-boot.version>
-        <mybatis-plus.version>3.5.16</mybatis-plus.version>
+        <mybatis-plus.version>3.5.15</mybatis-plus.version>
+        <mybatis.version>3.5.19</mybatis.version>
+        <easy-trans.version>3.0.6</easy-trans.version>
         <druid.version>1.2.28</druid.version>
         <yauaa.version>8.1.0</yauaa.version>
         <kaptcha.version>2.3.3</kaptcha.version>
@@ -53,7 +55,7 @@
                 <!-- 环境标识，需要与配置文件的名称相对应 -->
                 <profiles.active>dev</profiles.active>
                 <springdoc.enabled>true</springdoc.enabled>
-                <logging.level>info</logging.level>
+                <logging.level>debug</logging.level>
             </properties>
             <activation>
                 <!-- 默认环境 -->
@@ -125,11 +127,11 @@
                 <version>${pagehelper.boot.version}</version>
             </dependency>
 
-            <!-- 升级mybatis依赖，与plus版本一致 -->
+            <!-- mybatis -->
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>
-                <version>${mybatis-plus.version}</version>
+                <version>${mybatis.version}</version>
             </dependency>
 
             <!-- mybatis-plus -->
@@ -146,6 +148,21 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
+            <!-- VO转换工具 -->
+            <dependency>
+                <groupId>com.fhs-opensource</groupId>
+                <artifactId>easy-trans-spring-boot-starter</artifactId>
+                <version>${easy-trans.version}</version>
+            </dependency>
+
+            <!-- VO转换工具扩展 -->
+            <dependency>
+                <groupId>com.fhs-opensource</groupId>
+                <artifactId>easy-trans-mybatis-plus-extend</artifactId>
+                <version>${easy-trans.version}</version>
+            </dependency>
+
+            <!-- Jaxb -->
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
