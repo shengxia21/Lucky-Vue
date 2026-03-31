@@ -1,6 +1,10 @@
 package com.lucky.common.core.page;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.http.HttpStatus;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -9,10 +13,11 @@ import java.util.List;
 /**
  * 表格分页数据对象
  *
- * @author ruoyi
+ * @author lucky
  */
 @Data
-public class TableDataInfo implements Serializable {
+@NoArgsConstructor
+public class TableDataInfo<T> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -25,7 +30,7 @@ public class TableDataInfo implements Serializable {
     /**
      * 列表数据
      */
-    private List<?> rows;
+    private List<T> rows;
 
     /**
      * 消息状态码
@@ -38,20 +43,47 @@ public class TableDataInfo implements Serializable {
     private String msg;
 
     /**
-     * 表格数据对象
-     */
-    public TableDataInfo() {
-    }
-
-    /**
      * 分页
      *
      * @param list  列表数据
      * @param total 总记录数
      */
-    public TableDataInfo(List<?> list, long total) {
+    public TableDataInfo(List<T> list, long total) {
         this.rows = list;
         this.total = total;
+        this.code = HttpStatus.HTTP_OK;
+        this.msg = "查询成功";
+    }
+
+    /**
+     * 构建表格分页数据对象
+     */
+    public static <T> TableDataInfo<T> build(List<T> list, long total) {
+        return new TableDataInfo<>(list, total);
+    }
+
+    /**
+     * 根据IPage分页对象构建表格分页数据对象
+     */
+    public static <T> TableDataInfo<T> build(IPage<T> page) {
+        TableDataInfo<T> data = new TableDataInfo<>();
+        data.setCode(HttpStatus.HTTP_OK);
+        data.setMsg("查询成功");
+        data.setRows(page.getRecords());
+        data.setTotal(page.getTotal());
+        return data;
+    }
+
+    /**
+     * 根据IPage分页对象构建表格分页数据对象
+     */
+    public static <T, V> TableDataInfo<V> build(IPage<T> page, Class<V> clazz) {
+        TableDataInfo<V> data = new TableDataInfo<>();
+        data.setCode(HttpStatus.HTTP_OK);
+        data.setMsg("查询成功");
+        data.setRows(BeanUtil.copyToList(page.getRecords(), clazz));
+        data.setTotal(page.getTotal());
+        return data;
     }
 
 }
