@@ -30,6 +30,11 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     private static final char ASTERISK = '*';
 
     /**
+     * 逗号
+     */
+    public static final String COMMA = ",";
+
+    /**
      * 获取参数不为空值
      *
      * @param value defaultValue 要判断的value
