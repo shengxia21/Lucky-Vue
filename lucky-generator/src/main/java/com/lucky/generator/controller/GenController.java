@@ -135,7 +135,6 @@ public class GenController extends BaseController {
             genTableService.importGenTable(tableList, tplWebType, operName);
             return AjaxResult.success();
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
             return AjaxResult.error("创建表结构异常");
         }
     }

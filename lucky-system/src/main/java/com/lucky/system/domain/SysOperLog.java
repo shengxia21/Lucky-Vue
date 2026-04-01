@@ -2,7 +2,6 @@ package com.lucky.system.domain;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
 import com.lucky.common.core.domain.BaseEntity;
@@ -124,7 +123,6 @@ public class SysOperLog extends BaseEntity {
     /**
      * 操作时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "操作时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date operTime;
 

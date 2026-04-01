@@ -1,6 +1,5 @@
 package com.lucky.ai.domain.vo.message;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fhs.core.trans.anno.Trans;
 import com.fhs.core.trans.constant.TransType;
 import com.fhs.core.trans.vo.VO;
@@ -98,7 +97,6 @@ public class ChatMessageVO implements VO {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     // ========== 仅在【对话管理】时加载 ==========

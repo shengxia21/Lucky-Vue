@@ -1,6 +1,5 @@
 package com.lucky.ai.domain.vo.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -71,7 +70,6 @@ public class ModelVO {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
 }

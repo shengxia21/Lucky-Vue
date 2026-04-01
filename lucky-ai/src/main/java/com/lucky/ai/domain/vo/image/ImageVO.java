@@ -1,6 +1,5 @@
 package com.lucky.ai.domain.vo.image;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -77,13 +76,11 @@ public class ImageVO {
     /**
      * 完成时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date finishTime;
 
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
 }

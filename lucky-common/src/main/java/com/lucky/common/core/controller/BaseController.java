@@ -1,6 +1,5 @@
 package com.lucky.common.core.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lucky.common.constant.HttpStatus;
@@ -9,18 +8,11 @@ import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.page.PageDomain;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.core.page.TableSupport;
-import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.PageUtils;
 import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.common.utils.sql.SqlUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 
-import java.beans.PropertyEditorSupport;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,22 +21,6 @@ import java.util.List;
  * @author ruoyi
  */
 public class BaseController {
-
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    /**
-     * 将前台传递过来的日期格式的字符串，自动转化为Date类型
-     */
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        // Date 类型转换
-        binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
-            @Override
-            public void setAsText(String text) {
-                setValue(DateUtils.parseDate(text));
-            }
-        });
-    }
 
     /**
      * 设置请求分页数据
@@ -80,18 +56,6 @@ public class BaseController {
         rspData.setCode(HttpStatus.SUCCESS);
         rspData.setMsg("查询成功");
         rspData.setRows(list);
-        rspData.setTotal(new PageInfo(list).getTotal());
-        return rspData;
-    }
-
-    /**
-     * 响应请求分页数据(转换为指定类型)
-     */
-    protected TableDataInfo getDataTable(List<?> list, Class<?> clazz) {
-        TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setMsg("查询成功");
-        rspData.setRows(BeanUtil.copyToList(list, clazz));
         rspData.setTotal(new PageInfo(list).getTotal());
         return rspData;
     }

@@ -2,7 +2,6 @@ package com.lucky.common.core.domain;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fhs.core.trans.vo.TransPojo;
@@ -38,7 +37,6 @@ public class BaseEntity implements Serializable, TransPojo {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
@@ -51,7 +49,6 @@ public class BaseEntity implements Serializable, TransPojo {
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
 

@@ -51,6 +51,26 @@ spring:
       max-file-size: 10MB
       # 设置总上传的文件大小
       max-request-size: 20MB
+  mvc:
+    # 设置静态资源路径 防止所有请求都去查静态资源(优化性能)
+    static-path-pattern: /static/**
+    # 格式化
+    format:
+      # 日期格式化(Spring MVC 在接收和输出日期时间参数时的全局格式[GET方式])
+      date-time: yyyy-MM-dd HH:mm:ss
+  jackson:
+    # 日期格式化(Jackson 在 JSON 序列化/反序列化 时使用的日期格式[POST方式])
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 序列化配置
+    serialization:
+      # 格式化输出(便于阅读)
+      indent_output: false
+      # 序列化一个空 Bean 时是否抛出异常
+      fail_on_empty_beans: false
+    # 反序列化配置
+    deserialization:
+      # 如果 JSON 中包含目标 Java 类不存在的属性，是否抛出异常
+      fail_on_unknown_properties: false
   threads:
     # 开启虚拟线程 仅jdk21可用
     virtual:
@@ -85,16 +105,8 @@ mybatis-plus:
   type-handlers-package: com.lucky.framework.handler.type
   # 全局配置信息
   configuration:
-    # 使全局的映射器启用或禁用缓存
-    cache-enabled: true
-    # 允许JDBC 支持自动生成主键
-    use-generated-keys: true
-    # 配置默认的执行器.SIMPLE就是普通执行器;REUSE执行器会重用预处理语句(prepared statements);BATCH执行器将重用语句并执行批量更新
-    default-executor-type: simple
     # 指定 MyBatis 所用日志的具体实现（控制台输出日志需修改 logging.level 为 DEBUG 级别）
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
-    # 使用驼峰命名法转换字段
-#    map-underscore-to-camel-case: true
   global-config:
     # mybatis-plus启动banner
     banner: false
