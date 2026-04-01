@@ -100,9 +100,10 @@ public class SecurityConfig {
                     permitAllUrl.getUrls().forEach(url -> requests.requestMatchers(url).permitAll());
                     // 对于登录login 注册register 验证码captchaImage 允许匿名访问
                     requests.requestMatchers("/login", "/register/**", "/captchaImage").permitAll()
-                            // 静态资源，可匿名访问
-                            .requestMatchers(HttpMethod.GET, "/", "/*.html", "/**.html", "/**.css", "/**.js", "/profile/**").permitAll()
-                            .requestMatchers("/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**", "/druid/**").permitAll()
+                            // 图片资源，可匿名访问
+                            .requestMatchers(HttpMethod.GET, "/profile/**").permitAll()
+                            // swagger-ui、druid 数据，可匿名访问
+                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/druid/**").permitAll()
                             // 异步请求，可匿名访问
                             .dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
                             // 除上面外的所有请求全部需要鉴权认证
