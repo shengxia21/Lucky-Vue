@@ -1,9 +1,9 @@
 package com.lucky.ai.service;
 
-import com.lucky.ai.controller.model.vo.apikey.AiApiKeyPageReqVO;
-import com.lucky.ai.controller.model.vo.apikey.AiApiKeyRespVO;
-import com.lucky.ai.controller.model.vo.apikey.AiApiKeySaveReqVO;
 import com.lucky.ai.domain.AiApiKey;
+import com.lucky.ai.domain.query.apiKey.ApiKeyPageQuery;
+import com.lucky.ai.domain.query.apiKey.ApiKeySaveQuery;
+import com.lucky.ai.domain.vo.apikey.ApiKeyVO;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 
@@ -19,18 +19,18 @@ public interface AiApiKeyService {
     /**
      * 创建 API 密钥
      *
-     * @param createReqVO 创建请求vo
+     * @param query 创建请求vo
      * @return 结果
      */
-    Long createApiKey(AiApiKeySaveReqVO createReqVO);
+    Long createApiKey(ApiKeySaveQuery query);
 
     /**
      * 更新 API 密钥
      *
-     * @param updateReqVO 更新请求vo
+     * @param query 更新请求vo
      * @return 结果
      */
-    int updateApiKey(AiApiKeySaveReqVO updateReqVO);
+    int updateApiKey(ApiKeySaveQuery query);
 
      /**
      * 删除 API 密钥
@@ -52,10 +52,10 @@ public interface AiApiKeyService {
      * 查询 API 密钥分页
      *
      * @param pageQuery 分页查询对象
-     * @param pageReqVO 查询参数
+     * @param query 查询参数
      * @return API 密钥分页结果
      */
-    TableDataInfo<AiApiKeyRespVO> getApiKeyPage(PageQuery pageQuery, AiApiKeyPageReqVO pageReqVO);
+    TableDataInfo<ApiKeyVO> getApiKeyPage(PageQuery pageQuery, ApiKeyPageQuery query);
 
     /**
      * 获得 API 密钥列表

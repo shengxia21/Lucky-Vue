@@ -6,13 +6,13 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationCreateMyReqVO;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.domain.AiModel;
+import com.lucky.ai.domain.query.conversation.ChatConversationCreateMyQuery;
+import com.lucky.ai.domain.query.conversation.ChatConversationPageQuery;
+import com.lucky.ai.domain.query.conversation.ChatConversationUpdateMyQuery;
+import com.lucky.ai.domain.vo.conversation.ChatConversationVO;
 import com.lucky.ai.enums.model.AiModelTypeEnum;
 import com.lucky.ai.mapper.AiChatConversationMapper;
 import com.lucky.ai.service.AiChatConversationService;
@@ -59,9 +59,9 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      * @return 聊天对话ID
      */
     @Override
-    public Long createChatConversationMy(AiChatConversationCreateMyReqVO createReqVO, Long userId) {
+    public Long createChatConversationMy(ChatConversationCreateMyQuery query, Long userId) {
         // 1.1 获得 AiChatRoleDO 聊天角色
-        AiChatRole role = createReqVO.getRoleId() != null ? chatRoleService.validateChatRole(createReqVO.getRoleId()) : null;
+        AiChatRole role = query.getRoleId() != null ? chatRoleService.validateChatRole(query.getRoleId()) : null;
         // 1.2 获得 AiModelDO 聊天模型
         AiModel model = role != null && role.getModelId() != null ? modelService.validateModel(role.getModelId())
                 : modelService.getRequiredDefaultModel(AiModelTypeEnum.CHAT.getType());
@@ -93,26 +93,26 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
     /**
      * 更新我的聊天对话
      *
-     * @param updateReqVO 更新对象
+     * @param query 更新对象
      * @param userId      用户ID
      */
     @Override
-    public int updateChatConversationMy(AiChatConversationUpdateMyReqVO updateReqVO, Long userId) {
+    public int updateChatConversationMy(ChatConversationUpdateMyQuery query, Long userId) {
         // 1.1 校验对话是否存在
-        AiChatConversation conversation = validateChatConversationExists(updateReqVO.getId());
+        AiChatConversation conversation = validateChatConversationExists(query.getId());
         if (ObjUtil.notEqual(conversation.getUserId(), userId)) {
             throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
         }
         // 1.2 校验模型是否存在（修改模型的情况）
         AiModel model = null;
-        if (updateReqVO.getModelId() != null) {
-            model = modelService.validateModel(updateReqVO.getModelId());
+        if (query.getModelId() != null) {
+            model = modelService.validateModel(query.getModelId());
         }
         // 1.3 校验知识库是否存在
 
         // 2. 更新对话信息
-        AiChatConversation updateObj = BeanUtil.toBean(updateReqVO, AiChatConversation.class);
-        if (Boolean.TRUE.equals(updateReqVO.getPinned())) {
+        AiChatConversation updateObj = BeanUtil.toBean(query, AiChatConversation.class);
+        if (Boolean.TRUE.equals(query.getPinned())) {
             updateObj.setPinnedTime(DateUtils.getNowDate());
         }
         if (model != null) {
@@ -128,9 +128,9 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      * @return 聊天对话列表
      */
     @Override
-    public List<AiChatConversationRespVO> getChatConversationListByUserId(Long userId) {
+    public List<ChatConversationVO> getChatConversationListByUserId(Long userId) {
         List<AiChatConversation> conversationList = chatConversationMapper.selectListByUserId(userId);
-        return convertList(conversationList, u -> BeanUtil.toBean(u, AiChatConversationRespVO.class));
+        return convertList(conversationList, u -> BeanUtil.toBean(u, ChatConversationVO.class));
     }
 
     /**
@@ -181,16 +181,16 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      * 获取对话分页列表
      *
      * @param pageQuery 分页查询对象
-     * @param pageReqVO 查询参数
+     * @param query 查询参数
      * @return 分页列表
      */
     @Override
-    public TableDataInfo<AiChatConversationRespVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageReqVO pageReqVO) {
-        IPage<AiChatConversation> page = chatConversationMapper.selectPage(pageQuery.build(), pageReqVO);
+    public TableDataInfo<ChatConversationVO> getChatConversationPage(PageQuery pageQuery, ChatConversationPageQuery query) {
+        IPage<AiChatConversation> page = chatConversationMapper.selectPage(pageQuery.build(), query);
         Map<Long, Integer> countMap = chatMessageService.getChatMessageCountMap(convertList(page.getRecords(), AiChatConversation::getId));
         // 转换为响应VO,并添加消息数量
-        List<AiChatConversationRespVO> list = convertList(page.getRecords(), conversation -> {
-            AiChatConversationRespVO respVO = BeanUtil.toBean(conversation, AiChatConversationRespVO.class);
+        List<ChatConversationVO> list = convertList(page.getRecords(), conversation -> {
+            ChatConversationVO respVO = BeanUtil.toBean(conversation, ChatConversationVO.class);
             respVO.setMessageCount(countMap.get(conversation.getId()));
             return respVO;
         });

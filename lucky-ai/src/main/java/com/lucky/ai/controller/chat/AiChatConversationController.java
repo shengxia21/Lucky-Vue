@@ -2,11 +2,11 @@ package com.lucky.ai.controller.chat;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationCreateMyReqVO;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
+import com.lucky.ai.domain.query.conversation.ChatConversationCreateMyQuery;
+import com.lucky.ai.domain.query.conversation.ChatConversationPageQuery;
+import com.lucky.ai.domain.query.conversation.ChatConversationUpdateMyQuery;
+import com.lucky.ai.domain.vo.conversation.ChatConversationVO;
 import com.lucky.ai.service.AiChatConversationService;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
@@ -38,8 +38,8 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "创建【我的】聊天对话", businessType = BusinessType.INSERT)
     @PostMapping("/create-my")
-    public R<Long> createChatConversationMy(@RequestBody AiChatConversationCreateMyReqVO createReqVO) {
-        return R.ok(chatConversationService.createChatConversationMy(createReqVO, getUserId()));
+    public R<Long> createChatConversationMy(@RequestBody ChatConversationCreateMyQuery query) {
+        return R.ok(chatConversationService.createChatConversationMy(query, getUserId()));
     }
 
     /**
@@ -47,15 +47,15 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "更新【我的】聊天对话", businessType = BusinessType.UPDATE)
     @PutMapping("/update-my")
-    public R<Integer> updateChatConversationMy(@Validated @RequestBody AiChatConversationUpdateMyReqVO updateReqVO) {
-        return R.ok(chatConversationService.updateChatConversationMy(updateReqVO, getUserId()));
+    public R<Integer> updateChatConversationMy(@Validated @RequestBody ChatConversationUpdateMyQuery query) {
+        return R.ok(chatConversationService.updateChatConversationMy(query, getUserId()));
     }
 
     /**
      * 获得我的聊天对话列表
      */
     @GetMapping("/my-list")
-    public R<List<AiChatConversationRespVO>> getChatConversationMyList() {
+    public R<List<ChatConversationVO>> getChatConversationMyList() {
         return R.ok(chatConversationService.getChatConversationListByUserId(getUserId()));
     }
 
@@ -63,12 +63,12 @@ public class AiChatConversationController extends BaseController {
      * 获得我的聊天对话
      */
     @GetMapping("/get-my")
-    public R<AiChatConversationRespVO> getChatConversationMy(@RequestParam("id") Long id) {
+    public R<ChatConversationVO> getChatConversationMy(@RequestParam("id") Long id) {
         AiChatConversation conversation = chatConversationService.getChatConversationById(id);
         if (conversation != null && ObjUtil.notEqual(conversation.getUserId(), getUserId())) {
             return R.fail("对话不存在或不属于当前用户");
         }
-        return R.ok(BeanUtil.toBean(conversation, AiChatConversationRespVO.class));
+        return R.ok(BeanUtil.toBean(conversation, ChatConversationVO.class));
     }
 
     /**
@@ -96,8 +96,8 @@ public class AiChatConversationController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:chat-conversation:list')")
     @GetMapping("/page")
-    public TableDataInfo<AiChatConversationRespVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageReqVO pageReqVO) {
-        return chatConversationService.getChatConversationPage(pageQuery, pageReqVO);
+    public TableDataInfo<ChatConversationVO> getChatConversationPage(PageQuery pageQuery, ChatConversationPageQuery query) {
+        return chatConversationService.getChatConversationPage(pageQuery, query);
     }
 
     /**

@@ -1,10 +1,10 @@
 package com.lucky.ai.controller.model;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.lucky.ai.controller.model.vo.model.AiModelPageReqVO;
-import com.lucky.ai.controller.model.vo.model.AiModelRespVO;
-import com.lucky.ai.controller.model.vo.model.AiModelSaveReqVO;
 import com.lucky.ai.domain.AiModel;
+import com.lucky.ai.domain.query.model.ModelPageQuery;
+import com.lucky.ai.domain.query.model.ModelSaveQuery;
+import com.lucky.ai.domain.vo.model.ModelVO;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.service.AiModelService;
 import com.lucky.common.annotation.Log;
@@ -40,8 +40,8 @@ public class AiModelController extends BaseController {
     @Log(title = "创建模型", businessType = BusinessType.INSERT)
     @PreAuthorize("@ss.hasPermi('ai:model:create')")
     @PostMapping("/create")
-    public R<Long> createModel(@Validated @RequestBody AiModelSaveReqVO createReqVO) {
-        return R.ok(modelService.createModel(createReqVO));
+    public R<Long> createModel(@Validated @RequestBody ModelSaveQuery query) {
+        return R.ok(modelService.createModel(query));
     }
 
     /**
@@ -50,8 +50,8 @@ public class AiModelController extends BaseController {
     @Log(title = "更新模型", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('ai:model:update')")
     @PutMapping("/update")
-    public R<Integer> updateModel(@Validated @RequestBody AiModelSaveReqVO updateReqVO) {
-        return R.ok(modelService.updateModel(updateReqVO));
+    public R<Integer> updateModel(@Validated @RequestBody ModelSaveQuery query) {
+        return R.ok(modelService.updateModel(query));
     }
 
     /**
@@ -69,9 +69,9 @@ public class AiModelController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:model:query')")
     @GetMapping("/get")
-    public R<AiModelRespVO> getModel(@RequestParam("id") Long id) {
+    public R<ModelVO> getModel(@RequestParam("id") Long id) {
         AiModel model = modelService.getModelById(id);
-        return R.ok(BeanUtil.toBean(model, AiModelRespVO.class));
+        return R.ok(BeanUtil.toBean(model, ModelVO.class));
     }
 
     /**
@@ -79,21 +79,21 @@ public class AiModelController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:model:list')")
     @GetMapping("/page")
-    public TableDataInfo<AiModelRespVO> getModelPage(PageQuery pageQuery, AiModelPageReqVO pageReqVO) {
-        return modelService.getModelPage(pageQuery, pageReqVO);
+    public TableDataInfo<ModelVO> getModelPage(PageQuery pageQuery, ModelPageQuery query) {
+        return modelService.getModelPage(pageQuery, query);
     }
 
     /**
      * 获得模型列表
      */
     @GetMapping("/simple-list")
-    public R<List<AiModelRespVO>> getModelSimpleList(
+    public R<List<ModelVO>> getModelSimpleList(
             @RequestParam("type") Integer type,
             @RequestParam(value = "platform", required = false) String platform) {
         List<AiModel> list = modelService.getModelListByStatusAndType(
                 CommonStatusEnum.ENABLE.getStatus(), type, platform);
         return R.ok(convertList(list, model -> {
-            AiModelRespVO respVO = new AiModelRespVO();
+            ModelVO respVO = new ModelVO();
             respVO.setId(model.getId());
             respVO.setName(model.getName());
             respVO.setModel(model.getModel());

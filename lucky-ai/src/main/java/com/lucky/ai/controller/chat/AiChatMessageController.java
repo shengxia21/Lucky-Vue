@@ -3,12 +3,12 @@ package com.lucky.ai.controller.chat;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
-import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
-import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
 import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.core.vo.chat.ChatMessageResponse;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatMessage;
+import com.lucky.ai.domain.query.message.ChatMessagePageQuery;
+import com.lucky.ai.domain.vo.message.ChatMessageVO;
 import com.lucky.ai.service.AiChatConversationService;
 import com.lucky.ai.service.AiChatMessageService;
 import com.lucky.common.annotation.Log;
@@ -45,15 +45,15 @@ public class AiChatMessageController extends BaseController {
      * 发送消息（流式）
      */
     @PostMapping(value = "/send-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<ChatMessageResponse> sendChatMessageStream(@Validated @RequestBody ChatMessageRequest sendReqVO) {
-        return chatMessageService.sendChatMessageStream(sendReqVO, getUserId());
+    public Flux<ChatMessageResponse> sendChatMessageStream(@Validated @RequestBody ChatMessageRequest query) {
+        return chatMessageService.sendChatMessageStream(query, getUserId());
     }
 
     /**
      * 获得指定对话的消息列表
      */
     @GetMapping("/list-by-conversation-id")
-    public R<List<AiChatMessageRespVO>> getChatMessageListByConversationId(@RequestParam("conversationId") Long conversationId) {
+    public R<List<ChatMessageVO>> getChatMessageListByConversationId(@RequestParam("conversationId") Long conversationId) {
         AiChatConversation conversation = chatConversationService.getChatConversationById(conversationId);
         if (conversation == null || ObjUtil.notEqual(conversation.getUserId(), getUserId())) {
             return R.fail("对话不存在或不属于当前用户");
@@ -65,7 +65,7 @@ public class AiChatMessageController extends BaseController {
         }
         // 2. 拼接数据，主要是知识库段落信息
 
-        return R.ok(BeanUtil.copyToList(messageList, AiChatMessageRespVO.class));
+        return R.ok(BeanUtil.copyToList(messageList, ChatMessageVO.class));
     }
 
     /**
@@ -93,8 +93,8 @@ public class AiChatMessageController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:chat-conversation:list')")
     @GetMapping("/page")
-    public TableDataInfo<AiChatMessageRespVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageReqVO pageReqVO) {
-        return chatMessageService.getChatMessagePage(pageQuery, pageReqVO);
+    public TableDataInfo<ChatMessageVO> getChatMessagePage(PageQuery pageQuery, ChatMessagePageQuery query) {
+        return chatMessageService.getChatMessagePage(pageQuery, query);
     }
 
     /**

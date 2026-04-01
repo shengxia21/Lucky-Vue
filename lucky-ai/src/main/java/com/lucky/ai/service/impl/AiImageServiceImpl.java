@@ -4,15 +4,15 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lucky.ai.controller.image.vo.AiImagePagePublicReqVO;
-import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
-import com.lucky.ai.controller.image.vo.AiImageRespVO;
-import com.lucky.ai.controller.image.vo.AiImageUpdateReqVO;
 import com.lucky.ai.core.context.ImageContext;
 import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.domain.AiModel;
+import com.lucky.ai.domain.query.image.ImagePagePublicQuery;
+import com.lucky.ai.domain.query.image.ImagePageQuery;
+import com.lucky.ai.domain.query.image.ImageUpdateQuery;
+import com.lucky.ai.domain.vo.image.ImageVO;
 import com.lucky.ai.enums.image.AiImageStatusEnum;
 import com.lucky.ai.factory.AsyncAiFactory;
 import com.lucky.ai.mapper.AiImageMapper;
@@ -49,25 +49,25 @@ public class AiImageServiceImpl implements AiImageService {
     /**
      * 获取【我的】绘图分页
      *
-     * @param pageReqVO 分页查询参数
+     * @param query 分页查询参数
      * @return 分页结果
      */
     @Override
-    public TableDataInfo<AiImageRespVO> getImagePageMy(PageQuery pageQuery, AiImagePageReqVO pageReqVO, Long userId) {
-        IPage<AiImage> page = imageMapper.selectPageMy(pageQuery.build(), pageReqVO, userId);
-        return TableDataInfo.build(page, AiImageRespVO.class);
+    public TableDataInfo<ImageVO> getImagePageMy(PageQuery pageQuery, ImagePageQuery query, Long userId) {
+        IPage<AiImage> page = imageMapper.selectPageMy(pageQuery.build(), query, userId);
+        return TableDataInfo.build(page, ImageVO.class);
     }
 
     /**
      * 获取公开的绘图
      *
-     * @param pageReqVO 分页查询参数
+     * @param query 分页查询参数
      * @return 分页结果
      */
     @Override
-    public TableDataInfo<AiImageRespVO> getImagePagePublic(PageQuery pageQuery, AiImagePagePublicReqVO pageReqVO) {
-        IPage<AiImage> page = imageMapper.selectPagePublic(pageQuery.build(), pageReqVO);
-        return TableDataInfo.build(page, AiImageRespVO.class);
+    public TableDataInfo<ImageVO> getImagePagePublic(PageQuery pageQuery, ImagePagePublicQuery query) {
+        IPage<AiImage> page = imageMapper.selectPagePublic(pageQuery.build(), query);
+        return TableDataInfo.build(page, ImageVO.class);
     }
 
     /**
@@ -152,27 +152,27 @@ public class AiImageServiceImpl implements AiImageService {
     /**
      * 获得绘画列表
      *
-     * @param pageReqVO 分页查询参数
+     * @param query 分页查询参数
      * @return 分页结果
      */
     @Override
-    public TableDataInfo<AiImageRespVO> getImagePage(PageQuery pageQuery, AiImagePageReqVO pageReqVO) {
-        IPage<AiImage> page = imageMapper.selectPage(pageQuery.build(), pageReqVO);
-        return TableDataInfo.build(page, AiImageRespVO.class);
+    public TableDataInfo<ImageVO> getImagePage(PageQuery pageQuery, ImagePageQuery query) {
+        IPage<AiImage> page = imageMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(page, ImageVO.class);
     }
 
     /**
      * 更新绘画
      *
-     * @param updateReqVO 更新参数
+     * @param query 更新参数
      * @return 结果
      */
     @Override
-    public int updateImage(AiImageUpdateReqVO updateReqVO) {
+    public int updateImage(ImageUpdateQuery query) {
         // 1. 校验存在
-        validateImageExists(updateReqVO.getId());
+        validateImageExists(query.getId());
         // 2. 更新发布状态
-        AiImage image = BeanUtil.toBean(updateReqVO, AiImage.class);
+        AiImage image = BeanUtil.toBean(query, AiImage.class);
         return imageMapper.updateById(image);
     }
 

@@ -2,10 +2,10 @@ package com.lucky.ai.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lucky.ai.controller.model.vo.model.AiModelPageReqVO;
-import com.lucky.ai.controller.model.vo.model.AiModelRespVO;
-import com.lucky.ai.controller.model.vo.model.AiModelSaveReqVO;
 import com.lucky.ai.domain.AiModel;
+import com.lucky.ai.domain.query.model.ModelPageQuery;
+import com.lucky.ai.domain.query.model.ModelSaveQuery;
+import com.lucky.ai.domain.vo.model.ModelVO;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import com.lucky.ai.mapper.AiModelMapper;
@@ -69,16 +69,16 @@ public class AiModelServiceImpl implements AiModelService {
     /**
      * 创建模型
      *
-     * @param createReqVO 创建信息
+     * @param query 创建信息
      * @return 编号
      */
     @Override
-    public Long createModel(AiModelSaveReqVO createReqVO) {
+    public Long createModel(ModelSaveQuery query) {
         // 1. 校验
-        AiPlatformEnum.validatePlatform(createReqVO.getPlatform());
-        apiKeyService.validateApiKey(createReqVO.getKeyId());
+        AiPlatformEnum.validatePlatform(query.getPlatform());
+        apiKeyService.validateApiKey(query.getKeyId());
         // 2. 插入
-        AiModel model = BeanUtil.toBean(createReqVO, AiModel.class);
+        AiModel model = BeanUtil.toBean(query, AiModel.class);
         modelMapper.insert(model);
         return model.getId();
     }
@@ -86,17 +86,17 @@ public class AiModelServiceImpl implements AiModelService {
     /**
      * 更新模型
      *
-     * @param updateReqVO 更新信息
+     * @param query 更新信息
      * @return 影响行数
      */
     @Override
-    public int updateModel(AiModelSaveReqVO updateReqVO) {
+    public int updateModel(ModelSaveQuery query) {
         // 1. 校验
-        validateModelExists(updateReqVO.getId());
-        AiPlatformEnum.validatePlatform(updateReqVO.getPlatform());
-        apiKeyService.validateApiKey(updateReqVO.getKeyId());
+        validateModelExists(query.getId());
+        AiPlatformEnum.validatePlatform(query.getPlatform());
+        apiKeyService.validateApiKey(query.getKeyId());
         // 2. 更新
-        AiModel updateObj = BeanUtil.toBean(updateReqVO, AiModel.class);
+        AiModel updateObj = BeanUtil.toBean(query, AiModel.class);
         return modelMapper.updateById(updateObj);
     }
 
@@ -128,13 +128,13 @@ public class AiModelServiceImpl implements AiModelService {
     /**
      * 获得模型分页
      *
-     * @param pageReqVO 分页查询
+     * @param query 分页查询
      * @return 模型分页
      */
     @Override
-    public TableDataInfo<AiModelRespVO> getModelPage(PageQuery pageQuery, AiModelPageReqVO pageReqVO) {
-        IPage<AiModel> selectPage = modelMapper.selectPage(pageQuery.build(), pageReqVO);
-        return TableDataInfo.build(selectPage, AiModelRespVO.class);
+    public TableDataInfo<ModelVO> getModelPage(PageQuery pageQuery, ModelPageQuery query) {
+        IPage<AiModel> selectPage = modelMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(selectPage, ModelVO.class);
     }
 
     /**

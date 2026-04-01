@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
 import com.lucky.ai.domain.AiChatConversation;
+import com.lucky.ai.domain.query.conversation.ChatConversationPageQuery;
 import com.lucky.common.utils.StringUtils;
 
 import java.util.List;
@@ -30,11 +30,11 @@ public interface AiChatConversationMapper extends BaseMapper<AiChatConversation>
         return selectList(wrapper);
     }
 
-    default IPage<AiChatConversation> selectPage(IPage<AiChatConversation> page, AiChatConversationPageReqVO pageReqVO) {
+    default IPage<AiChatConversation> selectPage(IPage<AiChatConversation> page, ChatConversationPageQuery query) {
         LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
-                .eq(StringUtils.isNotNull(pageReqVO.getUserId()), AiChatConversation::getUserId, pageReqVO.getUserId())
-                .like(StringUtils.isNotEmpty(pageReqVO.getTitle()), AiChatConversation::getTitle, pageReqVO.getTitle())
-                .between(!pageReqVO.getParams().isEmpty(), AiChatConversation::getCreateTime, pageReqVO.getParams().get("beginTime"), pageReqVO.getParams().get("endTime"));
+                .eq(StringUtils.isNotNull(query.getUserId()), AiChatConversation::getUserId, query.getUserId())
+                .like(StringUtils.isNotEmpty(query.getTitle()), AiChatConversation::getTitle, query.getTitle())
+                .between(!query.getParams().isEmpty(), AiChatConversation::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"));
         return selectPage(page, wrapper);
     }
 

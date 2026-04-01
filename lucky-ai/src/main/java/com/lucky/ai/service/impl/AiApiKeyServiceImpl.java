@@ -2,10 +2,10 @@ package com.lucky.ai.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lucky.ai.controller.model.vo.apikey.AiApiKeyPageReqVO;
-import com.lucky.ai.controller.model.vo.apikey.AiApiKeyRespVO;
-import com.lucky.ai.controller.model.vo.apikey.AiApiKeySaveReqVO;
 import com.lucky.ai.domain.AiApiKey;
+import com.lucky.ai.domain.query.apiKey.ApiKeyPageQuery;
+import com.lucky.ai.domain.query.apiKey.ApiKeySaveQuery;
+import com.lucky.ai.domain.vo.apikey.ApiKeyVO;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.mapper.AiApiKeyMapper;
 import com.lucky.ai.service.AiApiKeyService;
@@ -32,13 +32,13 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
     /**
      * 创建 API 密钥
      *
-     * @param createReqVO 创建请求vo
+     * @param query 创建请求vo
      * @return 结果
      */
     @Override
-    public Long createApiKey(AiApiKeySaveReqVO createReqVO) {
+    public Long createApiKey(ApiKeySaveQuery query) {
         // 插入
-        AiApiKey apiKey = BeanUtil.toBean(createReqVO, AiApiKey.class);
+        AiApiKey apiKey = BeanUtil.toBean(query, AiApiKey.class);
         apiKeyMapper.insert(apiKey);
         // 返回
         return apiKey.getId();
@@ -47,15 +47,15 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
     /**
      * 更新 API 密钥
      *
-     * @param updateReqVO 更新请求vo
+     * @param query 更新请求vo
      * @return 结果
      */
     @Override
-    public int updateApiKey(AiApiKeySaveReqVO updateReqVO) {
+    public int updateApiKey(ApiKeySaveQuery query) {
         // 校验存在
-        validateApiKeyExists(updateReqVO.getId());
+        validateApiKeyExists(query.getId());
         // 更新
-        AiApiKey updateObj = BeanUtil.toBean(updateReqVO, AiApiKey.class);
+        AiApiKey updateObj = BeanUtil.toBean(query, AiApiKey.class);
         return apiKeyMapper.updateById(updateObj);
     }
 
@@ -88,13 +88,13 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
      * 查询 API 密钥分页
      *
      * @param pageQuery 分页查询
-     * @param pageReqVO 分页查询参数
+     * @param query 分页查询参数
      * @return API 密钥分页结果
      */
     @Override
-    public TableDataInfo<AiApiKeyRespVO> getApiKeyPage(PageQuery pageQuery, AiApiKeyPageReqVO pageReqVO) {
-        IPage<AiApiKey> page = apiKeyMapper.selectPage(pageQuery.build(), pageReqVO);
-        return TableDataInfo.build(page, AiApiKeyRespVO.class);
+    public TableDataInfo<ApiKeyVO> getApiKeyPage(PageQuery pageQuery, ApiKeyPageQuery query) {
+        IPage<AiApiKey> page = apiKeyMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(page, ApiKeyVO.class);
     }
 
     /**

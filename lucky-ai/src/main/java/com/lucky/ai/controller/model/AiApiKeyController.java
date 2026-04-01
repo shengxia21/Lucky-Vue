@@ -1,10 +1,10 @@
 package com.lucky.ai.controller.model;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.lucky.ai.controller.model.vo.apikey.AiApiKeyPageReqVO;
-import com.lucky.ai.controller.model.vo.apikey.AiApiKeyRespVO;
-import com.lucky.ai.controller.model.vo.apikey.AiApiKeySaveReqVO;
 import com.lucky.ai.domain.AiApiKey;
+import com.lucky.ai.domain.query.apiKey.ApiKeyPageQuery;
+import com.lucky.ai.domain.query.apiKey.ApiKeySaveQuery;
+import com.lucky.ai.domain.vo.apikey.ApiKeyVO;
 import com.lucky.ai.service.AiApiKeyService;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
@@ -39,8 +39,8 @@ public class AiApiKeyController extends BaseController {
     @Log(title = "创建 API 密钥", businessType = BusinessType.INSERT)
     @PreAuthorize("@ss.hasPermi('ai:api-key:create')")
     @PostMapping("/create")
-    public R<Long> createApiKey(@Validated @RequestBody AiApiKeySaveReqVO createReqVO) {
-        return R.ok(apiKeyService.createApiKey(createReqVO));
+    public R<Long> createApiKey(@Validated @RequestBody ApiKeySaveQuery query) {
+        return R.ok(apiKeyService.createApiKey(query));
     }
 
     /**
@@ -49,8 +49,8 @@ public class AiApiKeyController extends BaseController {
     @Log(title = "更新 API 密钥", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('ai:api-key:update')")
     @PutMapping("/update")
-    public R<Integer> updateApiKey(@Validated @RequestBody AiApiKeySaveReqVO updateReqVO) {
-        return R.ok(apiKeyService.updateApiKey(updateReqVO));
+    public R<Integer> updateApiKey(@Validated @RequestBody ApiKeySaveQuery query) {
+        return R.ok(apiKeyService.updateApiKey(query));
     }
 
     /**
@@ -68,9 +68,9 @@ public class AiApiKeyController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:api-key:query')")
     @GetMapping("/get")
-    public R<AiApiKeyRespVO> getApiKey(@RequestParam("id") Long id) {
+    public R<ApiKeyVO> getApiKey(@RequestParam("id") Long id) {
         AiApiKey apiKey = apiKeyService.getApiKeyById(id);
-        return R.ok(BeanUtil.toBean(apiKey, AiApiKeyRespVO.class));
+        return R.ok(BeanUtil.toBean(apiKey, ApiKeyVO.class));
     }
 
     /**
@@ -78,18 +78,18 @@ public class AiApiKeyController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:api-key:list')")
     @GetMapping("/page")
-    public TableDataInfo<AiApiKeyRespVO> getApiKeyPage(PageQuery pageQuery, AiApiKeyPageReqVO pageReqVO) {
-        return apiKeyService.getApiKeyPage(pageQuery, pageReqVO);
+    public TableDataInfo<ApiKeyVO> getApiKeyPage(PageQuery pageQuery, ApiKeyPageQuery query) {
+        return apiKeyService.getApiKeyPage(pageQuery, query);
     }
 
     /**
      * 获得 API 密钥列表
      */
     @GetMapping("/simple-list")
-    public R<List<AiApiKeyRespVO>> getApiKeySimpleList() {
+    public R<List<ApiKeyVO>> getApiKeySimpleList() {
         List<AiApiKey> list = apiKeyService.getApiKeyList();
         return R.ok(convertList(list, key -> {
-            AiApiKeyRespVO respVO = new AiApiKeyRespVO();
+            ApiKeyVO respVO = new ApiKeyVO();
             respVO.setId(key.getId());
             respVO.setName(key.getName());
             return respVO;

@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.lucky.ai.controller.model.vo.chatRole.AiChatRolePageReqVO;
 import com.lucky.ai.domain.AiChatRole;
+import com.lucky.ai.domain.query.chatRole.ChatRolePageQuery;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.common.utils.StringUtils;
 
@@ -19,24 +19,24 @@ import java.util.Objects;
  */
 public interface AiChatRoleMapper extends BaseMapper<AiChatRole> {
 
-    default IPage<AiChatRole> selectPage(IPage<AiChatRole> page, AiChatRolePageReqVO pageReqVO) {
+    default IPage<AiChatRole> selectPage(IPage<AiChatRole> page, ChatRolePageQuery query) {
         LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
-                .like(StringUtils.isNotEmpty(pageReqVO.getName()), AiChatRole::getName, pageReqVO.getName())
-                .eq(StringUtils.isNotEmpty(pageReqVO.getCategory()), AiChatRole::getCategory, pageReqVO.getCategory())
-                .eq(StringUtils.isNotNull(pageReqVO.getPublicStatus()), AiChatRole::getStatus, pageReqVO.getPublicStatus())
+                .like(StringUtils.isNotEmpty(query.getName()), AiChatRole::getName, query.getName())
+                .eq(StringUtils.isNotEmpty(query.getCategory()), AiChatRole::getCategory, query.getCategory())
+                .eq(StringUtils.isNotNull(query.getPublicStatus()), AiChatRole::getStatus, query.getPublicStatus())
                 .orderByAsc(AiChatRole::getSort);
         return selectPage(page, wrapper);
     }
 
-    default IPage<AiChatRole> selectMyPage(IPage<AiChatRole> page, AiChatRolePageReqVO pageReqVO, Long userId) {
+    default IPage<AiChatRole> selectMyPage(IPage<AiChatRole> page, ChatRolePageQuery query, Long userId) {
         LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
-                .like(StringUtils.isNotEmpty(pageReqVO.getName()), AiChatRole::getName, pageReqVO.getName())
-                .eq(StringUtils.isNotEmpty(pageReqVO.getCategory()), AiChatRole::getCategory, pageReqVO.getCategory())
+                .like(StringUtils.isNotEmpty(query.getName()), AiChatRole::getName, query.getName())
+                .eq(StringUtils.isNotEmpty(query.getCategory()), AiChatRole::getCategory, query.getCategory())
                 // 情况一：公开
-                .eq(Boolean.TRUE.equals(pageReqVO.getPublicStatus()), AiChatRole::getPublicStatus, pageReqVO.getPublicStatus())
+                .eq(Boolean.TRUE.equals(query.getPublicStatus()), AiChatRole::getPublicStatus, query.getPublicStatus())
                 // 情况二：私有
-                .eq(Boolean.FALSE.equals(pageReqVO.getPublicStatus()), AiChatRole::getUserId, userId)
-                .eq(Boolean.FALSE.equals(pageReqVO.getPublicStatus()), AiChatRole::getStatus, CommonStatusEnum.ENABLE.getStatus())
+                .eq(Boolean.FALSE.equals(query.getPublicStatus()), AiChatRole::getUserId, userId)
+                .eq(Boolean.FALSE.equals(query.getPublicStatus()), AiChatRole::getStatus, CommonStatusEnum.ENABLE.getStatus())
                 .orderByAsc(AiChatRole::getSort);
         return selectPage(page, wrapper);
     }

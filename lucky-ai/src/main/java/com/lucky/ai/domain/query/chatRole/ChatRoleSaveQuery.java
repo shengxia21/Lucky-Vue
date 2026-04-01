@@ -1,0 +1,93 @@
+package com.lucky.ai.domain.query.chatRole;
+
+import com.lucky.ai.enums.CommonStatusEnum;
+import com.lucky.common.validation.InEnum;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+import java.util.List;
+
+/**
+ * AI 聊天角色新增/修改请求VO
+ *
+ * @author lucky
+ */
+@Data
+public class ChatRoleSaveQuery {
+
+    /**
+     * 角色编号
+     */
+    private Long id;
+
+    /**
+     * 模型编号
+     */
+    private Long modelId;
+
+    /**
+     * 角色名称
+     */
+    @NotEmpty(message = "角色名称不能为空")
+    private String name;
+
+    /**
+     * 角色头像
+     */
+    @NotEmpty(message = "角色头像不能为空")
+    private String avatar;
+
+    /**
+     * 角色类别
+     */
+    @NotEmpty(message = "角色类别不能为空")
+    private String category;
+
+    /**
+     * 角色排序
+     */
+    @NotNull(message = "角色排序不能为空")
+    private Integer sort;
+
+    /**
+     * 角色描述
+     */
+    @NotEmpty(message = "角色描述不能为空")
+    private String description;
+
+    /**
+     * 角色设定
+     */
+    @NotEmpty(message = "角色设定不能为空")
+    private String systemMessage;
+
+    /**
+     * 引用的知识库编号列表
+     */
+    private List<Long> knowledgeIds;
+
+    /**
+     * 引用的工具编号列表
+     */
+    private List<Long> toolIds;
+
+    /**
+     * 引用的 MCP Client 名字列表
+     */
+    private List<String> mcpClientNames;
+
+    /**
+     * 是否公开
+     */
+    @NotNull(message = "是否公开不能为空")
+    private Boolean publicStatus;
+
+    /**
+     * 状态
+     */
+    @NotNull(message = "状态不能为空")
+    @InEnum(CommonStatusEnum.class)
+    private Integer status;
+
+}

@@ -1,10 +1,10 @@
 package com.lucky.ai.service;
 
-import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
-import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
 import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.core.vo.chat.ChatMessageResponse;
 import com.lucky.ai.domain.AiChatMessage;
+import com.lucky.ai.domain.query.message.ChatMessagePageQuery;
+import com.lucky.ai.domain.vo.message.ChatMessageVO;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import reactor.core.publisher.Flux;
@@ -23,11 +23,11 @@ public interface AiChatMessageService {
     /**
      * 发送消息（流式）
      *
-     * @param sendReqVO 发送消息（流式）请求VO
+     * @param query 发送消息（流式）请求VO
      * @param userId    用户ID
      * @return 发送消息（流式）响应VO
      */
-    Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest sendReqVO, Long userId);
+    Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest query, Long userId);
 
     /**
      * 根据会话ID查询聊天消息列表
@@ -59,10 +59,10 @@ public interface AiChatMessageService {
      * 查询聊天消息分页列表
      *
      * @param pageQuery 分页查询参数
-     * @param pageReqVO 查询参数
+     * @param query 查询参数
      * @return 聊天消息分页列表
      */
-    TableDataInfo<AiChatMessageRespVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageReqVO pageReqVO);
+    TableDataInfo<ChatMessageVO> getChatMessagePage(PageQuery pageQuery, ChatMessagePageQuery query);
 
     /**
      * 删除消息（管理员）

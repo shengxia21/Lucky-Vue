@@ -2,12 +2,12 @@ package com.lucky.ai.controller.image;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
-import com.lucky.ai.controller.image.vo.AiImagePagePublicReqVO;
-import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
-import com.lucky.ai.controller.image.vo.AiImageRespVO;
-import com.lucky.ai.controller.image.vo.AiImageUpdateReqVO;
 import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.AiImage;
+import com.lucky.ai.domain.query.image.ImagePagePublicQuery;
+import com.lucky.ai.domain.query.image.ImagePageQuery;
+import com.lucky.ai.domain.query.image.ImageUpdateQuery;
+import com.lucky.ai.domain.vo.image.ImageVO;
 import com.lucky.ai.service.AiImageService;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
@@ -38,38 +38,38 @@ public class AiImageController extends BaseController {
      * 获取【我的】绘图分页
      */
     @GetMapping("/my-page")
-    public TableDataInfo<AiImageRespVO> getImagePageMy(PageQuery pageQuery, AiImagePageReqVO pageReqVO) {
-        return AiImageService.getImagePageMy(pageQuery, pageReqVO, getUserId());
+    public TableDataInfo<ImageVO> getImagePageMy(PageQuery pageQuery, ImagePageQuery query) {
+        return AiImageService.getImagePageMy(pageQuery, query, getUserId());
     }
 
     /**
      * 获取公开的绘图分页
      */
     @GetMapping("/public-page")
-    public TableDataInfo<AiImageRespVO> getImagePagePublic(PageQuery pageQuery, AiImagePagePublicReqVO pageReqVO) {
-        return AiImageService.getImagePagePublic(pageQuery, pageReqVO);
+    public TableDataInfo<ImageVO> getImagePagePublic(PageQuery pageQuery, ImagePagePublicQuery query) {
+        return AiImageService.getImagePagePublic(pageQuery, query);
     }
 
     /**
      * 获取【我的】绘图记录
      */
     @GetMapping("/get-my")
-    public R<AiImageRespVO> getImageMy(@RequestParam("id") Long id) {
+    public R<ImageVO> getImageMy(@RequestParam("id") Long id) {
         AiImage image = AiImageService.getImageById(id);
         if (image == null || ObjUtil.notEqual(getUserId(), image.getUserId())) {
             return R.fail("绘图记录不存在或不属于当前用户");
         }
-        return R.ok(BeanUtil.toBean(image, AiImageRespVO.class));
+        return R.ok(BeanUtil.toBean(image, ImageVO.class));
     }
 
     /**
      * 获取【我的】绘图记录列表
      */
     @GetMapping("/my-list-by-ids")
-    public R<List<AiImageRespVO>> getImageListMyByIds(@RequestParam("ids") List<Long> ids) {
+    public R<List<ImageVO>> getImageListMyByIds(@RequestParam("ids") List<Long> ids) {
         List<AiImage> imageList = AiImageService.getImageListByIds(ids);
         imageList.removeIf(item -> !ObjUtil.equal(getUserId(), item.getUserId()));
-        return R.ok(BeanUtil.copyToList(imageList, AiImageRespVO.class));
+        return R.ok(BeanUtil.copyToList(imageList, ImageVO.class));
     }
 
     /**
@@ -96,8 +96,8 @@ public class AiImageController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:image:list')")
     @GetMapping("/page")
-    public TableDataInfo<AiImageRespVO> getImagePage(PageQuery pageQuery, AiImagePageReqVO pageReqVO) {
-        return AiImageService.getImagePage(pageQuery, pageReqVO);
+    public TableDataInfo<ImageVO> getImagePage(PageQuery pageQuery, ImagePageQuery query) {
+        return AiImageService.getImagePage(pageQuery, query);
     }
 
     /**
@@ -106,8 +106,8 @@ public class AiImageController extends BaseController {
     @Log(title = "更新绘画", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('ai:image:update')")
     @PutMapping("/update")
-    public R<Integer> updateImage(@Validated @RequestBody AiImageUpdateReqVO updateReqVO) {
-        return R.ok(AiImageService.updateImage(updateReqVO));
+    public R<Integer> updateImage(@Validated @RequestBody ImageUpdateQuery query) {
+        return R.ok(AiImageService.updateImage(query));
     }
 
     /**

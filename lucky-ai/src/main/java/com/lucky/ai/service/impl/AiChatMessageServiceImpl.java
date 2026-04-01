@@ -3,9 +3,6 @@ package com.lucky.ai.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lucky.ai.controller.chat.vo.message.AiChatMessageCountRespVO;
-import com.lucky.ai.controller.chat.vo.message.AiChatMessagePageReqVO;
-import com.lucky.ai.controller.chat.vo.message.AiChatMessageRespVO;
 import com.lucky.ai.core.context.ChatContext;
 import com.lucky.ai.core.facade.ChatServiceFacade;
 import com.lucky.ai.core.vo.chat.ChatMessageRequest;
@@ -14,6 +11,9 @@ import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.domain.AiModel;
+import com.lucky.ai.domain.query.message.ChatMessagePageQuery;
+import com.lucky.ai.domain.vo.message.ChatMessageCountVO;
+import com.lucky.ai.domain.vo.message.ChatMessageVO;
 import com.lucky.ai.mapper.AiChatMessageMapper;
 import com.lucky.ai.service.AiApiKeyService;
 import com.lucky.ai.service.AiChatConversationService;
@@ -57,14 +57,14 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
     /**
      * 发送消息（流式）
      *
-     * @param request 发送消息（流式）请求
+     * @param query 发送消息（流式）请求
      * @param userId  用户ID
      * @return 发送消息（流式）响应VO
      */
     @Override
-    public Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest request, Long userId) {
+    public Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest query, Long userId) {
         // 校验对话存在
-        AiChatConversation conversation = chatConversationService.validateChatConversationExists(request.getConversationId());
+        AiChatConversation conversation = chatConversationService.validateChatConversationExists(query.getConversationId());
         if (ObjUtil.notEqual(conversation.getUserId(), userId)) {
             throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
         }
@@ -75,7 +75,7 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
 
         // 构建聊天上下文
         ChatContext chatContext = new ChatContext();
-        chatContext.setRequest(request);
+        chatContext.setRequest(query);
         chatContext.setConversation(conversation);
         chatContext.setModel(model);
         chatContext.setApiKey(apiKey);
@@ -135,13 +135,13 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
      * 查询用户的聊天消息分页列表
      *
      * @param pageQuery 分页查询参数
-     * @param pageReqVO 查询参数
+     * @param query 查询参数
      * @return 聊天消息分页列表
      */
     @Override
-    public TableDataInfo<AiChatMessageRespVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageReqVO pageReqVO) {
-        IPage<AiChatMessage> page = chatMessageMapper.selectPage(pageQuery.build(), pageReqVO);
-        return TableDataInfo.build(page, AiChatMessageRespVO.class);
+    public TableDataInfo<ChatMessageVO> getChatMessagePage(PageQuery pageQuery, ChatMessagePageQuery query) {
+        IPage<AiChatMessage> page = chatMessageMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(page, ChatMessageVO.class);
     }
 
     /**
@@ -172,9 +172,9 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
         if (CollUtil.isEmpty(conversationIds)) {
             return Collections.emptyMap();
         }
-        List<AiChatMessageCountRespVO> list = chatMessageMapper.selectCountMapByConversationIds(conversationIds);
+        List<ChatMessageCountVO> list = chatMessageMapper.selectCountMapByConversationIds(conversationIds);
         Map<Long, Integer> result = new HashMap<>();
-        for (AiChatMessageCountRespVO row : list) {
+        for (ChatMessageCountVO row : list) {
             Long conversationId = row.getConversationId();
             Integer count = row.getCount();
             result.put(conversationId, count);

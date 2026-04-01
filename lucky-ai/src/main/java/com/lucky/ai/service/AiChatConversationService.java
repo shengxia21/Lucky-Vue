@@ -1,10 +1,10 @@
 package com.lucky.ai.service;
 
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationCreateMyReqVO;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationPageReqVO;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationRespVO;
-import com.lucky.ai.controller.chat.vo.conversation.AiChatConversationUpdateMyReqVO;
 import com.lucky.ai.domain.AiChatConversation;
+import com.lucky.ai.domain.query.conversation.ChatConversationCreateMyQuery;
+import com.lucky.ai.domain.query.conversation.ChatConversationPageQuery;
+import com.lucky.ai.domain.query.conversation.ChatConversationUpdateMyQuery;
+import com.lucky.ai.domain.vo.conversation.ChatConversationVO;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 
@@ -23,15 +23,15 @@ public interface AiChatConversationService {
      * @param userId 用户ID
      * @return 聊天对话ID
      */
-    Long createChatConversationMy(AiChatConversationCreateMyReqVO createReqVO, Long userId);
+    Long createChatConversationMy(ChatConversationCreateMyQuery query, Long userId);
 
     /**
      * 更新我的聊天对话
      *
-     * @param updateReqVO 更新对象
+     * @param query 更新对象
      * @param userId      用户ID
      */
-    int updateChatConversationMy(AiChatConversationUpdateMyReqVO updateReqVO, Long userId);
+    int updateChatConversationMy(ChatConversationUpdateMyQuery query, Long userId);
 
     /**
      * 获得我的聊天对话列表
@@ -39,7 +39,7 @@ public interface AiChatConversationService {
      * @param userId 用户ID
      * @return 聊天对话列表
      */
-    List<AiChatConversationRespVO> getChatConversationListByUserId(Long userId);
+    List<ChatConversationVO> getChatConversationListByUserId(Long userId);
 
     /**
      * 获得我的聊天对话
@@ -70,10 +70,10 @@ public interface AiChatConversationService {
      * 获得对话分页列表
      *
      * @param pageQuery 分页查询对象
-     * @param pageReqVO 查询参数
+     * @param query 查询参数
      * @return 对话分页列表
      */
-    TableDataInfo<AiChatConversationRespVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageReqVO pageReqVO);
+    TableDataInfo<ChatConversationVO> getChatConversationPage(PageQuery pageQuery, ChatConversationPageQuery query);
 
     /**
      * 管理员删除对话

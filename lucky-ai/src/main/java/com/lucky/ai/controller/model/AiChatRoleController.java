@@ -1,10 +1,10 @@
 package com.lucky.ai.controller.model;
 
 import cn.hutool.core.util.ObjUtil;
-import com.lucky.ai.controller.model.vo.chatRole.AiChatRolePageReqVO;
-import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleRespVO;
-import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleSaveMyReqVO;
-import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleSaveReqVO;
+import com.lucky.ai.domain.query.chatRole.ChatRolePageQuery;
+import com.lucky.ai.domain.query.chatRole.ChatRoleSaveMyQuery;
+import com.lucky.ai.domain.query.chatRole.ChatRoleSaveQuery;
+import com.lucky.ai.domain.vo.chatRole.ChatRoleVO;
 import com.lucky.ai.service.AiChatRoleService;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
@@ -35,16 +35,16 @@ public class AiChatRoleController extends BaseController {
      * 获得【我的】聊天角色分页
      */
     @GetMapping("/my-page")
-    public TableDataInfo<AiChatRoleRespVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageReqVO pageReqVO) {
-        return chatRoleService.getChatRoleMyPage(pageQuery, pageReqVO, getUserId());
+    public TableDataInfo<ChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, ChatRolePageQuery query) {
+        return chatRoleService.getChatRoleMyPage(pageQuery, query, getUserId());
     }
 
     /**
      * 获得【我的】聊天角色
      */
     @GetMapping("/get-my")
-    public R<AiChatRoleRespVO> getChatRoleMy(@RequestParam("id") Long id) {
-        AiChatRoleRespVO chatRole = chatRoleService.getChatRoleById(id);
+    public R<ChatRoleVO> getChatRoleMy(@RequestParam("id") Long id) {
+        ChatRoleVO chatRole = chatRoleService.getChatRoleById(id);
         if (ObjUtil.notEqual(chatRole.getUserId(), getUserId())) {
             return R.fail("聊天角色不属于您");
         }
@@ -56,8 +56,8 @@ public class AiChatRoleController extends BaseController {
      */
     @Log(title = "创建【我的】聊天角色", businessType = BusinessType.INSERT)
     @PostMapping("/create-my")
-    public R<Long> createChatRoleMy(@Validated @RequestBody AiChatRoleSaveMyReqVO createReqVO) {
-        return R.ok(chatRoleService.createChatRoleMy(createReqVO, getUserId()));
+    public R<Long> createChatRoleMy(@Validated @RequestBody ChatRoleSaveMyQuery query) {
+        return R.ok(chatRoleService.createChatRoleMy(query, getUserId()));
     }
 
     /**
@@ -65,8 +65,8 @@ public class AiChatRoleController extends BaseController {
      */
     @Log(title = "更新【我的】聊天角色", businessType = BusinessType.UPDATE)
     @PutMapping("/update-my")
-    public R<Integer> updateChatRoleMy(@Validated @RequestBody AiChatRoleSaveMyReqVO updateReqVO) {
-        return R.ok(chatRoleService.updateChatRoleMy(updateReqVO, getUserId()));
+    public R<Integer> updateChatRoleMy(@Validated @RequestBody ChatRoleSaveMyQuery query) {
+        return R.ok(chatRoleService.updateChatRoleMy(query, getUserId()));
     }
 
     /**
@@ -94,8 +94,8 @@ public class AiChatRoleController extends BaseController {
     @Log(title = "创建聊天角色", businessType = BusinessType.INSERT)
     @PreAuthorize("@ss.hasPermi('ai:chat-role:create')")
     @PostMapping("/create")
-    public R<Long> createChatRole(@Validated @RequestBody AiChatRoleSaveReqVO createReqVO) {
-        return R.ok(chatRoleService.createChatRole(createReqVO));
+    public R<Long> createChatRole(@Validated @RequestBody ChatRoleSaveQuery query) {
+        return R.ok(chatRoleService.createChatRole(query));
     }
 
     /**
@@ -104,8 +104,8 @@ public class AiChatRoleController extends BaseController {
     @Log(title = "更新聊天角色", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('ai:chat-role:update')")
     @PutMapping("/update")
-    public R<Integer> updateChatRole(@Validated @RequestBody AiChatRoleSaveReqVO updateReqVO) {
-        return R.ok(chatRoleService.updateChatRole(updateReqVO));
+    public R<Integer> updateChatRole(@Validated @RequestBody ChatRoleSaveQuery query) {
+        return R.ok(chatRoleService.updateChatRole(query));
     }
 
     /**
@@ -123,7 +123,7 @@ public class AiChatRoleController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:chat-role:query')")
     @GetMapping("/get")
-    public R<AiChatRoleRespVO> getChatRole(@RequestParam("id") Long id) {
+    public R<ChatRoleVO> getChatRole(@RequestParam("id") Long id) {
         return R.ok(chatRoleService.getChatRoleById(id));
     }
 
@@ -132,8 +132,8 @@ public class AiChatRoleController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:chat-role:list')")
     @GetMapping("/page")
-    public TableDataInfo<AiChatRoleRespVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageReqVO pageReqVO) {
-        return chatRoleService.getChatRolePage(pageQuery, pageReqVO);
+    public TableDataInfo<ChatRoleVO> getChatRolePage(PageQuery pageQuery, ChatRolePageQuery query) {
+        return chatRoleService.getChatRolePage(pageQuery, query);
     }
 
 }

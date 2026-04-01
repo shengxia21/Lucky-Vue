@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.lucky.ai.controller.image.vo.AiImagePagePublicReqVO;
-import com.lucky.ai.controller.image.vo.AiImagePageReqVO;
 import com.lucky.ai.domain.AiImage;
+import com.lucky.ai.domain.query.image.ImagePagePublicQuery;
+import com.lucky.ai.domain.query.image.ImagePageQuery;
 import com.lucky.common.utils.StringUtils;
 
 /**
@@ -16,30 +16,30 @@ import com.lucky.common.utils.StringUtils;
  */
 public interface AiImageMapper extends BaseMapper<AiImage> {
 
-    default IPage<AiImage> selectPageMy(IPage<AiImage> page, AiImagePageReqVO pageReqVO, Long userId) {
+    default IPage<AiImage> selectPageMy(IPage<AiImage> page, ImagePageQuery query, Long userId) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
-                .like(StringUtils.isNotEmpty(pageReqVO.getPrompt()), AiImage::getPrompt, pageReqVO.getPrompt())
-                .eq(StringUtils.isNotNull(pageReqVO.getPublicStatus()), AiImage::getPublicStatus, pageReqVO.getPublicStatus())
+                .like(StringUtils.isNotEmpty(query.getPrompt()), AiImage::getPrompt, query.getPrompt())
+                .eq(StringUtils.isNotNull(query.getPublicStatus()), AiImage::getPublicStatus, query.getPublicStatus())
                 .eq(AiImage::getUserId, userId)
                 .orderByDesc(AiImage::getCreateTime);
         return selectPage(page, wrapper);
     }
 
-    default IPage<AiImage> selectPagePublic(IPage<AiImage> page, AiImagePagePublicReqVO pageReqVO) {
+    default IPage<AiImage> selectPagePublic(IPage<AiImage> page, ImagePagePublicQuery query) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
-                .like(StringUtils.isNotEmpty(pageReqVO.getPrompt()), AiImage::getPrompt, pageReqVO.getPrompt())
+                .like(StringUtils.isNotEmpty(query.getPrompt()), AiImage::getPrompt, query.getPrompt())
                 .eq(AiImage::getPublicStatus, true)
                 .orderByDesc(AiImage::getCreateTime);
         return selectPage(page, wrapper);
     }
 
-    default IPage<AiImage> selectPage(IPage<AiImage> page, AiImagePageReqVO pageReqVO) {
+    default IPage<AiImage> selectPage(IPage<AiImage> page, ImagePageQuery query) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
-                .eq(StringUtils.isNotNull(pageReqVO.getUserId()), AiImage::getUserId, pageReqVO.getUserId())
-                .eq(StringUtils.isNotEmpty(pageReqVO.getPlatform()), AiImage::getPlatform, pageReqVO.getPlatform())
-                .eq(StringUtils.isNotNull(pageReqVO.getStatus()), AiImage::getStatus, pageReqVO.getStatus())
-                .eq(StringUtils.isNotNull(pageReqVO.getPublicStatus()), AiImage::getPublicStatus, pageReqVO.getPublicStatus())
-                .between(!pageReqVO.getParams().isEmpty(), AiImage::getCreateTime, pageReqVO.getParams().get("beginTime"), pageReqVO.getParams().get("endTime"))
+                .eq(StringUtils.isNotNull(query.getUserId()), AiImage::getUserId, query.getUserId())
+                .eq(StringUtils.isNotEmpty(query.getPlatform()), AiImage::getPlatform, query.getPlatform())
+                .eq(StringUtils.isNotNull(query.getStatus()), AiImage::getStatus, query.getStatus())
+                .eq(StringUtils.isNotNull(query.getPublicStatus()), AiImage::getPublicStatus, query.getPublicStatus())
+                .between(!query.getParams().isEmpty(), AiImage::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"))
                 .orderByDesc(AiImage::getCreateTime);
         return selectPage(page, wrapper);
     }

@@ -1,10 +1,10 @@
 package com.lucky.ai.service;
 
-import com.lucky.ai.controller.model.vo.chatRole.AiChatRolePageReqVO;
-import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleRespVO;
-import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleSaveMyReqVO;
-import com.lucky.ai.controller.model.vo.chatRole.AiChatRoleSaveReqVO;
 import com.lucky.ai.domain.AiChatRole;
+import com.lucky.ai.domain.query.chatRole.ChatRolePageQuery;
+import com.lucky.ai.domain.query.chatRole.ChatRoleSaveMyQuery;
+import com.lucky.ai.domain.query.chatRole.ChatRoleSaveQuery;
+import com.lucky.ai.domain.vo.chatRole.ChatRoleVO;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 
@@ -21,34 +21,34 @@ public interface AiChatRoleService {
     /**
      * 创建聊天角色
      *
-     * @param createReqVO 创建信息
+     * @param query 创建信息
      * @return 编号
      */
-    Long createChatRole(AiChatRoleSaveReqVO createReqVO);
+    Long createChatRole(ChatRoleSaveQuery query);
 
     /**
      * 创建【我的】聊天角色
      *
-     * @param createReqVO 创建信息
+     * @param query 创建信息
      * @param userId      用户编号
      * @return 编号
      */
-    Long createChatRoleMy(AiChatRoleSaveMyReqVO createReqVO, Long userId);
+    Long createChatRoleMy(ChatRoleSaveMyQuery query, Long userId);
 
     /**
      * 更新聊天角色
      *
-     * @param updateReqVO 更新信息
+     * @param query 更新信息
      */
-    int updateChatRole(AiChatRoleSaveReqVO updateReqVO);
+    int updateChatRole(ChatRoleSaveQuery query);
 
     /**
      * 更新【我的】聊天角色
      *
-     * @param updateReqVO 更新信息
+     * @param query 更新信息
      * @param userId      用户编号
      */
-    int updateChatRoleMy(AiChatRoleSaveMyReqVO updateReqVO, Long userId);
+    int updateChatRoleMy(ChatRoleSaveMyQuery query, Long userId);
 
     /**
      * 删除聊天角色
@@ -71,7 +71,7 @@ public interface AiChatRoleService {
      * @param id 编号
      * @return AI 聊天角色
      */
-    AiChatRoleRespVO getChatRoleById(Long id);
+    ChatRoleVO getChatRoleById(Long id);
 
     /**
      * 获得聊天角色列表
@@ -92,20 +92,20 @@ public interface AiChatRoleService {
      * 获得聊天角色分页
      *
      * @param pageQuery 分页查询对象
-     * @param pageReqVO 查询参数
+     * @param query 查询参数
      * @return 聊天角色分页
      */
-    TableDataInfo<AiChatRoleRespVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageReqVO pageReqVO);
+    TableDataInfo<ChatRoleVO> getChatRolePage(PageQuery pageQuery, ChatRolePageQuery query);
 
     /**
      * 获得【我的】聊天角色分页
      *
      * @param pageQuery 分页查询对象
-     * @param pageReqVO 查询参数
+     * @param query 查询参数
      * @param userId    用户编号
      * @return 聊天角色分页
      */
-    TableDataInfo<AiChatRoleRespVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageReqVO pageReqVO, Long userId);
+    TableDataInfo<ChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, ChatRolePageQuery query, Long userId);
 
     /**
      * 获得聊天角色的分类列表

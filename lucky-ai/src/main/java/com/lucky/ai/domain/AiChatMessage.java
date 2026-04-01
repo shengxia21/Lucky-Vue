@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.lucky.ai.core.websearch.AiWebSearchResponse;
+import com.lucky.ai.core.vo.search.WebSearchResponse;
 import com.lucky.common.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -89,7 +89,7 @@ public class AiChatMessage extends BaseEntity {
     /**
      * 联网搜索的网页内容数组
      */
-    private List<AiWebSearchResponse.WebPage> webSearchPages;
+    private List<WebSearchResponse.WebPage> webSearchPages;
 
     /**
      * 附件 URL 数组

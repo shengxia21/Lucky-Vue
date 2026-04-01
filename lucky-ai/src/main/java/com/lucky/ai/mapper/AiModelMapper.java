@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.lucky.ai.controller.model.vo.model.AiModelPageReqVO;
 import com.lucky.ai.domain.AiModel;
+import com.lucky.ai.domain.query.model.ModelPageQuery;
 import com.lucky.common.utils.StringUtils;
 
 import java.util.List;
@@ -17,11 +17,11 @@ import java.util.List;
  */
 public interface AiModelMapper extends BaseMapper<AiModel> {
 
-    default IPage<AiModel> selectPage(IPage<AiModel> page, AiModelPageReqVO pageReqVO) {
+    default IPage<AiModel> selectPage(IPage<AiModel> page, ModelPageQuery query) {
         LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
-                .like(StringUtils.isNotEmpty(pageReqVO.getName()), AiModel::getName, pageReqVO.getName())
-                .eq(StringUtils.isNotEmpty(pageReqVO.getModel()), AiModel::getModel, pageReqVO.getModel())
-                .eq(StringUtils.isNotEmpty(pageReqVO.getPlatform()), AiModel::getPlatform, pageReqVO.getPlatform())
+                .like(StringUtils.isNotEmpty(query.getName()), AiModel::getName, query.getName())
+                .eq(StringUtils.isNotEmpty(query.getModel()), AiModel::getModel, query.getModel())
+                .eq(StringUtils.isNotEmpty(query.getPlatform()), AiModel::getPlatform, query.getPlatform())
                 .orderByAsc(AiModel::getSort);
         return selectPage(page, wrapper);
     }
