@@ -2,6 +2,7 @@ package com.lucky.common.core.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.lucky.common.core.domain.BaseEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("sys_menu")
 public class SysMenu extends BaseEntity {
 
     @Serial
@@ -41,6 +43,7 @@ public class SysMenu extends BaseEntity {
     /**
      * 父菜单名称
      */
+    @TableField(exist = false)
     private String parentName;
 
     /**
@@ -116,12 +119,12 @@ public class SysMenu extends BaseEntity {
     /**
      * 子菜单
      */
+    @TableField(exist = false)
     private List<SysMenu> children = new ArrayList<>();
 
     /**
-     * 删除标志（0代表存在 2代表删除）
+     * 备注
      */
-    @TableField(exist = false)
-    private String delFlag;
+    private String remark;
 
 }

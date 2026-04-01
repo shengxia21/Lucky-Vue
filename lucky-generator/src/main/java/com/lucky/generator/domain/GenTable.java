@@ -2,6 +2,7 @@ package com.lucky.generator.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.lucky.common.constant.GenConstants;
 import com.lucky.common.core.domain.BaseEntity;
 import com.lucky.common.utils.StringUtils;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("gen_table")
 public class GenTable extends BaseEntity {
 
     @Serial
@@ -113,17 +115,20 @@ public class GenTable extends BaseEntity {
     /**
      * 主键信息
      */
+    @TableField(exist = false)
     private GenTableColumn pkColumn;
 
     /**
      * 子表信息
      */
+    @TableField(exist = false)
     private GenTable subTable;
 
     /**
      * 表列信息
      */
     @Valid
+    @TableField(exist = false)
     private List<GenTableColumn> columns;
 
     /**
@@ -134,33 +139,37 @@ public class GenTable extends BaseEntity {
     /**
      * 树编码字段
      */
+    @TableField(exist = false)
     private String treeCode;
 
     /**
      * 树父编码字段
      */
+    @TableField(exist = false)
     private String treeParentCode;
 
     /**
      * 树名称字段
      */
+    @TableField(exist = false)
     private String treeName;
 
     /**
      * 上级菜单ID字段
      */
+    @TableField(exist = false)
     private Long parentMenuId;
 
     /**
      * 上级菜单名称字段
      */
+    @TableField(exist = false)
     private String parentMenuName;
 
     /**
-     * 删除标志（0代表存在 2代表删除）
+     * 备注
      */
-    @TableField(exist = false)
-    private String delFlag;
+    private String remark;
 
     public static boolean isSub(String tplCategory) {
         return tplCategory != null && StringUtils.equals(GenConstants.TPL_SUB, tplCategory);

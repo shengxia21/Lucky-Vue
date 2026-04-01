@@ -1,7 +1,9 @@
 package com.lucky.common.core.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.lucky.common.core.domain.BaseEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,6 +23,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("sys_dept")
 public class SysDept extends BaseEntity {
 
     @Serial
@@ -87,11 +90,13 @@ public class SysDept extends BaseEntity {
     /**
      * 父部门名称
      */
+    @TableField(exist = false)
     private String parentName;
 
     /**
      * 子部门
      */
+    @TableField(exist = false)
     private List<SysDept> children = new ArrayList<>();
 
 }

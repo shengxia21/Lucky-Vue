@@ -1,7 +1,7 @@
 package com.lucky.system.domain;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
 import com.lucky.common.core.domain.BaseEntity;
@@ -19,6 +19,7 @@ import java.io.Serial;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("sys_config")
 public class SysConfig extends BaseEntity {
 
     @Serial
@@ -62,9 +63,8 @@ public class SysConfig extends BaseEntity {
     private String configType;
 
     /**
-     * 删除标志（0代表存在 2代表删除）
+     * 备注
      */
-    @TableField(exist = false)
-    private String delFlag;
+    private String remark;
 
 }

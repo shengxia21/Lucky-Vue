@@ -1,7 +1,7 @@
 package com.lucky.common.core.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
 import com.lucky.common.constant.UserConstants;
@@ -20,6 +20,7 @@ import java.io.Serial;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("sys_dict_data")
 public class SysDictData extends BaseEntity {
 
     @Serial
@@ -86,10 +87,9 @@ public class SysDictData extends BaseEntity {
     private String status;
 
     /**
-     * 删除标志（0代表存在 2代表删除）
+     * 备注
      */
-    @TableField(exist = false)
-    private String delFlag;
+    private String remark;
 
     public boolean getDefault() {
         return UserConstants.YES.equals(this.isDefault);

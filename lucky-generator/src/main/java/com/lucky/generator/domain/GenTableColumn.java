@@ -1,7 +1,7 @@
 package com.lucky.generator.domain;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.lucky.common.core.domain.BaseEntity;
 import com.lucky.common.utils.StringUtils;
 import jakarta.validation.constraints.NotBlank;
@@ -17,6 +17,7 @@ import java.io.Serial;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("gen_table_column")
 public class GenTableColumn extends BaseEntity {
 
     @Serial
@@ -113,12 +114,6 @@ public class GenTableColumn extends BaseEntity {
      * 排序
      */
     private Integer sort;
-
-    /**
-     * 删除标志（0代表存在 2代表删除）
-     */
-    @TableField(exist = false)
-    private String delFlag;
 
     public static boolean isSuperColumn(String javaField) {
         return StringUtils.equalsAnyIgnoreCase(javaField,

@@ -56,11 +56,6 @@ public class BaseEntity implements Serializable, TransPojo {
     private Date updateTime;
 
     /**
-     * 备注
-     */
-    private String remark;
-
-    /**
      * 请求参数
      */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

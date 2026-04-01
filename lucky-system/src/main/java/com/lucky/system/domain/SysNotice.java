@@ -1,7 +1,7 @@
 package com.lucky.system.domain;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lucky.common.core.domain.BaseEntity;
 import com.lucky.common.xss.Xss;
@@ -19,6 +19,7 @@ import java.io.Serial;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("sys_notice")
 public class SysNotice extends BaseEntity {
 
     @Serial
@@ -60,9 +61,8 @@ public class SysNotice extends BaseEntity {
     private boolean isRead;
 
     /**
-     * 删除标志（0代表存在 2代表删除）
+     * 备注
      */
-    @TableField(exist = false)
-    private String delFlag;
+    private String remark;
 
 }

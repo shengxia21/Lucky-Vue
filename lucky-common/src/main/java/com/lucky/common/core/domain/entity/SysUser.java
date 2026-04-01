@@ -1,7 +1,9 @@
 package com.lucky.common.core.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
@@ -15,6 +17,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.util.Date;
@@ -26,7 +29,9 @@ import java.util.List;
  * @author ruoyi
  */
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@TableName("sys_user")
 public class SysUser extends BaseEntity {
 
     @Serial
@@ -124,37 +129,43 @@ public class SysUser extends BaseEntity {
     private Date pwdUpdateDate;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 部门对象
      */
     @Excels({
             @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
             @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
     })
+    @TableField(exist = false)
     private SysDept dept;
 
     /**
      * 角色对象
      */
+    @TableField(exist = false)
     private List<SysRole> roles;
 
     /**
      * 角色组
      */
+    @TableField(exist = false)
     private Long[] roleIds;
 
     /**
      * 岗位组
      */
+    @TableField(exist = false)
     private Long[] postIds;
 
     /**
      * 角色ID
      */
+    @TableField(exist = false)
     private Long roleId;
-
-    public SysUser() {
-
-    }
 
     public SysUser(Long userId) {
         this.userId = userId;
