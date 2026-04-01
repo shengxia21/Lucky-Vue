@@ -1,5 +1,6 @@
 package com.lucky.framework.config;
 
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,12 @@ public class ApplicationConfig {
      */
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jacksonObjectMapperCustomization() {
-        return jacksonObjectMapperBuilder -> jacksonObjectMapperBuilder.timeZone(TimeZone.getDefault());
+        return builder -> {
+            // 配置时区
+            builder.timeZone(TimeZone.getDefault());
+            // 将Long类型转换为字符串类型(解决雪花id在前端精度丢失问题)
+            builder.serializerByType(Long.class, ToStringSerializer.instance);
+        };
     }
 
 }
