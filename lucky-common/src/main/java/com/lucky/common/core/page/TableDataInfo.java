@@ -1,8 +1,8 @@
 package com.lucky.common.core.page;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.http.HttpStatus;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.lucky.common.constant.HttpStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -51,7 +51,7 @@ public class TableDataInfo<T> implements Serializable {
     public TableDataInfo(List<T> list, long total) {
         this.rows = list;
         this.total = total;
-        this.code = HttpStatus.HTTP_OK;
+        this.code = HttpStatus.SUCCESS;
         this.msg = "查询成功";
     }
 
@@ -67,7 +67,7 @@ public class TableDataInfo<T> implements Serializable {
      */
     public static <T> TableDataInfo<T> build(IPage<T> page) {
         TableDataInfo<T> data = new TableDataInfo<>();
-        data.setCode(HttpStatus.HTTP_OK);
+        data.setCode(HttpStatus.SUCCESS);
         data.setMsg("查询成功");
         data.setRows(page.getRecords());
         data.setTotal(page.getTotal());
@@ -79,7 +79,7 @@ public class TableDataInfo<T> implements Serializable {
      */
     public static <T, V> TableDataInfo<V> build(IPage<T> page, Class<V> clazz) {
         TableDataInfo<V> data = new TableDataInfo<>();
-        data.setCode(HttpStatus.HTTP_OK);
+        data.setCode(HttpStatus.SUCCESS);
         data.setMsg("查询成功");
         data.setRows(BeanUtil.copyToList(page.getRecords(), clazz));
         data.setTotal(page.getTotal());

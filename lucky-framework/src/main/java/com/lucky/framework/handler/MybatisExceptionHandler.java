@@ -1,6 +1,6 @@
 package com.lucky.framework.handler;
 
-import cn.hutool.http.HttpStatus;
+import com.lucky.common.constant.HttpStatus;
 import com.lucky.common.core.domain.AjaxResult;
 import jakarta.servlet.http.HttpServletRequest;
 import org.mybatis.spring.MyBatisSystemException;
@@ -27,7 +27,7 @@ public class MybatisExceptionHandler {
     public AjaxResult handleDuplicateKeyException(DuplicateKeyException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',数据库中已存在记录'{}'", requestURI, e.getMessage());
-        return AjaxResult.error(HttpStatus.HTTP_CONFLICT, "数据库中已存在该记录，请联系管理员确认");
+        return AjaxResult.error(HttpStatus.CONFLICT, "数据库中已存在该记录，请联系管理员确认");
     }
 
     /**
@@ -37,7 +37,7 @@ public class MybatisExceptionHandler {
     public AjaxResult handleCannotFindDataSourceException(MyBatisSystemException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',Mybatis系统异常", requestURI, e);
-        return AjaxResult.error(HttpStatus.HTTP_INTERNAL_ERROR, e.getMessage());
+        return AjaxResult.error(HttpStatus.ERROR, e.getMessage());
     }
 
 }

@@ -1,8 +1,8 @@
 package com.lucky.framework.handler;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.http.HttpStatus;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.lucky.common.constant.HttpStatus;
 import com.lucky.common.core.domain.BaseEntity;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.exception.ServiceException;
@@ -47,7 +47,7 @@ public class InjectionMetaObjectHandler implements MetaObjectHandler {
                 this.strictInsertFill(metaObject, "createTime", Date.class, new Date());
             }
         } catch (Exception e) {
-            throw new ServiceException("insertFill异常 => " + e.getMessage(), HttpStatus.HTTP_UNAUTHORIZED);
+            throw new ServiceException("insertFill异常 => " + e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -70,7 +70,7 @@ public class InjectionMetaObjectHandler implements MetaObjectHandler {
                 this.strictUpdateFill(metaObject, "updateTime", Date.class, new Date());
             }
         } catch (Exception e) {
-            throw new ServiceException("updateFill异常 => " + e.getMessage(), HttpStatus.HTTP_UNAUTHORIZED);
+            throw new ServiceException("updateFill异常 => " + e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 
