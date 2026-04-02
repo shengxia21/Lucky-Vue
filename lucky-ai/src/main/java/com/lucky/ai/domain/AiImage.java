@@ -1,8 +1,10 @@
 package com.lucky.ai.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.lucky.common.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -93,6 +95,7 @@ public class AiImage extends BaseEntity {
     /**
      * 绘制参数
      */
+    @TableField(typeHandler = JacksonTypeHandler.class)
     private Map<String, Object> options;
 
     /**

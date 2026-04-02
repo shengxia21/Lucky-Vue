@@ -1,9 +1,12 @@
 package com.lucky.ai.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.lucky.common.core.domain.BaseEntity;
+import com.lucky.common.core.mybatis.type.LongListTypeHandler;
+import com.lucky.common.core.mybatis.type.StringListTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -67,16 +70,19 @@ public class AiChatRole extends BaseEntity {
     /**
      * 引用的知识库编号列表
      */
+    @TableField(typeHandler = LongListTypeHandler.class)
     private List<Long> knowledgeIds;
 
     /**
      * 引用的工具编号列表
      */
+    @TableField(typeHandler = LongListTypeHandler.class)
     private List<Long> toolIds;
 
     /**
      * 引用的 MCP Client 名字列表
      */
+    @TableField(typeHandler = StringListTypeHandler.class)
     private List<String> mcpClientNames;
 
     /**

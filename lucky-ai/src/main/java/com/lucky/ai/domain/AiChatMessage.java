@@ -1,10 +1,14 @@
 package com.lucky.ai.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.lucky.ai.core.vo.search.WebSearchResponse;
 import com.lucky.common.core.domain.BaseEntity;
+import com.lucky.common.core.mybatis.type.LongListTypeHandler;
+import com.lucky.common.core.mybatis.type.StringListTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -83,16 +87,19 @@ public class AiChatMessage extends BaseEntity {
     /**
      * 知识库段落编号数组
      */
+    @TableField(typeHandler = LongListTypeHandler.class)
     private List<Long> segmentIds;
 
     /**
      * 联网搜索的网页内容数组
      */
+    @TableField(typeHandler = JacksonTypeHandler.class)
     private List<WebSearchResponse.WebPage> webSearchPages;
 
     /**
      * 附件 URL 数组
      */
+    @TableField(typeHandler = StringListTypeHandler.class)
     private List<String> attachmentUrls;
 
     /**

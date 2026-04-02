@@ -12,7 +12,6 @@ import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.domain.query.message.AiChatMessagePageQuery;
-import com.lucky.ai.domain.vo.message.AiChatMessageCountVO;
 import com.lucky.ai.domain.vo.message.AiChatMessageVO;
 import com.lucky.ai.mapper.AiChatMessageMapper;
 import com.lucky.ai.service.AiApiKeyService;
@@ -28,7 +27,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * AI 聊天消息Service业务层处理
@@ -168,17 +169,7 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
      */
     @Override
     public Map<Long, Integer> getChatMessageCountMap(Collection<Long> conversationIds) {
-        if (CollUtil.isEmpty(conversationIds)) {
-            return Collections.emptyMap();
-        }
-        List<AiChatMessageCountVO> list = chatMessageMapper.selectCountMapByConversationIds(conversationIds);
-        Map<Long, Integer> result = new HashMap<>();
-        for (AiChatMessageCountVO row : list) {
-            Long conversationId = row.getConversationId();
-            Integer count = row.getCount();
-            result.put(conversationId, count);
-        }
-        return result;
+        return chatMessageMapper.selectCountMapByConversationIds(conversationIds);
     }
 
 }

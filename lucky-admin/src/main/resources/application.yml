@@ -101,8 +101,6 @@ mybatis-plus:
   mapperPackage: com.lucky.**.mapper
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapperLocations: classpath*:mapper/**/*Mapper.xml
-  # 配置类型处理器的扫描包，找到所有的TypeHandler实现类
-  type-handlers-package: com.lucky.framework.handler.type
   # 全局配置信息
   configuration:
     # 指定 MyBatis 所用日志的具体实现（控制台输出日志需修改 logging.level 为 DEBUG 级别）
