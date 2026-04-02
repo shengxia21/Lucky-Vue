@@ -2,9 +2,9 @@ package com.lucky.ai.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.ai.domain.AiModel;
-import com.lucky.ai.domain.query.model.ModelPageQuery;
-import com.lucky.ai.domain.query.model.ModelSaveQuery;
-import com.lucky.ai.domain.vo.model.ModelVO;
+import com.lucky.ai.domain.query.model.AiModelPageQuery;
+import com.lucky.ai.domain.query.model.AiModelSaveQuery;
+import com.lucky.ai.domain.vo.model.AiModelVO;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import com.lucky.ai.mapper.AiModelMapper;
@@ -73,7 +73,7 @@ public class AiModelServiceImpl implements AiModelService {
      * @return 编号
      */
     @Override
-    public Long createModel(ModelSaveQuery query) {
+    public Long createModel(AiModelSaveQuery query) {
         // 1. 校验
         AiPlatformEnum.validatePlatform(query.getPlatform());
         apiKeyService.validateApiKey(query.getKeyId());
@@ -90,7 +90,7 @@ public class AiModelServiceImpl implements AiModelService {
      * @return 影响行数
      */
     @Override
-    public int updateModel(ModelSaveQuery query) {
+    public int updateModel(AiModelSaveQuery query) {
         // 1. 校验
         validateModelExists(query.getId());
         AiPlatformEnum.validatePlatform(query.getPlatform());
@@ -121,7 +121,7 @@ public class AiModelServiceImpl implements AiModelService {
      * @return 模型
      */
     @Override
-    public ModelVO getModelById(Long id) {
+    public AiModelVO getModelById(Long id) {
         return modelMapper.selectVoById(id);
     }
 
@@ -132,8 +132,8 @@ public class AiModelServiceImpl implements AiModelService {
      * @return 模型分页
      */
     @Override
-    public TableDataInfo<ModelVO> getModelPage(PageQuery pageQuery, ModelPageQuery query) {
-        IPage<ModelVO> selectPage = modelMapper.selectPage(pageQuery.build(), query);
+    public TableDataInfo<AiModelVO> getModelPage(PageQuery pageQuery, AiModelPageQuery query) {
+        IPage<AiModelVO> selectPage = modelMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(selectPage);
     }
 
@@ -146,7 +146,7 @@ public class AiModelServiceImpl implements AiModelService {
      * @return 模型列表
      */
     @Override
-    public List<ModelVO> getModelList(Integer status, Integer type, String platform) {
+    public List<AiModelVO> getModelList(Integer status, Integer type, String platform) {
         return modelMapper.selectList(status, type, platform);
     }
 

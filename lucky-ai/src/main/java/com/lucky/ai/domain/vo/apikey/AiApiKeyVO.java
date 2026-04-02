@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @AutoMapper(target = AiApiKey.class)
-public class ApiKeyVO {
+public class AiApiKeyVO {
 
     /**
      * 编号

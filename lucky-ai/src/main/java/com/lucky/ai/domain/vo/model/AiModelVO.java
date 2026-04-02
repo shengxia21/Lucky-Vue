@@ -13,7 +13,7 @@ import java.util.Date;
  */
 @Data
 @AutoMapper(target = AiModel.class)
-public class ModelVO {
+public class AiModelVO {
 
     /**
      * 编号

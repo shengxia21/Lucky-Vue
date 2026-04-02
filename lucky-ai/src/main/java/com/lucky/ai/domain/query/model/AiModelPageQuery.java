@@ -8,7 +8,7 @@ import lombok.Data;
  * @author lucky
  */
 @Data
-public class ModelPageQuery {
+public class AiModelPageQuery {
 
     /**
      * 模型名字

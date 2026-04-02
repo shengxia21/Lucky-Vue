@@ -1,8 +1,8 @@
 package com.lucky.ai.controller.model;
 
-import com.lucky.ai.domain.query.model.ModelPageQuery;
-import com.lucky.ai.domain.query.model.ModelSaveQuery;
-import com.lucky.ai.domain.vo.model.ModelVO;
+import com.lucky.ai.domain.query.model.AiModelPageQuery;
+import com.lucky.ai.domain.query.model.AiModelSaveQuery;
+import com.lucky.ai.domain.vo.model.AiModelVO;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.service.AiModelService;
 import com.lucky.common.annotation.Log;
@@ -36,7 +36,7 @@ public class AiModelController extends BaseController {
     @Log(title = "创建模型", businessType = BusinessType.INSERT)
     @PreAuthorize("@ss.hasPermi('ai:model:create')")
     @PostMapping("/create")
-    public R<Long> createModel(@Validated @RequestBody ModelSaveQuery query) {
+    public R<Long> createModel(@Validated @RequestBody AiModelSaveQuery query) {
         return R.ok(modelService.createModel(query));
     }
 
@@ -46,7 +46,7 @@ public class AiModelController extends BaseController {
     @Log(title = "更新模型", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('ai:model:update')")
     @PutMapping("/update")
-    public R<Integer> updateModel(@Validated @RequestBody ModelSaveQuery query) {
+    public R<Integer> updateModel(@Validated @RequestBody AiModelSaveQuery query) {
         return R.ok(modelService.updateModel(query));
     }
 
@@ -65,7 +65,7 @@ public class AiModelController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:model:query')")
     @GetMapping("/get")
-    public R<ModelVO> getModel(@RequestParam("id") Long id) {
+    public R<AiModelVO> getModel(@RequestParam("id") Long id) {
         return R.ok(modelService.getModelById(id));
     }
 
@@ -74,7 +74,7 @@ public class AiModelController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:model:list')")
     @GetMapping("/page")
-    public TableDataInfo<ModelVO> getModelPage(PageQuery pageQuery, ModelPageQuery query) {
+    public TableDataInfo<AiModelVO> getModelPage(PageQuery pageQuery, AiModelPageQuery query) {
         return modelService.getModelPage(pageQuery, query);
     }
 
@@ -82,10 +82,10 @@ public class AiModelController extends BaseController {
      * 获得模型列表
      */
     @GetMapping("/simple-list")
-    public R<List<ModelVO>> getModelSimpleList(
+    public R<List<AiModelVO>> getModelSimpleList(
             @RequestParam("type") Integer type,
             @RequestParam(value = "platform", required = false) String platform) {
-        List<ModelVO> list = modelService.getModelList(CommonStatusEnum.ENABLE.getStatus(), type, platform);
+        List<AiModelVO> list = modelService.getModelList(CommonStatusEnum.ENABLE.getStatus(), type, platform);
         return R.ok(list);
     }
 

@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Data
 @AutoMapper(target = AiChatRole.class, reverseConvertGenerate = false)
-public class ChatRoleSaveQuery {
+public class AiChatRoleSaveQuery {
 
     /**
      * 角色编号

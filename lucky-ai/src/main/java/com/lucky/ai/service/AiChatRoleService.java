@@ -1,10 +1,10 @@
 package com.lucky.ai.service;
 
 import com.lucky.ai.domain.AiChatRole;
-import com.lucky.ai.domain.query.chatRole.ChatRolePageQuery;
-import com.lucky.ai.domain.query.chatRole.ChatRoleSaveMyQuery;
-import com.lucky.ai.domain.query.chatRole.ChatRoleSaveQuery;
-import com.lucky.ai.domain.vo.chatRole.ChatRoleVO;
+import com.lucky.ai.domain.query.chatRole.AiChatRolePageQuery;
+import com.lucky.ai.domain.query.chatRole.AiChatRoleSaveMyQuery;
+import com.lucky.ai.domain.query.chatRole.AiChatRoleSaveQuery;
+import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 
@@ -24,7 +24,7 @@ public interface AiChatRoleService {
      * @param query 创建信息
      * @return 编号
      */
-    Long createChatRole(ChatRoleSaveQuery query);
+    Long createChatRole(AiChatRoleSaveQuery query);
 
     /**
      * 创建【我的】聊天角色
@@ -33,14 +33,14 @@ public interface AiChatRoleService {
      * @param userId      用户编号
      * @return 编号
      */
-    Long createChatRoleMy(ChatRoleSaveMyQuery query, Long userId);
+    Long createChatRoleMy(AiChatRoleSaveMyQuery query, Long userId);
 
     /**
      * 更新聊天角色
      *
      * @param query 更新信息
      */
-    int updateChatRole(ChatRoleSaveQuery query);
+    int updateChatRole(AiChatRoleSaveQuery query);
 
     /**
      * 更新【我的】聊天角色
@@ -48,7 +48,7 @@ public interface AiChatRoleService {
      * @param query 更新信息
      * @param userId      用户编号
      */
-    int updateChatRoleMy(ChatRoleSaveMyQuery query, Long userId);
+    int updateChatRoleMy(AiChatRoleSaveMyQuery query, Long userId);
 
     /**
      * 删除聊天角色
@@ -71,7 +71,7 @@ public interface AiChatRoleService {
      * @param id 编号
      * @return AI 聊天角色
      */
-    ChatRoleVO getChatRoleById(Long id);
+    AiChatRoleVO getChatRoleById(Long id);
 
     /**
      * 获得聊天角色列表
@@ -79,7 +79,7 @@ public interface AiChatRoleService {
      * @param ids 编号数组
      * @return 聊天角色列表
      */
-    List<ChatRoleVO> getChatRoleList(Collection<Long> ids);
+    List<AiChatRoleVO> getChatRoleList(Collection<Long> ids);
 
     /**
      * 校验聊天角色是否合法
@@ -95,7 +95,7 @@ public interface AiChatRoleService {
      * @param query 查询参数
      * @return 聊天角色分页
      */
-    TableDataInfo<ChatRoleVO> getChatRolePage(PageQuery pageQuery, ChatRolePageQuery query);
+    TableDataInfo<AiChatRoleVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageQuery query);
 
     /**
      * 获得【我的】聊天角色分页
@@ -105,7 +105,7 @@ public interface AiChatRoleService {
      * @param userId    用户编号
      * @return 聊天角色分页
      */
-    TableDataInfo<ChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, ChatRolePageQuery query, Long userId);
+    TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query, Long userId);
 
     /**
      * 获得聊天角色的分类列表
@@ -120,6 +120,6 @@ public interface AiChatRoleService {
      * @param name 名字
      * @return 聊天角色列表
      */
-    List<ChatRoleVO> getChatRoleListByName(String name);
+    List<AiChatRoleVO> getChatRoleListByName(String name);
 
 }

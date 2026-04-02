@@ -8,7 +8,7 @@ import lombok.Data;
  * @author lucky
  */
 @Data
-public class ChatMessageCountVO {
+public class AiChatMessageCountVO {
 
     /**
      * 会话ID

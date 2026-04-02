@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @Data
 @AutoMapper(target = AiChatConversation.class)
-public class ChatConversationVO implements VO {
+public class AiChatConversationVO implements VO {
 
     /**
      * 对话编号

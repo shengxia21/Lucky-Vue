@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Data
 @AutoMapper(target = AiImage.class)
-public class ImageVO {
+public class AiImageVO {
 
     /**
      * 编号

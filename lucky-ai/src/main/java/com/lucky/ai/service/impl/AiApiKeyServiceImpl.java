@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiApiKey;
-import com.lucky.ai.domain.query.apiKey.ApiKeyPageQuery;
-import com.lucky.ai.domain.query.apiKey.ApiKeySaveQuery;
-import com.lucky.ai.domain.vo.apikey.ApiKeyVO;
+import com.lucky.ai.domain.query.apiKey.AiApiKeyPageQuery;
+import com.lucky.ai.domain.query.apiKey.AiApiKeySaveQuery;
+import com.lucky.ai.domain.vo.apikey.AiApiKeyVO;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.mapper.AiApiKeyMapper;
 import com.lucky.ai.service.AiApiKeyService;
@@ -38,7 +38,7 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
      * @return 结果
      */
     @Override
-    public Long createApiKey(ApiKeySaveQuery query) {
+    public Long createApiKey(AiApiKeySaveQuery query) {
         // 插入
         AiApiKey apiKey = MapstructUtils.convert(query, AiApiKey.class);
         apiKeyMapper.insert(apiKey);
@@ -53,7 +53,7 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
      * @return 结果
      */
     @Override
-    public int updateApiKey(ApiKeySaveQuery query) {
+    public int updateApiKey(AiApiKeySaveQuery query) {
         // 校验存在
         validateApiKeyExists(query.getId());
         // 更新
@@ -82,7 +82,7 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
      * @return API 密钥
      */
     @Override
-    public ApiKeyVO getApiKeyById(Long id) {
+    public AiApiKeyVO getApiKeyById(Long id) {
         return apiKeyMapper.selectVoById(id);
     }
 
@@ -94,8 +94,8 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
      * @return API 密钥分页结果
      */
     @Override
-    public TableDataInfo<ApiKeyVO> getApiKeyPage(PageQuery pageQuery, ApiKeyPageQuery query) {
-        IPage<ApiKeyVO> page = apiKeyMapper.selectPage(pageQuery.build(), query);
+    public TableDataInfo<AiApiKeyVO> getApiKeyPage(PageQuery pageQuery, AiApiKeyPageQuery query) {
+        IPage<AiApiKeyVO> page = apiKeyMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
@@ -105,7 +105,7 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
      * @return API 密钥列表
      */
     @Override
-    public List<ApiKeyVO> getApiKeyList() {
+    public List<AiApiKeyVO> getApiKeyList() {
         LambdaQueryWrapper<AiApiKey> wrapper = Wrappers.<AiApiKey>lambdaQuery()
                 .select(AiApiKey::getId, AiApiKey::getName);
         return apiKeyMapper.selectVoList(wrapper);

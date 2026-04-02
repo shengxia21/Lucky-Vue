@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiChatRole;
-import com.lucky.ai.domain.query.chatRole.ChatRolePageQuery;
-import com.lucky.ai.domain.vo.chatRole.ChatRoleVO;
+import com.lucky.ai.domain.query.chatRole.AiChatRolePageQuery;
+import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.common.core.mybatis.BaseMapperX;
 import com.lucky.common.utils.StringUtils;
@@ -18,9 +18,9 @@ import java.util.Objects;
  *
  * @author lucky
  */
-public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, ChatRoleVO> {
+public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, AiChatRoleVO> {
 
-    default IPage<ChatRoleVO> selectPage(IPage<AiChatRole> page, ChatRolePageQuery query) {
+    default IPage<AiChatRoleVO> selectPage(IPage<AiChatRole> page, AiChatRolePageQuery query) {
         LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getName()), AiChatRole::getName, query.getName())
                 .eq(StringUtils.isNotEmpty(query.getCategory()), AiChatRole::getCategory, query.getCategory())
@@ -29,7 +29,7 @@ public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, ChatRoleVO> {
         return selectVoPage(page, wrapper);
     }
 
-    default IPage<ChatRoleVO> selectMyPage(IPage<AiChatRole> page, ChatRolePageQuery query, Long userId) {
+    default IPage<AiChatRoleVO> selectMyPage(IPage<AiChatRole> page, AiChatRolePageQuery query, Long userId) {
         LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getName()), AiChatRole::getName, query.getName())
                 .eq(StringUtils.isNotEmpty(query.getCategory()), AiChatRole::getCategory, query.getCategory())
@@ -52,7 +52,7 @@ public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, ChatRoleVO> {
                 .toList();
     }
 
-    default List<ChatRoleVO> selectListByName(String name) {
+    default List<AiChatRoleVO> selectListByName(String name) {
         LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
                 .like(StringUtils.isNotEmpty(name), AiChatRole::getName, name)
                 .orderByAsc(AiChatRole::getSort);

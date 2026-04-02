@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 @AutoMapper(target = AiImage.class, reverseConvertGenerate = false)
-public class ImageUpdateQuery {
+public class AiImageUpdateQuery {
 
     /**
      * 编号

@@ -4,9 +4,9 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.core.vo.chat.ChatMessageResponse;
-import com.lucky.ai.domain.query.message.ChatMessagePageQuery;
-import com.lucky.ai.domain.vo.conversation.ChatConversationVO;
-import com.lucky.ai.domain.vo.message.ChatMessageVO;
+import com.lucky.ai.domain.query.message.AiChatMessagePageQuery;
+import com.lucky.ai.domain.vo.conversation.AiChatConversationVO;
+import com.lucky.ai.domain.vo.message.AiChatMessageVO;
 import com.lucky.ai.service.AiChatConversationService;
 import com.lucky.ai.service.AiChatMessageService;
 import com.lucky.common.annotation.Log;
@@ -51,13 +51,13 @@ public class AiChatMessageController extends BaseController {
      * 获得指定对话的消息列表
      */
     @GetMapping("/list-by-conversation-id")
-    public R<List<ChatMessageVO>> getChatMessageListByConversationId(@RequestParam("conversationId") Long conversationId) {
-        ChatConversationVO conversation = chatConversationService.getChatConversationById(conversationId);
+    public R<List<AiChatMessageVO>> getChatMessageListByConversationId(@RequestParam("conversationId") Long conversationId) {
+        AiChatConversationVO conversation = chatConversationService.getChatConversationById(conversationId);
         if (conversation == null || ObjUtil.notEqual(conversation.getUserId(), getUserId())) {
             return R.fail("对话不存在或不属于当前用户");
         }
         // 1. 获取消息列表
-        List<ChatMessageVO> messageList = chatMessageService.getChatMessageListByConversationId(conversationId);
+        List<AiChatMessageVO> messageList = chatMessageService.getChatMessageListByConversationId(conversationId);
         if (CollUtil.isEmpty(messageList)) {
             return R.ok(Collections.emptyList());
         }
@@ -91,7 +91,7 @@ public class AiChatMessageController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:chat-conversation:list')")
     @GetMapping("/page")
-    public TableDataInfo<ChatMessageVO> getChatMessagePage(PageQuery pageQuery, ChatMessagePageQuery query) {
+    public TableDataInfo<AiChatMessageVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageQuery query) {
         return chatMessageService.getChatMessagePage(pageQuery, query);
     }
 

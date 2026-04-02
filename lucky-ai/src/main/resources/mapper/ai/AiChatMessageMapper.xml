@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lucky.ai.mapper.AiChatMessageMapper">
 
-    <select id="selectCountMapByConversationIds" parameterType="Collection" resultType="com.lucky.ai.domain.vo.message.ChatMessageCountVO">
+    <select id="selectCountMapByConversationIds" parameterType="Collection" resultType="com.lucky.ai.domain.vo.message.AiChatMessageCountVO">
         SELECT conversation_id AS conversationId, COUNT(id) AS count
         FROM ai_chat_message
         where conversation_id IN

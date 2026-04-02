@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Data
 @AutoMapper(target = AiChatRole.class)
-public class ChatRoleVO implements VO {
+public class AiChatRoleVO implements VO {
 
     /**
      * 编号

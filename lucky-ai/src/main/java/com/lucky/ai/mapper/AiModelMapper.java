@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiModel;
-import com.lucky.ai.domain.query.model.ModelPageQuery;
-import com.lucky.ai.domain.vo.model.ModelVO;
+import com.lucky.ai.domain.query.model.AiModelPageQuery;
+import com.lucky.ai.domain.vo.model.AiModelVO;
 import com.lucky.common.core.mybatis.BaseMapperX;
 import com.lucky.common.utils.StringUtils;
 
@@ -16,9 +16,9 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface AiModelMapper extends BaseMapperX<AiModel, ModelVO> {
+public interface AiModelMapper extends BaseMapperX<AiModel, AiModelVO> {
 
-    default IPage<ModelVO> selectPage(IPage<AiModel> page, ModelPageQuery query) {
+    default IPage<AiModelVO> selectPage(IPage<AiModel> page, AiModelPageQuery query) {
         LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getName()), AiModel::getName, query.getName())
                 .eq(StringUtils.isNotEmpty(query.getModel()), AiModel::getModel, query.getModel())
@@ -35,7 +35,7 @@ public interface AiModelMapper extends BaseMapperX<AiModel, ModelVO> {
         return selectOne(wrapper, false);
     }
 
-    default List<ModelVO> selectList(Integer status, Integer type, String platform) {
+    default List<AiModelVO> selectList(Integer status, Integer type, String platform) {
         LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
                 .select(AiModel::getId, AiModel::getName, AiModel::getModel, AiModel::getPlatform)
                 .eq(StringUtils.isNotNull(status), AiModel::getStatus, status)

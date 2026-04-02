@@ -1,9 +1,9 @@
 package com.lucky.ai.service;
 
 import com.lucky.ai.domain.AiModel;
-import com.lucky.ai.domain.query.model.ModelPageQuery;
-import com.lucky.ai.domain.query.model.ModelSaveQuery;
-import com.lucky.ai.domain.vo.model.ModelVO;
+import com.lucky.ai.domain.query.model.AiModelPageQuery;
+import com.lucky.ai.domain.query.model.AiModelSaveQuery;
+import com.lucky.ai.domain.vo.model.AiModelVO;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 
@@ -40,7 +40,7 @@ public interface AiModelService {
      * @param query 创建信息
      * @return 编号
      */
-    Long createModel(ModelSaveQuery query);
+    Long createModel(AiModelSaveQuery query);
 
     /**
      * 更新模型
@@ -48,7 +48,7 @@ public interface AiModelService {
      * @param query 更新信息
      * @return 影响行数
      */
-    int updateModel(ModelSaveQuery query);
+    int updateModel(AiModelSaveQuery query);
 
     /**
      * 删除模型
@@ -64,7 +64,7 @@ public interface AiModelService {
      * @param id 编号
      * @return 模型
      */
-    ModelVO getModelById(Long id);
+    AiModelVO getModelById(Long id);
 
     /**
      * 获得模型分页
@@ -73,7 +73,7 @@ public interface AiModelService {
      * @param query 请求参数
      * @return 模型分页
      */
-    TableDataInfo<ModelVO> getModelPage(PageQuery pageQuery, ModelPageQuery query);
+    TableDataInfo<AiModelVO> getModelPage(PageQuery pageQuery, AiModelPageQuery query);
 
     /**
      * 获得模型列表
@@ -83,6 +83,6 @@ public interface AiModelService {
      * @param platform 平台
      * @return 模型列表
      */
-    List<ModelVO> getModelList(Integer status, Integer type, String platform);
+    List<AiModelVO> getModelList(Integer status, Integer type, String platform);
 
 }

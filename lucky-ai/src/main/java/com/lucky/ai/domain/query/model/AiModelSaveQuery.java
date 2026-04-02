@@ -17,7 +17,7 @@ import lombok.Data;
  */
 @Data
 @AutoMapper(target = AiModel.class, reverseConvertGenerate = false)
-public class ModelSaveQuery {
+public class AiModelSaveQuery {
 
     /**
      * 编号

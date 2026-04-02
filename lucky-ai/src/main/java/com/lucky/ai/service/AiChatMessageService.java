@@ -2,8 +2,8 @@ package com.lucky.ai.service;
 
 import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.core.vo.chat.ChatMessageResponse;
-import com.lucky.ai.domain.query.message.ChatMessagePageQuery;
-import com.lucky.ai.domain.vo.message.ChatMessageVO;
+import com.lucky.ai.domain.query.message.AiChatMessagePageQuery;
+import com.lucky.ai.domain.vo.message.AiChatMessageVO;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import reactor.core.publisher.Flux;
@@ -34,7 +34,7 @@ public interface AiChatMessageService {
      * @param conversationId 会话ID
      * @return 聊天消息列表
      */
-    List<ChatMessageVO> getChatMessageListByConversationId(Long conversationId);
+    List<AiChatMessageVO> getChatMessageListByConversationId(Long conversationId);
 
     /**
      * 删除消息
@@ -61,7 +61,7 @@ public interface AiChatMessageService {
      * @param query 查询参数
      * @return 聊天消息分页列表
      */
-    TableDataInfo<ChatMessageVO> getChatMessagePage(PageQuery pageQuery, ChatMessagePageQuery query);
+    TableDataInfo<AiChatMessageVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageQuery query);
 
     /**
      * 删除消息（管理员）

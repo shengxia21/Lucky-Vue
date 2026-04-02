@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @AutoMapper(target = AiApiKey.class, reverseConvertGenerate = false)
-public class ApiKeySaveQuery {
+public class AiApiKeySaveQuery {
 
     /**
      * 编号

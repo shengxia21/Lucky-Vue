@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 @AutoMapper(target = AiChatConversation.class, reverseConvertGenerate = false)
-public class ChatConversationUpdateMyQuery {
+public class AiChatConversationUpdateMyQuery {
 
     /**
      * 对话编号

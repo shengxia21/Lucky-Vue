@@ -8,10 +8,10 @@ import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.domain.AiModel;
-import com.lucky.ai.domain.query.image.ImagePagePublicQuery;
-import com.lucky.ai.domain.query.image.ImagePageQuery;
-import com.lucky.ai.domain.query.image.ImageUpdateQuery;
-import com.lucky.ai.domain.vo.image.ImageVO;
+import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
+import com.lucky.ai.domain.query.image.AiImagePageQuery;
+import com.lucky.ai.domain.query.image.AiImageUpdateQuery;
+import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.ai.enums.image.AiImageStatusEnum;
 import com.lucky.ai.factory.AsyncAiFactory;
 import com.lucky.ai.mapper.AiImageMapper;
@@ -53,8 +53,8 @@ public class AiImageServiceImpl implements AiImageService {
      * @return 分页结果
      */
     @Override
-    public TableDataInfo<ImageVO> getImagePageMy(PageQuery pageQuery, ImagePageQuery query, Long userId) {
-        IPage<ImageVO> page = imageMapper.selectPageMy(pageQuery.build(), query, userId);
+    public TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query, Long userId) {
+        IPage<AiImageVO> page = imageMapper.selectPageMy(pageQuery.build(), query, userId);
         return TableDataInfo.build(page);
     }
 
@@ -65,8 +65,8 @@ public class AiImageServiceImpl implements AiImageService {
      * @return 分页结果
      */
     @Override
-    public TableDataInfo<ImageVO> getImagePagePublic(PageQuery pageQuery, ImagePagePublicQuery query) {
-        IPage<ImageVO> page = imageMapper.selectPagePublic(pageQuery.build(), query);
+    public TableDataInfo<AiImageVO> getImagePagePublic(PageQuery pageQuery, AiImagePagePublicQuery query) {
+        IPage<AiImageVO> page = imageMapper.selectPagePublic(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
@@ -77,7 +77,7 @@ public class AiImageServiceImpl implements AiImageService {
      * @return 绘图详情
      */
     @Override
-    public ImageVO getImageById(Long id) {
+    public AiImageVO getImageById(Long id) {
         return imageMapper.selectVoById(id);
     }
 
@@ -89,7 +89,7 @@ public class AiImageServiceImpl implements AiImageService {
      * @return 绘画列表
      */
     @Override
-    public List<ImageVO> getImageListByIdsAndUserId(List<Long> ids, Long userId) {
+    public List<AiImageVO> getImageListByIdsAndUserId(List<Long> ids, Long userId) {
         if (CollUtil.isEmpty(ids)) {
             return Collections.emptyList();
         }
@@ -157,8 +157,8 @@ public class AiImageServiceImpl implements AiImageService {
      * @return 分页结果
      */
     @Override
-    public TableDataInfo<ImageVO> getImagePage(PageQuery pageQuery, ImagePageQuery query) {
-        IPage<ImageVO> page = imageMapper.selectPage(pageQuery.build(), query);
+    public TableDataInfo<AiImageVO> getImagePage(PageQuery pageQuery, AiImagePageQuery query) {
+        IPage<AiImageVO> page = imageMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
@@ -169,7 +169,7 @@ public class AiImageServiceImpl implements AiImageService {
      * @return 结果
      */
     @Override
-    public int updateImage(ImageUpdateQuery query) {
+    public int updateImage(AiImageUpdateQuery query) {
         // 1. 校验存在
         validateImageExists(query.getId());
         // 2. 更新发布状态

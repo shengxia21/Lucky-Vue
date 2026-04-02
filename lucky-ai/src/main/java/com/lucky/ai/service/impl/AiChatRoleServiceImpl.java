@@ -5,10 +5,10 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.ai.domain.AiChatRole;
-import com.lucky.ai.domain.query.chatRole.ChatRolePageQuery;
-import com.lucky.ai.domain.query.chatRole.ChatRoleSaveMyQuery;
-import com.lucky.ai.domain.query.chatRole.ChatRoleSaveQuery;
-import com.lucky.ai.domain.vo.chatRole.ChatRoleVO;
+import com.lucky.ai.domain.query.chatRole.AiChatRolePageQuery;
+import com.lucky.ai.domain.query.chatRole.AiChatRoleSaveMyQuery;
+import com.lucky.ai.domain.query.chatRole.AiChatRoleSaveQuery;
+import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.mapper.AiChatRoleMapper;
 import com.lucky.ai.service.AiChatRoleService;
@@ -43,7 +43,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * @return 编号
      */
     @Override
-    public Long createChatRole(ChatRoleSaveQuery query) {
+    public Long createChatRole(AiChatRoleSaveQuery query) {
         // 校验文档
         // 校验工具
 
@@ -61,7 +61,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * @return 编号
      */
     @Override
-    public Long createChatRoleMy(ChatRoleSaveMyQuery query, Long userId) {
+    public Long createChatRoleMy(AiChatRoleSaveMyQuery query, Long userId) {
         // 校验文档
         // 校验工具
 
@@ -80,7 +80,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * @param query 更新信息
      */
     @Override
-    public int updateChatRole(ChatRoleSaveQuery query) {
+    public int updateChatRole(AiChatRoleSaveQuery query) {
         // 校验存在
         validateChatRoleExists(query.getId());
         // 校验文档
@@ -98,7 +98,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * @param userId 用户编号
      */
     @Override
-    public int updateChatRoleMy(ChatRoleSaveMyQuery query, Long userId) {
+    public int updateChatRoleMy(AiChatRoleSaveMyQuery query, Long userId) {
         // 校验存在
         AiChatRole chatRole = validateChatRoleExists(query.getId());
         if (ObjectUtil.notEqual(chatRole.getUserId(), userId)) {
@@ -149,7 +149,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * @return AI 聊天角色
      */
     @Override
-    public ChatRoleVO getChatRoleById(Long id) {
+    public AiChatRoleVO getChatRoleById(Long id) {
         return chatRoleMapper.selectVoById(id);
     }
 
@@ -160,7 +160,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * @return 聊天角色列表
      */
     @Override
-    public List<ChatRoleVO> getChatRoleList(Collection<Long> ids) {
+    public List<AiChatRoleVO> getChatRoleList(Collection<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
             return Collections.emptyList();
         }
@@ -189,8 +189,8 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * @return 聊天角色分页
      */
     @Override
-    public TableDataInfo<ChatRoleVO> getChatRolePage(PageQuery pageQuery, ChatRolePageQuery query) {
-        IPage<ChatRoleVO> page = chatRoleMapper.selectPage(pageQuery.build(), query);
+    public TableDataInfo<AiChatRoleVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageQuery query) {
+        IPage<AiChatRoleVO> page = chatRoleMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
@@ -203,8 +203,8 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * @return 聊天角色分页
      */
     @Override
-    public TableDataInfo<ChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, ChatRolePageQuery query, Long userId) {
-        IPage<ChatRoleVO> page = chatRoleMapper.selectMyPage(pageQuery.build(), query, userId);
+    public TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query, Long userId) {
+        IPage<AiChatRoleVO> page = chatRoleMapper.selectMyPage(pageQuery.build(), query, userId);
         return TableDataInfo.build(page);
     }
 
@@ -226,7 +226,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * @return 聊天角色列表
      */
     @Override
-    public List<ChatRoleVO> getChatRoleListByName(String name) {
+    public List<AiChatRoleVO> getChatRoleListByName(String name) {
         return chatRoleMapper.selectListByName(name);
     }
 

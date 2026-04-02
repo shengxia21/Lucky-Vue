@@ -8,10 +8,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.domain.AiModel;
-import com.lucky.ai.domain.query.conversation.ChatConversationCreateMyQuery;
-import com.lucky.ai.domain.query.conversation.ChatConversationPageQuery;
-import com.lucky.ai.domain.query.conversation.ChatConversationUpdateMyQuery;
-import com.lucky.ai.domain.vo.conversation.ChatConversationVO;
+import com.lucky.ai.domain.query.conversation.AiChatConversationCreateMyQuery;
+import com.lucky.ai.domain.query.conversation.AiChatConversationPageQuery;
+import com.lucky.ai.domain.query.conversation.AiChatConversationUpdateMyQuery;
+import com.lucky.ai.domain.vo.conversation.AiChatConversationVO;
 import com.lucky.ai.enums.model.AiModelTypeEnum;
 import com.lucky.ai.mapper.AiChatConversationMapper;
 import com.lucky.ai.service.AiChatConversationService;
@@ -57,7 +57,7 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      * @return 聊天对话ID
      */
     @Override
-    public Long createChatConversationMy(ChatConversationCreateMyQuery query, Long userId) {
+    public Long createChatConversationMy(AiChatConversationCreateMyQuery query, Long userId) {
         // 1.1 获得 AiChatRoleDO 聊天角色
         AiChatRole role = query.getRoleId() != null ? chatRoleService.validateChatRole(query.getRoleId()) : null;
         // 1.2 获得 AiModelDO 聊天模型
@@ -95,7 +95,7 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      * @param userId 用户ID
      */
     @Override
-    public int updateChatConversationMy(ChatConversationUpdateMyQuery query, Long userId) {
+    public int updateChatConversationMy(AiChatConversationUpdateMyQuery query, Long userId) {
         // 1.1 校验对话是否存在
         AiChatConversation conversation = validateChatConversationExists(query.getId());
         if (ObjUtil.notEqual(conversation.getUserId(), userId)) {
@@ -126,7 +126,7 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      * @return 聊天对话列表
      */
     @Override
-    public List<ChatConversationVO> getChatConversationListByUserId(Long userId) {
+    public List<AiChatConversationVO> getChatConversationListByUserId(Long userId) {
         return chatConversationMapper.selectListByUserId(userId);
     }
 
@@ -137,7 +137,7 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      * @return 聊天对话
      */
     @Override
-    public ChatConversationVO getChatConversationById(Long id) {
+    public AiChatConversationVO getChatConversationById(Long id) {
         return chatConversationMapper.selectVoById(id);
     }
 
@@ -183,13 +183,13 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      * @return 分页列表
      */
     @Override
-    public TableDataInfo<ChatConversationVO> getChatConversationPage(PageQuery pageQuery, ChatConversationPageQuery query) {
-        IPage<ChatConversationVO> page = chatConversationMapper.selectPage(pageQuery.build(), query);
+    public TableDataInfo<AiChatConversationVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageQuery query) {
+        IPage<AiChatConversationVO> page = chatConversationMapper.selectPage(pageQuery.build(), query);
         if (CollUtil.isEmpty(page.getRecords())) {
             return TableDataInfo.build(page);
         }
         // 提取对话ID列表
-        List<Long> ids = page.getRecords().stream().map(ChatConversationVO::getId).toList();
+        List<Long> ids = page.getRecords().stream().map(AiChatConversationVO::getId).toList();
         // 查询每个对话的消息数量
         Map<Long, Integer> countMap = chatMessageService.getChatMessageCountMap(ids);
         // 添加消息数量

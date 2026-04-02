@@ -11,9 +11,9 @@ import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.domain.AiModel;
-import com.lucky.ai.domain.query.message.ChatMessagePageQuery;
-import com.lucky.ai.domain.vo.message.ChatMessageCountVO;
-import com.lucky.ai.domain.vo.message.ChatMessageVO;
+import com.lucky.ai.domain.query.message.AiChatMessagePageQuery;
+import com.lucky.ai.domain.vo.message.AiChatMessageCountVO;
+import com.lucky.ai.domain.vo.message.AiChatMessageVO;
 import com.lucky.ai.mapper.AiChatMessageMapper;
 import com.lucky.ai.service.AiApiKeyService;
 import com.lucky.ai.service.AiChatConversationService;
@@ -89,7 +89,7 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
      * @return 聊天消息列表
      */
     @Override
-    public List<ChatMessageVO> getChatMessageListByConversationId(Long conversationId) {
+    public List<AiChatMessageVO> getChatMessageListByConversationId(Long conversationId) {
         return chatMessageMapper.selectVoListByConversationId(conversationId);
     }
 
@@ -138,8 +138,8 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
      * @return 聊天消息分页列表
      */
     @Override
-    public TableDataInfo<ChatMessageVO> getChatMessagePage(PageQuery pageQuery, ChatMessagePageQuery query) {
-        IPage<ChatMessageVO> page = chatMessageMapper.selectPage(pageQuery.build(), query);
+    public TableDataInfo<AiChatMessageVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageQuery query) {
+        IPage<AiChatMessageVO> page = chatMessageMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
@@ -171,9 +171,9 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
         if (CollUtil.isEmpty(conversationIds)) {
             return Collections.emptyMap();
         }
-        List<ChatMessageCountVO> list = chatMessageMapper.selectCountMapByConversationIds(conversationIds);
+        List<AiChatMessageCountVO> list = chatMessageMapper.selectCountMapByConversationIds(conversationIds);
         Map<Long, Integer> result = new HashMap<>();
-        for (ChatMessageCountVO row : list) {
+        for (AiChatMessageCountVO row : list) {
             Long conversationId = row.getConversationId();
             Integer count = row.getCount();
             result.put(conversationId, count);

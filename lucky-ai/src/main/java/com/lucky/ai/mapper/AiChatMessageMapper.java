@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiChatMessage;
-import com.lucky.ai.domain.query.message.ChatMessagePageQuery;
-import com.lucky.ai.domain.vo.message.ChatMessageCountVO;
-import com.lucky.ai.domain.vo.message.ChatMessageVO;
+import com.lucky.ai.domain.query.message.AiChatMessagePageQuery;
+import com.lucky.ai.domain.vo.message.AiChatMessageCountVO;
+import com.lucky.ai.domain.vo.message.AiChatMessageVO;
 import com.lucky.common.core.mybatis.BaseMapperX;
 import com.lucky.common.utils.StringUtils;
 
@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface AiChatMessageMapper extends BaseMapperX<AiChatMessage, ChatMessageVO> {
+public interface AiChatMessageMapper extends BaseMapperX<AiChatMessage, AiChatMessageVO> {
 
     default List<AiChatMessage> selectListByConversationId(Long conversationId) {
         LambdaQueryWrapper<AiChatMessage> wrapper = Wrappers.<AiChatMessage>lambdaQuery()
@@ -27,16 +27,16 @@ public interface AiChatMessageMapper extends BaseMapperX<AiChatMessage, ChatMess
         return selectList(wrapper);
     }
 
-    default List<ChatMessageVO> selectVoListByConversationId(Long conversationId) {
+    default List<AiChatMessageVO> selectVoListByConversationId(Long conversationId) {
         LambdaQueryWrapper<AiChatMessage> wrapper = Wrappers.<AiChatMessage>lambdaQuery()
                 .eq(AiChatMessage::getConversationId, conversationId)
                 .orderByAsc(AiChatMessage::getCreateTime);
         return selectVoList(wrapper);
     }
 
-    List<ChatMessageCountVO> selectCountMapByConversationIds(Collection<Long> conversationIds);
+    List<AiChatMessageCountVO> selectCountMapByConversationIds(Collection<Long> conversationIds);
 
-    default IPage<ChatMessageVO> selectPage(IPage<AiChatMessage> page, ChatMessagePageQuery query) {
+    default IPage<AiChatMessageVO> selectPage(IPage<AiChatMessage> page, AiChatMessagePageQuery query) {
         LambdaQueryWrapper<AiChatMessage> wrapper = Wrappers.<AiChatMessage>lambdaQuery()
                 .eq(StringUtils.isNotNull(query.getConversationId()), AiChatMessage::getConversationId, query.getConversationId())
                 .eq(StringUtils.isNotNull(query.getUserId()), AiChatMessage::getUserId, query.getUserId())

@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiImage;
-import com.lucky.ai.domain.query.image.ImagePagePublicQuery;
-import com.lucky.ai.domain.query.image.ImagePageQuery;
-import com.lucky.ai.domain.vo.image.ImageVO;
+import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
+import com.lucky.ai.domain.query.image.AiImagePageQuery;
+import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.common.core.mybatis.BaseMapperX;
 import com.lucky.common.utils.StringUtils;
 
@@ -17,9 +17,9 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface AiImageMapper extends BaseMapperX<AiImage, ImageVO> {
+public interface AiImageMapper extends BaseMapperX<AiImage, AiImageVO> {
 
-    default IPage<ImageVO> selectPageMy(IPage<AiImage> page, ImagePageQuery query, Long userId) {
+    default IPage<AiImageVO> selectPageMy(IPage<AiImage> page, AiImagePageQuery query, Long userId) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getPrompt()), AiImage::getPrompt, query.getPrompt())
                 .eq(StringUtils.isNotNull(query.getPublicStatus()), AiImage::getPublicStatus, query.getPublicStatus())
@@ -28,7 +28,7 @@ public interface AiImageMapper extends BaseMapperX<AiImage, ImageVO> {
         return selectVoPage(page, wrapper);
     }
 
-    default IPage<ImageVO> selectPagePublic(IPage<AiImage> page, ImagePagePublicQuery query) {
+    default IPage<AiImageVO> selectPagePublic(IPage<AiImage> page, AiImagePagePublicQuery query) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getPrompt()), AiImage::getPrompt, query.getPrompt())
                 .eq(AiImage::getPublicStatus, true)
@@ -36,7 +36,7 @@ public interface AiImageMapper extends BaseMapperX<AiImage, ImageVO> {
         return selectVoPage(page, wrapper);
     }
 
-    default IPage<ImageVO> selectPage(IPage<AiImage> page, ImagePageQuery query) {
+    default IPage<AiImageVO> selectPage(IPage<AiImage> page, AiImagePageQuery query) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .eq(StringUtils.isNotNull(query.getUserId()), AiImage::getUserId, query.getUserId())
                 .eq(StringUtils.isNotEmpty(query.getPlatform()), AiImage::getPlatform, query.getPlatform())
@@ -47,7 +47,7 @@ public interface AiImageMapper extends BaseMapperX<AiImage, ImageVO> {
         return selectVoPage(page, wrapper);
     }
 
-    default List<ImageVO> selectListByIdsAndUserId(List<Long> ids, Long userId) {
+    default List<AiImageVO> selectListByIdsAndUserId(List<Long> ids, Long userId) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .in(AiImage::getId, ids)
                 .eq(AiImage::getUserId, userId);

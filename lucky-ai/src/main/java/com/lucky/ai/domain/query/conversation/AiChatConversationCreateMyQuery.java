@@ -8,7 +8,7 @@ import lombok.Data;
  * @author lucky
  */
 @Data
-public class ChatConversationCreateMyQuery {
+public class AiChatConversationCreateMyQuery {
 
     /**
      * 聊天角色编号

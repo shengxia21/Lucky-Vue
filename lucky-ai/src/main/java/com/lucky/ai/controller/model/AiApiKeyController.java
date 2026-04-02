@@ -1,8 +1,8 @@
 package com.lucky.ai.controller.model;
 
-import com.lucky.ai.domain.query.apiKey.ApiKeyPageQuery;
-import com.lucky.ai.domain.query.apiKey.ApiKeySaveQuery;
-import com.lucky.ai.domain.vo.apikey.ApiKeyVO;
+import com.lucky.ai.domain.query.apiKey.AiApiKeyPageQuery;
+import com.lucky.ai.domain.query.apiKey.AiApiKeySaveQuery;
+import com.lucky.ai.domain.vo.apikey.AiApiKeyVO;
 import com.lucky.ai.service.AiApiKeyService;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
@@ -35,7 +35,7 @@ public class AiApiKeyController extends BaseController {
     @Log(title = "创建 API 密钥", businessType = BusinessType.INSERT)
     @PreAuthorize("@ss.hasPermi('ai:api-key:create')")
     @PostMapping("/create")
-    public R<Long> createApiKey(@Validated @RequestBody ApiKeySaveQuery query) {
+    public R<Long> createApiKey(@Validated @RequestBody AiApiKeySaveQuery query) {
         return R.ok(apiKeyService.createApiKey(query));
     }
 
@@ -45,7 +45,7 @@ public class AiApiKeyController extends BaseController {
     @Log(title = "更新 API 密钥", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('ai:api-key:update')")
     @PutMapping("/update")
-    public R<Integer> updateApiKey(@Validated @RequestBody ApiKeySaveQuery query) {
+    public R<Integer> updateApiKey(@Validated @RequestBody AiApiKeySaveQuery query) {
         return R.ok(apiKeyService.updateApiKey(query));
     }
 
@@ -64,7 +64,7 @@ public class AiApiKeyController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:api-key:query')")
     @GetMapping("/get")
-    public R<ApiKeyVO> getApiKey(@RequestParam("id") Long id) {
+    public R<AiApiKeyVO> getApiKey(@RequestParam("id") Long id) {
         return R.ok(apiKeyService.getApiKeyById(id));
     }
 
@@ -73,7 +73,7 @@ public class AiApiKeyController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ai:api-key:list')")
     @GetMapping("/page")
-    public TableDataInfo<ApiKeyVO> getApiKeyPage(PageQuery pageQuery, ApiKeyPageQuery query) {
+    public TableDataInfo<AiApiKeyVO> getApiKeyPage(PageQuery pageQuery, AiApiKeyPageQuery query) {
         return apiKeyService.getApiKeyPage(pageQuery, query);
     }
 
@@ -81,7 +81,7 @@ public class AiApiKeyController extends BaseController {
      * 获得 API 密钥列表
      */
     @GetMapping("/simple-list")
-    public R<List<ApiKeyVO>> getApiKeySimpleList() {
+    public R<List<AiApiKeyVO>> getApiKeySimpleList() {
         return R.ok(apiKeyService.getApiKeyList());
     }
 

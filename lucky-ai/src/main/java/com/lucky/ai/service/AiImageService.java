@@ -1,10 +1,10 @@
 package com.lucky.ai.service;
 
 import com.lucky.ai.core.vo.image.ImageDrawRequest;
-import com.lucky.ai.domain.query.image.ImagePagePublicQuery;
-import com.lucky.ai.domain.query.image.ImagePageQuery;
-import com.lucky.ai.domain.query.image.ImageUpdateQuery;
-import com.lucky.ai.domain.vo.image.ImageVO;
+import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
+import com.lucky.ai.domain.query.image.AiImagePageQuery;
+import com.lucky.ai.domain.query.image.AiImageUpdateQuery;
+import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 
@@ -25,7 +25,7 @@ public interface AiImageService {
      * @param userId    用户ID
      * @return 分页结果
      */
-    TableDataInfo<ImageVO> getImagePageMy(PageQuery pageQuery, ImagePageQuery query, Long userId);
+    TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query, Long userId);
 
     /**
      * 获取公开的绘图列表
@@ -34,7 +34,7 @@ public interface AiImageService {
      * @param query 查询参数
      * @return 分页结果
      */
-    TableDataInfo<ImageVO> getImagePagePublic(PageQuery pageQuery, ImagePagePublicQuery query);
+    TableDataInfo<AiImageVO> getImagePagePublic(PageQuery pageQuery, AiImagePagePublicQuery query);
 
     /**
      * 根据ID查询绘画详情
@@ -42,7 +42,7 @@ public interface AiImageService {
      * @param id 绘画主键
      * @return 绘图详情
      */
-    ImageVO getImageById(Long id);
+    AiImageVO getImageById(Long id);
 
     /**
      * 根据ID列表查询绘画列表
@@ -51,7 +51,7 @@ public interface AiImageService {
      * @param userId 用户ID
      * @return 绘画列表
      */
-    List<ImageVO> getImageListByIdsAndUserId(List<Long> ids, Long userId);
+    List<AiImageVO> getImageListByIdsAndUserId(List<Long> ids, Long userId);
 
     /**
      * 生成图片
@@ -78,7 +78,7 @@ public interface AiImageService {
      * @param query 查询参数
      * @return 分页结果
      */
-    TableDataInfo<ImageVO> getImagePage(PageQuery pageQuery, ImagePageQuery query);
+    TableDataInfo<AiImageVO> getImagePage(PageQuery pageQuery, AiImagePageQuery query);
 
     /**
      * 更新绘画
@@ -86,7 +86,7 @@ public interface AiImageService {
      * @param query 更新参数
      * @return 结果
      */
-    int updateImage(ImageUpdateQuery query);
+    int updateImage(AiImageUpdateQuery query);
 
     /**
      * 删除绘画
