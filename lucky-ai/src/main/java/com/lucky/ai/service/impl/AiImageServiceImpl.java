@@ -1,6 +1,5 @@
 package com.lucky.ai.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -24,6 +23,7 @@ import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.manager.AsyncManager;
+import com.lucky.common.utils.MapstructUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +54,8 @@ public class AiImageServiceImpl implements AiImageService {
      */
     @Override
     public TableDataInfo<ImageVO> getImagePageMy(PageQuery pageQuery, ImagePageQuery query, Long userId) {
-        IPage<AiImage> page = imageMapper.selectPageMy(pageQuery.build(), query, userId);
-        return TableDataInfo.build(page, ImageVO.class);
+        IPage<ImageVO> page = imageMapper.selectPageMy(pageQuery.build(), query, userId);
+        return TableDataInfo.build(page);
     }
 
     /**
@@ -66,8 +66,8 @@ public class AiImageServiceImpl implements AiImageService {
      */
     @Override
     public TableDataInfo<ImageVO> getImagePagePublic(PageQuery pageQuery, ImagePagePublicQuery query) {
-        IPage<AiImage> page = imageMapper.selectPagePublic(pageQuery.build(), query);
-        return TableDataInfo.build(page, ImageVO.class);
+        IPage<ImageVO> page = imageMapper.selectPagePublic(pageQuery.build(), query);
+        return TableDataInfo.build(page);
     }
 
     /**
@@ -77,22 +77,23 @@ public class AiImageServiceImpl implements AiImageService {
      * @return 绘图详情
      */
     @Override
-    public AiImage getImageById(Long id) {
-        return imageMapper.selectById(id);
+    public ImageVO getImageById(Long id) {
+        return imageMapper.selectVoById(id);
     }
 
     /**
      * 根据ID列表查询绘画列表
      *
-     * @param ids 绘画主键列表
+     * @param ids    绘画主键列表
+     * @param userId 用户ID
      * @return 绘画列表
      */
     @Override
-    public List<AiImage> getImageListByIds(List<Long> ids) {
+    public List<ImageVO> getImageListByIdsAndUserId(List<Long> ids, Long userId) {
         if (CollUtil.isEmpty(ids)) {
             return Collections.emptyList();
         }
-        return imageMapper.selectByIds(ids);
+        return imageMapper.selectListByIdsAndUserId(ids, userId);
     }
 
     /**
@@ -110,7 +111,7 @@ public class AiImageServiceImpl implements AiImageService {
         AiApiKey apiKey = apiKeyService.validateApiKey(model.getKeyId());
 
         // 保存数据库
-        AiImage image = BeanUtil.toBean(request, AiImage.class);
+        AiImage image = MapstructUtils.convert(request, AiImage.class);
         image.setUserId(userId);
         image.setPlatform(model.getPlatform());
         image.setModelId(model.getId());
@@ -139,7 +140,7 @@ public class AiImageServiceImpl implements AiImageService {
      * @return 结果
      */
     @Override
-    public int deleteImageMy(Long id, Long userId) {
+    public int deleteImageMyById(Long id, Long userId) {
         // 1. 校验是否存在
         AiImage image = validateImageExists(id);
         if (ObjUtil.notEqual(image.getUserId(), userId)) {
@@ -157,8 +158,8 @@ public class AiImageServiceImpl implements AiImageService {
      */
     @Override
     public TableDataInfo<ImageVO> getImagePage(PageQuery pageQuery, ImagePageQuery query) {
-        IPage<AiImage> page = imageMapper.selectPage(pageQuery.build(), query);
-        return TableDataInfo.build(page, ImageVO.class);
+        IPage<ImageVO> page = imageMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(page);
     }
 
     /**
@@ -172,7 +173,7 @@ public class AiImageServiceImpl implements AiImageService {
         // 1. 校验存在
         validateImageExists(query.getId());
         // 2. 更新发布状态
-        AiImage image = BeanUtil.toBean(query, AiImage.class);
+        AiImage image = MapstructUtils.convert(query, AiImage.class);
         return imageMapper.updateById(image);
     }
 

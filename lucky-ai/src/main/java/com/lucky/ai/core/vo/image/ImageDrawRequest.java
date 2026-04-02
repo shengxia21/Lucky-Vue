@@ -1,5 +1,7 @@
 package com.lucky.ai.core.vo.image;
 
+import com.lucky.ai.domain.AiImage;
+import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,6 +16,7 @@ import java.util.Map;
  * @author lucky
  */
 @Data
+@AutoMapper(target = AiImage.class, reverseConvertGenerate = false)
 public class ImageDrawRequest {
 
     /**

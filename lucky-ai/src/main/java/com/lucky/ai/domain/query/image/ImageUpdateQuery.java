@@ -1,5 +1,7 @@
 package com.lucky.ai.domain.query.image;
 
+import com.lucky.ai.domain.AiImage;
+import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -9,6 +11,7 @@ import lombok.Data;
  * @author lucky
  */
 @Data
+@AutoMapper(target = AiImage.class, reverseConvertGenerate = false)
 public class ImageUpdateQuery {
 
     /**

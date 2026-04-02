@@ -1,5 +1,7 @@
 package com.lucky.ai.domain.query.chatRole;
 
+import com.lucky.ai.domain.AiChatRole;
+import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
@@ -11,6 +13,7 @@ import java.util.List;
  * @author lucky
  */
 @Data
+@AutoMapper(target = AiChatRole.class, reverseConvertGenerate = false)
 public class ChatRoleSaveMyQuery {
 
     /**

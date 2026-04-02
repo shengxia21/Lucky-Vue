@@ -1,7 +1,9 @@
 package com.lucky.ai.domain.vo.apikey;
 
+import com.lucky.ai.domain.AiApiKey;
 import com.lucky.common.annotation.Sensitive;
 import com.lucky.common.enums.DesensitizedType;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 /**
@@ -10,6 +12,7 @@ import lombok.Data;
  * @author lucky
  */
 @Data
+@AutoMapper(target = AiApiKey.class)
 public class ApiKeyVO {
 
     /**

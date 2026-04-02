@@ -1,8 +1,6 @@
 package com.lucky.ai.controller.chat;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
-import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.query.conversation.ChatConversationCreateMyQuery;
 import com.lucky.ai.domain.query.conversation.ChatConversationPageQuery;
 import com.lucky.ai.domain.query.conversation.ChatConversationUpdateMyQuery;
@@ -64,11 +62,11 @@ public class AiChatConversationController extends BaseController {
      */
     @GetMapping("/get-my")
     public R<ChatConversationVO> getChatConversationMy(@RequestParam("id") Long id) {
-        AiChatConversation conversation = chatConversationService.getChatConversationById(id);
+        ChatConversationVO conversation = chatConversationService.getChatConversationById(id);
         if (conversation != null && ObjUtil.notEqual(conversation.getUserId(), getUserId())) {
             return R.fail("对话不存在或不属于当前用户");
         }
-        return R.ok(BeanUtil.toBean(conversation, ChatConversationVO.class));
+        return R.ok(conversation);
     }
 
     /**
@@ -77,7 +75,7 @@ public class AiChatConversationController extends BaseController {
     @Log(title = "删除【我的】聊天对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
     public R<Integer> deleteChatConversationMy(@RequestParam("id") Long id) {
-        return R.ok(chatConversationService.deleteChatConversationMy(id, getUserId()));
+        return R.ok(chatConversationService.deleteChatConversationMyById(id, getUserId()));
     }
 
     /**
@@ -86,7 +84,7 @@ public class AiChatConversationController extends BaseController {
     @Log(title = "删除未置顶的聊天对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-by-unpinned")
     public R<Integer> deleteChatConversationMyByUnpinned() {
-        return R.ok(chatConversationService.deleteChatConversationMyByUserId(getUserId()));
+        return R.ok(chatConversationService.deleteChatConversationMy(getUserId()));
     }
 
     // ========== 对话管理 ==========

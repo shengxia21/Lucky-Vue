@@ -1,5 +1,7 @@
 package com.lucky.ai.domain.vo.image;
 
+import com.lucky.ai.domain.AiImage;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,6 +13,7 @@ import java.util.Map;
  * @author lucky
  */
 @Data
+@AutoMapper(target = AiImage.class)
 public class ImageVO {
 
     /**
@@ -71,7 +74,7 @@ public class ImageVO {
     /**
      * 绘制参数
      */
-    private Map<String, String> options;
+    private Map<String, Object> options;
 
     /**
      * 完成时间

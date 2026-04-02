@@ -1,13 +1,11 @@
 package com.lucky.ai.controller.chat;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.core.vo.chat.ChatMessageResponse;
-import com.lucky.ai.domain.AiChatConversation;
-import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.domain.query.message.ChatMessagePageQuery;
+import com.lucky.ai.domain.vo.conversation.ChatConversationVO;
 import com.lucky.ai.domain.vo.message.ChatMessageVO;
 import com.lucky.ai.service.AiChatConversationService;
 import com.lucky.ai.service.AiChatMessageService;
@@ -54,18 +52,18 @@ public class AiChatMessageController extends BaseController {
      */
     @GetMapping("/list-by-conversation-id")
     public R<List<ChatMessageVO>> getChatMessageListByConversationId(@RequestParam("conversationId") Long conversationId) {
-        AiChatConversation conversation = chatConversationService.getChatConversationById(conversationId);
+        ChatConversationVO conversation = chatConversationService.getChatConversationById(conversationId);
         if (conversation == null || ObjUtil.notEqual(conversation.getUserId(), getUserId())) {
             return R.fail("对话不存在或不属于当前用户");
         }
         // 1. 获取消息列表
-        List<AiChatMessage> messageList = chatMessageService.getChatMessageListByConversationId(conversationId);
+        List<ChatMessageVO> messageList = chatMessageService.getChatMessageListByConversationId(conversationId);
         if (CollUtil.isEmpty(messageList)) {
             return R.ok(Collections.emptyList());
         }
         // 2. 拼接数据，主要是知识库段落信息
 
-        return R.ok(BeanUtil.copyToList(messageList, ChatMessageVO.class));
+        return R.ok(messageList);
     }
 
     /**
@@ -74,7 +72,7 @@ public class AiChatMessageController extends BaseController {
     @Log(title = "删除消息", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete")
     public R<Integer> deleteChatMessage(@RequestParam("id") Long id) {
-        return R.ok(chatMessageService.deleteChatMessage(id, getUserId()));
+        return R.ok(chatMessageService.deleteChatMessageByIdAndUserId(id, getUserId()));
     }
 
     /**
@@ -83,7 +81,7 @@ public class AiChatMessageController extends BaseController {
     @Log(title = "删除指定对话的消息", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-by-conversation-id")
     public R<Integer> deleteChatMessageByConversationId(@RequestParam("conversationId") Long conversationId) {
-        return R.ok(chatMessageService.deleteChatMessageByConversationId(conversationId, getUserId()));
+        return R.ok(chatMessageService.deleteChatMessageByConversationIdAndUserId(conversationId, getUserId()));
     }
 
     // ========== 对话管理 ==========

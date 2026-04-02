@@ -47,7 +47,7 @@ public interface AiChatConversationService {
      * @param id 对话ID
      * @return 聊天对话
      */
-    AiChatConversation getChatConversationById(Long id);
+    ChatConversationVO getChatConversationById(Long id);
 
     /**
      * 删除我的聊天对话
@@ -56,7 +56,7 @@ public interface AiChatConversationService {
      * @param userId 用户ID
      * @return 是否成功
      */
-    int deleteChatConversationMy(Long id, Long userId);
+    int deleteChatConversationMyById(Long id, Long userId);
 
     /**
      * 删除我的未置顶聊天对话
@@ -64,7 +64,7 @@ public interface AiChatConversationService {
      * @param userId 用户ID
      * @return 是否成功
      */
-    int deleteChatConversationMyByUserId(Long userId);
+    int deleteChatConversationMy(Long userId);
 
     /**
      * 获得对话分页列表

@@ -79,7 +79,7 @@ public interface AiChatRoleService {
      * @param ids 编号数组
      * @return 聊天角色列表
      */
-    List<AiChatRole> getChatRoleList(Collection<Long> ids);
+    List<ChatRoleVO> getChatRoleList(Collection<Long> ids);
 
     /**
      * 校验聊天角色是否合法
@@ -120,6 +120,6 @@ public interface AiChatRoleService {
      * @param name 名字
      * @return 聊天角色列表
      */
-    List<AiChatRole> getChatRoleListByName(String name);
+    List<ChatRoleVO> getChatRoleListByName(String name);
 
 }

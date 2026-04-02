@@ -1,7 +1,5 @@
 package com.lucky.ai.controller.model;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.domain.query.model.ModelPageQuery;
 import com.lucky.ai.domain.query.model.ModelSaveQuery;
 import com.lucky.ai.domain.vo.model.ModelVO;
@@ -19,8 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.lucky.ai.util.CollectionUtils.convertList;
 
 /**
  * AI 模型Controller
@@ -70,8 +66,7 @@ public class AiModelController extends BaseController {
     @PreAuthorize("@ss.hasPermi('ai:model:query')")
     @GetMapping("/get")
     public R<ModelVO> getModel(@RequestParam("id") Long id) {
-        AiModel model = modelService.getModelById(id);
-        return R.ok(BeanUtil.toBean(model, ModelVO.class));
+        return R.ok(modelService.getModelById(id));
     }
 
     /**
@@ -90,16 +85,8 @@ public class AiModelController extends BaseController {
     public R<List<ModelVO>> getModelSimpleList(
             @RequestParam("type") Integer type,
             @RequestParam(value = "platform", required = false) String platform) {
-        List<AiModel> list = modelService.getModelListByStatusAndType(
-                CommonStatusEnum.ENABLE.getStatus(), type, platform);
-        return R.ok(convertList(list, model -> {
-            ModelVO respVO = new ModelVO();
-            respVO.setId(model.getId());
-            respVO.setName(model.getName());
-            respVO.setModel(model.getModel());
-            respVO.setPlatform(model.getPlatform());
-            return respVO;
-        }));
+        List<ModelVO> list = modelService.getModelList(CommonStatusEnum.ENABLE.getStatus(), type, platform);
+        return R.ok(list);
     }
 
 }

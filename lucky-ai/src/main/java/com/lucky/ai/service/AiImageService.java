@@ -1,7 +1,6 @@
 package com.lucky.ai.service;
 
 import com.lucky.ai.core.vo.image.ImageDrawRequest;
-import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.domain.query.image.ImagePagePublicQuery;
 import com.lucky.ai.domain.query.image.ImagePageQuery;
 import com.lucky.ai.domain.query.image.ImageUpdateQuery;
@@ -43,15 +42,16 @@ public interface AiImageService {
      * @param id 绘画主键
      * @return 绘图详情
      */
-    AiImage getImageById(Long id);
+    ImageVO getImageById(Long id);
 
     /**
      * 根据ID列表查询绘画列表
      *
      * @param ids 绘画主键列表
+     * @param userId 用户ID
      * @return 绘画列表
      */
-    List<AiImage> getImageListByIds(List<Long> ids);
+    List<ImageVO> getImageListByIdsAndUserId(List<Long> ids, Long userId);
 
     /**
      * 生成图片
@@ -69,7 +69,7 @@ public interface AiImageService {
      * @param userId 用户ID
      * @return 结果
      */
-    int deleteImageMy(Long id, Long userId);
+    int deleteImageMyById(Long id, Long userId);
 
     /**
      * 获得绘画列表

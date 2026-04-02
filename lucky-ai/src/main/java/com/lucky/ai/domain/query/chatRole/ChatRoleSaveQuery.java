@@ -1,7 +1,9 @@
 package com.lucky.ai.domain.query.chatRole;
 
+import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.common.validation.InEnum;
+import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -14,6 +16,7 @@ import java.util.List;
  * @author lucky
  */
 @Data
+@AutoMapper(target = AiChatRole.class, reverseConvertGenerate = false)
 public class ChatRoleSaveQuery {
 
     /**

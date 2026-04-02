@@ -1,7 +1,8 @@
 package com.lucky.ai.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.query.apiKey.ApiKeyPageQuery;
 import com.lucky.ai.domain.query.apiKey.ApiKeySaveQuery;
@@ -13,6 +14,7 @@ import com.lucky.common.constant.AiErrorConstants;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.exception.ServiceException;
+import com.lucky.common.utils.MapstructUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,7 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
     @Override
     public Long createApiKey(ApiKeySaveQuery query) {
         // 插入
-        AiApiKey apiKey = BeanUtil.toBean(query, AiApiKey.class);
+        AiApiKey apiKey = MapstructUtils.convert(query, AiApiKey.class);
         apiKeyMapper.insert(apiKey);
         // 返回
         return apiKey.getId();
@@ -55,8 +57,8 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
         // 校验存在
         validateApiKeyExists(query.getId());
         // 更新
-        AiApiKey updateObj = BeanUtil.toBean(query, AiApiKey.class);
-        return apiKeyMapper.updateById(updateObj);
+        AiApiKey apiKey = MapstructUtils.convert(query, AiApiKey.class);
+        return apiKeyMapper.updateById(apiKey);
     }
 
     /**
@@ -80,21 +82,21 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
      * @return API 密钥
      */
     @Override
-    public AiApiKey getApiKeyById(Long id) {
-        return apiKeyMapper.selectById(id);
+    public ApiKeyVO getApiKeyById(Long id) {
+        return apiKeyMapper.selectVoById(id);
     }
 
     /**
      * 查询 API 密钥分页
      *
      * @param pageQuery 分页查询
-     * @param query 分页查询参数
+     * @param query     分页查询参数
      * @return API 密钥分页结果
      */
     @Override
     public TableDataInfo<ApiKeyVO> getApiKeyPage(PageQuery pageQuery, ApiKeyPageQuery query) {
-        IPage<AiApiKey> page = apiKeyMapper.selectPage(pageQuery.build(), query);
-        return TableDataInfo.build(page, ApiKeyVO.class);
+        IPage<ApiKeyVO> page = apiKeyMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(page);
     }
 
     /**
@@ -103,8 +105,10 @@ public class AiApiKeyServiceImpl implements AiApiKeyService {
      * @return API 密钥列表
      */
     @Override
-    public List<AiApiKey> getApiKeyList() {
-        return apiKeyMapper.selectList(null);
+    public List<ApiKeyVO> getApiKeyList() {
+        LambdaQueryWrapper<AiApiKey> wrapper = Wrappers.<AiApiKey>lambdaQuery()
+                .select(AiApiKey::getId, AiApiKey::getName);
+        return apiKeyMapper.selectVoList(wrapper);
     }
 
     /**

@@ -1,9 +1,7 @@
 package com.lucky.ai.controller.image;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.core.vo.image.ImageDrawRequest;
-import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.domain.query.image.ImagePagePublicQuery;
 import com.lucky.ai.domain.query.image.ImagePageQuery;
 import com.lucky.ai.domain.query.image.ImageUpdateQuery;
@@ -55,11 +53,11 @@ public class AiImageController extends BaseController {
      */
     @GetMapping("/get-my")
     public R<ImageVO> getImageMy(@RequestParam("id") Long id) {
-        AiImage image = AiImageService.getImageById(id);
+        ImageVO image = AiImageService.getImageById(id);
         if (image == null || ObjUtil.notEqual(getUserId(), image.getUserId())) {
             return R.fail("绘图记录不存在或不属于当前用户");
         }
-        return R.ok(BeanUtil.toBean(image, ImageVO.class));
+        return R.ok(image);
     }
 
     /**
@@ -67,9 +65,7 @@ public class AiImageController extends BaseController {
      */
     @GetMapping("/my-list-by-ids")
     public R<List<ImageVO>> getImageListMyByIds(@RequestParam("ids") List<Long> ids) {
-        List<AiImage> imageList = AiImageService.getImageListByIds(ids);
-        imageList.removeIf(item -> !ObjUtil.equal(getUserId(), item.getUserId()));
-        return R.ok(BeanUtil.copyToList(imageList, ImageVO.class));
+        return R.ok(AiImageService.getImageListByIdsAndUserId(ids, getUserId()));
     }
 
     /**
@@ -86,7 +82,7 @@ public class AiImageController extends BaseController {
     @Log(title = "删除【我的】绘图记录", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
     public R<Integer> deleteImageMy(@RequestParam("id") Long id) {
-        return R.ok(AiImageService.deleteImageMy(id, getUserId()));
+        return R.ok(AiImageService.deleteImageMyById(id, getUserId()));
     }
 
     // ================ 绘图管理 ================

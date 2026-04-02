@@ -46,7 +46,7 @@ public interface AiApiKeyService {
      * @param id API 密钥主键
      * @return API 密钥
      */
-    AiApiKey getApiKeyById(Long id);
+    ApiKeyVO getApiKeyById(Long id);
 
     /**
      * 查询 API 密钥分页
@@ -62,7 +62,7 @@ public interface AiApiKeyService {
      *
      * @return API 密钥列表
      */
-    List<AiApiKey> getApiKeyList();
+    List<ApiKeyVO> getApiKeyList();
 
     /**
      * 校验 API 密钥是否有效

@@ -3,8 +3,10 @@ package com.lucky.ai.domain.vo.conversation;
 import com.fhs.core.trans.anno.Trans;
 import com.fhs.core.trans.constant.TransType;
 import com.fhs.core.trans.vo.VO;
+import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.domain.AiModel;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,6 +17,7 @@ import java.util.Date;
  * @author lucky
  */
 @Data
+@AutoMapper(target = AiChatConversation.class)
 public class ChatConversationVO implements VO {
 
     /**

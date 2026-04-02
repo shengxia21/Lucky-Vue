@@ -1,6 +1,5 @@
 package com.lucky.ai.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -13,11 +12,11 @@ import com.lucky.ai.domain.vo.chatRole.ChatRoleVO;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.mapper.AiChatRoleMapper;
 import com.lucky.ai.service.AiChatRoleService;
-import com.lucky.ai.util.CollectionUtils;
 import com.lucky.common.constant.AiErrorConstants;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.exception.ServiceException;
+import com.lucky.common.utils.MapstructUtils;
 import com.lucky.common.utils.StringUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -49,7 +48,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         // 校验工具
 
         // 保存角色
-        AiChatRole chatRole = BeanUtil.toBean(query, AiChatRole.class);
+        AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
         chatRoleMapper.insert(chatRole);
         return chatRole.getId();
     }
@@ -57,8 +56,8 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
     /**
      * 创建【我的】聊天角色
      *
-     * @param query 创建信息
-     * @param userId      用户编号
+     * @param query  创建信息
+     * @param userId 用户编号
      * @return 编号
      */
     @Override
@@ -67,7 +66,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         // 校验工具
 
         // 保存角色
-        AiChatRole chatRole = BeanUtil.toBean(query, AiChatRole.class);
+        AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
         chatRole.setUserId(userId);
         chatRole.setStatus(CommonStatusEnum.ENABLE.getStatus());
         chatRole.setPublicStatus(false);
@@ -88,15 +87,15 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         // 校验工具
 
         // 更新角色
-        AiChatRole updateObj = BeanUtil.toBean(query, AiChatRole.class);
-        return chatRoleMapper.updateById(updateObj);
+        AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
+        return chatRoleMapper.updateById(chatRole);
     }
 
     /**
      * 更新【我的】聊天角色
      *
-     * @param query 更新信息
-     * @param userId      用户编号
+     * @param query  更新信息
+     * @param userId 用户编号
      */
     @Override
     public int updateChatRoleMy(ChatRoleSaveMyQuery query, Long userId) {
@@ -109,7 +108,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         // 校验工具
 
         // 更新角色
-        AiChatRole updateObj = BeanUtil.toBean(query, AiChatRole.class);
+        AiChatRole updateObj = MapstructUtils.convert(query, AiChatRole.class);
         return chatRoleMapper.updateById(updateObj);
     }
 
@@ -151,8 +150,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      */
     @Override
     public ChatRoleVO getChatRoleById(Long id) {
-        AiChatRole chatRole = chatRoleMapper.selectById(id);
-        return BeanUtil.toBean(chatRole, ChatRoleVO.class);
+        return chatRoleMapper.selectVoById(id);
     }
 
     /**
@@ -162,11 +160,11 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * @return 聊天角色列表
      */
     @Override
-    public List<AiChatRole> getChatRoleList(Collection<Long> ids) {
+    public List<ChatRoleVO> getChatRoleList(Collection<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
             return Collections.emptyList();
         }
-        return chatRoleMapper.selectByIds(ids);
+        return chatRoleMapper.selectVoByIds(ids);
     }
 
     /**
@@ -187,27 +185,27 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * 获得聊天角色分页
      *
      * @param pageQuery 分页查询
-     * @param query 分页查询
+     * @param query     分页查询
      * @return 聊天角色分页
      */
     @Override
     public TableDataInfo<ChatRoleVO> getChatRolePage(PageQuery pageQuery, ChatRolePageQuery query) {
-        IPage<AiChatRole> page = chatRoleMapper.selectPage(pageQuery.build(), query);
-        return TableDataInfo.build(page, ChatRoleVO.class);
+        IPage<ChatRoleVO> page = chatRoleMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(page);
     }
 
     /**
      * 获得【我的】聊天角色分页
      *
      * @param pageQuery 分页查询
-     * @param query 分页查询
+     * @param query     分页查询
      * @param userId    用户编号
      * @return 聊天角色分页
      */
     @Override
     public TableDataInfo<ChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, ChatRolePageQuery query, Long userId) {
-        IPage<AiChatRole> page = chatRoleMapper.selectMyPage(pageQuery.build(), query, userId);
-        return TableDataInfo.build(page, ChatRoleVO.class);
+        IPage<ChatRoleVO> page = chatRoleMapper.selectMyPage(pageQuery.build(), query, userId);
+        return TableDataInfo.build(page);
     }
 
     /**
@@ -218,7 +216,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
     @Override
     public List<String> getChatRoleCategoryList() {
         List<String> list = chatRoleMapper.selectListGroupByCategory(CommonStatusEnum.ENABLE.getStatus());
-        return CollectionUtils.filterList(list, StrUtil::isNotBlank);
+        return list.stream().filter(StrUtil::isNotBlank).toList();
     }
 
     /**
@@ -228,7 +226,7 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
      * @return 聊天角色列表
      */
     @Override
-    public List<AiChatRole> getChatRoleListByName(String name) {
+    public List<ChatRoleVO> getChatRoleListByName(String name) {
         return chatRoleMapper.selectListByName(name);
     }
 

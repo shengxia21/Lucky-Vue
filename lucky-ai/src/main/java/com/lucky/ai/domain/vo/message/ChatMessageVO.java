@@ -4,7 +4,9 @@ import com.fhs.core.trans.anno.Trans;
 import com.fhs.core.trans.constant.TransType;
 import com.fhs.core.trans.vo.VO;
 import com.lucky.ai.core.vo.search.WebSearchResponse;
+import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.domain.AiChatRole;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 import java.util.Date;
@@ -16,6 +18,7 @@ import java.util.List;
  * @author lucky
  */
 @Data
+@AutoMapper(target = AiChatMessage.class)
 public class ChatMessageVO implements VO {
 
     /**

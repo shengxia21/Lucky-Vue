@@ -1,7 +1,5 @@
 package com.lucky.ai.controller.model;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.query.apiKey.ApiKeyPageQuery;
 import com.lucky.ai.domain.query.apiKey.ApiKeySaveQuery;
 import com.lucky.ai.domain.vo.apikey.ApiKeyVO;
@@ -18,8 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.lucky.ai.util.CollectionUtils.convertList;
 
 /**
  * AI API 秘钥Controller
@@ -69,8 +65,7 @@ public class AiApiKeyController extends BaseController {
     @PreAuthorize("@ss.hasPermi('ai:api-key:query')")
     @GetMapping("/get")
     public R<ApiKeyVO> getApiKey(@RequestParam("id") Long id) {
-        AiApiKey apiKey = apiKeyService.getApiKeyById(id);
-        return R.ok(BeanUtil.toBean(apiKey, ApiKeyVO.class));
+        return R.ok(apiKeyService.getApiKeyById(id));
     }
 
     /**
@@ -87,13 +82,7 @@ public class AiApiKeyController extends BaseController {
      */
     @GetMapping("/simple-list")
     public R<List<ApiKeyVO>> getApiKeySimpleList() {
-        List<AiApiKey> list = apiKeyService.getApiKeyList();
-        return R.ok(convertList(list, key -> {
-            ApiKeyVO respVO = new ApiKeyVO();
-            respVO.setId(key.getId());
-            respVO.setName(key.getName());
-            return respVO;
-        }));
+        return R.ok(apiKeyService.getApiKeyList());
     }
 
 }

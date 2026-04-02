@@ -1,9 +1,11 @@
 package com.lucky.ai.domain.query.model;
 
+import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.enums.model.AiModelTypeEnum;
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import com.lucky.common.validation.InEnum;
+import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -14,6 +16,7 @@ import lombok.Data;
  * @author lucky
  */
 @Data
+@AutoMapper(target = AiModel.class, reverseConvertGenerate = false)
 public class ModelSaveQuery {
 
     /**

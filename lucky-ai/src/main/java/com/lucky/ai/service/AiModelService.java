@@ -24,7 +24,7 @@ public interface AiModelService {
      * @param type 模型类型
      * @return 模型
      */
-    AiModel getRequiredDefaultModel(Integer type);
+    AiModel getDefaultModelByType(Integer type);
 
     /**
      * 校验模型是否可使用
@@ -64,7 +64,7 @@ public interface AiModelService {
      * @param id 编号
      * @return 模型
      */
-    AiModel getModelById(Long id);
+    ModelVO getModelById(Long id);
 
     /**
      * 获得模型分页
@@ -83,6 +83,6 @@ public interface AiModelService {
      * @param platform 平台
      * @return 模型列表
      */
-    List<AiModel> getModelListByStatusAndType(Integer status, Integer type, String platform);
+    List<ModelVO> getModelList(Integer status, Integer type, String platform);
 
 }

@@ -1,11 +1,12 @@
 package com.lucky.ai.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.query.apiKey.ApiKeyPageQuery;
+import com.lucky.ai.domain.vo.apikey.ApiKeyVO;
+import com.lucky.common.core.mybatis.BaseMapperX;
 import com.lucky.common.utils.StringUtils;
 
 /**
@@ -13,15 +14,15 @@ import com.lucky.common.utils.StringUtils;
  *
  * @author lucky
  */
-public interface AiApiKeyMapper extends BaseMapper<AiApiKey> {
+public interface AiApiKeyMapper extends BaseMapperX<AiApiKey, ApiKeyVO> {
 
-    default IPage<AiApiKey> selectPage(IPage<AiApiKey> page, ApiKeyPageQuery query) {
+    default IPage<ApiKeyVO> selectPage(IPage<AiApiKey> page, ApiKeyPageQuery query) {
         LambdaQueryWrapper<AiApiKey> wrapper = Wrappers.<AiApiKey>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getName()), AiApiKey::getName, query.getName())
                 .eq(StringUtils.isNotEmpty(query.getPlatform()), AiApiKey::getPlatform, query.getPlatform())
                 .eq(StringUtils.isNotNull(query.getStatus()), AiApiKey::getStatus, query.getStatus())
                 .orderByDesc(AiApiKey::getCreateTime);
-        return selectPage(page, wrapper);
+        return selectVoPage(page, wrapper);
     }
 
 }

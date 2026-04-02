@@ -30,8 +30,6 @@ import reactor.core.publisher.Flux;
 
 import java.util.*;
 
-import static com.lucky.ai.util.CollectionUtils.convertList;
-
 /**
  * AI 聊天消息Service业务层处理
  *
@@ -57,8 +55,8 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
     /**
      * 发送消息（流式）
      *
-     * @param query 发送消息（流式）请求
-     * @param userId  用户ID
+     * @param query  发送消息（流式）请求
+     * @param userId 用户ID
      * @return 发送消息（流式）响应VO
      */
     @Override
@@ -91,8 +89,8 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
      * @return 聊天消息列表
      */
     @Override
-    public List<AiChatMessage> getChatMessageListByConversationId(Long conversationId) {
-        return chatMessageMapper.selectListByConversationId(conversationId);
+    public List<ChatMessageVO> getChatMessageListByConversationId(Long conversationId) {
+        return chatMessageMapper.selectVoListByConversationId(conversationId);
     }
 
     /**
@@ -103,7 +101,7 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
      * @return 删除的消息数量
      */
     @Override
-    public int deleteChatMessage(Long id, Long userId) {
+    public int deleteChatMessageByIdAndUserId(Long id, Long userId) {
         // 1. 校验消息存在
         AiChatMessage message = chatMessageMapper.selectById(id);
         if (message == null || ObjUtil.notEqual(message.getUserId(), userId)) {
@@ -121,27 +119,28 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
      * @return 删除的消息数量
      */
     @Override
-    public int deleteChatMessageByConversationId(Long conversationId, Long userId) {
-        // 1. 校验消息存在
+    public int deleteChatMessageByConversationIdAndUserId(Long conversationId, Long userId) {
         List<AiChatMessage> messages = chatMessageMapper.selectListByConversationId(conversationId);
+        // 校验消息存在
         if (CollUtil.isEmpty(messages) || ObjUtil.notEqual(messages.get(0).getUserId(), userId)) {
             throw new ServiceException(AiErrorConstants.CHAT_MESSAGE_NOT_EXIST);
         }
-        // 2. 执行删除
-        return chatMessageMapper.deleteByIds(convertList(messages, AiChatMessage::getId));
+        // 执行删除
+        List<Long> ids = messages.stream().map(AiChatMessage::getId).toList();
+        return chatMessageMapper.deleteByIds(ids);
     }
 
     /**
      * 查询用户的聊天消息分页列表
      *
      * @param pageQuery 分页查询参数
-     * @param query 查询参数
+     * @param query     查询参数
      * @return 聊天消息分页列表
      */
     @Override
     public TableDataInfo<ChatMessageVO> getChatMessagePage(PageQuery pageQuery, ChatMessagePageQuery query) {
-        IPage<AiChatMessage> page = chatMessageMapper.selectPage(pageQuery.build(), query);
-        return TableDataInfo.build(page, ChatMessageVO.class);
+        IPage<ChatMessageVO> page = chatMessageMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(page);
     }
 
     /**

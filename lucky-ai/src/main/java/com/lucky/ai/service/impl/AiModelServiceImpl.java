@@ -1,6 +1,5 @@
 package com.lucky.ai.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.domain.query.model.ModelPageQuery;
@@ -15,6 +14,7 @@ import com.lucky.common.constant.AiErrorConstants;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.exception.ServiceException;
+import com.lucky.common.utils.MapstructUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -43,12 +43,12 @@ public class AiModelServiceImpl implements AiModelService {
      * @return 模型
      */
     @Override
-    public AiModel getRequiredDefaultModel(Integer type) {
-        AiModel aiModel = modelMapper.selectFirstByStatus(type, CommonStatusEnum.ENABLE.getStatus());
-        if (aiModel == null) {
+    public AiModel getDefaultModelByType(Integer type) {
+        AiModel model = modelMapper.selectOneByTypeAndStatus(type, CommonStatusEnum.ENABLE.getStatus());
+        if (model == null) {
             throw new ServiceException(AiErrorConstants.MODEL_DEFAULT_NOT_EXISTS);
         }
-        return aiModel;
+        return model;
     }
 
     /**
@@ -78,7 +78,7 @@ public class AiModelServiceImpl implements AiModelService {
         AiPlatformEnum.validatePlatform(query.getPlatform());
         apiKeyService.validateApiKey(query.getKeyId());
         // 2. 插入
-        AiModel model = BeanUtil.toBean(query, AiModel.class);
+        AiModel model = MapstructUtils.convert(query, AiModel.class);
         modelMapper.insert(model);
         return model.getId();
     }
@@ -96,8 +96,8 @@ public class AiModelServiceImpl implements AiModelService {
         AiPlatformEnum.validatePlatform(query.getPlatform());
         apiKeyService.validateApiKey(query.getKeyId());
         // 2. 更新
-        AiModel updateObj = BeanUtil.toBean(query, AiModel.class);
-        return modelMapper.updateById(updateObj);
+        AiModel model = MapstructUtils.convert(query, AiModel.class);
+        return modelMapper.updateById(model);
     }
 
     /**
@@ -121,8 +121,8 @@ public class AiModelServiceImpl implements AiModelService {
      * @return 模型
      */
     @Override
-    public AiModel getModelById(Long id) {
-        return modelMapper.selectById(id);
+    public ModelVO getModelById(Long id) {
+        return modelMapper.selectVoById(id);
     }
 
     /**
@@ -133,8 +133,8 @@ public class AiModelServiceImpl implements AiModelService {
      */
     @Override
     public TableDataInfo<ModelVO> getModelPage(PageQuery pageQuery, ModelPageQuery query) {
-        IPage<AiModel> selectPage = modelMapper.selectPage(pageQuery.build(), query);
-        return TableDataInfo.build(selectPage, ModelVO.class);
+        IPage<ModelVO> selectPage = modelMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(selectPage);
     }
 
     /**
@@ -146,8 +146,8 @@ public class AiModelServiceImpl implements AiModelService {
      * @return 模型列表
      */
     @Override
-    public List<AiModel> getModelListByStatusAndType(Integer status, Integer type, String platform) {
-        return modelMapper.selectListByStatusAndType(status, type, platform);
+    public List<ModelVO> getModelList(Integer status, Integer type, String platform) {
+        return modelMapper.selectList(status, type, platform);
     }
 
     private AiModel validateModelExists(Long id) {

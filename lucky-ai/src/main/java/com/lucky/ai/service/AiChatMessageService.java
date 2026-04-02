@@ -2,7 +2,6 @@ package com.lucky.ai.service;
 
 import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.core.vo.chat.ChatMessageResponse;
-import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.domain.query.message.ChatMessagePageQuery;
 import com.lucky.ai.domain.vo.message.ChatMessageVO;
 import com.lucky.common.core.page.PageQuery;
@@ -35,7 +34,7 @@ public interface AiChatMessageService {
      * @param conversationId 会话ID
      * @return 聊天消息列表
      */
-    List<AiChatMessage> getChatMessageListByConversationId(Long conversationId);
+    List<ChatMessageVO> getChatMessageListByConversationId(Long conversationId);
 
     /**
      * 删除消息
@@ -44,7 +43,7 @@ public interface AiChatMessageService {
      * @param userId 用户ID
      * @return 结果
      */
-    int deleteChatMessage(Long id, Long userId);
+    int deleteChatMessageByIdAndUserId(Long id, Long userId);
 
     /**
      * 删除指定对话的消息
@@ -53,7 +52,7 @@ public interface AiChatMessageService {
      * @param userId         用户ID
      * @return 结果
      */
-    int deleteChatMessageByConversationId(Long conversationId, Long userId);
+    int deleteChatMessageByConversationIdAndUserId(Long conversationId, Long userId);
 
     /**
      * 查询聊天消息分页列表

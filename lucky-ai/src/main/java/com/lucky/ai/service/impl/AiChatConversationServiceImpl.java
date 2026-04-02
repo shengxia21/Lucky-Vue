@@ -1,6 +1,5 @@
 package com.lucky.ai.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjUtil;
@@ -24,14 +23,13 @@ import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.exception.ServiceException;
 import com.lucky.common.utils.DateUtils;
+import com.lucky.common.utils.MapstructUtils;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-
-import static com.lucky.ai.util.CollectionUtils.convertList;
 
 /**
  * AI 聊天对话Service业务层处理
@@ -64,7 +62,7 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
         AiChatRole role = query.getRoleId() != null ? chatRoleService.validateChatRole(query.getRoleId()) : null;
         // 1.2 获得 AiModelDO 聊天模型
         AiModel model = role != null && role.getModelId() != null ? modelService.validateModel(role.getModelId())
-                : modelService.getRequiredDefaultModel(AiModelTypeEnum.CHAT.getType());
+                : modelService.getDefaultModelByType(AiModelTypeEnum.CHAT.getType());
         Assert.notNull(model, "必须找到默认模型");
         validateChatModel(model);
 
@@ -93,8 +91,8 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
     /**
      * 更新我的聊天对话
      *
-     * @param query 更新对象
-     * @param userId      用户ID
+     * @param query  更新对象
+     * @param userId 用户ID
      */
     @Override
     public int updateChatConversationMy(ChatConversationUpdateMyQuery query, Long userId) {
@@ -111,7 +109,7 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
         // 1.3 校验知识库是否存在
 
         // 2. 更新对话信息
-        AiChatConversation updateObj = BeanUtil.toBean(query, AiChatConversation.class);
+        AiChatConversation updateObj = MapstructUtils.convert(query, AiChatConversation.class);
         if (Boolean.TRUE.equals(query.getPinned())) {
             updateObj.setPinnedTime(DateUtils.getNowDate());
         }
@@ -129,8 +127,7 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      */
     @Override
     public List<ChatConversationVO> getChatConversationListByUserId(Long userId) {
-        List<AiChatConversation> conversationList = chatConversationMapper.selectListByUserId(userId);
-        return convertList(conversationList, u -> BeanUtil.toBean(u, ChatConversationVO.class));
+        return chatConversationMapper.selectListByUserId(userId);
     }
 
     /**
@@ -140,8 +137,8 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      * @return 聊天对话
      */
     @Override
-    public AiChatConversation getChatConversationById(Long id) {
-        return chatConversationMapper.selectById(id);
+    public ChatConversationVO getChatConversationById(Long id) {
+        return chatConversationMapper.selectVoById(id);
     }
 
     /**
@@ -152,7 +149,7 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      * @return 是否成功
      */
     @Override
-    public int deleteChatConversationMy(Long id, Long userId) {
+    public int deleteChatConversationMyById(Long id, Long userId) {
         // 1. 校验对话是否存在
         AiChatConversation conversation = validateChatConversationExists(id);
         if (conversation == null || ObjUtil.notEqual(conversation.getUserId(), userId)) {
@@ -169,32 +166,37 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
      * @return 是否成功
      */
     @Override
-    public int deleteChatConversationMyByUserId(Long userId) {
+    public int deleteChatConversationMy(Long userId) {
         List<AiChatConversation> list = chatConversationMapper.selectListByUserIdAndPinned(userId, false);
         if (CollUtil.isEmpty(list)) {
             return 0;
         }
-        return chatConversationMapper.deleteByIds(convertList(list, AiChatConversation::getId));
+        List<Long> ids = list.stream().map(AiChatConversation::getId).toList();
+        return chatConversationMapper.deleteByIds(ids);
     }
 
     /**
      * 获取对话分页列表
      *
      * @param pageQuery 分页查询对象
-     * @param query 查询参数
+     * @param query     查询参数
      * @return 分页列表
      */
     @Override
     public TableDataInfo<ChatConversationVO> getChatConversationPage(PageQuery pageQuery, ChatConversationPageQuery query) {
-        IPage<AiChatConversation> page = chatConversationMapper.selectPage(pageQuery.build(), query);
-        Map<Long, Integer> countMap = chatMessageService.getChatMessageCountMap(convertList(page.getRecords(), AiChatConversation::getId));
-        // 转换为响应VO,并添加消息数量
-        List<ChatConversationVO> list = convertList(page.getRecords(), conversation -> {
-            ChatConversationVO respVO = BeanUtil.toBean(conversation, ChatConversationVO.class);
-            respVO.setMessageCount(countMap.get(conversation.getId()));
-            return respVO;
+        IPage<ChatConversationVO> page = chatConversationMapper.selectPage(pageQuery.build(), query);
+        if (CollUtil.isEmpty(page.getRecords())) {
+            return TableDataInfo.build(page);
+        }
+        // 提取对话ID列表
+        List<Long> ids = page.getRecords().stream().map(ChatConversationVO::getId).toList();
+        // 查询每个对话的消息数量
+        Map<Long, Integer> countMap = chatMessageService.getChatMessageCountMap(ids);
+        // 添加消息数量
+        page.getRecords().forEach(conversation -> {
+            conversation.setMessageCount(countMap.get(conversation.getId()));
         });
-        return TableDataInfo.build(list, page.getTotal());
+        return TableDataInfo.build(page);
     }
 
     /**

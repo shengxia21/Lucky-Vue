@@ -1,5 +1,7 @@
 package com.lucky.ai.domain.vo.model;
 
+import com.lucky.ai.domain.AiModel;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 import java.util.Date;
@@ -10,6 +12,7 @@ import java.util.Date;
  * @author lucky
  */
 @Data
+@AutoMapper(target = AiModel.class)
 public class ModelVO {
 
     /**

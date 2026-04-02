@@ -1,6 +1,5 @@
 package com.lucky.ai.domain;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -100,11 +99,5 @@ public class AiChatRole extends BaseEntity {
      */
     @TableLogic
     private String delFlag;
-
-    /**
-     * 备注
-     */
-    @TableField(exist = false)
-    private String remark;
 
 }

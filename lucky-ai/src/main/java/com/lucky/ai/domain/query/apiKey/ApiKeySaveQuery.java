@@ -1,5 +1,7 @@
 package com.lucky.ai.domain.query.apiKey;
 
+import com.lucky.ai.domain.AiApiKey;
+import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -10,6 +12,7 @@ import lombok.Data;
  * @author lucky
  */
 @Data
+@AutoMapper(target = AiApiKey.class, reverseConvertGenerate = false)
 public class ApiKeySaveQuery {
 
     /**
