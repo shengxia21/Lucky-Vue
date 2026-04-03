@@ -1,6 +1,5 @@
 package com.lucky.common.manager;
 
-import com.lucky.common.utils.Threads;
 import com.lucky.common.utils.spring.SpringUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -58,14 +57,6 @@ public class AsyncManager {
      */
     public void execute(Runnable task) {
         taskExecutor.execute(task);
-    }
-
-    /**
-     * 停止任务线程池
-     */
-    public void shutdown() {
-        // 停止定时任务线程池
-        Threads.shutdownAndAwaitTermination(scheduledExecutor);
     }
 
 }

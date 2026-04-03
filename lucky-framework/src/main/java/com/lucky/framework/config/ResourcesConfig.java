@@ -7,11 +7,9 @@ import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -28,9 +26,6 @@ public class ResourcesConfig implements WebMvcConfigurer {
 
     @Resource
     private RepeatSubmitInterceptor repeatSubmitInterceptor;
-
-    @Resource
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -50,15 +45,6 @@ public class ResourcesConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(repeatSubmitInterceptor).addPathPatterns("/**");
-    }
-
-    /**
-     * 异步配置
-     */
-    @Override
-    public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-        // 生产环境下,让 MVC 异步使用可控线程池,而不是默认的SimpleAsyncTaskExecutor
-        configurer.setTaskExecutor(threadPoolTaskExecutor);
     }
 
     /**

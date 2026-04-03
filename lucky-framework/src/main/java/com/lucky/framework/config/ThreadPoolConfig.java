@@ -1,14 +1,15 @@
 package com.lucky.framework.config;
 
-import com.lucky.common.utils.Threads;
+import com.lucky.common.utils.spring.SpringUtils;
+import jakarta.annotation.PreDestroy;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.core.task.VirtualThreadTaskExecutor;
 
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 /**
  * 线程池配置
@@ -18,57 +19,88 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 public class ThreadPoolConfig {
 
+    private static final Logger logger = LoggerFactory.getLogger(ThreadPoolConfig.class);
+
+    // CPU 密集型，可设置为 CPU 核心数 + 1
+    // IO 密集型，可设置为 CPU 核心数 × 2
     // 核心线程池大小(初始化为CPU核心数)
-    private final int corePoolSize = Runtime.getRuntime().availableProcessors();
+    private final int corePoolSize = Runtime.getRuntime().availableProcessors() + 1;
 
-    // 最大可创建的线程数
-    private final int maxPoolSize = 50;
-
-    // 队列最大长度
-    private final int queueCapacity = 100;
-
-    // 线程池维护线程所允许的空闲时间
-    private final int keepAliveSeconds = 200;
-
-    // 线程池关闭等待任务时间
-    private final int awaitTerminationSeconds = 120;
-
-    @Bean(name = "threadPoolTaskExecutor")
-    public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        // CPU 密集型，可设置为 CPU 核心数 + 1
-        // IO 密集型，可设置为 CPU 核心数 × 2
-        executor.setCorePoolSize(corePoolSize * 2);
-        executor.setMaxPoolSize(maxPoolSize);
-        executor.setQueueCapacity(queueCapacity);
-        executor.setKeepAliveSeconds(keepAliveSeconds);
-        executor.setThreadNamePrefix("thread-pool-");
-        // 线程池关闭时等待所有任务完成
-        executor.setWaitForTasksToCompleteOnShutdown(true);
-        // 线程池关闭时，还存在任务正在执行，等待该时间后强制关闭
-        executor.setAwaitTerminationSeconds(awaitTerminationSeconds);
-        // 拒绝策略：任务队列已满且线程数已达到最大线程数时,直接由调用者运行策略，不再交由线程池处理
-        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        // 初始化线程池(创建核心线程,真正可被调用)
-        executor.initialize();
-        return executor;
-    }
+    private ScheduledExecutorService scheduledExecutorService;
 
     /**
      * 执行周期性或定时任务
      */
     @Bean(name = "scheduledExecutorService")
     protected ScheduledExecutorService scheduledExecutorService() {
+        BasicThreadFactory.Builder builder = new BasicThreadFactory.Builder().daemon(true);
+        if (SpringUtils.isVirtual()) {
+            builder.namingPattern("virtual-schedule-pool-%d").wrappedFactory(new VirtualThreadTaskExecutor().getVirtualThreadFactory());
+        } else {
+            builder.namingPattern("schedule-pool-%d");
+        }
         // 拒绝策略：调用者运行策略，不再交由线程池处理
-        return new ScheduledThreadPoolExecutor(corePoolSize * 2,
-                new BasicThreadFactory.Builder().namingPattern("schedule-pool-%d").daemon(true).build(),
+        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(corePoolSize,
+                builder.build(),
                 new ThreadPoolExecutor.CallerRunsPolicy()) {
             @Override
             protected void afterExecute(Runnable r, Throwable t) {
                 super.afterExecute(r, t);
-                Threads.printException(r, t);
+                printException(r, t);
             }
         };
+        this.scheduledExecutorService = scheduledThreadPoolExecutor;
+        return scheduledThreadPoolExecutor;
+    }
+
+    /**
+     * 销毁时关闭线程池
+     */
+    @PreDestroy
+    public void destroy() {
+        try {
+            logger.info("====关闭后台任务任务线程池====");
+            ScheduledExecutorService pool = scheduledExecutorService;
+            if (pool != null && !pool.isShutdown()) {
+                pool.shutdown();
+                try {
+                    if (!pool.awaitTermination(120, TimeUnit.SECONDS)) {
+                        pool.shutdownNow();
+                        if (!pool.awaitTermination(120, TimeUnit.SECONDS)) {
+                            logger.info("Pool did not terminate");
+                        }
+                    }
+                } catch (InterruptedException ie) {
+                    pool.shutdownNow();
+                    Thread.currentThread().interrupt();
+                }
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 打印线程异常信息
+     */
+    public static void printException(Runnable r, Throwable t) {
+        if (t == null && r instanceof Future<?>) {
+            try {
+                Future<?> future = (Future<?>) r;
+                if (future.isDone()) {
+                    future.get();
+                }
+            } catch (CancellationException ce) {
+                t = ce;
+            } catch (ExecutionException ee) {
+                t = ee.getCause();
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        if (t != null) {
+            logger.error(t.getMessage(), t);
+        }
     }
 
 }
