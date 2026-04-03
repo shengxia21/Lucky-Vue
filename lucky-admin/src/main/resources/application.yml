@@ -38,12 +38,14 @@ user:
 
 # Spring配置
 spring:
-  # 资源信息
-  messages:
-    # 国际化资源文件路径
-    basename: i18n/messages
+  # 环境配置
   profiles:
+    # 激活的环境配置
     active: @profiles.active@
+  threads:
+    # 开启虚拟线程 仅jdk21可用
+    virtual:
+      enabled: false
   mvc:
     # 设置静态资源路径 防止所有请求都去查静态资源(优化性能)
     static-path-pattern: /static/**
@@ -64,10 +66,6 @@ spring:
     deserialization:
       # 如果 JSON 中包含目标 Java 类不存在的属性，是否抛出异常
       fail_on_unknown_properties: false
-  threads:
-    # 开启虚拟线程 仅jdk21可用
-    virtual:
-      enabled: false
   # AI模型配置
   ai:
     deepseek:
