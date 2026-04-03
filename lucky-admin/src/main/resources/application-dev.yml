@@ -55,72 +55,43 @@ spring:
           max-wait: -1ms
   # 数据源配置
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.cj.jdbc.Driver
-    druid:
-      # 主库数据源
-      master:
-        url: jdbc:mysql://localhost:3308/lucky-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-        username: root
-        password: 123456
-      # 从库数据源
-      slave:
-        # 从数据源开关/默认关闭
-        enabled: false
-        url:
-        username:
-        password:
-      # 初始连接数
-      initialSize: 3
-      # 最小连接池数量
-      minIdle: 5
-      # 最大连接池数量
-      maxActive: 10
-      # 配置获取连接等待超时的时间
-      maxWait: 30000
-      # 配置连接超时时间
-      connectTimeout: 15000
-      # 配置网络超时时间
-      socketTimeout: 30000
-      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-      timeBetweenEvictionRunsMillis: 30000
-      # 配置一个连接在池中最小生存的时间，单位是毫秒
-      minEvictableIdleTimeMillis: 150000
-      # 配置一个连接在池中最大生存的时间，单位是毫秒
-      maxEvictableIdleTimeMillis: 450000
-      # 配置检测连接是否有效
-      validationQuery: SELECT 1 FROM DUAL
-      # 在空闲时检查连接有效性
-      testWhileIdle: true
-      # 获取连接时不测试
-      testOnBorrow: false
-      # 归还连接时不测试
-      testOnReturn: false
-      # 启用Web请求统计，可以监控URL请求
-      webStatFilter:
-        enabled: true
-      # 启用Druid内置的监控界面
-      statViewServlet:
-        enabled: true
-        # 设置白名单，不填则允许所有访问
-        allow:
-        # 配置访问路径（http://localhost:8082/druid/login.html）
-        url-pattern: /druid/*
-        # 控制台管理用户名和密码
-        login-username: lucky
-        login-password: 123456
-      # 统计SQL执行性能，识别慢查询
-      filter:
-        stat:
-          enabled: true
-          # 慢SQL记录
-          log-slow-sql: true
-          # 慢SQL阈值：1000毫秒
-          slow-sql-millis: 1000
-          # 合并相似SQL统计
-          merge-sql: true
-        # 启用SQL防火墙，防止SQL注入
-        wall:
-          config:
-            # 允许批量执行多条SQL
-            multi-statement-allow: true
+    type: com.zaxxer.hikari.HikariDataSource
+    # 动态数据源文档 https://www.kancloud.cn/tracy5546/dynamic-datasource/content
+    dynamic:
+      # 设置默认的数据源或者数据源组,默认值即为 master
+      primary: master
+      # 严格模式 匹配不到数据源则报错
+      strict: true
+      datasource:
+        # 主库数据源
+        master:
+          type: ${spring.datasource.type}
+          driverClassName: com.mysql.cj.jdbc.Driver
+          # jdbc 所有参数配置参考 https://lionli.blog.csdn.net/article/details/122018562
+          # rewriteBatchedStatements=true 批处理优化 大幅提升批量插入更新删除性能(对数据库有性能损耗 使用批量操作应考虑性能问题)
+          url: jdbc:mysql://localhost:3308/lucky-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true
+          username: root
+          password: 123456
+        # 从库数据源
+#        slave:
+#          lazy: true
+#          type: ${spring.datasource.type}
+#          driverClassName: com.mysql.cj.jdbc.Driver
+#          url: jdbc:mysql://localhost:3306/lucky-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true
+#          username:
+#          password:
+      hikari:
+        # 最大连接池数量
+        maxPoolSize: 10
+        # 最小空闲线程数量
+        minIdle: 5
+        # 配置获取连接等待超时的时间
+        connectionTimeout: 30000
+        # 校验超时时间
+        validationTimeout: 5000
+        # 空闲连接存活最大时间，默认10分钟
+        idleTimeout: 600000
+        # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认30分钟
+        maxLifetime: 1800000
+        # 多久检查一次连接的活性
+        keepaliveTime: 30000
