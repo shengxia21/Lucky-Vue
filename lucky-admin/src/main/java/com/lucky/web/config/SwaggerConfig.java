@@ -1,4 +1,4 @@
-package com.lucky.web.core.config;
+package com.lucky.web.config;
 
 import com.lucky.common.config.LuckyConfig;
 import io.swagger.v3.oas.models.Components;
