@@ -103,7 +103,7 @@ public class SecurityConfig {
                             // 图片资源，可匿名访问
                             .requestMatchers(HttpMethod.GET, "/profile/**").permitAll()
                             // swagger-ui、druid 数据，可匿名访问
-                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/druid/**").permitAll()
+                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                             // 异步请求，可匿名访问
                             .dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
                             // 除上面外的所有请求全部需要鉴权认证
