@@ -50,12 +50,6 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
     @Resource
     private AiChatMessageService chatMessageService;
 
-    /**
-     * 创建我的聊天对话
-     *
-     * @param userId 用户ID
-     * @return 聊天对话ID
-     */
     @Override
     public Long createChatConversationMy(AiChatConversationCreateMyQuery query, Long userId) {
         // 1.1 获得 AiChatRoleDO 聊天角色
@@ -88,12 +82,6 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
         return conversation.getId();
     }
 
-    /**
-     * 更新我的聊天对话
-     *
-     * @param query  更新对象
-     * @param userId 用户ID
-     */
     @Override
     public int updateChatConversationMy(AiChatConversationUpdateMyQuery query, Long userId) {
         // 1.1 校验对话是否存在
@@ -119,35 +107,16 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
         return chatConversationMapper.updateById(updateObj);
     }
 
-    /**
-     * 获得我的聊天对话列表
-     *
-     * @param userId 用户ID
-     * @return 聊天对话列表
-     */
     @Override
     public List<AiChatConversationVO> getChatConversationListByUserId(Long userId) {
         return chatConversationMapper.selectListByUserId(userId);
     }
 
-    /**
-     * 获得我的聊天对话
-     *
-     * @param id 对话ID
-     * @return 聊天对话
-     */
     @Override
     public AiChatConversationVO getChatConversationById(Long id) {
         return chatConversationMapper.selectVoById(id);
     }
 
-    /**
-     * 删除我的聊天对话
-     *
-     * @param id     对话ID
-     * @param userId 用户ID
-     * @return 是否成功
-     */
     @Override
     public int deleteChatConversationMyById(Long id, Long userId) {
         // 1. 校验对话是否存在
@@ -159,12 +128,6 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
         return chatConversationMapper.deleteById(id);
     }
 
-    /**
-     * 删除我的未置顶聊天对话
-     *
-     * @param userId 用户ID
-     * @return 是否成功
-     */
     @Override
     public int deleteChatConversationMy(Long userId) {
         List<AiChatConversation> list = chatConversationMapper.selectListByUserIdAndPinned(userId, false);
@@ -175,13 +138,6 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
         return chatConversationMapper.deleteByIds(ids);
     }
 
-    /**
-     * 获取对话分页列表
-     *
-     * @param pageQuery 分页查询对象
-     * @param query     查询参数
-     * @return 分页列表
-     */
     @Override
     public TableDataInfo<AiChatConversationVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageQuery query) {
         IPage<AiChatConversationVO> page = chatConversationMapper.selectPage(pageQuery.build(), query);
@@ -197,12 +153,6 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
         return TableDataInfo.build(page);
     }
 
-    /**
-     * 管理员删除对话
-     *
-     * @param id 对话ID
-     * @return 是否成功
-     */
     @Override
     public int deleteChatConversationById(Long id) {
         // 1. 校验对话是否存在
@@ -214,12 +164,6 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
         return chatConversationMapper.deleteById(id);
     }
 
-    /**
-     * 校验对话是否存在
-     *
-     * @param id 对话ID
-     * @return 对话
-     */
     @Override
     public AiChatConversation validateChatConversationExists(Long id) {
         AiChatConversation conversation = chatConversationMapper.selectById(id);

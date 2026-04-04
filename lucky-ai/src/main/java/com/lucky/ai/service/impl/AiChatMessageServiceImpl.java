@@ -53,13 +53,6 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
     @Resource
     private ChatServiceFacade chatService;
 
-    /**
-     * 发送消息（流式）
-     *
-     * @param query  发送消息（流式）请求
-     * @param userId 用户ID
-     * @return 发送消息（流式）响应VO
-     */
     @Override
     public Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest query, Long userId) {
         // 校验对话存在
@@ -83,24 +76,11 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
         return chatService.chat(chatContext);
     }
 
-    /**
-     * 根据会话ID查询聊天消息列表
-     *
-     * @param conversationId 会话ID
-     * @return 聊天消息列表
-     */
     @Override
     public List<AiChatMessageVO> getChatMessageListByConversationId(Long conversationId) {
         return chatMessageMapper.selectVoListByConversationId(conversationId);
     }
 
-    /**
-     * 删除用户的聊天消息
-     *
-     * @param id     消息ID
-     * @param userId 用户ID
-     * @return 删除的消息数量
-     */
     @Override
     public int deleteChatMessageByIdAndUserId(Long id, Long userId) {
         // 1. 校验消息存在
@@ -112,13 +92,6 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
         return chatMessageMapper.deleteById(id);
     }
 
-    /**
-     * 删除用户的聊天消息（根据会话ID）
-     *
-     * @param conversationId 会话ID
-     * @param userId         用户ID
-     * @return 删除的消息数量
-     */
     @Override
     public int deleteChatMessageByConversationIdAndUserId(Long conversationId, Long userId) {
         List<AiChatMessage> messages = chatMessageMapper.selectListByConversationId(conversationId);
@@ -131,25 +104,12 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
         return chatMessageMapper.deleteByIds(ids);
     }
 
-    /**
-     * 查询用户的聊天消息分页列表
-     *
-     * @param pageQuery 分页查询参数
-     * @param query     查询参数
-     * @return 聊天消息分页列表
-     */
     @Override
     public TableDataInfo<AiChatMessageVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageQuery query) {
         IPage<AiChatMessageVO> page = chatMessageMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
-    /**
-     * 删除管理员的聊天消息
-     *
-     * @param id 聊天消息ID
-     * @return 删除的消息数量
-     */
     @Override
     public int deleteChatMessageById(Long id) {
         // 1. 校验消息存在
@@ -161,12 +121,6 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
         return chatMessageMapper.deleteById(id);
     }
 
-    /**
-     * 获得聊天对话的消息数量 Map
-     *
-     * @param conversationIds 对话编号数组
-     * @return 消息数量 Map
-     */
     @Override
     public Map<Long, Integer> getChatMessageCountMap(Collection<Long> conversationIds) {
         return chatMessageMapper.selectCountMapByConversationIds(conversationIds);

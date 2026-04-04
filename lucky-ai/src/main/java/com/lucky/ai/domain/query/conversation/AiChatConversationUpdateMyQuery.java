@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * 更新我的聊天对话请求VO
+ * 更新我的聊天对话请求对象
  *
  * @author lucky
  */

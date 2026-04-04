@@ -3,7 +3,7 @@ package com.lucky.ai.domain.query.conversation;
 import lombok.Data;
 
 /**
- * 创建我的聊天对话请求VO
+ * 创建我的聊天对话请求对象
  *
  * @author lucky
  */

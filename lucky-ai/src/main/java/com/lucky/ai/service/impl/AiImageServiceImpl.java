@@ -46,48 +46,23 @@ public class AiImageServiceImpl implements AiImageService {
     @Resource
     private AiApiKeyService apiKeyService;
 
-    /**
-     * 获取【我的】绘图分页
-     *
-     * @param query 分页查询参数
-     * @return 分页结果
-     */
     @Override
     public TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query, Long userId) {
         IPage<AiImageVO> page = imageMapper.selectPageMy(pageQuery.build(), query, userId);
         return TableDataInfo.build(page);
     }
 
-    /**
-     * 获取公开的绘图
-     *
-     * @param query 分页查询参数
-     * @return 分页结果
-     */
     @Override
     public TableDataInfo<AiImageVO> getImagePagePublic(PageQuery pageQuery, AiImagePagePublicQuery query) {
         IPage<AiImageVO> page = imageMapper.selectPagePublic(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
-    /**
-     * 根据ID查询绘画详情
-     *
-     * @param id 绘画主键
-     * @return 绘图详情
-     */
     @Override
     public AiImageVO getImageById(Long id) {
         return imageMapper.selectVoById(id);
     }
 
-    /**
-     * 根据ID列表查询绘画列表
-     *
-     * @param ids    绘画主键列表
-     * @param userId 用户ID
-     * @return 绘画列表
-     */
     @Override
     public List<AiImageVO> getImageListByIdsAndUserId(List<Long> ids, Long userId) {
         if (CollUtil.isEmpty(ids)) {
@@ -96,13 +71,6 @@ public class AiImageServiceImpl implements AiImageService {
         return imageMapper.selectListByIdsAndUserId(ids, userId);
     }
 
-    /**
-     * 生成图片
-     *
-     * @param userId  用户ID
-     * @param request 绘图参数
-     * @return 结果
-     */
     @Override
     public Long drawImage(Long userId, ImageDrawRequest request) {
         // 校验模型是否存在
@@ -132,13 +100,6 @@ public class AiImageServiceImpl implements AiImageService {
         return image.getId();
     }
 
-    /**
-     * 删除【我的】绘图记录
-     *
-     * @param id     绘图记录ID
-     * @param userId 用户ID
-     * @return 结果
-     */
     @Override
     public int deleteImageMyById(Long id, Long userId) {
         // 1. 校验是否存在
@@ -150,24 +111,12 @@ public class AiImageServiceImpl implements AiImageService {
         return imageMapper.deleteById(id);
     }
 
-    /**
-     * 获得绘画列表
-     *
-     * @param query 分页查询参数
-     * @return 分页结果
-     */
     @Override
     public TableDataInfo<AiImageVO> getImagePage(PageQuery pageQuery, AiImagePageQuery query) {
         IPage<AiImageVO> page = imageMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
-    /**
-     * 更新绘画
-     *
-     * @param query 更新参数
-     * @return 结果
-     */
     @Override
     public int updateImage(AiImageUpdateQuery query) {
         // 1. 校验存在
@@ -177,12 +126,6 @@ public class AiImageServiceImpl implements AiImageService {
         return imageMapper.updateById(image);
     }
 
-    /**
-     * 删除绘画
-     *
-     * @param id 绘画主键
-     * @return 结果
-     */
     @Override
     public int deleteImageById(Long id) {
         // 1. 校验存在

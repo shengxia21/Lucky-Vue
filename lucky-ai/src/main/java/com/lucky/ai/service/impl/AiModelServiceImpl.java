@@ -34,14 +34,6 @@ public class AiModelServiceImpl implements AiModelService {
     @Resource
     private AiApiKeyService apiKeyService;
 
-    /**
-     * 获得默认的模型
-     * <p>
-     * 如果获取不到，则抛出 {@link com.lucky.common.exception.ServiceException}
-     *
-     * @param type 模型类型
-     * @return 模型
-     */
     @Override
     public AiModel getDefaultModelByType(Integer type) {
         AiModel model = modelMapper.selectOneByTypeAndStatus(type, CommonStatusEnum.ENABLE.getStatus());
@@ -51,12 +43,6 @@ public class AiModelServiceImpl implements AiModelService {
         return model;
     }
 
-    /**
-     * 校验模型是否可使用
-     *
-     * @param id 编号
-     * @return 模型
-     */
     @Override
     public AiModel validateModel(Long id) {
         AiModel model = validateModelExists(id);
@@ -66,12 +52,6 @@ public class AiModelServiceImpl implements AiModelService {
         return model;
     }
 
-    /**
-     * 创建模型
-     *
-     * @param query 创建信息
-     * @return 编号
-     */
     @Override
     public Long createModel(AiModelSaveQuery query) {
         // 1. 校验
@@ -83,12 +63,6 @@ public class AiModelServiceImpl implements AiModelService {
         return model.getId();
     }
 
-    /**
-     * 更新模型
-     *
-     * @param query 更新信息
-     * @return 影响行数
-     */
     @Override
     public int updateModel(AiModelSaveQuery query) {
         // 1. 校验
@@ -100,12 +74,6 @@ public class AiModelServiceImpl implements AiModelService {
         return modelMapper.updateById(model);
     }
 
-    /**
-     * 删除模型
-     *
-     * @param id 编号
-     * @return 影响行数
-     */
     @Override
     public int deleteModelById(Long id) {
         // 校验存在
@@ -114,37 +82,17 @@ public class AiModelServiceImpl implements AiModelService {
         return modelMapper.deleteById(id);
     }
 
-    /**
-     * 获得模型
-     *
-     * @param id 编号
-     * @return 模型
-     */
     @Override
     public AiModelVO getModelById(Long id) {
         return modelMapper.selectVoById(id);
     }
 
-    /**
-     * 获得模型分页
-     *
-     * @param query 分页查询
-     * @return 模型分页
-     */
     @Override
     public TableDataInfo<AiModelVO> getModelPage(PageQuery pageQuery, AiModelPageQuery query) {
         IPage<AiModelVO> selectPage = modelMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(selectPage);
     }
 
-    /**
-     * 获得模型列表
-     *
-     * @param status   状态
-     * @param type     类型
-     * @param platform 平台
-     * @return 模型列表
-     */
     @Override
     public List<AiModelVO> getModelList(Integer status, Integer type, String platform) {
         return modelMapper.selectList(status, type, platform);

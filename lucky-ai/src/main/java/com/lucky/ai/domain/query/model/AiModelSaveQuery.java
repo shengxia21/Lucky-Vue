@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * AI 模型保存VO
+ * AI 模型保存对象
  *
  * @author lucky
  */

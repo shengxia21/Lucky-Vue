@@ -36,12 +36,6 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
     @Resource
     private AiChatRoleMapper chatRoleMapper;
 
-    /**
-     * 创建聊天角色
-     *
-     * @param query 创建信息
-     * @return 编号
-     */
     @Override
     public Long createChatRole(AiChatRoleSaveQuery query) {
         // 校验文档
@@ -53,13 +47,6 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         return chatRole.getId();
     }
 
-    /**
-     * 创建【我的】聊天角色
-     *
-     * @param query  创建信息
-     * @param userId 用户编号
-     * @return 编号
-     */
     @Override
     public Long createChatRoleMy(AiChatRoleSaveMyQuery query, Long userId) {
         // 校验文档
@@ -74,11 +61,6 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         return chatRole.getId();
     }
 
-    /**
-     * 更新聊天角色
-     *
-     * @param query 更新信息
-     */
     @Override
     public int updateChatRole(AiChatRoleSaveQuery query) {
         // 校验存在
@@ -91,12 +73,6 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         return chatRoleMapper.updateById(chatRole);
     }
 
-    /**
-     * 更新【我的】聊天角色
-     *
-     * @param query  更新信息
-     * @param userId 用户编号
-     */
     @Override
     public int updateChatRoleMy(AiChatRoleSaveMyQuery query, Long userId) {
         // 校验存在
@@ -112,11 +88,6 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         return chatRoleMapper.updateById(updateObj);
     }
 
-    /**
-     * 删除聊天角色
-     *
-     * @param id 编号
-     */
     @Override
     public int deleteChatRoleById(Long id) {
         // 校验存在
@@ -125,12 +96,6 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         return chatRoleMapper.deleteById(id);
     }
 
-    /**
-     * 删除【我的】聊天角色
-     *
-     * @param id     编号
-     * @param userId 用户编号
-     */
     @Override
     public int deleteChatRoleMy(Long id, Long userId) {
         // 校验存在
@@ -142,23 +107,11 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         return chatRoleMapper.deleteById(id);
     }
 
-    /**
-     * 获得聊天角色
-     *
-     * @param id 编号
-     * @return AI 聊天角色
-     */
     @Override
     public AiChatRoleVO getChatRoleById(Long id) {
         return chatRoleMapper.selectVoById(id);
     }
 
-    /**
-     * 获得聊天角色列表
-     *
-     * @param ids 编号数组
-     * @return 聊天角色列表
-     */
     @Override
     public List<AiChatRoleVO> getChatRoleList(Collection<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
@@ -167,11 +120,6 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         return chatRoleMapper.selectVoByIds(ids);
     }
 
-    /**
-     * 校验聊天角色是否合法
-     *
-     * @param id 角色编号
-     */
     @Override
     public AiChatRole validateChatRole(Long id) {
         AiChatRole chatRole = validateChatRoleExists(id);
@@ -181,50 +129,24 @@ public class AiChatRoleServiceImpl implements AiChatRoleService {
         return chatRole;
     }
 
-    /**
-     * 获得聊天角色分页
-     *
-     * @param pageQuery 分页查询
-     * @param query     分页查询
-     * @return 聊天角色分页
-     */
     @Override
     public TableDataInfo<AiChatRoleVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageQuery query) {
         IPage<AiChatRoleVO> page = chatRoleMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
-    /**
-     * 获得【我的】聊天角色分页
-     *
-     * @param pageQuery 分页查询
-     * @param query     分页查询
-     * @param userId    用户编号
-     * @return 聊天角色分页
-     */
     @Override
     public TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query, Long userId) {
         IPage<AiChatRoleVO> page = chatRoleMapper.selectMyPage(pageQuery.build(), query, userId);
         return TableDataInfo.build(page);
     }
 
-    /**
-     * 获得聊天角色的分类列表
-     *
-     * @return 分类列表
-     */
     @Override
     public List<String> getChatRoleCategoryList() {
         List<String> list = chatRoleMapper.selectListGroupByCategory(CommonStatusEnum.ENABLE.getStatus());
         return list.stream().filter(StrUtil::isNotBlank).toList();
     }
 
-    /**
-     * 根据名字获得聊天角色
-     *
-     * @param name 名字
-     * @return 聊天角色列表
-     */
     @Override
     public List<AiChatRoleVO> getChatRoleListByName(String name) {
         return chatRoleMapper.selectListByName(name);

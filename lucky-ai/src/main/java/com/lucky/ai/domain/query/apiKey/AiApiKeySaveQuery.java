@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * AI API 密钥新增/修改 请求VO
+ * AI API 密钥新增/修改 请求对象
  *
  * @author lucky
  */

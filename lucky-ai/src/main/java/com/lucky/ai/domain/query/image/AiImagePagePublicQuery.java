@@ -3,7 +3,7 @@ package com.lucky.ai.domain.query.image;
 import lombok.Data;
 
 /**
- * 公开的绘图分页查询VO
+ * 公开的绘图分页查询对象
  *
  * @author lucky
  */

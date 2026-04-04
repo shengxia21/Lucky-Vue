@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * 更新绘画请求VO
+ * 更新绘画请求对象
  *
  * @author lucky
  */

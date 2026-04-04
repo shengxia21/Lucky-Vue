@@ -3,7 +3,7 @@ package com.lucky.ai.domain.query.apiKey;
 import lombok.Data;
 
 /**
- * API 密钥分页查询VO
+ * API 密钥分页查询对象
  *
  * @author lucky
  */

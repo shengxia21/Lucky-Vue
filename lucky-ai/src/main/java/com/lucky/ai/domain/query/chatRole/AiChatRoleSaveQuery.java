@@ -11,7 +11,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * AI 聊天角色新增/修改请求VO
+ * AI 聊天角色新增/修改请求对象
  *
  * @author lucky
  */

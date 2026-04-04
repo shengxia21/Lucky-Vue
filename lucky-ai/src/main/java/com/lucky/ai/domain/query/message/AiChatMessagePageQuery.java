@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * AI 聊天消息分页查询VO
+ * AI 聊天消息分页查询对象
  *
  * @author lucky
  */

@@ -3,7 +3,7 @@ package com.lucky.ai.domain.query.chatRole;
 import lombok.Data;
 
 /**
- * AI 聊天角色分页请求VO
+ * AI 聊天角色分页请求对象
  *
  * @author lucky
  */

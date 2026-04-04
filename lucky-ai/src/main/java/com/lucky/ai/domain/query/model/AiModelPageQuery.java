@@ -3,7 +3,7 @@ package com.lucky.ai.domain.query.model;
 import lombok.Data;
 
 /**
- * AI 模型分页查询请求VO
+ * AI 模型分页查询请求对象
  *
  * @author lucky
  */
