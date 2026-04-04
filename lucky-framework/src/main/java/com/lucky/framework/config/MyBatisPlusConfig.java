@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.lucky.framework.handler.InjectionMetaObjectHandler;
 import com.lucky.framework.handler.MybatisExceptionHandler;
@@ -29,8 +28,6 @@ public class MyBatisPlusConfig {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         // 分页插件
         interceptor.addInnerInterceptor(paginationInnerInterceptor());
-        // 阻断插件
-        interceptor.addInnerInterceptor(blockAttackInnerInterceptor());
         return interceptor;
     }
 
@@ -42,13 +39,6 @@ public class MyBatisPlusConfig {
         // 分页合理化
         paginationInnerInterceptor.setOverflow(true);
         return paginationInnerInterceptor;
-    }
-
-    /**
-     * 如果是对全表的删除或更新操作，就会终止该操作
-     */
-    public BlockAttackInnerInterceptor blockAttackInnerInterceptor() {
-        return new BlockAttackInnerInterceptor();
     }
 
     /**
