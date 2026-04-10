@@ -1,7 +1,6 @@
 package com.lucky.common.manager;
 
 import com.lucky.common.utils.spring.SpringUtils;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.TimerTask;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,11 +26,6 @@ public class AsyncManager {
     private final ScheduledExecutorService scheduledExecutor = SpringUtils.getBean("scheduledExecutorService");
 
     /**
-     * 异步操作任务执行线程池
-     */
-    private final ThreadPoolTaskExecutor taskExecutor = SpringUtils.getBean("threadPoolTaskExecutor");
-
-    /**
      * 单例模式
      */
     private AsyncManager() {
@@ -48,15 +42,6 @@ public class AsyncManager {
      */
     public void execute(TimerTask task) {
         scheduledExecutor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
-    }
-
-    /**
-     * 执行任务
-     *
-     * @param task 任务
-     */
-    public void execute(Runnable task) {
-        taskExecutor.execute(task);
     }
 
 }

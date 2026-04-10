@@ -4,6 +4,8 @@ import com.lucky.ai.core.context.ImageContext;
 import com.lucky.ai.core.facade.ImageServiceFacade;
 import com.lucky.common.utils.spring.SpringUtils;
 
+import java.util.TimerTask;
+
 /**
  * 异步工厂（产生任务用）
  *
@@ -17,12 +19,15 @@ public class AsyncAiFactory {
      * @param imageContext 图片上下文
      * @return 任务
      */
-    public static Runnable executeDrawImage(ImageContext imageContext) {
-        return () -> {
-            // 获取图片服务实例
-            ImageServiceFacade imageService = SpringUtils.getBean(ImageServiceFacade.class);
-            // 生成图片
-            imageService.generateImage(imageContext);
+    public static TimerTask executeDrawImage(ImageContext imageContext) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                // 获取图片服务实例
+                ImageServiceFacade imageService = SpringUtils.getBean(ImageServiceFacade.class);
+                // 生成图片
+                imageService.generateImage(imageContext);
+            }
         };
     }
 
