@@ -38,6 +38,10 @@ user:
 
 # Spring配置
 spring:
+  # 资源信息
+  messages:
+    # 国际化资源文件路径
+    basename: i18n/messages
   # 环境配置
   profiles:
     # 激活的环境配置
