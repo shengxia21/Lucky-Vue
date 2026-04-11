@@ -2,6 +2,7 @@ package com.lucky.system.domain.vo;
 
 import com.lucky.common.utils.StringUtils;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 路由显示信息
@@ -9,6 +10,7 @@ import lombok.Data;
  * @author ruoyi
  */
 @Data
+@NoArgsConstructor
 public class MetaVo {
 
     /**
@@ -30,9 +32,6 @@ public class MetaVo {
      * 内链地址（http(s)://开头）
      */
     private String link;
-
-    public MetaVo() {
-    }
 
     public MetaVo(String title, String icon) {
         this.title = title;

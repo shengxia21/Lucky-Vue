@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * List<Long> 的类型转换器实现类，对应数据库的 varchar 类型
@@ -55,7 +54,7 @@ public class LongListTypeHandler implements TypeHandler<List<Long>> {
             return null;
         }
         long[] longs = StrUtil.splitToLong(value, COMMA);
-        return Arrays.stream(longs).boxed().collect(Collectors.toList());
+        return Arrays.stream(longs).boxed().toList();
     }
 
 }

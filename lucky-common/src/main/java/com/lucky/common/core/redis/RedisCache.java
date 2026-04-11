@@ -7,7 +7,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -101,7 +104,8 @@ public class RedisCache {
     /**
      * 删除单个对象
      *
-     * @param key
+     * @param key 缓存键值
+     * @return true=删除成功；false=删除失败
      */
     public boolean deleteObject(final String key) {
         return redisTemplate.delete(key);
@@ -111,7 +115,7 @@ public class RedisCache {
      * 删除集合对象
      *
      * @param collection 多个对象
-     * @return
+     * @return true=删除成功；false=删除失败
      */
     public boolean deleteObject(final Collection collection) {
         return redisTemplate.delete(collection) > 0;
@@ -148,9 +152,8 @@ public class RedisCache {
      */
     public <T> BoundSetOperations<String, T> setCacheSet(final String key, final Set<T> dataSet) {
         BoundSetOperations<String, T> setOperation = redisTemplate.boundSetOps(key);
-        Iterator<T> it = dataSet.iterator();
-        while (it.hasNext()) {
-            setOperation.add(it.next());
+        for (T t : dataSet) {
+            setOperation.add(t);
         }
         return setOperation;
     }
@@ -158,8 +161,8 @@ public class RedisCache {
     /**
      * 获得缓存的set
      *
-     * @param key
-     * @return
+     * @param key 缓存键值
+     * @return 缓存键值对应的数据
      */
     public <T> Set<T> getCacheSet(final String key) {
         return redisTemplate.opsForSet().members(key);
@@ -168,8 +171,8 @@ public class RedisCache {
     /**
      * 缓存Map
      *
-     * @param key
-     * @param dataMap
+     * @param key     缓存键值
+     * @param dataMap 缓存的数据Map
      */
     public <T> void setCacheMap(final String key, final Map<String, T> dataMap) {
         if (dataMap != null) {
@@ -180,8 +183,8 @@ public class RedisCache {
     /**
      * 获得缓存的Map
      *
-     * @param key
-     * @return
+     * @param key 缓存键值
+     * @return 缓存键值对应的数据
      */
     public <T> Map<String, T> getCacheMap(final String key) {
         return redisTemplate.opsForHash().entries(key);

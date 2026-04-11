@@ -2,7 +2,9 @@ package com.lucky.common.core.domain;
 
 import com.lucky.common.constant.HttpStatus;
 import com.lucky.common.utils.StringUtils;
+import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -11,8 +13,10 @@ import java.util.Objects;
  *
  * @author ruoyi
  */
+@NoArgsConstructor
 public class AjaxResult extends HashMap<String, Object> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -27,12 +31,6 @@ public class AjaxResult extends HashMap<String, Object> {
      * 数据对象
      */
     public static final String DATA_TAG = "data";
-
-    /**
-     * 初始化一个新创建的 AjaxResult 对象，使其表示一个空消息。
-     */
-    public AjaxResult() {
-    }
 
     /**
      * 初始化一个新创建的 AjaxResult 对象

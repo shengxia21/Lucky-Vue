@@ -2,6 +2,7 @@ package com.lucky.system.domain;
 
 import com.lucky.common.utils.StringUtils;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 缓存信息
@@ -9,6 +10,7 @@ import lombok.Data;
  * @author ruoyi
  */
 @Data
+@NoArgsConstructor
 public class SysCache {
 
     /**
@@ -30,10 +32,6 @@ public class SysCache {
      * 备注
      */
     private String remark = "";
-
-    public SysCache() {
-
-    }
 
     public SysCache(String cacheName, String remark) {
         this.cacheName = cacheName;

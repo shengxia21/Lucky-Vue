@@ -10,7 +10,6 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Treeselect树结构实体类
@@ -48,13 +47,13 @@ public class TreeSelect implements Serializable {
         this.id = dept.getDeptId();
         this.label = dept.getDeptName();
         this.disabled = StringUtils.equals(UserConstants.DEPT_DISABLE, dept.getStatus());
-        this.children = dept.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
+        this.children = dept.getChildren().stream().map(TreeSelect::new).toList();
     }
 
     public TreeSelect(SysMenu menu) {
         this.id = menu.getMenuId();
         this.label = menu.getMenuName();
-        this.children = menu.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
+        this.children = menu.getChildren().stream().map(TreeSelect::new).toList();
     }
 
 }

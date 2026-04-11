@@ -40,7 +40,6 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Excel相关处理
@@ -1291,7 +1290,7 @@ public class ExcelUtil<T> {
      */
     private void createExcelField() {
         this.fields = getFields();
-        this.fields = this.fields.stream().sorted(Comparator.comparing(objects -> ((Excel) objects[1]).sort())).collect(Collectors.toList());
+        this.fields = this.fields.stream().sorted(Comparator.comparing(objects -> ((Excel) objects[1]).sort())).toList();
         this.maxHeight = getRowHeight();
     }
 
