@@ -4,11 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
-import com.lucky.common.core.domain.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import java.io.Serial;
 import java.util.Date;
 
 /**
@@ -17,12 +14,8 @@ import java.util.Date;
  * @author ruoyi
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_login_info")
-public class SysLoginInfo extends BaseEntity {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class SysLoginInfo {
 
     /**
      * ID

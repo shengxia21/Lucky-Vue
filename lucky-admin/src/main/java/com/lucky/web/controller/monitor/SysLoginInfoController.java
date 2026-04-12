@@ -2,12 +2,15 @@ package com.lucky.web.controller.monitor;
 
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
-import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
+import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
 import com.lucky.common.utils.poi.ExcelUtil;
 import com.lucky.framework.web.service.SysPasswordService;
 import com.lucky.system.domain.SysLoginInfo;
+import com.lucky.system.domain.query.loginInfo.SysLoginInfoQuery;
+import com.lucky.system.domain.vo.loginInfo.SysLoginInfoVO;
 import com.lucky.system.service.ISysLoginInfoService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,44 +34,55 @@ public class SysLoginInfoController extends BaseController {
     @Resource
     private SysPasswordService passwordService;
 
+    /**
+     * 获取登录日志列表
+     */
     @PreAuthorize("@ss.hasPermi('monitor:loginInfo:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysLoginInfo loginInfo) {
-        startPage();
-        List<SysLoginInfo> list = loginInfoService.selectLoginInfoList(loginInfo);
-        return getDataTable(list);
+    public TableDataInfo<SysLoginInfoVO> list(PageQuery pageQuery, SysLoginInfoQuery query) {
+        return loginInfoService.selectLoginInfoList(pageQuery, query);
     }
 
+    /**
+     * 导出登录日志
+     */
     @Log(title = "登录日志", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('monitor:loginInfo:export')")
     @PostMapping("/export")
-    public void export(HttpServletResponse response, SysLoginInfo loginInfo) {
-        List<SysLoginInfo> list = loginInfoService.selectLoginInfoList(loginInfo);
+    public void export(HttpServletResponse response, SysLoginInfoQuery query) {
+        List<SysLoginInfo> list = loginInfoService.selectLoginInfoList(query);
         ExcelUtil<SysLoginInfo> util = new ExcelUtil<>(SysLoginInfo.class);
         util.exportExcel(response, list, "登录日志");
     }
 
+    /**
+     * 删除登录日志
+     */
     @PreAuthorize("@ss.hasPermi('monitor:loginInfo:remove')")
     @Log(title = "登录日志", businessType = BusinessType.DELETE)
     @DeleteMapping("/{infoIds}")
-    public AjaxResult remove(@PathVariable Long[] infoIds) {
+    public R<Void> remove(@PathVariable Long[] infoIds) {
         return toAjax(loginInfoService.deleteLoginInfoByIds(infoIds));
     }
 
+    /**
+     * 清空登录日志
+     */
     @PreAuthorize("@ss.hasPermi('monitor:loginInfo:remove')")
     @Log(title = "登录日志", businessType = BusinessType.CLEAN)
     @DeleteMapping("/clean")
-    public AjaxResult clean() {
-        loginInfoService.cleanLoginInfo();
-        return success();
+    public R<Void> clean() {
+        return toAjax(loginInfoService.cleanLoginInfo());
     }
 
+    /**
+     * 解锁账户
+     */
     @PreAuthorize("@ss.hasPermi('monitor:loginInfo:unlock')")
     @Log(title = "账户解锁", businessType = BusinessType.OTHER)
     @GetMapping("/unlock/{userName}")
-    public AjaxResult unlock(@PathVariable("userName") String userName) {
-        passwordService.clearLoginRecordCache(userName);
-        return success();
+    public R<Void> unlock(@PathVariable String userName) {
+        return toAjax(passwordService.clearLoginRecordCache(userName));
     }
 
 }

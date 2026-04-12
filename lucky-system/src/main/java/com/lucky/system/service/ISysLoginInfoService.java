@@ -1,6 +1,10 @@
 package com.lucky.system.service;
 
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.system.domain.SysLoginInfo;
+import com.lucky.system.domain.query.loginInfo.SysLoginInfoQuery;
+import com.lucky.system.domain.vo.loginInfo.SysLoginInfoVO;
 
 import java.util.List;
 
@@ -21,10 +25,19 @@ public interface ISysLoginInfoService {
     /**
      * 查询系统登录日志集合
      *
-     * @param loginInfo 访问日志对象
+     * @param pageQuery 分页查询对象
+     * @param query 访问日志查询对象
      * @return 登录记录集合
      */
-    List<SysLoginInfo> selectLoginInfoList(SysLoginInfo loginInfo);
+    TableDataInfo<SysLoginInfoVO> selectLoginInfoList(PageQuery pageQuery, SysLoginInfoQuery query);
+
+    /**
+     * 查询系统登录日志集合
+     *
+     * @param query 访问日志查询对象
+     * @return 登录记录集合
+     */
+    List<SysLoginInfo> selectLoginInfoList(SysLoginInfoQuery query);
 
     /**
      * 批量删除系统登录日志
@@ -37,6 +50,6 @@ public interface ISysLoginInfoService {
     /**
      * 清空系统登录日志
      */
-    void cleanLoginInfo();
+    int cleanLoginInfo();
 
 }
