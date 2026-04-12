@@ -1,7 +1,7 @@
 package com.lucky.web.controller.system;
 
 import com.lucky.common.config.LuckyConfig;
-import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
 import com.lucky.common.core.domain.entity.SysUser;
 import com.lucky.common.utils.SecurityUtils;
 import com.lucky.common.utils.StringUtils;
@@ -43,21 +43,20 @@ public class SysIndexController {
      * 解锁屏幕
      */
     @PostMapping("/unlockscreen")
-    public AjaxResult unlockScreen(@RequestBody Map<String, String> body) {
+    public R<Void> unlockScreen(@RequestBody Map<String, String> body) {
         String password = body.get("password");
         if (StringUtils.isEmpty(password)) {
-            return AjaxResult.error("密码不能为空");
+            return R.fail("密码不能为空");
         }
         String username = SecurityUtils.getUsername();
         SysUser user = userService.selectUserByUserName(username);
         if (user == null) {
-            return AjaxResult.error("服务器超时，请重新登录");
+            return R.fail("服务器超时，请重新登录");
         }
         if (!SecurityUtils.matchesPassword(password, user.getPassword())) {
-            return AjaxResult.error("密码错误，请重新输入");
+            return R.fail("密码错误，请重新输入");
         }
-
-        return AjaxResult.success("解锁成功");
+        return R.ok();
     }
 
 }

@@ -2,6 +2,7 @@ package com.lucky.web.controller.monitor;
 
 import com.lucky.common.constant.CacheConstants;
 import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.system.domain.SysCache;
 import jakarta.annotation.Resource;
@@ -37,6 +38,9 @@ public class CacheController {
         caches.add(new SysCache(CacheConstants.PWD_ERR_CNT_KEY, "密码错误次数"));
     }
 
+    /**
+     * 获取缓存监控信息
+     */
     @SuppressWarnings("deprecation")
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping()
@@ -61,48 +65,66 @@ public class CacheController {
         return AjaxResult.success(result);
     }
 
+    /**
+     * 获取缓存名称
+     */
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping("/getNames")
-    public AjaxResult cache() {
-        return AjaxResult.success(caches);
+    public R<List<SysCache>> cache() {
+        return R.ok(caches);
     }
 
+    /**
+     * 获取缓存键名
+     */
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping("/getKeys/{cacheName}")
-    public AjaxResult getCacheKeys(@PathVariable String cacheName) {
+    public R<Set<String>> getCacheKeys(@PathVariable String cacheName) {
         Set<String> cacheKeys = redisTemplate.keys(cacheName + "*");
-        return AjaxResult.success(new TreeSet<>(cacheKeys));
+        return R.ok(new TreeSet<>(cacheKeys));
     }
 
+    /**
+     * 获取缓存值
+     */
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping("/getValue/{cacheName}/{cacheKey}")
-    public AjaxResult getCacheValue(@PathVariable String cacheName, @PathVariable String cacheKey) {
+    public R<SysCache> getCacheValue(@PathVariable String cacheName, @PathVariable String cacheKey) {
         String cacheValue = redisTemplate.opsForValue().get(cacheKey);
         SysCache sysCache = new SysCache(cacheName, cacheKey, cacheValue);
-        return AjaxResult.success(sysCache);
+        return R.ok(sysCache);
     }
 
+    /**
+     * 清除缓存
+     */
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @DeleteMapping("/clearCacheName/{cacheName}")
-    public AjaxResult clearCacheName(@PathVariable String cacheName) {
+    public R<Void> clearCacheName(@PathVariable String cacheName) {
         Collection<String> cacheKeys = redisTemplate.keys(cacheName + "*");
         redisTemplate.delete(cacheKeys);
-        return AjaxResult.success();
+        return R.ok();
     }
 
+    /**
+     * 清除缓存cacheKey
+     */
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @DeleteMapping("/clearCacheKey/{cacheKey}")
-    public AjaxResult clearCacheKey(@PathVariable String cacheKey) {
+    public R<Void> clearCacheKey(@PathVariable String cacheKey) {
         redisTemplate.delete(cacheKey);
-        return AjaxResult.success();
+        return R.ok();
     }
 
+    /**
+     * 清除所有缓存
+     */
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @DeleteMapping("/clearCacheAll")
-    public AjaxResult clearCacheAll() {
+    public R<Void> clearCacheAll() {
         Collection<String> cacheKeys = redisTemplate.keys("*");
         redisTemplate.delete(cacheKeys);
-        return AjaxResult.success();
+        return R.ok();
     }
 
 }

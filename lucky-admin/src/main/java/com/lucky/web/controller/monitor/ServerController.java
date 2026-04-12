@@ -1,6 +1,6 @@
 package com.lucky.web.controller.monitor;
 
-import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
 import com.lucky.framework.web.domain.Server;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/monitor/server")
 public class ServerController {
 
+    /**
+     * 获取服务器信息
+     */
     @PreAuthorize("@ss.hasPermi('monitor:server:list')")
     @GetMapping()
-    public AjaxResult getInfo() throws Exception {
+    public R<Server> getInfo() throws Exception {
         Server server = new Server();
         server.copyTo();
-        return AjaxResult.success(server);
+        return R.ok(server);
     }
 
 }

@@ -3,7 +3,7 @@ package com.lucky.web.controller.monitor;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.constant.CacheConstants;
 import com.lucky.common.core.controller.BaseController;
-import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.core.redis.RedisCache;
@@ -35,11 +35,14 @@ public class SysUserOnlineController extends BaseController {
     @Resource
     private RedisCache redisCache;
 
+    /**
+     * 获取在线用户列表
+     */
     @PreAuthorize("@ss.hasPermi('monitor:online:list')")
     @GetMapping("/list")
-    public TableDataInfo list(String ipaddr, String userName) {
+    public TableDataInfo<SysUserOnline> list(String ipaddr, String userName) {
         Collection<String> keys = redisCache.keys(CacheConstants.LOGIN_TOKEN_KEY + "*");
-        List<SysUserOnline> userOnlineList = new ArrayList<SysUserOnline>();
+        List<SysUserOnline> userOnlineList = new ArrayList<>();
         for (String key : keys) {
             LoginUser user = redisCache.getCacheObject(key);
             if (StringUtils.isNotEmpty(ipaddr) && StringUtils.isNotEmpty(userName)) {
@@ -54,7 +57,7 @@ public class SysUserOnlineController extends BaseController {
         }
         Collections.reverse(userOnlineList);
         userOnlineList.removeAll(Collections.singleton(null));
-        return getDataTable(userOnlineList);
+        return TableDataInfo.build(userOnlineList);
     }
 
     /**
@@ -63,9 +66,9 @@ public class SysUserOnlineController extends BaseController {
     @PreAuthorize("@ss.hasPermi('monitor:online:forceLogout')")
     @Log(title = "在线用户", businessType = BusinessType.FORCE)
     @DeleteMapping("/{tokenId}")
-    public AjaxResult forceLogout(@PathVariable String tokenId) {
+    public R<Void> forceLogout(@PathVariable String tokenId) {
         redisCache.deleteObject(CacheConstants.LOGIN_TOKEN_KEY + tokenId);
-        return success();
+        return R.ok();
     }
 
 }
