@@ -27,6 +27,11 @@ public class R<T> implements Serializable {
      */
     public static final int FAIL = HttpStatus.ERROR;
 
+    /**
+     * 警告
+     */
+    public static final int WARN = HttpStatus.WARN;
+
     private int code;
 
     private String msg;
@@ -71,6 +76,14 @@ public class R<T> implements Serializable {
 
     public static <T> R<T> fail(int code, String msg) {
         return restResult(null, code, msg);
+    }
+
+    public static <T> R<T> warn(String msg) {
+        return restResult(null, WARN, msg);
+    }
+
+    public static <T> R<T> warn(T data, String msg) {
+        return restResult(data, WARN, msg);
     }
 
     public static <T> Boolean isError(R<T> ret) {
