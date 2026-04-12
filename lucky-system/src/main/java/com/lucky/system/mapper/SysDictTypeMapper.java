@@ -1,85 +1,43 @@
 package com.lucky.system.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lucky.common.core.domain.entity.SysDictType;
+import com.lucky.common.core.mybatis.BaseMapperX;
+import com.lucky.common.utils.StringUtils;
+import com.lucky.system.domain.query.dict.SysDictTypeQuery;
+import com.lucky.system.domain.vo.dict.SysDictTypeVO;
 
 import java.util.List;
 
 /**
  * 字典表 数据层
  *
- * @author ruoyi
+ * @author lucky
  */
-public interface SysDictTypeMapper {
+public interface SysDictTypeMapper extends BaseMapperX<SysDictType, SysDictTypeVO> {
 
-    /**
-     * 根据条件分页查询字典类型
-     *
-     * @param dictType 字典类型信息
-     * @return 字典类型集合信息
-     */
-    List<SysDictType> selectDictTypeList(SysDictType dictType);
+    default IPage<SysDictTypeVO> selectPage(Page<SysDictType> page, SysDictTypeQuery query) {
+        return selectVoPage(page, buildWrapper(query));
+    }
 
-    /**
-     * 根据所有字典类型
-     *
-     * @return 字典类型集合信息
-     */
-    List<SysDictType> selectDictTypeAll();
+    default List<SysDictType> selectList(SysDictTypeQuery query) {
+        return selectList(buildWrapper(query));
+    }
 
-    /**
-     * 根据字典类型ID查询信息
-     *
-     * @param dictId 字典类型ID
-     * @return 字典类型
-     */
-    SysDictType selectDictTypeById(Long dictId);
+    default Wrapper<SysDictType> buildWrapper(SysDictTypeQuery query) {
+        return Wrappers.<SysDictType>lambdaQuery()
+                .like(StringUtils.isNotBlank(query.getDictName()), SysDictType::getDictName, query.getDictName())
+                .like(StringUtils.isNotBlank(query.getDictType()), SysDictType::getDictType, query.getDictType())
+                .eq(StringUtils.isNotBlank(query.getStatus()), SysDictType::getStatus, query.getStatus())
+                .between(!query.getParams().isEmpty(), SysDictType::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"))
+                .orderByDesc(SysDictType::getCreateTime);
+    }
 
-    /**
-     * 根据字典类型查询信息
-     *
-     * @param dictType 字典类型
-     * @return 字典类型
-     */
-    SysDictType selectDictTypeByType(String dictType);
-
-    /**
-     * 通过字典ID删除字典信息
-     *
-     * @param dictId 字典ID
-     * @return 结果
-     */
-    int deleteDictTypeById(Long dictId);
-
-    /**
-     * 批量删除字典类型信息
-     *
-     * @param dictIds 需要删除的字典ID
-     * @return 结果
-     */
-    int deleteDictTypeByIds(Long[] dictIds);
-
-    /**
-     * 新增字典类型信息
-     *
-     * @param dictType 字典类型信息
-     * @return 结果
-     */
-    int insertDictType(SysDictType dictType);
-
-    /**
-     * 修改字典类型信息
-     *
-     * @param dictType 字典类型信息
-     * @return 结果
-     */
-    int updateDictType(SysDictType dictType);
-
-    /**
-     * 校验字典类型称是否唯一
-     *
-     * @param dictType 字典类型
-     * @return 结果
-     */
-    SysDictType checkDictTypeUnique(String dictType);
+    default SysDictTypeVO checkDictTypeUnique(String dictType) {
+        return selectVoOne(Wrappers.<SysDictType>lambdaQuery().eq(SysDictType::getDictType, dictType));
+    }
 
 }
