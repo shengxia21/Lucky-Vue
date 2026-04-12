@@ -2,7 +2,7 @@ package com.lucky.framework.aspectj;
 
 import com.lucky.common.annotation.DataScope;
 import com.lucky.common.constant.UserConstants;
-import com.lucky.common.core.domain.BaseEntity;
+import com.lucky.common.core.domain.DataScopeQuery;
 import com.lucky.common.core.domain.entity.SysRole;
 import com.lucky.common.core.domain.entity.SysUser;
 import com.lucky.common.core.domain.model.LoginUser;
@@ -68,8 +68,8 @@ public class DataScopeAspect {
      */
     public static void dataScopeFilter(JoinPoint joinPoint, SysUser user, String deptAlias, String userAlias, String permission) {
         StringBuilder sqlString = new StringBuilder();
-        List<String> conditions = new ArrayList<String>();
-        List<String> scopeCustomIds = new ArrayList<String>();
+        List<String> conditions = new ArrayList<>();
+        List<String> scopeCustomIds = new ArrayList<>();
         user.getRoles().forEach(role -> {
             if (DATA_SCOPE_CUSTOM.equals(role.getDataScope()) && StringUtils.equals(role.getStatus(), UserConstants.ROLE_NORMAL) && (StringUtils.isEmpty(permission) || StringUtils.containsAny(role.getPermissions(), Convert.toStrArray(permission)))) {
                 scopeCustomIds.add(Convert.toStr(role.getRoleId()));
@@ -117,15 +117,14 @@ public class DataScopeAspect {
 
         if (StringUtils.isNotBlank(sqlString.toString())) {
             Object params = joinPoint.getArgs()[0];
-            if (StringUtils.isNotNull(params) && params instanceof BaseEntity) {
-                BaseEntity baseEntity = (BaseEntity) params;
-                baseEntity.getParams().put(DATA_SCOPE, " AND (" + sqlString.substring(4) + ")");
+            if (StringUtils.isNotNull(params) && params instanceof DataScopeQuery dataScopeQuery) {
+                dataScopeQuery.getParams().put(DATA_SCOPE, " AND (" + sqlString.substring(4) + ")");
             }
         }
     }
 
     @Before("@annotation(controllerDataScope)")
-    public void doBefore(JoinPoint point, DataScope controllerDataScope) throws Throwable {
+    public void doBefore(JoinPoint point, DataScope controllerDataScope) {
         clearDataScope(point);
         handleDataScope(point, controllerDataScope);
     }
@@ -148,8 +147,8 @@ public class DataScopeAspect {
      */
     private void clearDataScope(final JoinPoint joinPoint) {
         Object params = joinPoint.getArgs()[0];
-        if (StringUtils.isNotNull(params) && params instanceof BaseEntity baseEntity) {
-            baseEntity.getParams().put(DATA_SCOPE, "");
+        if (StringUtils.isNotNull(params) && params instanceof DataScopeQuery dataScopeQuery) {
+            dataScopeQuery.getParams().put(DATA_SCOPE, "");
         }
     }
 

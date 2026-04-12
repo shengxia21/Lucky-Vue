@@ -3,15 +3,12 @@ package com.lucky.common.core.domain;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fhs.core.trans.vo.TransPojo;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Entity基类
@@ -51,19 +48,5 @@ public class BaseEntity implements Serializable, TransPojo {
      */
     @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
-
-    /**
-     * 请求参数
-     */
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @TableField(exist = false)
-    private Map<String, Object> params;
-
-    public Map<String, Object> getParams() {
-        if (params == null) {
-            params = new HashMap<>();
-        }
-        return params;
-    }
 
 }
