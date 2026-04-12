@@ -1,46 +1,31 @@
 package com.lucky.system.mapper;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.lucky.common.core.mybatis.BaseMapperX;
 import com.lucky.system.domain.SysRoleMenu;
 
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * 角色与菜单关联表 数据层
  *
- * @author ruoyi
+ * @author lucky
  */
-public interface SysRoleMenuMapper {
+public interface SysRoleMenuMapper extends BaseMapperX<SysRoleMenu, SysRoleMenu> {
 
-    /**
-     * 查询菜单使用数量
-     *
-     * @param menuId 菜单ID
-     * @return 结果
-     */
-    int checkMenuExistRole(Long menuId);
+    default Long checkMenuExistRole(Long menuId) {
+        return selectCount(Wrappers.<SysRoleMenu>lambdaQuery()
+                .eq(SysRoleMenu::getMenuId, menuId));
+    }
 
-    /**
-     * 通过角色ID删除角色和菜单关联
-     *
-     * @param roleId 角色ID
-     * @return 结果
-     */
-    int deleteRoleMenuByRoleId(Long roleId);
+    default int deleteByRoleId(Long roleId) {
+        return delete(Wrappers.<SysRoleMenu>lambdaQuery()
+                .eq(SysRoleMenu::getRoleId, roleId));
+    }
 
-    /**
-     * 批量删除角色菜单关联信息
-     *
-     * @param ids 需要删除的数据ID
-     * @return 结果
-     */
-    int deleteRoleMenu(Long[] ids);
-
-    /**
-     * 批量新增角色菜单信息
-     *
-     * @param roleMenuList 角色菜单列表
-     * @return 结果
-     */
-    int batchRoleMenu(List<SysRoleMenu> roleMenuList);
+    default int deleteByRoleIds(Long[] roleIds) {
+        return delete(Wrappers.<SysRoleMenu>lambdaQuery()
+                .in(SysRoleMenu::getRoleId, Arrays.asList(roleIds)));
+    }
 
 }

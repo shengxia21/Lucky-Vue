@@ -1,46 +1,31 @@
 package com.lucky.system.mapper;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.lucky.common.core.mybatis.BaseMapperX;
 import com.lucky.system.domain.SysUserPost;
 
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * 用户与岗位关联表 数据层
  *
- * @author ruoyi
+ * @author lucky
  */
-public interface SysUserPostMapper {
+public interface SysUserPostMapper extends BaseMapperX<SysUserPost, SysUserPost> {
 
-    /**
-     * 通过用户ID删除用户和岗位关联
-     *
-     * @param userId 用户ID
-     * @return 结果
-     */
-    int deleteUserPostByUserId(Long userId);
+    default int deleteByUserId(Long userId) {
+        return delete(Wrappers.<SysUserPost>lambdaQuery()
+                .eq(SysUserPost::getUserId, userId));
+    }
 
-    /**
-     * 通过岗位ID查询岗位使用数量
-     *
-     * @param postId 岗位ID
-     * @return 结果
-     */
-    int countUserPostById(Long postId);
+    default Long countPostByPostId(Long postId) {
+        return selectCount(Wrappers.<SysUserPost>lambdaQuery()
+                .eq(SysUserPost::getPostId, postId));
+    }
 
-    /**
-     * 批量删除用户和岗位关联
-     *
-     * @param ids 需要删除的数据ID
-     * @return 结果
-     */
-    int deleteUserPost(Long[] ids);
-
-    /**
-     * 批量新增用户岗位信息
-     *
-     * @param userPostList 用户岗位列表
-     * @return 结果
-     */
-    int batchUserPost(List<SysUserPost> userPostList);
+    default int deleteByUserIds(Long[] userIds) {
+        return delete(Wrappers.<SysUserPost>lambdaQuery()
+                .in(SysUserPost::getUserId, Arrays.asList(userIds)));
+    }
 
 }

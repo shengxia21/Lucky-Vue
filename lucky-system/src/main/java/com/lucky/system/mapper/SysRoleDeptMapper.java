@@ -1,46 +1,26 @@
 package com.lucky.system.mapper;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.lucky.common.core.mybatis.BaseMapperX;
 import com.lucky.system.domain.SysRoleDept;
 
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * 角色与部门关联表 数据层
  *
- * @author ruoyi
+ * @author lucky
  */
-public interface SysRoleDeptMapper {
+public interface SysRoleDeptMapper extends BaseMapperX<SysRoleDept, SysRoleDept> {
 
-    /**
-     * 通过角色ID删除角色和部门关联
-     *
-     * @param roleId 角色ID
-     * @return 结果
-     */
-    int deleteRoleDeptByRoleId(Long roleId);
+    default int deleteByRoleId(Long roleId) {
+        return delete(Wrappers.<SysRoleDept>lambdaQuery()
+                .eq(SysRoleDept::getRoleId, roleId));
+    }
 
-    /**
-     * 批量删除角色部门关联信息
-     *
-     * @param ids 需要删除的数据ID
-     * @return 结果
-     */
-    int deleteRoleDept(Long[] ids);
-
-    /**
-     * 查询部门使用数量
-     *
-     * @param deptId 部门ID
-     * @return 结果
-     */
-    int selectCountRoleDeptByDeptId(Long deptId);
-
-    /**
-     * 批量新增角色部门信息
-     *
-     * @param roleDeptList 角色部门列表
-     * @return 结果
-     */
-    int batchRoleDept(List<SysRoleDept> roleDeptList);
+    default int deleteByRoleIds(Long[] roleIds) {
+        return delete(Wrappers.<SysRoleDept>lambdaQuery()
+                .in(SysRoleDept::getRoleId, Arrays.asList(roleIds)));
+    }
 
 }
