@@ -1,12 +1,19 @@
 package com.lucky.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.common.constant.CacheConstants;
 import com.lucky.common.constant.UserConstants;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.core.redis.RedisCache;
 import com.lucky.common.core.text.Convert;
 import com.lucky.common.exception.ServiceException;
+import com.lucky.common.utils.MapstructUtils;
 import com.lucky.common.utils.StringUtils;
 import com.lucky.system.domain.SysConfig;
+import com.lucky.system.domain.query.config.SysConfigQuery;
+import com.lucky.system.domain.query.config.SysConfigSaveQuery;
+import com.lucky.system.domain.vo.config.SysConfigVO;
 import com.lucky.system.mapper.SysConfigMapper;
 import com.lucky.system.service.ISysConfigService;
 import jakarta.annotation.PostConstruct;
@@ -19,7 +26,7 @@ import java.util.List;
 /**
  * 参数配置 服务层实现
  *
- * @author ruoyi
+ * @author lucky
  */
 @Service
 public class SysConfigServiceImpl implements ISysConfigService {
@@ -38,34 +45,18 @@ public class SysConfigServiceImpl implements ISysConfigService {
         loadingConfigCache();
     }
 
-    /**
-     * 查询参数配置信息
-     *
-     * @param configId 参数配置ID
-     * @return 参数配置信息
-     */
     @Override
-    public SysConfig selectConfigById(Long configId) {
-        SysConfig config = new SysConfig();
-        config.setConfigId(configId);
-        return configMapper.selectConfig(config);
+    public SysConfigVO selectConfigById(Long configId) {
+        return configMapper.selectVoById(configId);
     }
 
-    /**
-     * 根据键名查询参数配置信息
-     *
-     * @param configKey 参数key
-     * @return 参数键值
-     */
     @Override
     public String selectConfigByKey(String configKey) {
         String configValue = Convert.toStr(redisCache.getCacheObject(getCacheKey(configKey)));
         if (StringUtils.isNotEmpty(configValue)) {
             return configValue;
         }
-        SysConfig config = new SysConfig();
-        config.setConfigKey(configKey);
-        SysConfig retConfig = configMapper.selectConfig(config);
+        SysConfigVO retConfig = configMapper.selectOneByConfigKey(configKey);
         if (StringUtils.isNotNull(retConfig)) {
             redisCache.setCacheObject(getCacheKey(configKey), retConfig.getConfigValue());
             return retConfig.getConfigValue();
@@ -73,11 +64,6 @@ public class SysConfigServiceImpl implements ISysConfigService {
         return StringUtils.EMPTY;
     }
 
-    /**
-     * 获取验证码开关
-     *
-     * @return true开启，false关闭
-     */
     @Override
     public boolean selectCaptchaEnabled() {
         String captchaEnabled = selectConfigByKey("sys.account.captchaEnabled");
@@ -87,11 +73,6 @@ public class SysConfigServiceImpl implements ISysConfigService {
         return Convert.toBool(captchaEnabled);
     }
 
-    /**
-     * 获取注册开关
-     *
-     * @return true开启，false关闭
-     */
     @Override
     public boolean selectRegisterEnabled() {
         String registerEnabled = selectConfigByKey("sys.account.registerUser");
@@ -101,109 +82,79 @@ public class SysConfigServiceImpl implements ISysConfigService {
         return Convert.toBool(registerEnabled);
     }
 
-    /**
-     * 查询参数配置列表
-     *
-     * @param config 参数配置信息
-     * @return 参数配置集合
-     */
     @Override
-    public List<SysConfig> selectConfigList(SysConfig config) {
-        return configMapper.selectConfigList(config);
+    public TableDataInfo<SysConfigVO> selectConfigList(PageQuery pageQuery, SysConfigQuery query) {
+        IPage<SysConfigVO> page = configMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(page);
     }
 
-    /**
-     * 新增参数配置
-     *
-     * @param config 参数配置信息
-     * @return 结果
-     */
     @Override
-    public int insertConfig(SysConfig config) {
-        int row = configMapper.insertConfig(config);
+    public List<SysConfig> selectConfigList(SysConfigQuery query) {
+        return configMapper.selectList(query);
+    }
+
+    @Override
+    public int insertConfig(SysConfigSaveQuery config) {
+        SysConfig sysConfig = MapstructUtils.convert(config, SysConfig.class);
+        int row = configMapper.insert(sysConfig);
         if (row > 0) {
-            redisCache.setCacheObject(getCacheKey(config.getConfigKey()), config.getConfigValue());
+            redisCache.setCacheObject(getCacheKey(sysConfig.getConfigKey()), sysConfig.getConfigValue());
         }
         return row;
     }
 
-    /**
-     * 修改参数配置
-     *
-     * @param config 参数配置信息
-     * @return 结果
-     */
     @Override
-    public int updateConfig(SysConfig config) {
-        SysConfig temp = configMapper.selectConfigById(config.getConfigId());
+    public int updateConfig(SysConfigSaveQuery config) {
+        SysConfig temp = configMapper.selectById(config.getConfigId());
         if (!StringUtils.equals(temp.getConfigKey(), config.getConfigKey())) {
             redisCache.deleteObject(getCacheKey(temp.getConfigKey()));
         }
 
-        int row = configMapper.updateConfig(config);
+        SysConfig sysConfig = MapstructUtils.convert(config, SysConfig.class);
+        int row = configMapper.updateById(sysConfig);
         if (row > 0) {
-            redisCache.setCacheObject(getCacheKey(config.getConfigKey()), config.getConfigValue());
+            redisCache.setCacheObject(getCacheKey(sysConfig.getConfigKey()), sysConfig.getConfigValue());
         }
         return row;
     }
 
-    /**
-     * 批量删除参数信息
-     *
-     * @param configIds 需要删除的参数ID
-     */
     @Override
     public void deleteConfigByIds(Long[] configIds) {
         for (Long configId : configIds) {
-            SysConfig config = selectConfigById(configId);
+            SysConfig config = configMapper.selectById(configId);
             if (StringUtils.equals(UserConstants.YES, config.getConfigType())) {
                 throw new ServiceException(String.format("内置参数【%1$s】不能删除 ", config.getConfigKey()));
             }
-            configMapper.deleteConfigById(configId);
+            configMapper.deleteById(configId);
             redisCache.deleteObject(getCacheKey(config.getConfigKey()));
         }
     }
 
-    /**
-     * 加载参数缓存数据
-     */
     @Override
     public void loadingConfigCache() {
-        List<SysConfig> configsList = configMapper.selectConfigList(new SysConfig());
+        List<SysConfig> configsList = configMapper.selectList();
         for (SysConfig config : configsList) {
             redisCache.setCacheObject(getCacheKey(config.getConfigKey()), config.getConfigValue());
         }
     }
 
-    /**
-     * 清空参数缓存数据
-     */
     @Override
     public void clearConfigCache() {
         Collection<String> keys = redisCache.keys(CacheConstants.SYS_CONFIG_KEY + "*");
         redisCache.deleteObject(keys);
     }
 
-    /**
-     * 重置参数缓存数据
-     */
     @Override
     public void resetConfigCache() {
         clearConfigCache();
         loadingConfigCache();
     }
 
-    /**
-     * 校验参数键名是否唯一
-     *
-     * @param config 参数配置信息
-     * @return 结果
-     */
     @Override
-    public boolean checkConfigKeyUnique(SysConfig config) {
-        Long configId = StringUtils.isNull(config.getConfigId()) ? -1L : config.getConfigId();
-        SysConfig info = configMapper.checkConfigKeyUnique(config.getConfigKey());
-        if (StringUtils.isNotNull(info) && info.getConfigId().longValue() != configId.longValue()) {
+    public boolean checkConfigKeyUnique(Long configId, String configKey) {
+        long newConfigId = StringUtils.isNull(configId) ? -1L : configId;
+        SysConfigVO info = configMapper.selectOneByConfigKey(configKey);
+        if (StringUtils.isNotNull(info) && info.getConfigId() != newConfigId) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;

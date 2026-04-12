@@ -1,6 +1,11 @@
 package com.lucky.system.service;
 
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.system.domain.SysConfig;
+import com.lucky.system.domain.query.config.SysConfigQuery;
+import com.lucky.system.domain.query.config.SysConfigSaveQuery;
+import com.lucky.system.domain.vo.config.SysConfigVO;
 
 import java.util.List;
 
@@ -17,7 +22,7 @@ public interface ISysConfigService {
      * @param configId 参数配置ID
      * @return 参数配置信息
      */
-    SysConfig selectConfigById(Long configId);
+    SysConfigVO selectConfigById(Long configId);
 
     /**
      * 根据键名查询参数配置信息
@@ -44,10 +49,19 @@ public interface ISysConfigService {
     /**
      * 查询参数配置列表
      *
-     * @param config 参数配置信息
+     * @param pageQuery 分页查询对象
+     * @param query 参数配置查询对象
      * @return 参数配置集合
      */
-    List<SysConfig> selectConfigList(SysConfig config);
+    TableDataInfo<SysConfigVO> selectConfigList(PageQuery pageQuery, SysConfigQuery query);
+
+    /**
+     * 查询参数配置列表
+     *
+     * @param query 参数配置查询对象
+     * @return 参数配置集合
+     */
+    List<SysConfig> selectConfigList(SysConfigQuery query);
 
     /**
      * 新增参数配置
@@ -55,7 +69,7 @@ public interface ISysConfigService {
      * @param config 参数配置信息
      * @return 结果
      */
-    int insertConfig(SysConfig config);
+    int insertConfig(SysConfigSaveQuery config);
 
     /**
      * 修改参数配置
@@ -63,7 +77,7 @@ public interface ISysConfigService {
      * @param config 参数配置信息
      * @return 结果
      */
-    int updateConfig(SysConfig config);
+    int updateConfig(SysConfigSaveQuery config);
 
     /**
      * 批量删除参数信息
@@ -90,9 +104,10 @@ public interface ISysConfigService {
     /**
      * 校验参数键名是否唯一
      *
-     * @param config 参数信息
+     * @param configId 参数配置ID
+     * @param configKey 参数键名
      * @return 结果
      */
-    boolean checkConfigKeyUnique(SysConfig config);
+    boolean checkConfigKeyUnique(Long configId, String configKey);
 
 }

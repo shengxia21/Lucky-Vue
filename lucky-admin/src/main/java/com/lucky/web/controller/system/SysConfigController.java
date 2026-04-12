@@ -2,11 +2,15 @@ package com.lucky.web.controller.system;
 
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
-import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
+import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
 import com.lucky.common.utils.poi.ExcelUtil;
 import com.lucky.system.domain.SysConfig;
+import com.lucky.system.domain.query.config.SysConfigQuery;
+import com.lucky.system.domain.query.config.SysConfigSaveQuery;
+import com.lucky.system.domain.vo.config.SysConfigVO;
 import com.lucky.system.service.ISysConfigService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,18 +37,19 @@ public class SysConfigController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:config:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysConfig config) {
-        startPage();
-        List<SysConfig> list = configService.selectConfigList(config);
-        return getDataTable(list);
+    public TableDataInfo<SysConfigVO> list(PageQuery pageQuery, SysConfigQuery query) {
+        return configService.selectConfigList(pageQuery, query);
     }
 
+    /**
+     * 导出参数配置列表
+     */
     @Log(title = "参数管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:config:export')")
     @PostMapping("/export")
-    public void export(HttpServletResponse response, SysConfig config) {
-        List<SysConfig> list = configService.selectConfigList(config);
-        ExcelUtil<SysConfig> util = new ExcelUtil<SysConfig>(SysConfig.class);
+    public void export(HttpServletResponse response, SysConfigQuery query) {
+        List<SysConfig> list = configService.selectConfigList(query);
+        ExcelUtil<SysConfig> util = new ExcelUtil<>(SysConfig.class);
         util.exportExcel(response, list, "参数数据");
     }
 
@@ -53,16 +58,16 @@ public class SysConfigController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:config:query')")
     @GetMapping(value = "/{configId}")
-    public AjaxResult getInfo(@PathVariable Long configId) {
-        return success(configService.selectConfigById(configId));
+    public R<SysConfigVO> getInfo(@PathVariable Long configId) {
+        return R.ok(configService.selectConfigById(configId));
     }
 
     /**
      * 根据参数键名查询参数值
      */
     @GetMapping(value = "/configKey/{configKey}")
-    public AjaxResult getConfigKey(@PathVariable String configKey) {
-        return success(configService.selectConfigByKey(configKey));
+    public R<String> getConfigKey(@PathVariable String configKey) {
+        return R.ok(configService.selectConfigByKey(configKey));
     }
 
     /**
@@ -71,11 +76,10 @@ public class SysConfigController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:config:add')")
     @Log(title = "参数管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysConfig config) {
-        if (!configService.checkConfigKeyUnique(config)) {
-            return error("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
+    public R<Void> add(@Validated @RequestBody SysConfigSaveQuery config) {
+        if (!configService.checkConfigKeyUnique(config.getConfigId(), config.getConfigKey())) {
+            return R.fail("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
-        config.setCreateBy(getUsername());
         return toAjax(configService.insertConfig(config));
     }
 
@@ -85,11 +89,10 @@ public class SysConfigController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:config:edit')")
     @Log(title = "参数管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysConfig config) {
-        if (!configService.checkConfigKeyUnique(config)) {
-            return error("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
+    public R<Void> edit(@Validated @RequestBody SysConfigSaveQuery config) {
+        if (!configService.checkConfigKeyUnique(config.getConfigId(), config.getConfigKey())) {
+            return R.fail("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
-        config.setUpdateBy(getUsername());
         return toAjax(configService.updateConfig(config));
     }
 
@@ -99,9 +102,9 @@ public class SysConfigController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:config:remove')")
     @Log(title = "参数管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{configIds}")
-    public AjaxResult remove(@PathVariable Long[] configIds) {
+    public R<Void> remove(@PathVariable Long[] configIds) {
         configService.deleteConfigByIds(configIds);
-        return success();
+        return R.ok();
     }
 
     /**
@@ -110,9 +113,9 @@ public class SysConfigController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:config:remove')")
     @Log(title = "参数管理", businessType = BusinessType.CLEAN)
     @DeleteMapping("/refreshCache")
-    public AjaxResult refreshCache() {
+    public R<Void> refreshCache() {
         configService.resetConfigCache();
-        return success();
+        return R.ok();
     }
 
 }

@@ -1,78 +1,43 @@
 package com.lucky.system.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lucky.common.core.mybatis.BaseMapperX;
+import com.lucky.common.utils.StringUtils;
 import com.lucky.system.domain.SysConfig;
+import com.lucky.system.domain.query.config.SysConfigQuery;
+import com.lucky.system.domain.vo.config.SysConfigVO;
 
 import java.util.List;
 
 /**
  * 参数配置 数据层
  *
- * @author ruoyi
+ * @author lucky
  */
-public interface SysConfigMapper {
+public interface SysConfigMapper extends BaseMapperX<SysConfig, SysConfigVO> {
 
-    /**
-     * 查询参数配置信息
-     *
-     * @param config 参数配置信息
-     * @return 参数配置信息
-     */
-    SysConfig selectConfig(SysConfig config);
+    default IPage<SysConfigVO> selectPage(Page<SysConfig> page, SysConfigQuery query) {
+        return selectVoPage(page, buildWrapper(query));
+    }
 
-    /**
-     * 通过ID查询配置
-     *
-     * @param configId 参数ID
-     * @return 参数配置信息
-     */
-    SysConfig selectConfigById(Long configId);
+    default List<SysConfig> selectList(SysConfigQuery query) {
+        return selectList(buildWrapper(query));
+    }
 
-    /**
-     * 查询参数配置列表
-     *
-     * @param config 参数配置信息
-     * @return 参数配置集合
-     */
-    List<SysConfig> selectConfigList(SysConfig config);
+    default Wrapper<SysConfig> buildWrapper(SysConfigQuery query) {
+        return Wrappers.<SysConfig>lambdaQuery()
+                .like(StringUtils.isNotBlank(query.getConfigName()), SysConfig::getConfigName, query.getConfigName())
+                .like(StringUtils.isNotBlank(query.getConfigKey()), SysConfig::getConfigKey, query.getConfigKey())
+                .eq(StringUtils.isNotBlank(query.getConfigType()), SysConfig::getConfigType, query.getConfigType())
+                .between(!query.getParams().isEmpty(), SysConfig::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"))
+                .orderByDesc(SysConfig::getCreateTime);
+    }
 
-    /**
-     * 根据键名查询参数配置信息
-     *
-     * @param configKey 参数键名
-     * @return 参数配置信息
-     */
-    SysConfig checkConfigKeyUnique(String configKey);
-
-    /**
-     * 新增参数配置
-     *
-     * @param config 参数配置信息
-     * @return 结果
-     */
-    int insertConfig(SysConfig config);
-
-    /**
-     * 修改参数配置
-     *
-     * @param config 参数配置信息
-     * @return 结果
-     */
-    int updateConfig(SysConfig config);
-
-    /**
-     * 删除参数配置
-     *
-     * @param configId 参数ID
-     * @return 结果
-     */
-    int deleteConfigById(Long configId);
-
-    /**
-     * 批量删除参数信息
-     *
-     * @param configIds 需要删除的参数ID
-     * @return 结果
-     */
-    int deleteConfigByIds(Long[] configIds);
+    default SysConfigVO selectOneByConfigKey(String configKey) {
+        return selectVoOne(Wrappers.<SysConfig>lambdaQuery().eq(SysConfig::getConfigKey, configKey), false);
+    }
 
 }
