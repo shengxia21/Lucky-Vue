@@ -1,17 +1,24 @@
 package com.lucky.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.system.domain.SysOperLog;
+import com.lucky.system.domain.query.operLog.SysOperLogQuery;
+import com.lucky.system.domain.vo.operLog.SysOperLogVO;
 import com.lucky.system.mapper.SysOperLogMapper;
 import com.lucky.system.service.ISysOperLogService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * 操作日志 服务层处理
  *
- * @author ruoyi
+ * @author lucky
  */
 @Service
 public class SysOperLogServiceImpl implements ISysOperLogService {
@@ -19,55 +26,30 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     @Resource
     private SysOperLogMapper operLogMapper;
 
-    /**
-     * 新增操作日志
-     *
-     * @param operLog 操作日志对象
-     */
     @Override
     public void insertOperLog(SysOperLog operLog) {
-        operLogMapper.insertOperLog(operLog);
+        operLogMapper.insert(operLog);
     }
 
-    /**
-     * 查询系统操作日志集合
-     *
-     * @param operLog 操作日志对象
-     * @return 操作日志集合
-     */
     @Override
-    public List<SysOperLog> selectOperLogList(SysOperLog operLog) {
-        return operLogMapper.selectOperLogList(operLog);
+    public TableDataInfo<SysOperLogVO> selectOperLogList(PageQuery pageQuery, SysOperLogQuery query) {
+        IPage<SysOperLogVO> result = operLogMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(result);
     }
 
-    /**
-     * 批量删除系统操作日志
-     *
-     * @param operIds 需要删除的操作日志ID
-     * @return 结果
-     */
+    @Override
+    public List<SysOperLog> selectOperLogList(SysOperLogQuery query) {
+        return operLogMapper.selectList(query);
+    }
+
     @Override
     public int deleteOperLogByIds(Long[] operIds) {
-        return operLogMapper.deleteOperLogByIds(operIds);
+        return operLogMapper.deleteByIds(Arrays.asList(operIds));
     }
 
-    /**
-     * 查询操作日志详细
-     *
-     * @param operId 操作ID
-     * @return 操作日志对象
-     */
     @Override
-    public SysOperLog selectOperLogById(Long operId) {
-        return operLogMapper.selectOperLogById(operId);
-    }
-
-    /**
-     * 清空操作日志
-     */
-    @Override
-    public void cleanOperLog() {
-        operLogMapper.cleanOperLog();
+    public int cleanOperLog() {
+        return operLogMapper.delete(new QueryWrapper<>());
     }
 
 }

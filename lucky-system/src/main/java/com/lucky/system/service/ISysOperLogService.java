@@ -1,6 +1,10 @@
 package com.lucky.system.service;
 
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.system.domain.SysOperLog;
+import com.lucky.system.domain.query.operLog.SysOperLogQuery;
+import com.lucky.system.domain.vo.operLog.SysOperLogVO;
 
 import java.util.List;
 
@@ -19,12 +23,21 @@ public interface ISysOperLogService {
     void insertOperLog(SysOperLog operLog);
 
     /**
+     * 分页查询系统操作日志集合
+     *
+     * @param pageQuery 分页查询对象
+     * @param query     查询条件
+     * @return 操作日志分页集合
+     */
+    TableDataInfo<SysOperLogVO> selectOperLogList(PageQuery pageQuery, SysOperLogQuery query);
+
+    /**
      * 查询系统操作日志集合
      *
-     * @param operLog 操作日志对象
+     * @param query 查询条件
      * @return 操作日志集合
      */
-    List<SysOperLog> selectOperLogList(SysOperLog operLog);
+    List<SysOperLog> selectOperLogList(SysOperLogQuery query);
 
     /**
      * 批量删除系统操作日志
@@ -35,16 +48,10 @@ public interface ISysOperLogService {
     int deleteOperLogByIds(Long[] operIds);
 
     /**
-     * 查询操作日志详细
-     *
-     * @param operId 操作ID
-     * @return 操作日志对象
-     */
-    SysOperLog selectOperLogById(Long operId);
-
-    /**
      * 清空操作日志
+     *
+     * @return 结果
      */
-    void cleanOperLog();
+    int cleanOperLog();
 
 }

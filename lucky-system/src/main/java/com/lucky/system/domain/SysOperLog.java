@@ -4,11 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.lucky.common.annotation.Excel;
 import com.lucky.common.annotation.Excel.ColumnType;
-import com.lucky.common.core.domain.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import java.io.Serial;
 import java.util.Date;
 
 /**
@@ -17,12 +14,8 @@ import java.util.Date;
  * @author ruoyi
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_oper_log")
-public class SysOperLog extends BaseEntity {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class SysOperLog {
 
     /**
      * 日志主键
@@ -42,11 +35,6 @@ public class SysOperLog extends BaseEntity {
      */
     @Excel(name = "业务类型", readConverterExp = "0=其它,1=新增,2=修改,3=删除,4=授权,5=导出,6=导入,7=强退,8=生成代码,9=清空数据")
     private Integer businessType;
-
-    /**
-     * 业务类型数组
-     */
-    private Integer[] businessTypes;
 
     /**
      * 请求方法
