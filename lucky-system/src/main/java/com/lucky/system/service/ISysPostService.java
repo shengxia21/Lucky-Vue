@@ -1,6 +1,11 @@
 package com.lucky.system.service;
 
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.system.domain.SysPost;
+import com.lucky.system.domain.query.post.SysPostQuery;
+import com.lucky.system.domain.query.post.SysPostSaveQuery;
+import com.lucky.system.domain.vo.post.SysPostVO;
 
 import java.util.List;
 
@@ -14,17 +19,26 @@ public interface ISysPostService {
     /**
      * 查询岗位信息集合
      *
-     * @param post 岗位信息
+     * @param pageQuery 分页参数
+     * @param query     岗位查询对象
      * @return 岗位列表
      */
-    List<SysPost> selectPostList(SysPost post);
+    TableDataInfo<SysPostVO> selectPostList(PageQuery pageQuery, SysPostQuery query);
+
+    /**
+     * 查询岗位信息集合
+     *
+     * @param query 岗位查询对象
+     * @return 岗位列表
+     */
+    List<SysPost> selectPostList(SysPostQuery query);
 
     /**
      * 查询所有岗位
      *
      * @return 岗位列表
      */
-    List<SysPost> selectPostAll();
+    List<SysPostVO> selectPostAll();
 
     /**
      * 通过岗位ID查询岗位信息
@@ -32,7 +46,7 @@ public interface ISysPostService {
      * @param postId 岗位ID
      * @return 角色对象信息
      */
-    SysPost selectPostById(Long postId);
+    SysPostVO selectPostById(Long postId);
 
     /**
      * 根据用户ID获取岗位选择框列表
@@ -40,23 +54,25 @@ public interface ISysPostService {
      * @param userId 用户ID
      * @return 选中岗位ID列表
      */
-    List<Long> selectPostListByUserId(Long userId);
+    List<Long> selectPostIdsByUserId(Long userId);
 
     /**
      * 校验岗位名称
      *
-     * @param post 岗位信息
+     * @param postId   岗位ID
+     * @param postName 岗位名称
      * @return 结果
      */
-    boolean checkPostNameUnique(SysPost post);
+    boolean checkPostNameUnique(Long postId, String postName);
 
     /**
      * 校验岗位编码
      *
-     * @param post 岗位信息
+     * @param postId   岗位ID
+     * @param postCode 岗位编码
      * @return 结果
      */
-    boolean checkPostCodeUnique(SysPost post);
+    boolean checkPostCodeUnique(Long postId, String postCode);
 
     /**
      * 通过岗位ID查询岗位使用数量
@@ -64,15 +80,7 @@ public interface ISysPostService {
      * @param postId 岗位ID
      * @return 结果
      */
-    int countUserPostById(Long postId);
-
-    /**
-     * 删除岗位信息
-     *
-     * @param postId 岗位ID
-     * @return 结果
-     */
-    int deletePostById(Long postId);
+    Long countUserPostById(Long postId);
 
     /**
      * 批量删除岗位信息
@@ -88,7 +96,7 @@ public interface ISysPostService {
      * @param post 岗位信息
      * @return 结果
      */
-    int insertPost(SysPost post);
+    int insertPost(SysPostSaveQuery post);
 
     /**
      * 修改保存岗位信息
@@ -96,6 +104,6 @@ public interface ISysPostService {
      * @param post 岗位信息
      * @return 结果
      */
-    int updatePost(SysPost post);
+    int updatePost(SysPostSaveQuery post);
 
 }

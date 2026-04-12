@@ -2,11 +2,15 @@ package com.lucky.web.controller.system;
 
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
-import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
+import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
 import com.lucky.common.utils.poi.ExcelUtil;
 import com.lucky.system.domain.SysPost;
+import com.lucky.system.domain.query.post.SysPostQuery;
+import com.lucky.system.domain.query.post.SysPostSaveQuery;
+import com.lucky.system.domain.vo.post.SysPostVO;
 import com.lucky.system.service.ISysPostService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,18 +37,19 @@ public class SysPostController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:post:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysPost post) {
-        startPage();
-        List<SysPost> list = postService.selectPostList(post);
-        return getDataTable(list);
+    public TableDataInfo<SysPostVO> list(PageQuery pageQuery, SysPostQuery query) {
+        return postService.selectPostList(pageQuery, query);
     }
 
+    /**
+     * 导出岗位数据
+     */
     @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:post:export')")
     @PostMapping("/export")
-    public void export(HttpServletResponse response, SysPost post) {
-        List<SysPost> list = postService.selectPostList(post);
-        ExcelUtil<SysPost> util = new ExcelUtil<SysPost>(SysPost.class);
+    public void export(HttpServletResponse response, SysPostQuery query) {
+        List<SysPost> list = postService.selectPostList(query);
+        ExcelUtil<SysPost> util = new ExcelUtil<>(SysPost.class);
         util.exportExcel(response, list, "岗位数据");
     }
 
@@ -53,8 +58,8 @@ public class SysPostController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:post:query')")
     @GetMapping(value = "/{postId}")
-    public AjaxResult getInfo(@PathVariable Long postId) {
-        return success(postService.selectPostById(postId));
+    public R<SysPostVO> getInfo(@PathVariable Long postId) {
+        return R.ok(postService.selectPostById(postId));
     }
 
     /**
@@ -63,13 +68,12 @@ public class SysPostController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:post:add')")
     @Log(title = "岗位管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysPost post) {
-        if (!postService.checkPostNameUnique(post)) {
-            return error("新增岗位'" + post.getPostName() + "'失败，岗位名称已存在");
-        } else if (!postService.checkPostCodeUnique(post)) {
-            return error("新增岗位'" + post.getPostName() + "'失败，岗位编码已存在");
+    public R<Void> add(@Validated @RequestBody SysPostSaveQuery post) {
+        if (!postService.checkPostNameUnique(post.getPostId(), post.getPostName())) {
+            return R.fail("新增岗位'" + post.getPostName() + "'失败，岗位名称已存在");
+        } else if (!postService.checkPostCodeUnique(post.getPostId(), post.getPostCode())) {
+            return R.fail("新增岗位'" + post.getPostName() + "'失败，岗位编码已存在");
         }
-        post.setCreateBy(getUsername());
         return toAjax(postService.insertPost(post));
     }
 
@@ -79,13 +83,12 @@ public class SysPostController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:post:edit')")
     @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysPost post) {
-        if (!postService.checkPostNameUnique(post)) {
-            return error("修改岗位'" + post.getPostName() + "'失败，岗位名称已存在");
-        } else if (!postService.checkPostCodeUnique(post)) {
-            return error("修改岗位'" + post.getPostName() + "'失败，岗位编码已存在");
+    public R<Void> edit(@Validated @RequestBody SysPostSaveQuery post) {
+        if (!postService.checkPostNameUnique(post.getPostId(), post.getPostName())) {
+            return R.fail("修改岗位'" + post.getPostName() + "'失败，岗位名称已存在");
+        } else if (!postService.checkPostCodeUnique(post.getPostId(), post.getPostCode())) {
+            return R.fail("修改岗位'" + post.getPostName() + "'失败，岗位编码已存在");
         }
-        post.setUpdateBy(getUsername());
         return toAjax(postService.updatePost(post));
     }
 
@@ -95,17 +98,16 @@ public class SysPostController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:post:remove')")
     @Log(title = "岗位管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{postIds}")
-    public AjaxResult remove(@PathVariable Long[] postIds) {
+    public R<Void> remove(@PathVariable Long[] postIds) {
         return toAjax(postService.deletePostByIds(postIds));
     }
 
     /**
      * 获取岗位选择框列表
      */
-    @GetMapping("/optionselect")
-    public AjaxResult optionselect() {
-        List<SysPost> posts = postService.selectPostAll();
-        return success(posts);
+    @GetMapping("/optionSelect")
+    public R<List<SysPostVO>> optionSelect() {
+        return R.ok(postService.selectPostAll());
     }
 
 }
