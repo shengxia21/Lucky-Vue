@@ -27,7 +27,6 @@
         <dynamic-datasource.version>4.3.1</dynamic-datasource.version>
         <yauaa.version>8.1.0</yauaa.version>
         <kaptcha.version>2.3.3</kaptcha.version>
-        <pagehelper.boot.version>2.1.1</pagehelper.boot.version>
         <fastjson.version>2.0.61</fastjson.version>
         <lombok.version>1.18.40</lombok.version>
         <mapstruct-plus.version>1.5.0</mapstruct-plus.version>
@@ -115,13 +114,6 @@
                 <version>${hutool.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-
-            <!-- pagehelper 分页插件 -->
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${pagehelper.boot.version}</version>
             </dependency>
 
             <!-- dynamic-datasource 多数据源-->

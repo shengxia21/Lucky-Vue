@@ -44,12 +44,12 @@ public class TableDataInfo<T> implements Serializable {
     /**
      * 构建表格分页数据对象
      */
-    public static <T> TableDataInfo<T> build(List<T> list, long total) {
+    public static <T> TableDataInfo<T> build(List<T> list) {
         TableDataInfo<T> data = new TableDataInfo<>();
         data.setCode(HttpStatus.SUCCESS);
         data.setMsg("查询成功");
         data.setRows(list);
-        data.setTotal(total);
+        data.setTotal(list.size());
         return data;
     }
 
