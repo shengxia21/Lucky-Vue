@@ -124,15 +124,6 @@ easy-trans:
   # 启用全局翻译（拦截所有 SpringMVC ResponseBody 进行自动翻译 )
   is-enable-global: true
 
-# PageHelper分页插件
-pagehelper:
-  # 指定分页插件使用的数据库类型
-  helperDialect: mysql
-  # 是否支持通过方法参数传递分页参数
-  supportMethodsArguments: true
-  # 配置分页查询时计数SQL的方式（使用 count(0) 而不是 count(*)）
-  params: count=countSql
-
 # Springdoc配置
 springdoc:
   api-docs:
