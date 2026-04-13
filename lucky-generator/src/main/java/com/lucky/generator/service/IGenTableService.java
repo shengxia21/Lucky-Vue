@@ -1,6 +1,10 @@
 package com.lucky.generator.service;
 
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.generator.domain.GenTable;
+import com.lucky.generator.domain.query.GenTableQuery;
+import com.lucky.generator.domain.vo.GenTableVO;
 
 import java.util.List;
 import java.util.Map;
@@ -15,18 +19,20 @@ public interface IGenTableService {
     /**
      * 查询业务列表
      *
-     * @param genTable 业务信息
+     * @param pageQuery 分页参数
+     * @param query     业务信息
      * @return 业务集合
      */
-    List<GenTable> selectGenTableList(GenTable genTable);
+    TableDataInfo<GenTableVO> selectGenTableList(PageQuery pageQuery, GenTableQuery query);
 
     /**
      * 查询据库列表
      *
-     * @param genTable 业务信息
+     * @param pageQuery 分页参数
+     * @param query     查询参数
      * @return 数据库表集合
      */
-    List<GenTable> selectDbTableList(GenTable genTable);
+    TableDataInfo<GenTableVO> selectDbTableList(PageQuery pageQuery, GenTableQuery query);
 
     /**
      * 查询据库列表
@@ -55,7 +61,6 @@ public interface IGenTableService {
      * 修改业务
      *
      * @param genTable 业务信息
-     * @return 结果
      */
     void updateGenTable(GenTable genTable);
 
@@ -63,24 +68,15 @@ public interface IGenTableService {
      * 删除业务信息
      *
      * @param tableIds 需要删除的表数据ID
-     * @return 结果
      */
     void deleteGenTableByIds(Long[] tableIds);
 
     /**
-     * 创建表
-     *
-     * @param sql 创建表语句
-     * @return 结果
-     */
-    boolean createTable(String sql);
-
-    /**
      * 导入表结构
      *
-     * @param tableList 导入表列表
+     * @param tableList  导入表列表
      * @param tplWebType 前端类型
-     * @param operName  操作人员
+     * @param operName   操作人员
      */
     void importGenTable(List<GenTable> tableList, String tplWebType, String operName);
 
@@ -104,7 +100,6 @@ public interface IGenTableService {
      * 生成代码（自定义路径）
      *
      * @param tableName 表名称
-     * @return 数据
      */
     void generatorCode(String tableName);
 
@@ -113,7 +108,7 @@ public interface IGenTableService {
      *
      * @param tableName 表名称
      */
-    void synchDb(String tableName);
+    void syncDb(String tableName);
 
     /**
      * 批量生成代码（下载方式）

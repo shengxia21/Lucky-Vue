@@ -1,31 +1,32 @@
 package com.lucky.generator.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.lucky.common.core.mybatis.BaseMapperX;
+import com.lucky.common.utils.StringUtils;
 import com.lucky.generator.domain.GenTable;
+import com.lucky.generator.domain.query.GenTableQuery;
+import com.lucky.generator.domain.vo.GenTableVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
  * 业务 数据层
  *
- * @author ruoyi
+ * @author lucky
  */
-public interface GenTableMapper {
-
-    /**
-     * 查询业务列表
-     *
-     * @param genTable 业务信息
-     * @return 业务集合
-     */
-    List<GenTable> selectGenTableList(GenTable genTable);
+public interface GenTableMapper extends BaseMapperX<GenTable, GenTableVO> {
 
     /**
      * 查询据库列表
      *
-     * @param genTable 业务信息
+     * @param page  分页参数
+     * @param query 查询参数
      * @return 数据库表集合
      */
-    List<GenTable> selectDbTableList(GenTable genTable);
+    IPage<GenTableVO> selectDbTableList(IPage<GenTable> page, @Param("query") GenTableQuery query);
 
     /**
      * 查询据库列表
@@ -58,36 +59,16 @@ public interface GenTableMapper {
      */
     GenTable selectGenTableByName(String tableName);
 
-    /**
-     * 新增业务
-     *
-     * @param genTable 业务信息
-     * @return 结果
-     */
-    int insertGenTable(GenTable genTable);
+    default IPage<GenTableVO> selectList(IPage<GenTable> page, GenTableQuery query) {
+        LambdaQueryWrapper<GenTable> wrapper = Wrappers.<GenTable>lambdaQuery()
+                .like(StringUtils.isNotEmpty(query.getTableName()), GenTable::getTableName, query.getTableName())
+                .like(StringUtils.isNotEmpty(query.getTableComment()), GenTable::getTableComment, query.getTableComment())
+                .between(!query.getParams().isEmpty(), GenTable::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"));
+        return selectVoPage(page, wrapper);
+    }
 
-    /**
-     * 修改业务
-     *
-     * @param genTable 业务信息
-     * @return 结果
-     */
-    int updateGenTable(GenTable genTable);
-
-    /**
-     * 批量删除业务
-     *
-     * @param ids 需要删除的数据ID
-     * @return 结果
-     */
-    int deleteGenTableByIds(Long[] ids);
-
-    /**
-     * 创建表
-     *
-     * @param sql 表结构
-     * @return 结果
-     */
-    int createTable(String sql);
+    default int deleteByTableIds(List<Long> ids) {
+        return delete(Wrappers.<GenTable>lambdaQuery().in(GenTable::getTableId, ids));
+    }
 
 }

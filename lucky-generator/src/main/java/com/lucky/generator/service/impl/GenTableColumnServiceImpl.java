@@ -1,7 +1,6 @@
 package com.lucky.generator.service.impl;
 
-import com.lucky.common.core.text.Convert;
-import com.lucky.generator.domain.GenTableColumn;
+import com.lucky.generator.domain.vo.GenTableColumnVO;
 import com.lucky.generator.mapper.GenTableColumnMapper;
 import com.lucky.generator.service.IGenTableColumnService;
 import jakarta.annotation.Resource;
@@ -27,41 +26,8 @@ public class GenTableColumnServiceImpl implements IGenTableColumnService {
      * @return 业务字段集合
      */
     @Override
-    public List<GenTableColumn> selectGenTableColumnListByTableId(Long tableId) {
-        return genTableColumnMapper.selectGenTableColumnListByTableId(tableId);
-    }
-
-    /**
-     * 新增业务字段
-     *
-     * @param genTableColumn 业务字段信息
-     * @return 结果
-     */
-    @Override
-    public int insertGenTableColumn(GenTableColumn genTableColumn) {
-        return genTableColumnMapper.insertGenTableColumn(genTableColumn);
-    }
-
-    /**
-     * 修改业务字段
-     *
-     * @param genTableColumn 业务字段信息
-     * @return 结果
-     */
-    @Override
-    public int updateGenTableColumn(GenTableColumn genTableColumn) {
-        return genTableColumnMapper.updateGenTableColumn(genTableColumn);
-    }
-
-    /**
-     * 删除业务字段对象
-     *
-     * @param ids 需要删除的数据ID
-     * @return 结果
-     */
-    @Override
-    public int deleteGenTableColumnByIds(String ids) {
-        return genTableColumnMapper.deleteGenTableColumnByIds(Convert.toLongArray(ids));
+    public List<GenTableColumnVO> getGenTableColumnListByTableId(Long tableId) {
+        return genTableColumnMapper.selectListByTableId(tableId);
     }
 
 }

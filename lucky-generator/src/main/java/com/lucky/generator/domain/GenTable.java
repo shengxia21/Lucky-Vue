@@ -13,7 +13,9 @@ import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.Serial;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 业务表 gen_table
@@ -170,6 +172,19 @@ public class GenTable extends BaseEntity {
      * 备注
      */
     private String remark;
+
+    /**
+     * 请求参数
+     */
+    @TableField(exist = false)
+    private Map<String, Object> params;
+
+    public Map<String, Object> getParams() {
+        if (params == null) {
+            params = new HashMap<>();
+        }
+        return params;
+    }
 
     public static boolean isSub(String tplCategory) {
         return tplCategory != null && StringUtils.equals(GenConstants.TPL_SUB, tplCategory);
