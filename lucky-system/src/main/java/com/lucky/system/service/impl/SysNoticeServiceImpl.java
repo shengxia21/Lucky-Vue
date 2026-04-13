@@ -1,17 +1,24 @@
 package com.lucky.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
+import com.lucky.common.utils.MapstructUtils;
 import com.lucky.system.domain.SysNotice;
+import com.lucky.system.domain.query.notice.SysNoticeQuery;
+import com.lucky.system.domain.query.notice.SysNoticeSaveQuery;
+import com.lucky.system.domain.vo.notice.SysNoticeVO;
 import com.lucky.system.mapper.SysNoticeMapper;
 import com.lucky.system.service.ISysNoticeService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * 公告 服务层实现
  *
- * @author ruoyi
+ * @author lucky
  */
 @Service
 public class SysNoticeServiceImpl implements ISysNoticeService {
@@ -19,70 +26,37 @@ public class SysNoticeServiceImpl implements ISysNoticeService {
     @Resource
     private SysNoticeMapper noticeMapper;
 
-    /**
-     * 查询公告信息
-     *
-     * @param noticeId 公告ID
-     * @return 公告信息
-     */
     @Override
-    public SysNotice selectNoticeById(Long noticeId) {
-        return noticeMapper.selectNoticeById(noticeId);
+    public SysNoticeVO selectNoticeById(Long noticeId) {
+        return noticeMapper.selectVoById(noticeId);
     }
 
-    /**
-     * 查询公告列表
-     *
-     * @param notice 公告信息
-     * @return 公告集合
-     */
     @Override
-    public List<SysNotice> selectNoticeList(SysNotice notice) {
-        return noticeMapper.selectNoticeList(notice);
+    public TableDataInfo<SysNoticeVO> selectNoticeList(PageQuery pageQuery, SysNoticeQuery query) {
+        IPage<SysNoticeVO> page = noticeMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(page);
     }
 
-    /**
-     * 新增公告
-     *
-     * @param notice 公告信息
-     * @return 结果
-     */
     @Override
-    public int insertNotice(SysNotice notice) {
-        return noticeMapper.insertNotice(notice);
+    public int insertNotice(SysNoticeSaveQuery notice) {
+        SysNotice sysNotice = MapstructUtils.convert(notice, SysNotice.class);
+        return noticeMapper.insert(sysNotice);
     }
 
-    /**
-     * 修改公告
-     *
-     * @param notice 公告信息
-     * @return 结果
-     */
     @Override
-    public int updateNotice(SysNotice notice) {
-        return noticeMapper.updateNotice(notice);
+    public int updateNotice(SysNoticeSaveQuery notice) {
+        SysNotice sysNotice = MapstructUtils.convert(notice, SysNotice.class);
+        return noticeMapper.updateById(sysNotice);
     }
 
-    /**
-     * 删除公告对象
-     *
-     * @param noticeId 公告ID
-     * @return 结果
-     */
-    @Override
-    public int deleteNoticeById(Long noticeId) {
-        return noticeMapper.deleteNoticeById(noticeId);
-    }
-
-    /**
-     * 批量删除公告信息
-     *
-     * @param noticeIds 需要删除的公告ID
-     * @return 结果
-     */
     @Override
     public int deleteNoticeByIds(Long[] noticeIds) {
-        return noticeMapper.deleteNoticeByIds(noticeIds);
+        return noticeMapper.deleteByIds(Arrays.asList(noticeIds));
+    }
+
+    @Override
+    public Long selectUnreadCount(Long userId) {
+        return noticeMapper.selectUnreadCount(userId);
     }
 
 }

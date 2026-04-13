@@ -1,6 +1,6 @@
 package com.lucky.system.service;
 
-import com.lucky.system.domain.SysNotice;
+import com.lucky.system.domain.vo.notice.SysNoticeReadVO;
 
 import java.util.List;
 
@@ -20,21 +20,13 @@ public interface ISysNoticeReadService {
     void markRead(Long noticeId, Long userId);
 
     /**
-     * 查询某用户未读公告数量
-     *
-     * @param userId 用户ID
-     * @return 未读数量
-     */
-    int selectUnreadCount(Long userId);
-
-    /**
      * 查询公告列表并标记当前用户已读状态（用于首页展示）
      *
      * @param userId 用户ID
      * @param limit  最多返回条数
      * @return 带 isRead 标记的公告列表
      */
-    List<SysNotice> selectNoticeListWithReadStatus(Long userId, int limit);
+    List<SysNoticeReadVO> selectNoticeListWithReadStatus(Long userId, int limit);
 
     /**
      * 批量标记已读
@@ -49,6 +41,6 @@ public interface ISysNoticeReadService {
      *
      * @param noticeIds 公告ID数组
      */
-    void deleteByNoticeIds(Long[] noticeIds);
+    int deleteByNoticeIds(Long[] noticeIds);
 
 }

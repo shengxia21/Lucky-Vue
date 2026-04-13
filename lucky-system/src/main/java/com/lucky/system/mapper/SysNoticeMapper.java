@@ -1,62 +1,35 @@
 package com.lucky.system.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lucky.common.core.mybatis.BaseMapperX;
+import com.lucky.common.utils.StringUtils;
 import com.lucky.system.domain.SysNotice;
-
-import java.util.List;
+import com.lucky.system.domain.query.notice.SysNoticeQuery;
+import com.lucky.system.domain.vo.notice.SysNoticeVO;
 
 /**
  * 通知公告表 数据层
  *
- * @author ruoyi
+ * @author lucky
  */
-public interface SysNoticeMapper {
+public interface SysNoticeMapper extends BaseMapperX<SysNotice, SysNoticeVO> {
 
-    /**
-     * 查询公告信息
-     *
-     * @param noticeId 公告ID
-     * @return 公告信息
-     */
-    SysNotice selectNoticeById(Long noticeId);
+    default IPage<SysNoticeVO> selectPage(Page<SysNotice> page, SysNoticeQuery query) {
+        LambdaQueryWrapper<SysNotice> wrapper = Wrappers.<SysNotice>lambdaQuery()
+                .like(StringUtils.isNotBlank(query.getNoticeTitle()), SysNotice::getNoticeTitle, query.getNoticeTitle())
+                .eq(StringUtils.isNotBlank(query.getNoticeType()), SysNotice::getNoticeType, query.getNoticeType())
+                .like(StringUtils.isNotBlank(query.getCreateBy()), SysNotice::getCreateBy, query.getCreateBy())
+                .orderByDesc(SysNotice::getCreateTime);
+        return selectVoPage(page, wrapper);
+    }
 
-    /**
-     * 查询公告列表
-     *
-     * @param notice 公告信息
-     * @return 公告集合
-     */
-    List<SysNotice> selectNoticeList(SysNotice notice);
-
-    /**
-     * 新增公告
-     *
-     * @param notice 公告信息
-     * @return 结果
-     */
-    int insertNotice(SysNotice notice);
-
-    /**
-     * 修改公告
-     *
-     * @param notice 公告信息
-     * @return 结果
-     */
-    int updateNotice(SysNotice notice);
-
-    /**
-     * 批量删除公告
-     *
-     * @param noticeId 公告ID
-     * @return 结果
-     */
-    int deleteNoticeById(Long noticeId);
-
-    /**
-     * 批量删除公告信息
-     *
-     * @param noticeIds 需要删除的公告ID
-     * @return 结果
-     */
-    int deleteNoticeByIds(Long[] noticeIds);
+    default Long selectUnreadCount(Long userId) {
+        return selectCount(Wrappers.<SysNotice>lambdaQuery()
+                .eq(SysNotice::getStatus, "0")
+                .notExists("select 1 from sys_notice_read r where r.notice_id = n.notice_id and r.user_id = #{userId}", userId));
+    }
 
 }

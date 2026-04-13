@@ -3,10 +3,15 @@ package com.lucky.web.controller.system;
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
 import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
+import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.core.text.Convert;
 import com.lucky.common.enums.BusinessType;
-import com.lucky.system.domain.SysNotice;
+import com.lucky.system.domain.query.notice.SysNoticeQuery;
+import com.lucky.system.domain.query.notice.SysNoticeSaveQuery;
+import com.lucky.system.domain.vo.notice.SysNoticeReadVO;
+import com.lucky.system.domain.vo.notice.SysNoticeVO;
 import com.lucky.system.service.ISysNoticeReadService;
 import com.lucky.system.service.ISysNoticeService;
 import jakarta.annotation.Resource;
@@ -36,10 +41,8 @@ public class SysNoticeController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:notice:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysNotice notice) {
-        startPage();
-        List<SysNotice> list = noticeService.selectNoticeList(notice);
-        return getDataTable(list);
+    public TableDataInfo<SysNoticeVO> list(PageQuery pageQuery, SysNoticeQuery query) {
+        return noticeService.selectNoticeList(pageQuery, query);
     }
 
     /**
@@ -47,8 +50,8 @@ public class SysNoticeController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:notice:query')")
     @GetMapping(value = "/{noticeId}")
-    public AjaxResult getInfo(@PathVariable Long noticeId) {
-        return success(noticeService.selectNoticeById(noticeId));
+    public R<SysNoticeVO> getInfo(@PathVariable Long noticeId) {
+        return R.ok(noticeService.selectNoticeById(noticeId));
     }
 
     /**
@@ -57,8 +60,7 @@ public class SysNoticeController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:notice:add')")
     @Log(title = "通知公告", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysNotice notice) {
-        notice.setCreateBy(getUsername());
+    public R<Void> add(@Validated @RequestBody SysNoticeSaveQuery notice) {
         return toAjax(noticeService.insertNotice(notice));
     }
 
@@ -68,8 +70,7 @@ public class SysNoticeController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:notice:edit')")
     @Log(title = "通知公告", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysNotice notice) {
-        notice.setUpdateBy(getUsername());
+    public R<Void> edit(@Validated @RequestBody SysNoticeSaveQuery notice) {
         return toAjax(noticeService.updateNotice(notice));
     }
 
@@ -77,10 +78,9 @@ public class SysNoticeController extends BaseController {
      * 首页顶部公告列表（返回全部正常公告，带当前用户已读标记，最多5条）
      */
     @GetMapping("/listTop")
-    @ResponseBody
     public AjaxResult listTop() {
         Long userId = getUserId();
-        List<SysNotice> list = noticeReadService.selectNoticeListWithReadStatus(userId, 5);
+        List<SysNoticeReadVO> list = noticeReadService.selectNoticeListWithReadStatus(userId, 5);
         long unreadCount = list.stream().filter(n -> !n.isRead()).count();
         AjaxResult result = AjaxResult.success(list);
         result.put("unreadCount", unreadCount);
@@ -91,23 +91,21 @@ public class SysNoticeController extends BaseController {
      * 标记公告已读
      */
     @PostMapping("/markRead")
-    @ResponseBody
-    public AjaxResult markRead(Long noticeId) {
+    public R<Void> markRead(Long noticeId) {
         Long userId = getUserId();
         noticeReadService.markRead(noticeId, userId);
-        return success();
+        return R.ok();
     }
 
     /**
      * 批量标记已读
      */
     @PostMapping("/markReadAll")
-    @ResponseBody
-    public AjaxResult markReadAll(String ids) {
+    public R<Void> markReadAll(String ids) {
         Long userId = getUserId();
         Long[] noticeIds = Convert.toLongArray(ids);
         noticeReadService.markReadBatch(userId, noticeIds);
-        return success();
+        return R.ok();
     }
 
     /**
@@ -116,7 +114,7 @@ public class SysNoticeController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:notice:remove')")
     @Log(title = "通知公告", businessType = BusinessType.DELETE)
     @DeleteMapping("/{noticeIds}")
-    public AjaxResult remove(@PathVariable Long[] noticeIds) {
+    public R<Void> remove(@PathVariable Long[] noticeIds) {
         noticeReadService.deleteByNoticeIds(noticeIds);
         return toAjax(noticeService.deleteNoticeByIds(noticeIds));
     }

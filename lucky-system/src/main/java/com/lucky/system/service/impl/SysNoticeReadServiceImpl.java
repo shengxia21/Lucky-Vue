@@ -1,18 +1,23 @@
 package com.lucky.system.service.impl;
 
-import com.lucky.system.domain.SysNotice;
+import com.lucky.common.utils.DateUtils;
 import com.lucky.system.domain.SysNoticeRead;
+import com.lucky.system.domain.vo.notice.SysNoticeReadVO;
 import com.lucky.system.mapper.SysNoticeReadMapper;
 import com.lucky.system.service.ISysNoticeReadService;
 import jakarta.annotation.Resource;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
  * 公告已读记录 服务层实现
  *
- * @author ruoyi
+ * @author lucky
  */
 @Service
 public class SysNoticeReadServiceImpl implements ISysNoticeReadService {
@@ -28,22 +33,19 @@ public class SysNoticeReadServiceImpl implements ISysNoticeReadService {
         SysNoticeRead record = new SysNoticeRead();
         record.setNoticeId(noticeId);
         record.setUserId(userId);
-        noticeReadMapper.insertNoticeRead(record);
-    }
-
-    /**
-     * 查询某用户未读公告数量
-     */
-    @Override
-    public int selectUnreadCount(Long userId) {
-        return noticeReadMapper.selectUnreadCount(userId);
+        record.setReadTime(DateUtils.getNowDate());
+        try {
+            noticeReadMapper.insert(record);
+        } catch (DuplicateKeyException e) {
+            // 忽略重复插入异常
+        }
     }
 
     /**
      * 查询公告列表并标记当前用户已读状态
      */
     @Override
-    public List<SysNotice> selectNoticeListWithReadStatus(Long userId, int limit) {
+    public List<SysNoticeReadVO> selectNoticeListWithReadStatus(Long userId, int limit) {
         return noticeReadMapper.selectNoticeListWithReadStatus(userId, limit);
     }
 
@@ -55,15 +57,28 @@ public class SysNoticeReadServiceImpl implements ISysNoticeReadService {
         if (noticeIds == null || noticeIds.length == 0) {
             return;
         }
-        noticeReadMapper.insertNoticeReadBatch(userId, noticeIds);
+        List<SysNoticeRead> records = new ArrayList<>(noticeIds.length);
+        Date nowDate = DateUtils.getNowDate();
+        for (Long noticeId : noticeIds) {
+            SysNoticeRead record = new SysNoticeRead();
+            record.setNoticeId(noticeId);
+            record.setUserId(userId);
+            record.setReadTime(nowDate);
+            records.add(record);
+        }
+        try {
+            noticeReadMapper.insertBatch(records);
+        } catch (DuplicateKeyException e) {
+            // 忽略重复插入异常
+        }
     }
 
     /**
      * 删除公告时清理对应已读记录
      */
     @Override
-    public void deleteByNoticeIds(Long[] noticeIds) {
-        noticeReadMapper.deleteByNoticeIds(noticeIds);
+    public int deleteByNoticeIds(Long[] noticeIds) {
+        return noticeReadMapper.deleteByIds(Arrays.asList(noticeIds));
     }
 
 }
