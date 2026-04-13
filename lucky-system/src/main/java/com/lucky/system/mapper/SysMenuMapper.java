@@ -1,39 +1,32 @@
 package com.lucky.system.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.common.core.domain.entity.SysMenu;
+import com.lucky.common.core.mybatis.BaseMapperX;
+import com.lucky.common.utils.StringUtils;
+import com.lucky.system.domain.query.menu.SysMenuQuery;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * 菜单表 数据层
  *
- * @author ruoyi
+ * @author lucky
  */
-public interface SysMenuMapper {
-
-    /**
-     * 查询系统菜单列表
-     *
-     * @param menu 菜单信息
-     * @return 菜单列表
-     */
-    List<SysMenu> selectMenuList(SysMenu menu);
-
-    /**
-     * 根据用户所有权限
-     *
-     * @return 权限列表
-     */
-    List<String> selectMenuPerms();
+public interface SysMenuMapper extends BaseMapperX<SysMenu, SysMenu> {
 
     /**
      * 根据用户查询系统菜单列表
      *
-     * @param menu 菜单信息
+     * @param query  菜单信息
+     * @param userId 用户ID
      * @return 菜单列表
      */
-    List<SysMenu> selectMenuListByUserId(SysMenu menu);
+    List<SysMenu> selectMenuListByUserId(@Param("query") SysMenuQuery query, @Param("userId") Long userId);
 
     /**
      * 根据角色ID查询权限
@@ -54,13 +47,6 @@ public interface SysMenuMapper {
     /**
      * 根据用户ID查询菜单
      *
-     * @return 菜单列表
-     */
-    List<SysMenu> selectMenuTreeAll();
-
-    /**
-     * 根据用户ID查询菜单
-     *
      * @param userId 用户ID
      * @return 菜单列表
      */
@@ -75,69 +61,52 @@ public interface SysMenuMapper {
      */
     List<Long> selectMenuListByRoleId(@Param("roleId") Long roleId, @Param("menuCheckStrictly") boolean menuCheckStrictly);
 
-    /**
-     * 根据菜单ID查询信息
-     *
-     * @param menuId 菜单ID
-     * @return 菜单信息
-     */
-    SysMenu selectMenuById(Long menuId);
+    default List<SysMenu> selectList(SysMenuQuery query) {
+        LambdaQueryWrapper<SysMenu> wrapper = Wrappers.<SysMenu>lambdaQuery()
+                .like(StringUtils.isNotEmpty(query.getMenuName()), SysMenu::getMenuName, query.getMenuName())
+                .eq(StringUtils.isNotEmpty(query.getVisible()), SysMenu::getVisible, query.getVisible())
+                .eq(StringUtils.isNotEmpty(query.getStatus()), SysMenu::getStatus, query.getStatus())
+                .orderByAsc(SysMenu::getParentId, SysMenu::getOrderNum);
+        return selectList(wrapper);
+    }
 
-    /**
-     * 是否存在菜单子节点
-     *
-     * @param menuId 菜单ID
-     * @return 结果
-     */
-    int hasChildByMenuId(Long menuId);
+    default List<SysMenu> selectMenuTreeAll() {
+        LambdaQueryWrapper<SysMenu> wrapper = Wrappers.<SysMenu>lambdaQuery()
+                .in(SysMenu::getMenuType, Arrays.asList("M", "C"))
+                .eq(SysMenu::getStatus, "0")
+                .orderByAsc(SysMenu::getParentId, SysMenu::getOrderNum);
+        return selectList(wrapper);
+    }
 
-    /**
-     * 新增菜单信息
-     *
-     * @param menu 菜单信息
-     * @return 结果
-     */
-    int insertMenu(SysMenu menu);
+    default Long hasChildByMenuId(Long menuId) {
+        LambdaUpdateWrapper<SysMenu> wrapper = Wrappers.<SysMenu>lambdaUpdate()
+                .eq(SysMenu::getParentId, menuId);
+        return selectCount(wrapper);
+    }
 
-    /**
-     * 修改菜单信息
-     *
-     * @param menu 菜单信息
-     * @return 结果
-     */
-    int updateMenu(SysMenu menu);
+    default int updateOrderNumBySort(String menuId, String orderNum) {
+        LambdaUpdateWrapper<SysMenu> wrapper = Wrappers.<SysMenu>lambdaUpdate()
+                .set(SysMenu::getOrderNum, orderNum)
+                .eq(SysMenu::getMenuId, menuId);
+        return update(wrapper);
+    }
 
-    /**
-     * 保存菜单排序
-     *
-     * @param menu 菜单信息
-     */
-    void updateMenuSort(SysMenu menu);
+    default SysMenu checkMenuNameUnique(String menuName, Long parentId) {
+        LambdaQueryWrapper<SysMenu> wrapper = Wrappers.<SysMenu>lambdaQuery()
+                .eq(SysMenu::getMenuName, menuName)
+                .eq(SysMenu::getParentId, parentId);
+        return selectOne(wrapper, false);
+    }
 
-    /**
-     * 删除菜单管理信息
-     *
-     * @param menuId 菜单ID
-     * @return 结果
-     */
-    int deleteMenuById(Long menuId);
-
-    /**
-     * 校验菜单名称是否唯一
-     *
-     * @param menuName 菜单名称
-     * @param parentId 父菜单ID
-     * @return 结果
-     */
-    SysMenu checkMenuNameUnique(@Param("menuName") String menuName, @Param("parentId") Long parentId);
-
-    /**
-     * 根据路由路径或名称查询菜单信息（用于唯一性校验）
-     *
-     * @param path      路由地址
-     * @param routeName 路由名称
-     * @return 匹配的菜单列表
-     */
-    List<SysMenu> selectMenusByPathOrRouteName(@Param("path") String path, @Param("routeName") String routeName);
+    default List<SysMenu> selectListByPathOrRouteName(String path, String routeName) {
+        LambdaQueryWrapper<SysMenu> wrapper = Wrappers.<SysMenu>lambdaQuery()
+                .in(SysMenu::getMenuType, Arrays.asList("M", "C"))
+                .and(w -> w.eq(SysMenu::getPath, path)
+                        .or().eq(SysMenu::getPath, routeName)
+                        .or().eq(SysMenu::getRouteName, path)
+                        .or().eq(SysMenu::getRouteName, routeName)
+                );
+        return selectList(wrapper);
+    }
 
 }
