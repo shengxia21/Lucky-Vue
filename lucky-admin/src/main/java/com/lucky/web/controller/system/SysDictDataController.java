@@ -2,12 +2,15 @@ package com.lucky.web.controller.system;
 
 import com.lucky.common.annotation.Log;
 import com.lucky.common.core.controller.BaseController;
-import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
 import com.lucky.common.core.domain.entity.SysDictData;
+import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
-import com.lucky.common.utils.StringUtils;
 import com.lucky.common.utils.poi.ExcelUtil;
+import com.lucky.system.domain.query.dict.SysDictDataQuery;
+import com.lucky.system.domain.query.dict.SysDictDataSaveQuery;
+import com.lucky.system.domain.vo.dict.SysDictDataVO;
 import com.lucky.system.service.ISysDictDataService;
 import com.lucky.system.service.ISysDictTypeService;
 import jakarta.annotation.Resource;
@@ -16,7 +19,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,75 +36,73 @@ public class SysDictDataController extends BaseController {
     @Resource
     private ISysDictTypeService dictTypeService;
 
+    /**
+     * 获取字典数据列表
+     */
     @PreAuthorize("@ss.hasPermi('system:dict:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysDictData dictData) {
-        startPage();
-        List<SysDictData> list = dictDataService.selectDictDataList(dictData);
-        return getDataTable(list);
+    public TableDataInfo<SysDictDataVO> list(PageQuery pageQuery, SysDictDataQuery query) {
+        return dictDataService.selectDictDataList(pageQuery, query);
     }
 
-    @Log(title = "字典数据", businessType = BusinessType.EXPORT)
+    /**
+     * 导出字典数据列表
+     */
     @PreAuthorize("@ss.hasPermi('system:dict:export')")
+    @Log(title = "字典数据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, SysDictData dictData) {
-        List<SysDictData> list = dictDataService.selectDictDataList(dictData);
+    public void export(HttpServletResponse response, SysDictDataQuery query) {
+        List<SysDictData> list = dictDataService.selectDictDataList(query);
         ExcelUtil<SysDictData> util = new ExcelUtil<>(SysDictData.class);
         util.exportExcel(response, list, "字典数据");
     }
 
     /**
-     * 查询字典数据详细
+     * 根据字典数据编号获取详细信息
      */
     @PreAuthorize("@ss.hasPermi('system:dict:query')")
     @GetMapping(value = "/{dictCode}")
-    public AjaxResult getInfo(@PathVariable Long dictCode) {
-        return success(dictDataService.selectDictDataById(dictCode));
+    public R<SysDictDataVO> getInfo(@PathVariable Long dictCode) {
+        return R.ok(dictDataService.selectDictDataById(dictCode));
     }
 
     /**
      * 根据字典类型查询字典数据信息
      */
     @GetMapping(value = "/type/{dictType}")
-    public AjaxResult dictType(@PathVariable String dictType) {
-        List<SysDictData> data = dictTypeService.selectDictDataByType(dictType);
-        if (StringUtils.isNull(data)) {
-            data = new ArrayList<>();
-        }
-        return success(data);
+    public R<List<SysDictDataVO>> dictType(@PathVariable String dictType) {
+        return R.ok(dictTypeService.selectDictDataByType(dictType));
     }
 
     /**
-     * 新增字典类型
+     * 新增字典数据
      */
     @PreAuthorize("@ss.hasPermi('system:dict:add')")
     @Log(title = "字典数据", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysDictData dict) {
-        dict.setCreateBy(getUsername());
-        return toAjax(dictDataService.insertDictData(dict));
+    public R<Void> add(@Validated @RequestBody SysDictDataSaveQuery dictData) {
+        return toAjax(dictDataService.insertDictData(dictData));
     }
 
     /**
-     * 修改保存字典类型
+     * 修改字典数据
      */
     @PreAuthorize("@ss.hasPermi('system:dict:edit')")
     @Log(title = "字典数据", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysDictData dict) {
-        dict.setUpdateBy(getUsername());
-        return toAjax(dictDataService.updateDictData(dict));
+    public R<Void> edit(@Validated @RequestBody SysDictDataSaveQuery dictData) {
+        return toAjax(dictDataService.updateDictData(dictData));
     }
 
     /**
-     * 删除字典类型
+     * 删除字典数据
      */
     @PreAuthorize("@ss.hasPermi('system:dict:remove')")
-    @Log(title = "字典类型", businessType = BusinessType.DELETE)
+    @Log(title = "字典数据", businessType = BusinessType.DELETE)
     @DeleteMapping("/{dictCodes}")
-    public AjaxResult remove(@PathVariable Long[] dictCodes) {
+    public R<Void> remove(@PathVariable Long[] dictCodes) {
         dictDataService.deleteDictDataByIds(dictCodes);
-        return success();
+        return R.ok();
     }
 
 }

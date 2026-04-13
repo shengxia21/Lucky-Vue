@@ -1,97 +1,57 @@
 package com.lucky.system.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lucky.common.core.domain.entity.SysDictData;
-import org.apache.ibatis.annotations.Param;
+import com.lucky.common.core.mybatis.BaseMapperX;
+import com.lucky.common.utils.StringUtils;
+import com.lucky.system.domain.query.dict.SysDictDataQuery;
+import com.lucky.system.domain.vo.dict.SysDictDataVO;
 
 import java.util.List;
 
 /**
  * 字典表 数据层
  *
- * @author ruoyi
+ * @author lucky
  */
-public interface SysDictDataMapper {
+public interface SysDictDataMapper extends BaseMapperX<SysDictData, SysDictDataVO> {
 
-    /**
-     * 根据条件分页查询字典数据
-     *
-     * @param dictData 字典数据信息
-     * @return 字典数据集合信息
-     */
-    List<SysDictData> selectDictDataList(SysDictData dictData);
+    default IPage<SysDictDataVO> selectPage(Page<SysDictData> page, SysDictDataQuery query) {
+        return selectVoPage(page, buildWrapper(query));
+    }
 
-    /**
-     * 根据字典类型查询字典数据
-     *
-     * @param dictType 字典类型
-     * @return 字典数据集合信息
-     */
-    List<SysDictData> selectDictDataByType(String dictType);
+    default List<SysDictData> selectList(SysDictDataQuery query) {
+        return selectList(buildWrapper(query));
+    }
 
-    /**
-     * 根据字典类型和字典键值查询字典数据信息
-     *
-     * @param dictType  字典类型
-     * @param dictValue 字典键值
-     * @return 字典标签
-     */
-    String selectDictLabel(@Param("dictType") String dictType, @Param("dictValue") String dictValue);
+    default Wrapper<SysDictData> buildWrapper(SysDictDataQuery query) {
+        return Wrappers.<SysDictData>lambdaQuery()
+                .like(StringUtils.isNotBlank(query.getDictLabel()), SysDictData::getDictLabel, query.getDictLabel())
+                .eq(StringUtils.isNotBlank(query.getDictType()), SysDictData::getDictType, query.getDictType())
+                .eq(StringUtils.isNotBlank(query.getStatus()), SysDictData::getStatus, query.getStatus())
+                .orderByAsc(SysDictData::getDictSort);
+    }
 
-    /**
-     * 根据字典数据ID查询信息
-     *
-     * @param dictCode 字典数据ID
-     * @return 字典数据
-     */
-    SysDictData selectDictDataById(Long dictCode);
+    default List<SysDictData> selectListByType(String dictType) {
+        Wrapper<SysDictData> wrapper = Wrappers.<SysDictData>lambdaQuery()
+                .eq(SysDictData::getStatus, "0")
+                .eq(SysDictData::getDictType, dictType)
+                .orderByAsc(SysDictData::getDictSort);
+        return selectList(wrapper);
+    }
 
-    /**
-     * 查询字典数据
-     *
-     * @param dictType 字典类型
-     * @return 字典数据
-     */
-    int countDictDataByType(String dictType);
+    default int updateByDictType(String oldDictType, String newDictType) {
+        return update(Wrappers.<SysDictData>lambdaUpdate()
+                .set(SysDictData::getDictType, newDictType)
+                .eq(SysDictData::getDictType, oldDictType));
+    }
 
-    /**
-     * 通过字典ID删除字典数据信息
-     *
-     * @param dictCode 字典数据ID
-     * @return 结果
-     */
-    int deleteDictDataById(Long dictCode);
-
-    /**
-     * 批量删除字典数据信息
-     *
-     * @param dictCodes 需要删除的字典数据ID
-     * @return 结果
-     */
-    int deleteDictDataByIds(Long[] dictCodes);
-
-    /**
-     * 新增字典数据信息
-     *
-     * @param dictData 字典数据信息
-     * @return 结果
-     */
-    int insertDictData(SysDictData dictData);
-
-    /**
-     * 修改字典数据信息
-     *
-     * @param dictData 字典数据信息
-     * @return 结果
-     */
-    int updateDictData(SysDictData dictData);
-
-    /**
-     * 同步修改字典类型
-     *
-     * @param oldDictType 旧字典类型
-     * @param newDictType 新旧字典类型
-     * @return 结果
-     */
-    int updateDictDataType(@Param("oldDictType") String oldDictType, @Param("newDictType") String newDictType);
+    default Long countByType(String dictType) {
+        return selectCount(Wrappers.<SysDictData>lambdaQuery()
+                .eq(SysDictData::getDictType, dictType));
+    }
 
 }
