@@ -2,6 +2,9 @@ package com.lucky.system.service;
 
 import com.lucky.common.core.domain.TreeSelect;
 import com.lucky.common.core.domain.entity.SysDept;
+import com.lucky.system.domain.query.dept.SysDeptQuery;
+import com.lucky.system.domain.query.dept.SysDeptSaveQuery;
+import com.lucky.system.domain.vo.dept.SysDeptVO;
 
 import java.util.List;
 
@@ -15,10 +18,10 @@ public interface ISysDeptService {
     /**
      * 查询部门管理数据
      *
-     * @param dept 部门信息
+     * @param query 部门信息
      * @return 部门信息集合
      */
-    List<SysDept> selectDeptList(SysDept dept);
+    List<SysDeptVO> selectDeptList(SysDeptQuery query);
 
     /**
      * 查询部门树结构信息
@@ -26,7 +29,7 @@ public interface ISysDeptService {
      * @param dept 部门信息
      * @return 部门树信息集合
      */
-    List<TreeSelect> selectDeptTreeList(SysDept dept);
+    List<TreeSelect> selectDeptTreeList(SysDeptQuery dept);
 
     /**
      * 构建前端所需要树结构
@@ -58,7 +61,7 @@ public interface ISysDeptService {
      * @param deptId 部门ID
      * @return 部门信息
      */
-    SysDept selectDeptById(Long deptId);
+    SysDeptVO selectDeptById(Long deptId);
 
     /**
      * 根据ID查询所有子部门（正常状态）
@@ -66,7 +69,7 @@ public interface ISysDeptService {
      * @param deptId 部门ID
      * @return 子部门数
      */
-    int selectNormalChildrenDeptById(Long deptId);
+    Long selectNormalChildrenDeptById(Long deptId);
 
     /**
      * 是否存在部门子节点
@@ -90,7 +93,7 @@ public interface ISysDeptService {
      * @param dept 部门信息
      * @return 结果
      */
-    boolean checkDeptNameUnique(SysDept dept);
+    boolean checkDeptNameUnique(SysDeptSaveQuery dept);
 
     /**
      * 校验部门是否有数据权限
@@ -105,7 +108,7 @@ public interface ISysDeptService {
      * @param dept 部门信息
      * @return 结果
      */
-    int insertDept(SysDept dept);
+    int insertDept(SysDeptSaveQuery dept);
 
     /**
      * 修改保存部门信息
@@ -113,7 +116,7 @@ public interface ISysDeptService {
      * @param dept 部门信息
      * @return 结果
      */
-    int updateDept(SysDept dept);
+    int updateDept(SysDeptSaveQuery dept);
 
     /**
      * 保存部门排序
