@@ -1,7 +1,11 @@
 package com.lucky.system.service;
 
 import com.lucky.common.core.domain.entity.SysRole;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.system.domain.SysUserRole;
+import com.lucky.system.domain.query.role.SysRoleQuery;
+import com.lucky.system.domain.query.role.SysRoleSaveQuery;
 
 import java.util.List;
 import java.util.Set;
@@ -16,10 +20,19 @@ public interface ISysRoleService {
     /**
      * 根据条件分页查询角色数据
      *
-     * @param role 角色信息
+     * @param pageQuery 分页参数
+     * @param query     查询参数
      * @return 角色数据集合信息
      */
-    List<SysRole> selectRoleList(SysRole role);
+    TableDataInfo<SysRole> selectRoleList(PageQuery pageQuery, SysRoleQuery query);
+
+    /**
+     * 根据条件查询角色数据
+     *
+     * @param query 查询参数
+     * @return 角色数据集合信息
+     */
+    List<SysRole> selectRoleList(SysRoleQuery query);
 
     /**
      * 根据用户ID查询角色列表
@@ -63,25 +76,27 @@ public interface ISysRoleService {
     /**
      * 校验角色名称是否唯一
      *
-     * @param role 角色信息
+     * @param roleId   角色ID
+     * @param roleName 角色名称
      * @return 结果
      */
-    boolean checkRoleNameUnique(SysRole role);
+    boolean checkRoleNameUnique(Long roleId, String roleName);
 
     /**
      * 校验角色权限是否唯一
      *
-     * @param role 角色信息
+     * @param roleId  角色ID
+     * @param roleKey 角色权限
      * @return 结果
      */
-    boolean checkRoleKeyUnique(SysRole role);
+    boolean checkRoleKeyUnique(Long roleId, String roleKey);
 
     /**
      * 校验角色是否允许操作
      *
      * @param role 角色信息
      */
-    void checkRoleAllowed(SysRole role);
+    void checkRoleAllowed(SysRoleSaveQuery role);
 
     /**
      * 校验角色是否有数据权限
@@ -96,7 +111,7 @@ public interface ISysRoleService {
      * @param roleId 角色ID
      * @return 结果
      */
-    int countUserRoleByRoleId(Long roleId);
+    Long countUserRoleByRoleId(Long roleId);
 
     /**
      * 新增保存角色信息
@@ -104,7 +119,7 @@ public interface ISysRoleService {
      * @param role 角色信息
      * @return 结果
      */
-    int insertRole(SysRole role);
+    boolean insertRole(SysRoleSaveQuery role);
 
     /**
      * 修改保存角色信息
@@ -112,7 +127,7 @@ public interface ISysRoleService {
      * @param role 角色信息
      * @return 结果
      */
-    int updateRole(SysRole role);
+    boolean updateRole(SysRoleSaveQuery role);
 
     /**
      * 修改角色状态
@@ -120,7 +135,7 @@ public interface ISysRoleService {
      * @param role 角色信息
      * @return 结果
      */
-    int updateRoleStatus(SysRole role);
+    int updateRoleStatus(SysRoleSaveQuery role);
 
     /**
      * 修改数据权限信息
@@ -128,7 +143,7 @@ public interface ISysRoleService {
      * @param role 角色信息
      * @return 结果
      */
-    int authDataScope(SysRole role);
+    boolean authDataScope(SysRoleSaveQuery role);
 
     /**
      * 通过角色ID删除角色
@@ -170,6 +185,6 @@ public interface ISysRoleService {
      * @param userIds 需要删除的用户数据ID
      * @return 结果
      */
-    int insertAuthUsers(Long roleId, Long[] userIds);
+    boolean insertAuthUsers(Long roleId, Long[] userIds);
 
 }

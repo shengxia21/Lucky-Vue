@@ -82,7 +82,8 @@ public class SysLoginInfoController extends BaseController {
     @Log(title = "账户解锁", businessType = BusinessType.OTHER)
     @GetMapping("/unlock/{userName}")
     public R<Void> unlock(@PathVariable String userName) {
-        return toAjax(passwordService.clearLoginRecordCache(userName));
+        passwordService.clearLoginRecordCache(userName);
+        return R.ok();
     }
 
 }
