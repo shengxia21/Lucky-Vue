@@ -4,6 +4,7 @@ import com.lucky.common.annotation.Log;
 import com.lucky.common.config.LuckyConfig;
 import com.lucky.common.core.controller.BaseController;
 import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
 import com.lucky.common.core.domain.entity.SysUser;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.enums.BusinessType;
@@ -54,25 +55,25 @@ public class SysProfileController extends BaseController {
      */
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult updateProfile(@RequestBody SysUser user) {
+    public R<Void> updateProfile(@RequestBody SysUser user) {
         LoginUser loginUser = getLoginUser();
         SysUser currentUser = loginUser.getUser();
         currentUser.setNickName(user.getNickName());
         currentUser.setEmail(user.getEmail());
-        currentUser.setPhonenumber(user.getPhonenumber());
+        currentUser.setPhoneNumber(user.getPhoneNumber());
         currentUser.setSex(user.getSex());
-        if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(currentUser)) {
-            return error("修改用户'" + loginUser.getUsername() + "'失败，手机号码已存在");
+        if (StringUtils.isNotEmpty(user.getPhoneNumber()) && !userService.checkPhoneUnique(currentUser.getUserId(), user.getPhoneNumber())) {
+            return R.fail("修改用户'" + loginUser.getUsername() + "'失败，手机号码已存在");
         }
-        if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(currentUser)) {
-            return error("修改用户'" + loginUser.getUsername() + "'失败，邮箱账号已存在");
+        if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(currentUser.getUserId(), user.getEmail())) {
+            return R.fail("修改用户'" + loginUser.getUsername() + "'失败，邮箱账号已存在");
         }
         if (userService.updateUserProfile(currentUser) > 0) {
             // 更新缓存用户信息
             tokenService.setLoginUser(loginUser);
-            return success();
+            return R.ok();
         }
-        return error("修改个人信息异常，请联系管理员");
+        return R.fail("修改个人信息异常，请联系管理员");
     }
 
     /**
@@ -80,7 +81,7 @@ public class SysProfileController extends BaseController {
      */
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping("/updatePwd")
-    public AjaxResult updatePwd(@RequestBody Map<String, String> params) {
+    public R<Void> updatePwd(@RequestBody Map<String, String> params) {
         String oldPassword = params.get("oldPassword");
         String newPassword = params.get("newPassword");
         LoginUser loginUser = getLoginUser();
@@ -88,10 +89,10 @@ public class SysProfileController extends BaseController {
         SysUser user = userService.selectUserById(userId);
         String password = user.getPassword();
         if (!SecurityUtils.matchesPassword(oldPassword, password)) {
-            return error("修改密码失败，旧密码错误");
+            return R.fail("修改密码失败，旧密码错误");
         }
         if (SecurityUtils.matchesPassword(newPassword, password)) {
-            return error("新密码不能与旧密码相同");
+            return R.fail("新密码不能与旧密码相同");
         }
         newPassword = SecurityUtils.encryptPassword(newPassword);
         if (userService.resetUserPwd(userId, newPassword) > 0) {
@@ -99,9 +100,9 @@ public class SysProfileController extends BaseController {
             loginUser.getUser().setPwdUpdateDate(DateUtils.getNowDate());
             loginUser.getUser().setPassword(newPassword);
             tokenService.setLoginUser(loginUser);
-            return success();
+            return R.ok();
         }
-        return error("修改密码异常，请联系管理员");
+        return R.fail("修改密码异常，请联系管理员");
     }
 
     /**
@@ -126,7 +127,7 @@ public class SysProfileController extends BaseController {
                 return ajax;
             }
         }
-        return error("上传图片异常，请联系管理员");
+        return AjaxResult.error("上传图片异常，请联系管理员");
     }
 
 }

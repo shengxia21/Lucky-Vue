@@ -1,6 +1,10 @@
 package com.lucky.system.service;
 
 import com.lucky.common.core.domain.entity.SysUser;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
+import com.lucky.system.domain.query.user.SysUserQuery;
+import com.lucky.system.domain.query.user.SysUserSaveQuery;
 
 import java.util.Date;
 import java.util.List;
@@ -15,26 +19,37 @@ public interface ISysUserService {
     /**
      * 根据条件分页查询用户列表
      *
-     * @param user 用户信息
+     * @param pageQuery 分页参数
+     * @param query     查询参数
      * @return 用户信息集合信息
      */
-    List<SysUser> selectUserList(SysUser user);
+    TableDataInfo<SysUser> selectUserList(PageQuery pageQuery, SysUserQuery query);
+
+    /**
+     * 查询用户列表
+     *
+     * @param query 查询参数
+     * @return 用户列表
+     */
+    List<SysUser> selectUserList(SysUserQuery query);
 
     /**
      * 根据条件分页查询已分配用户角色列表
      *
-     * @param user 用户信息
+     * @param pageQuery 分页参数
+     * @param query     查询参数
      * @return 用户信息集合信息
      */
-    List<SysUser> selectAllocatedList(SysUser user);
+    TableDataInfo<SysUser> selectAllocatedList(PageQuery pageQuery, SysUserQuery query);
 
     /**
      * 根据条件分页查询未分配用户角色列表
      *
-     * @param user 用户信息
+     * @param pageQuery 分页参数
+     * @param query     查询参数
      * @return 用户信息集合信息
      */
-    List<SysUser> selectUnallocatedList(SysUser user);
+    TableDataInfo<SysUser> selectUnallocatedList(PageQuery pageQuery, SysUserQuery query);
 
     /**
      * 通过用户名查询用户
@@ -71,33 +86,36 @@ public interface ISysUserService {
     /**
      * 校验用户名称是否唯一
      *
-     * @param user 用户信息
+     * @param userId 用户ID
+     * @param userName 用户名
      * @return 结果
      */
-    boolean checkUserNameUnique(SysUser user);
+    boolean checkUserNameUnique(Long userId, String userName);
 
     /**
      * 校验手机号码是否唯一
      *
-     * @param user 用户信息
+     * @param userId 用户ID
+     * @param phoneNumber 手机号码
      * @return 结果
      */
-    boolean checkPhoneUnique(SysUser user);
+    boolean checkPhoneUnique(Long userId, String phoneNumber);
 
     /**
      * 校验email是否唯一
      *
-     * @param user 用户信息
+     * @param userId 用户ID
+     * @param email    邮箱
      * @return 结果
      */
-    boolean checkEmailUnique(SysUser user);
+    boolean checkEmailUnique(Long userId, String email);
 
     /**
      * 校验用户是否允许操作
      *
-     * @param user 用户信息
+     * @param userId 用户ID
      */
-    void checkUserAllowed(SysUser user);
+    void checkUserAllowed(Long userId);
 
     /**
      * 校验用户是否有数据权限
@@ -112,7 +130,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    int insertUser(SysUser user);
+    int insertUser(SysUserSaveQuery user);
 
     /**
      * 注册用户信息
@@ -128,7 +146,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    int updateUser(SysUser user);
+    int updateUser(SysUserSaveQuery user);
 
     /**
      * 用户授权角色
@@ -144,7 +162,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    int updateUserStatus(SysUser user);
+    int updateUserStatus(SysUserSaveQuery user);
 
     /**
      * 修改用户基本信息
@@ -169,7 +187,6 @@ public interface ISysUserService {
      * @param userId    用户ID
      * @param loginIp   登录IP地址
      * @param loginDate 登录时间
-     * @return 结果
      */
     void updateLoginInfo(Long userId, String loginIp, Date loginDate);
 
@@ -179,7 +196,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    int resetPwd(SysUser user);
+    int resetPwd(SysUserSaveQuery user);
 
     /**
      * 重置用户密码
