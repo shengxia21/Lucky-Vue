@@ -1,6 +1,7 @@
 package com.lucky.system.factory;
 
 import com.lucky.common.constant.Constants;
+import com.lucky.common.utils.DateUtils;
 import com.lucky.common.utils.LogUtils;
 import com.lucky.common.utils.ServletUtils;
 import com.lucky.common.utils.StringUtils;
@@ -62,6 +63,7 @@ public class AsyncSystemFactory {
                 loginInfo.setBrowser(browser);
                 loginInfo.setOs(os);
                 loginInfo.setMsg(message);
+                loginInfo.setLoginTime(DateUtils.getNowDate());
                 // 日志状态
                 if (StringUtils.equalsAny(status, Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER)) {
                     loginInfo.setStatus(Constants.SUCCESS);
@@ -86,6 +88,8 @@ public class AsyncSystemFactory {
             public void run() {
                 // 远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
+                // 操作时间
+                operLog.setOperTime(DateUtils.getNowDate());
                 SpringUtils.getBean(ISysOperLogService.class).insertOperLog(operLog);
             }
         };
