@@ -36,6 +36,11 @@ public class GenTableVO {
     private String className;
 
     /**
+     * 表单布局（单列 双列 三列）
+     */
+    private Integer formColNum;
+
+    /**
      * 创建时间
      */
     private Date createTime;

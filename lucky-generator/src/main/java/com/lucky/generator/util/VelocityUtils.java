@@ -70,6 +70,7 @@ public class VelocityUtils {
         velocityContext.put("basePackage", getPackagePrefix(packageName));
         velocityContext.put("packageName", packageName);
         velocityContext.put("author", genTable.getFunctionAuthor());
+        velocityContext.put("colSpan", getColSpan(genTable.getFormColNum()));
         velocityContext.put("datetime", DateUtils.getDate());
         velocityContext.put("pkColumn", genTable.getPkColumn());
         velocityContext.put("importList", getImportList(genTable));
@@ -97,7 +98,7 @@ public class VelocityUtils {
     public static void setTreeVelocityContext(VelocityContext context, GenTable genTable) {
         String options = genTable.getOptions();
         JSONObject paramsObj = JSON.parseObject(options);
-        String treeCode = getTreecode(paramsObj);
+        String treeCode = getTreeCode(paramsObj);
         String treeParentCode = getTreeParentCode(paramsObj);
         String treeName = getTreeName(paramsObj);
 
@@ -146,7 +147,7 @@ public class VelocityUtils {
             useWebType = "vm/vue/v3ts";
             apiTemplate = "vm/ts/api.ts.vm";
         }
-        List<String> templates = new ArrayList<String>();
+        List<String> templates = new ArrayList<>();
         templates.add("vm/java/domain.java.vm");
         templates.add("vm/java/mapper.java.vm");
         templates.add("vm/java/service.java.vm");
@@ -242,7 +243,7 @@ public class VelocityUtils {
     public static HashSet<String> getImportList(GenTable genTable) {
         List<GenTableColumn> columns = genTable.getColumns();
         GenTable subGenTable = genTable.getSubTable();
-        HashSet<String> importList = new HashSet<String>();
+        HashSet<String> importList = new HashSet<>();
         if (StringUtils.isNotNull(subGenTable)) {
             importList.add("java.util.List");
         }
@@ -265,7 +266,7 @@ public class VelocityUtils {
      */
     public static String getDicts(GenTable genTable) {
         List<GenTableColumn> columns = genTable.getColumns();
-        Set<String> dicts = new HashSet<String>();
+        Set<String> dicts = new HashSet<>();
         addDicts(dicts, columns);
         if (StringUtils.isNotNull(genTable.getSubTable())) {
             List<GenTableColumn> subColumns = genTable.getSubTable().getColumns();
@@ -284,7 +285,7 @@ public class VelocityUtils {
         for (GenTableColumn column : columns) {
             if (!column.isSuperColumn() && StringUtils.isNotEmpty(column.getDictType()) && StringUtils.equalsAny(
                     column.getHtmlType(),
-                    new String[]{GenConstants.HTML_SELECT, GenConstants.HTML_RADIO, GenConstants.HTML_CHECKBOX})) {
+                    GenConstants.HTML_SELECT, GenConstants.HTML_RADIO, GenConstants.HTML_CHECKBOX)) {
                 dicts.add("'" + column.getDictType() + "'");
             }
         }
@@ -321,7 +322,7 @@ public class VelocityUtils {
      * @param paramsObj 生成其他选项
      * @return 树编码
      */
-    public static String getTreecode(JSONObject paramsObj) {
+    public static String getTreeCode(JSONObject paramsObj) {
         if (paramsObj.containsKey(GenConstants.TREE_CODE)) {
             return StringUtils.toCamelCase(paramsObj.getString(GenConstants.TREE_CODE));
         }
@@ -375,6 +376,21 @@ public class VelocityUtils {
             }
         }
         return num;
+    }
+
+    /**
+     * 获取表单 el-col span
+     *
+     * @param formColNum 表单布局方式（1单列 2双列 3三列）
+     * @return span 数值字符串
+     */
+    public static String getColSpan(int formColNum) {
+        if (formColNum == 2) {
+            return "12";
+        } else if (formColNum == 3) {
+            return "8";
+        }
+        return "24";
     }
 
 }

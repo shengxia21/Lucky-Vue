@@ -105,6 +105,11 @@ public class GenTable extends BaseEntity {
     private String functionAuthor;
 
     /**
+     * 表单布局（单列 双列 三列）
+     */
+    private Integer formColNum;
+
+    /**
      * 生成代码方式（0zip压缩包 1自定义路径）
      */
     private String genType;
