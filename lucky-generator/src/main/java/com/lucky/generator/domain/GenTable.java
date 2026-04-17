@@ -176,6 +176,7 @@ public class GenTable extends BaseEntity {
     /**
      * 是否生成详情页
      */
+    @TableField(exist = false)
     private boolean isView;
 
     /**
@@ -184,7 +185,7 @@ public class GenTable extends BaseEntity {
     private String remark;
 
     /**
-     * 请求参数
+     * 请求参数（时间查询）
      */
     @TableField(exist = false)
     private Map<String, Object> params;
