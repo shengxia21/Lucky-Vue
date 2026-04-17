@@ -1,7 +1,11 @@
 package com.lucky.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.utils.DateUtils;
 import com.lucky.system.domain.SysNoticeRead;
+import com.lucky.system.domain.vo.notice.SysNoticeReadUserVO;
 import com.lucky.system.domain.vo.notice.SysNoticeReadVO;
 import com.lucky.system.mapper.SysNoticeReadMapper;
 import com.lucky.system.service.ISysNoticeReadService;
@@ -71,6 +75,12 @@ public class SysNoticeReadServiceImpl implements ISysNoticeReadService {
         } catch (DuplicateKeyException e) {
             // 忽略重复插入异常
         }
+    }
+
+    @Override
+    public TableDataInfo<SysNoticeReadUserVO> selectReadUsersByNoticeId(PageQuery pageQuery, Long noticeId, String searchValue) {
+        IPage<SysNoticeReadUserVO> page = noticeReadMapper.selectReadUsersByNoticeId(pageQuery.build(), noticeId, searchValue);
+        return TableDataInfo.build(page);
     }
 
     /**

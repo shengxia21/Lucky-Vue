@@ -1,7 +1,9 @@
 package com.lucky.system.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.common.core.mybatis.BaseMapperX;
 import com.lucky.system.domain.SysNoticeRead;
+import com.lucky.system.domain.vo.notice.SysNoticeReadUserVO;
 import com.lucky.system.domain.vo.notice.SysNoticeReadVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,5 +24,15 @@ public interface SysNoticeReadMapper extends BaseMapperX<SysNoticeRead, SysNotic
      * @return 带 isRead 标记的公告列表
      */
     List<SysNoticeReadVO> selectNoticeListWithReadStatus(@Param("userId") Long userId, @Param("limit") int limit);
+
+    /**
+     * 查询已阅读某公告的用户列表
+     *
+     * @param page        分页参数
+     * @param noticeId    公告ID
+     * @param searchValue 搜索值
+     * @return 已读用户列表
+     */
+    IPage<SysNoticeReadUserVO> selectReadUsersByNoticeId(IPage<?> page, @Param("noticeId") Long noticeId, @Param("searchValue") String searchValue);
 
 }

@@ -10,6 +10,7 @@ import com.lucky.common.core.text.Convert;
 import com.lucky.common.enums.BusinessType;
 import com.lucky.system.domain.query.notice.SysNoticeQuery;
 import com.lucky.system.domain.query.notice.SysNoticeSaveQuery;
+import com.lucky.system.domain.vo.notice.SysNoticeReadUserVO;
 import com.lucky.system.domain.vo.notice.SysNoticeReadVO;
 import com.lucky.system.domain.vo.notice.SysNoticeVO;
 import com.lucky.system.service.ISysNoticeReadService;
@@ -48,7 +49,6 @@ public class SysNoticeController extends BaseController {
     /**
      * 根据通知公告编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:notice:query')")
     @GetMapping(value = "/{noticeId}")
     public R<SysNoticeVO> getInfo(@PathVariable Long noticeId) {
         return R.ok(noticeService.selectNoticeById(noticeId));
@@ -106,6 +106,15 @@ public class SysNoticeController extends BaseController {
         Long[] noticeIds = Convert.toLongArray(ids);
         noticeReadService.markReadBatch(userId, noticeIds);
         return R.ok();
+    }
+
+    /**
+     * 已读用户列表数据
+     */
+    @PreAuthorize("@ss.hasPermi('system:notice:list')")
+    @GetMapping("/readUsers/list")
+    public TableDataInfo<SysNoticeReadUserVO> readUsersList(PageQuery pageQuery, Long noticeId, String searchValue) {
+        return noticeReadService.selectReadUsersByNoticeId(pageQuery, noticeId, searchValue);
     }
 
     /**

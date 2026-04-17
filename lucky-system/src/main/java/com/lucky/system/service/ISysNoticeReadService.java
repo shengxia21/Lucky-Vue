@@ -1,5 +1,8 @@
 package com.lucky.system.service;
 
+import com.lucky.common.core.page.PageQuery;
+import com.lucky.common.core.page.TableDataInfo;
+import com.lucky.system.domain.vo.notice.SysNoticeReadUserVO;
 import com.lucky.system.domain.vo.notice.SysNoticeReadVO;
 
 import java.util.List;
@@ -35,6 +38,16 @@ public interface ISysNoticeReadService {
      * @param noticeIds 公告ID数组
      */
     void markReadBatch(Long userId, Long[] noticeIds);
+
+    /**
+     * 查询已阅读某公告的用户列表
+     *
+     * @param pageQuery   分页查询
+     * @param noticeId    公告ID
+     * @param searchValue 搜索值
+     * @return 已读用户列表
+     */
+    TableDataInfo<SysNoticeReadUserVO> selectReadUsersByNoticeId(PageQuery pageQuery, Long noticeId, String searchValue);
 
     /**
      * 删除公告时清理对应已读记录
