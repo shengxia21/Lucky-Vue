@@ -30,7 +30,7 @@
 |----------|----------------------------------------------------|------------------------------------------------------|--------------------------------------------------------|
 | 🔧 后端服务  | [lucky-vue](https://github.com/shengxia21/Lucky-Vue.git)   | [lucky-vue](https://gitee.com/fushengxuyu/lucky-vue.git)       | [lucky-vue](https://gitcode.com/qq_56585325/lucky-vue.git)       |
 | 🎨 用户前端  | 待实现                                                | 待实现     | 待实现     |
-| 🛠️ 管理后台 | [lucky-ui](https://github.com/shengxia21/Lucky-ui.git) | [lucky-ui](https://gitee.com/fushengxuyu/lucky-ui.git) | [lucky-ui](https://gitcode.com/qq_56585325/lucky-ui.git) |
+| 🛠️ 管理后台 | [lucky-admin](https://github.com/shengxia21/Lucky-admin.git) | [lucky-admin](https://gitee.com/fushengxuyu/lucky-admin.git) | [lucky-admin](https://gitcode.com/qq_56585325/lucky-admin.git) |
 
 ## 🛠️ 技术架构
 
@@ -85,7 +85,7 @@
 
 ```bash
 # 进入管理端项目目录
-cd lucky-ui
+cd lucky-admin
 
 # 安装依赖（或使用npm install）
 pnpm install --registry=https://registry.npmmirror.com
