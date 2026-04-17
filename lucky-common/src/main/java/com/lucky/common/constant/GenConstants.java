@@ -47,6 +47,9 @@ public class GenConstants {
      */
     public static final String PARENT_MENU_NAME = "parentMenuName";
 
+    /** 生成详情页开关 */
+    public static final String GEN_VIEW = "genView";
+
     /**
      * 数据库字符串类型
      */

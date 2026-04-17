@@ -148,6 +148,9 @@
 #end
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
+#if($genView)
+          <el-button link type="primary" icon="View" @click="handleViewData(scope.row)" v-hasPermi="['${permissionPrefix}:query']">详情</el-button>
+#end
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['${permissionPrefix}:edit']">修改</el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['${permissionPrefix}:remove']">删除</el-button>
         </template>
@@ -162,13 +165,17 @@
       @pagination="getList"
     />
 
+#if($genView)
+    <!-- ${functionName}详情抽屉 -->
+    <${businessName}-view-drawer ref="${businessName}ViewRef" />
+#end
     <!-- 添加或修改${functionName}对话框 -->
 #if($table.formColNum == 2)
-  #set($dialogWidth = "800px")
+#set($dialogWidth = "800px")
 #elseif($table.formColNum == 3)
-  #set($dialogWidth = "1100px")
+#set($dialogWidth = "1100px")
 #else
-  #set($dialogWidth = "500px")
+#set($dialogWidth = "500px")
 #end
     <el-dialog :title="title" v-model="open" width="${dialogWidth}" append-to-body>
       <el-form ref="${businessName}Ref" :model="form" :rules="rules" label-width="100px">
@@ -213,14 +220,14 @@
             <el-form-item label="${comment}" prop="${field}">
               <el-select v-model="form.${field}" placeholder="请选择${comment}">
                 <el-option
-                    v-for="dict in ${dictType}"
-                    :key="dict.value"
-                    :label="dict.label"
-                    #if($column.javaType == "Integer" || $column.javaType == "Long")
-                    :value="parseInt(dict.value)"
-                    #else
-                    :value="dict.value"
-                    #end
+                  v-for="dict in ${dictType}"
+                  :key="dict.value"
+                  :label="dict.label"
+#if($column.javaType == "Integer" || $column.javaType == "Long")
+                  :value="parseInt(dict.value)"
+#else
+                  :value="dict.value"
+#end
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -238,9 +245,9 @@
             <el-form-item label="${comment}" prop="${field}">
               <el-checkbox-group v-model="form.${field}">
                 <el-checkbox
-                    v-for="dict in ${dictType}"
-                    :key="dict.value"
-                    :label="dict.value">
+                  v-for="dict in ${dictType}"
+                  :key="dict.value"
+                  :label="dict.value">
                   {{dict.label}}
                 </el-checkbox>
               </el-checkbox-group>
@@ -259,13 +266,13 @@
             <el-form-item label="${comment}" prop="${field}">
               <el-radio-group v-model="form.${field}">
                 <el-radio
-                    v-for="dict in ${dictType}"
-                    :key="dict.value"
-                    #if($column.javaType == "Integer" || $column.javaType == "Long")
-                    :label="parseInt(dict.value)"
-                    #else
-                    :label="dict.value"
-                    #end
+                  v-for="dict in ${dictType}"
+                  :key="dict.value"
+#if($column.javaType == "Integer" || $column.javaType == "Long")
+                  :label="parseInt(dict.value)"
+#else
+                  :label="dict.value"
+#end
                 >{{dict.label}}</el-radio>
               </el-radio-group>
             </el-form-item>
@@ -282,10 +289,10 @@
           <el-col :span="${colSpan}">
             <el-form-item label="${comment}" prop="${field}">
               <el-date-picker clearable
-                              v-model="form.${field}"
-                              type="date"
-                              value-format="YYYY-MM-DD"
-                              placeholder="请选择${comment}">
+                v-model="form.${field}"
+                type="date"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择${comment}">
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -379,7 +386,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Config">
+<script setup lang="ts" name="${BusinessName}">
         #if($table.sub)
         import type {
                 ${BusinessName}QueryParams
@@ -389,8 +396,10 @@
         import {get${BusinessName}, list${BusinessName}} from "@/api/"
         #else
 #end
+        #if($genView)
+        #end
 
-  const { proxy } = getCurrentInstance()
+const { proxy } = getCurrentInstance()
 #if(${dicts} != '')
 #set($dictsNoSymbol=$dicts.replace("'", ""))
 const { ${dictsNoSymbol} } = useDict(${dicts})
@@ -473,13 +482,13 @@ function getList() {
   })
 }
 
-// 取消按钮
+/** 取消按钮 */
 function cancel() {
   open.value = false
   reset()
 }
 
-// 表单重置
+/** 表单重置 */
 function reset() {
   form.value = {
 #foreach ($column in $columns)
@@ -514,7 +523,7 @@ function resetQuery() {
   handleQuery()
 }
 
-// 多选框选中数据
+/** 多选框选中数据 */
 function handleSelectionChange(selection: ${ClassName}[]) {
   ids.value = selection.map(item => item.${pkColumn.javaField})
   single.value = selection.length != 1
@@ -616,6 +625,13 @@ function handleDelete${subClassName}() {
 /** 复选框选中数据 */
 function handle${subClassName}SelectionChange(selection: any[]) {
   checked${subClassName}.value = selection.map(item => item.index)
+}
+
+#end
+#if($genView)
+/** 详情按钮操作 */
+function handleViewData(row: ${ClassName}) {
+  proxy.#[[$]]#refs["${businessName}ViewRef"].open(row.${pkColumn.javaField})
 }
 
 #end

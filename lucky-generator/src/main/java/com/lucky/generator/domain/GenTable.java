@@ -174,6 +174,11 @@ public class GenTable extends BaseEntity {
     private String parentMenuName;
 
     /**
+     * 是否生成详情页
+     */
+    private boolean isView;
+
+    /**
      * 备注
      */
     private String remark;
