@@ -6,11 +6,9 @@ import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.core.domain.entity.SysRole;
 import com.lucky.common.core.domain.entity.SysUser;
-import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.page.PageQuery;
 import com.lucky.common.core.page.TableDataInfo;
 import com.lucky.common.enums.BusinessType;
-import com.lucky.common.utils.StringUtils;
 import com.lucky.common.utils.poi.ExcelUtil;
 import com.lucky.framework.web.service.SysPermissionService;
 import com.lucky.framework.web.service.TokenService;
@@ -115,13 +113,8 @@ public class SysRoleController extends BaseController {
             return R.fail("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         if (roleService.updateRole(role)) {
-            // 更新缓存用户权限
-            LoginUser loginUser = getLoginUser();
-            if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin()) {
-                loginUser.setUser(userService.selectUserByUserName(loginUser.getUser().getUserName()));
-                loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
-                tokenService.setLoginUser(loginUser);
-            }
+            // 刷新所有持有该角色的在线用户权限
+            tokenService.refreshPermissionByRoleId(role.getRoleId(), permissionService);
             return R.ok();
         }
         return R.fail("修改角色'" + role.getRoleName() + "'失败，请联系管理员");

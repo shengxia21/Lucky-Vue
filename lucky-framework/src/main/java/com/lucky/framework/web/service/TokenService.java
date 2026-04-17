@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -32,19 +33,26 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class TokenService {
 
-    protected static final long MILLIS_SECOND = 1000;
-    protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
     private static final Logger log = LoggerFactory.getLogger(TokenService.class);
-    private static final Long MILLIS_MINUTE_TWENTY = 20 * 60 * 1000L;
+
     // 令牌自定义标识
     @Value("${token.header}")
     private String header;
+
     // 令牌秘钥
     @Value("${token.secret}")
     private String secret;
+
     // 令牌有效期（默认30分钟）
     @Value("${token.expireTime}")
     private int expireTime;
+
+    protected static final long MILLIS_SECOND = 1000;
+
+    protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
+
+    private static final Long MILLIS_MINUTE_TWENTY = 20 * 60 * 1000L;
+
     @Resource
     private RedisCache redisCache;
 
@@ -62,8 +70,7 @@ public class TokenService {
                 // 解析对应的权限以及用户信息
                 String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
                 String userKey = getTokenKey(uuid);
-                LoginUser user = redisCache.getCacheObject(userKey);
-                return user;
+                return redisCache.getCacheObject(userKey);
             } catch (Exception e) {
                 log.error("获取用户信息异常'{}'", e.getMessage());
             }
@@ -112,7 +119,6 @@ public class TokenService {
      * 验证令牌有效期，相差不足20分钟，自动刷新缓存
      *
      * @param loginUser 登录信息
-     * @return 令牌
      */
     public void verifyToken(LoginUser loginUser) {
         long expireTime = loginUser.getExpireTime();
@@ -156,10 +162,9 @@ public class TokenService {
      * @return 令牌
      */
     private String createToken(Map<String, Object> claims) {
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
-        return token;
     }
 
     /**
@@ -189,7 +194,7 @@ public class TokenService {
     /**
      * 获取请求token
      *
-     * @param request
+     * @param request 请求对象
      * @return token
      */
     private String getToken(HttpServletRequest request) {
@@ -202,6 +207,38 @@ public class TokenService {
 
     private String getTokenKey(String uuid) {
         return CacheConstants.LOGIN_TOKEN_KEY + uuid;
+    }
+
+    /**
+     * 角色权限变更后，刷新所有持有该角色的在线用户权限
+     *
+     * @param roleId            变更的角色ID
+     * @param permissionService 权限服务
+     */
+    public void refreshPermissionByRoleId(Long roleId, SysPermissionService permissionService) {
+        // 扫描所有在线 token
+        String pattern = CacheConstants.LOGIN_TOKEN_KEY + "*";
+        Collection<String> keys = redisCache.keys(pattern);
+        if (keys == null || keys.isEmpty()) {
+            return;
+        }
+        for (String key : keys) {
+            LoginUser loginUser = redisCache.getCacheObject(key);
+            if (loginUser == null || loginUser.getUser() == null || loginUser.getUser().isAdmin()) {
+                // 管理员拥有所有权限，跳过
+                continue;
+            }
+            // 判断该用户是否拥有此角色
+            boolean hasRole = loginUser.getUser().getRoles() != null
+                    && loginUser.getUser().getRoles().stream().anyMatch(r -> roleId.equals(r.getRoleId()));
+            if (!hasRole) {
+                continue;
+            }
+            // 刷新权限缓存
+            loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
+            refreshToken(loginUser);
+            log.info("角色[{}]权限变更，已刷新在线用户[{}]的权限缓存", roleId, loginUser.getUsername());
+        }
     }
 
 }
