@@ -1,5 +1,6 @@
 package com.lucky.system.service;
 
+import com.lucky.common.core.domain.dto.UserDTO;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import com.lucky.system.domain.SysUser;
@@ -57,7 +58,7 @@ public interface ISysUserService {
      * @param userName 用户名
      * @return 用户对象信息
      */
-    SysUser selectUserByUserName(String userName);
+    UserDTO selectUserByUserName(String userName);
 
     /**
      * 通过用户ID查询用户

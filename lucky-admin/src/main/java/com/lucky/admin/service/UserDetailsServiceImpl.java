@@ -5,9 +5,7 @@ import com.lucky.common.core.enums.UserStatus;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MessageUtils;
 import com.lucky.common.core.utils.StringUtils;
-import com.lucky.common.core.utils.bean.BeanUtils;
 import com.lucky.common.security.domain.LoginUser;
-import com.lucky.system.domain.SysUser;
 import com.lucky.system.service.ISysUserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SysUser user = userService.selectUserByUserName(username);
+        UserDTO user = userService.selectUserByUserName(username);
         if (StringUtils.isNull(user)) {
             log.info("登录用户：{} 不存在.", username);
             throw new ServiceException(MessageUtils.message("user.not.exists"));
@@ -53,10 +51,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return createLoginUser(user);
     }
 
-    public UserDetails createLoginUser(SysUser user) {
-        UserDTO dto = new UserDTO();
-        BeanUtils.copyProperties(user, dto);
-        return new LoginUser(user.getUserId(), user.getDeptId(), dto, permissionService.getMenuPermission(dto));
+    public UserDetails createLoginUser(UserDTO user) {
+        return new LoginUser(user.getUserId(), user.getDeptId(), user, permissionService.getMenuPermission(user));
     }
 
 }

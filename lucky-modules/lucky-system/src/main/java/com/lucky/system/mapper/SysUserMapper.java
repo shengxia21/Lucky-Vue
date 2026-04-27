@@ -2,6 +2,7 @@ package com.lucky.system.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.lucky.common.core.domain.dto.UserDTO;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 import com.lucky.system.domain.SysUser;
 import com.lucky.system.domain.query.user.SysUserQuery;
@@ -58,7 +59,7 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
      * @param userName 用户名
      * @return 用户对象信息
      */
-    SysUser selectUserByUserName(String userName);
+    UserDTO selectUserByUserName(String userName);
 
     /**
      * 通过用户ID查询用户

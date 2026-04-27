@@ -2,9 +2,9 @@ package com.lucky.admin.controller.system;
 
 import com.lucky.common.core.config.LuckyConfig;
 import com.lucky.common.core.domain.R;
+import com.lucky.common.core.domain.dto.UserDTO;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.security.utils.SecurityUtils;
-import com.lucky.system.domain.SysUser;
 import com.lucky.system.service.ISysUserService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,7 +49,7 @@ public class SysIndexController {
             return R.fail("密码不能为空");
         }
         String username = SecurityUtils.getUsername();
-        SysUser user = userService.selectUserByUserName(username);
+        UserDTO user = userService.selectUserByUserName(username);
         if (user == null) {
             return R.fail("服务器超时，请重新登录");
         }

@@ -1,12 +1,12 @@
 package com.lucky.admin.service;
 
 import com.lucky.common.core.constant.CacheConstants;
+import com.lucky.common.core.domain.dto.UserDTO;
 import com.lucky.common.core.exception.user.UserPasswordNotMatchException;
 import com.lucky.common.core.exception.user.UserPasswordRetryLimitExceedException;
 import com.lucky.common.redis.utils.RedisCache;
 import com.lucky.common.security.context.AuthenticationContextHolder;
 import com.lucky.common.security.utils.SecurityUtils;
-import com.lucky.system.domain.SysUser;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -41,7 +41,7 @@ public class SysPasswordService {
         return CacheConstants.PWD_ERR_CNT_KEY + username;
     }
 
-    public void validate(SysUser user) {
+    public void validate(UserDTO user) {
         Authentication usernamePasswordAuthenticationToken = AuthenticationContextHolder.getContext();
         String username = usernamePasswordAuthenticationToken.getName();
         String password = usernamePasswordAuthenticationToken.getCredentials().toString();
@@ -65,7 +65,7 @@ public class SysPasswordService {
         }
     }
 
-    public boolean matches(SysUser user, String rawPassword) {
+    public boolean matches(UserDTO user, String rawPassword) {
         return SecurityUtils.matchesPassword(rawPassword, user.getPassword());
     }
 

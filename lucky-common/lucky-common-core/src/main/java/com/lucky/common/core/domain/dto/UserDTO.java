@@ -81,6 +81,16 @@ public class UserDTO {
     private Date pwdUpdateDate;
 
     /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 删除标志（0代表存在 1代表删除）
+     */
+    private String delFlag;
+
+    /**
      * 部门对象
      */
     private DeptDTO dept;

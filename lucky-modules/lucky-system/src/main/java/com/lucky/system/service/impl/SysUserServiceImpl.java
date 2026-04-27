@@ -2,6 +2,7 @@ package com.lucky.system.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.common.core.constant.UserConstants;
+import com.lucky.common.core.domain.dto.UserDTO;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.core.utils.StringUtils;
@@ -89,7 +90,7 @@ public class SysUserServiceImpl implements ISysUserService {
     }
 
     @Override
-    public SysUser selectUserByUserName(String userName) {
+    public UserDTO selectUserByUserName(String userName) {
         return userMapper.selectUserByUserName(userName);
     }
 
@@ -268,7 +269,7 @@ public class SysUserServiceImpl implements ISysUserService {
         for (SysUser user : userList) {
             try {
                 // 验证是否存在这个用户
-                SysUser u = userMapper.selectUserByUserName(user.getUserName());
+                UserDTO u = userMapper.selectUserByUserName(user.getUserName());
                 if (StringUtils.isNull(u)) {
                     BeanValidators.validateWithException(validator, user);
                     deptService.checkDeptDataScope(user.getDeptId());
