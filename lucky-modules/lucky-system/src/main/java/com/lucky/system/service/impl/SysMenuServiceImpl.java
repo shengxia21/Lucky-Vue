@@ -18,8 +18,7 @@ import com.lucky.system.mapper.SysRoleMapper;
 import com.lucky.system.mapper.SysRoleMenuMapper;
 import com.lucky.system.service.ISysMenuService;
 import jakarta.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,10 +29,9 @@ import java.util.*;
  *
  * @author ruoyi
  */
+@Slf4j
 @Service
 public class SysMenuServiceImpl implements ISysMenuService {
-
-    private static final Logger log = LoggerFactory.getLogger(SysMenuServiceImpl.class);
 
     public static final Long MENU_ROOT_ID = 0L;
 

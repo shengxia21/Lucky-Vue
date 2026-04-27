@@ -9,8 +9,7 @@ import com.lucky.ai.factory.ImageModelFactory;
 import com.lucky.ai.mapper.AiImageMapper;
 import com.lucky.common.core.utils.DateUtils;
 import jakarta.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.image.ImageModel;
 import org.springframework.ai.image.ImageOptions;
 import org.springframework.ai.image.ImagePrompt;
@@ -22,10 +21,9 @@ import org.springframework.stereotype.Service;
  *
  * @author lucky
  */
+@Slf4j
 @Service
 public class ImageServiceFacade implements ImageService {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Resource
     private AiImageMapper imageMapper;

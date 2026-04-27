@@ -24,8 +24,7 @@ import com.lucky.system.service.ISysDeptService;
 import com.lucky.system.service.ISysUserService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Validator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -41,10 +40,9 @@ import java.util.stream.Collectors;
  *
  * @author ruoyi
  */
+@Slf4j
 @Service
 public class SysUserServiceImpl implements ISysUserService {
-
-    private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
 
     @Resource
     protected Validator validator;
