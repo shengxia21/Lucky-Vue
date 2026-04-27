@@ -55,7 +55,7 @@ public class SysRoleController extends BaseController {
     /**
      * 查询角色列表
      */
-    @PreAuthorize("@ss.hasPermi('system:role:list')")
+    @PreAuthorize("@ss.hasPermission('system:role:list')")
     @GetMapping("/list")
     public TableDataInfo<SysRole> list(PageQuery pageQuery, SysRoleQuery query) {
         return roleService.selectRoleList(pageQuery, query);
@@ -65,7 +65,7 @@ public class SysRoleController extends BaseController {
      * 导出角色列表
      */
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermi('system:role:export')")
+    @PreAuthorize("@ss.hasPermission('system:role:export')")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysRoleQuery query) {
         List<SysRole> list = roleService.selectRoleList(query);
@@ -76,7 +76,7 @@ public class SysRoleController extends BaseController {
     /**
      * 根据角色编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:role:query')")
+    @PreAuthorize("@ss.hasPermission('system:role:query')")
     @GetMapping(value = "/{roleId}")
     public R<SysRole> getInfo(@PathVariable Long roleId) {
         roleService.checkRoleDataScope(roleId);
@@ -86,7 +86,7 @@ public class SysRoleController extends BaseController {
     /**
      * 新增角色
      */
-    @PreAuthorize("@ss.hasPermi('system:role:add')")
+    @PreAuthorize("@ss.hasPermission('system:role:add')")
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysRoleSaveQuery role) {
@@ -101,7 +101,7 @@ public class SysRoleController extends BaseController {
     /**
      * 修改保存角色
      */
-    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+    @PreAuthorize("@ss.hasPermission('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysRoleSaveQuery role) {
@@ -123,7 +123,7 @@ public class SysRoleController extends BaseController {
     /**
      * 修改保存数据权限
      */
-    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+    @PreAuthorize("@ss.hasPermission('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping("/dataScope")
     public R<Void> dataScope(@RequestBody SysRoleSaveQuery role) {
@@ -135,7 +135,7 @@ public class SysRoleController extends BaseController {
     /**
      * 状态修改
      */
-    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+    @PreAuthorize("@ss.hasPermission('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
     public R<Void> changeStatus(@RequestBody SysRoleSaveQuery role) {
@@ -147,7 +147,7 @@ public class SysRoleController extends BaseController {
     /**
      * 删除角色
      */
-    @PreAuthorize("@ss.hasPermi('system:role:remove')")
+    @PreAuthorize("@ss.hasPermission('system:role:remove')")
     @Log(title = "角色管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{roleIds}")
     public R<Void> remove(@PathVariable Long[] roleIds) {
@@ -157,7 +157,7 @@ public class SysRoleController extends BaseController {
     /**
      * 获取角色选择框列表
      */
-    @PreAuthorize("@ss.hasPermi('system:role:query')")
+    @PreAuthorize("@ss.hasPermission('system:role:query')")
     @GetMapping("/optionSelect")
     public R<List<SysRole>> optionSelect() {
         return R.ok(roleService.selectRoleAll());
@@ -166,7 +166,7 @@ public class SysRoleController extends BaseController {
     /**
      * 查询已分配用户角色列表
      */
-    @PreAuthorize("@ss.hasPermi('system:role:list')")
+    @PreAuthorize("@ss.hasPermission('system:role:list')")
     @GetMapping("/authUser/allocatedList")
     public TableDataInfo<SysUser> allocatedList(PageQuery pageQuery, SysUserQuery query) {
         return userService.selectAllocatedList(pageQuery, query);
@@ -175,7 +175,7 @@ public class SysRoleController extends BaseController {
     /**
      * 查询未分配用户角色列表
      */
-    @PreAuthorize("@ss.hasPermi('system:role:list')")
+    @PreAuthorize("@ss.hasPermission('system:role:list')")
     @GetMapping("/authUser/unallocatedList")
     public TableDataInfo<SysUser> unallocatedList(PageQuery pageQuery, SysUserQuery query) {
         return userService.selectUnallocatedList(pageQuery, query);
@@ -184,7 +184,7 @@ public class SysRoleController extends BaseController {
     /**
      * 取消授权用户
      */
-    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+    @PreAuthorize("@ss.hasPermission('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.GRANT)
     @PutMapping("/authUser/cancel")
     public R<Void> cancelAuthUser(@RequestBody SysUserRole userRole) {
@@ -194,7 +194,7 @@ public class SysRoleController extends BaseController {
     /**
      * 批量取消授权用户
      */
-    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+    @PreAuthorize("@ss.hasPermission('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.GRANT)
     @PutMapping("/authUser/cancelAll")
     public R<Void> cancelAuthUserAll(Long roleId, Long[] userIds) {
@@ -204,7 +204,7 @@ public class SysRoleController extends BaseController {
     /**
      * 批量选择用户授权
      */
-    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+    @PreAuthorize("@ss.hasPermission('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.GRANT)
     @PutMapping("/authUser/selectAll")
     public R<Void> selectAuthUserAll(Long roleId, Long[] userIds) {
@@ -215,7 +215,7 @@ public class SysRoleController extends BaseController {
     /**
      * 获取对应角色部门树列表
      */
-    @PreAuthorize("@ss.hasPermi('system:role:query')")
+    @PreAuthorize("@ss.hasPermission('system:role:query')")
     @GetMapping(value = "/deptTree/{roleId}")
     public AjaxResult deptTree(@PathVariable Long roleId) {
         AjaxResult ajax = AjaxResult.success();

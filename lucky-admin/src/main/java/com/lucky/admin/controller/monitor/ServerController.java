@@ -19,7 +19,7 @@ public class ServerController {
     /**
      * 获取服务器信息
      */
-    @PreAuthorize("@ss.hasPermi('monitor:server:list')")
+    @PreAuthorize("@ss.hasPermission('monitor:server:list')")
     @GetMapping()
     public R<Server> getInfo() throws Exception {
         Server server = new Server();

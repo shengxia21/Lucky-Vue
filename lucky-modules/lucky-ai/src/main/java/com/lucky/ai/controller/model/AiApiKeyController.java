@@ -33,7 +33,7 @@ public class AiApiKeyController extends BaseController {
      * 创建 API 密钥
      */
     @Log(title = "创建 API 密钥", businessType = BusinessType.INSERT)
-    @PreAuthorize("@ss.hasPermi('ai:api-key:create')")
+    @PreAuthorize("@ss.hasPermission('ai:api-key:create')")
     @PostMapping("/create")
     public R<Long> createApiKey(@Validated @RequestBody AiApiKeySaveQuery query) {
         return R.ok(apiKeyService.createApiKey(query));
@@ -43,7 +43,7 @@ public class AiApiKeyController extends BaseController {
      * 更新 API 密钥
      */
     @Log(title = "更新 API 密钥", businessType = BusinessType.UPDATE)
-    @PreAuthorize("@ss.hasPermi('ai:api-key:update')")
+    @PreAuthorize("@ss.hasPermission('ai:api-key:update')")
     @PutMapping("/update")
     public R<Integer> updateApiKey(@Validated @RequestBody AiApiKeySaveQuery query) {
         return R.ok(apiKeyService.updateApiKey(query));
@@ -53,7 +53,7 @@ public class AiApiKeyController extends BaseController {
      * 删除 API 密钥
      */
     @Log(title = "删除 API 密钥", businessType = BusinessType.DELETE)
-    @PreAuthorize("@ss.hasPermi('ai:api-key:delete')")
+    @PreAuthorize("@ss.hasPermission('ai:api-key:delete')")
     @DeleteMapping("/delete")
     public R<Integer> deleteApiKey(@RequestParam("id") Long id) {
         return R.ok(apiKeyService.deleteApiKeyById(id));
@@ -62,7 +62,7 @@ public class AiApiKeyController extends BaseController {
     /**
      * 获取 API 密钥
      */
-    @PreAuthorize("@ss.hasPermi('ai:api-key:query')")
+    @PreAuthorize("@ss.hasPermission('ai:api-key:query')")
     @GetMapping("/get")
     public R<AiApiKeyVO> getApiKey(@RequestParam("id") Long id) {
         return R.ok(apiKeyService.getApiKeyById(id));
@@ -71,7 +71,7 @@ public class AiApiKeyController extends BaseController {
     /**
      * 获得 API 密钥分页
      */
-    @PreAuthorize("@ss.hasPermi('ai:api-key:list')")
+    @PreAuthorize("@ss.hasPermission('ai:api-key:list')")
     @GetMapping("/page")
     public TableDataInfo<AiApiKeyVO> getApiKeyPage(PageQuery pageQuery, AiApiKeyPageQuery query) {
         return apiKeyService.getApiKeyPage(pageQuery, query);

@@ -90,7 +90,7 @@ public class AiImageController extends BaseController {
     /**
      * 获得绘画分页
      */
-    @PreAuthorize("@ss.hasPermi('ai:image:list')")
+    @PreAuthorize("@ss.hasPermission('ai:image:list')")
     @GetMapping("/page")
     public TableDataInfo<AiImageVO> getImagePage(PageQuery pageQuery, AiImagePageQuery query) {
         return AiImageService.getImagePage(pageQuery, query);
@@ -100,7 +100,7 @@ public class AiImageController extends BaseController {
      * 更新绘画
      */
     @Log(title = "更新绘画", businessType = BusinessType.UPDATE)
-    @PreAuthorize("@ss.hasPermi('ai:image:update')")
+    @PreAuthorize("@ss.hasPermission('ai:image:update')")
     @PutMapping("/update")
     public R<Integer> updateImage(@Validated @RequestBody AiImageUpdateQuery query) {
         return R.ok(AiImageService.updateImage(query));
@@ -110,7 +110,7 @@ public class AiImageController extends BaseController {
      * 删除绘画
      */
     @Log(title = "删除绘画", businessType = BusinessType.DELETE)
-    @PreAuthorize("@ss.hasPermi('ai:image:delete')")
+    @PreAuthorize("@ss.hasPermission('ai:image:delete')")
     @DeleteMapping("/delete")
     public R<Integer> deleteImage(@RequestParam("id") Long id) {
         return R.ok(AiImageService.deleteImageById(id));

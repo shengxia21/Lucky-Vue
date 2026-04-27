@@ -35,7 +35,7 @@ public class SysConfigController extends BaseController {
     /**
      * 获取参数配置列表
      */
-    @PreAuthorize("@ss.hasPermi('system:config:list')")
+    @PreAuthorize("@ss.hasPermission('system:config:list')")
     @GetMapping("/list")
     public TableDataInfo<SysConfigVO> list(PageQuery pageQuery, SysConfigQuery query) {
         return configService.selectConfigList(pageQuery, query);
@@ -45,7 +45,7 @@ public class SysConfigController extends BaseController {
      * 导出参数配置列表
      */
     @Log(title = "参数管理", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermi('system:config:export')")
+    @PreAuthorize("@ss.hasPermission('system:config:export')")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysConfigQuery query) {
         List<SysConfig> list = configService.selectConfigList(query);
@@ -56,7 +56,7 @@ public class SysConfigController extends BaseController {
     /**
      * 根据参数编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:config:query')")
+    @PreAuthorize("@ss.hasPermission('system:config:query')")
     @GetMapping(value = "/{configId}")
     public R<SysConfigVO> getInfo(@PathVariable Long configId) {
         return R.ok(configService.selectConfigById(configId));
@@ -73,7 +73,7 @@ public class SysConfigController extends BaseController {
     /**
      * 新增参数配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:add')")
+    @PreAuthorize("@ss.hasPermission('system:config:add')")
     @Log(title = "参数管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysConfigSaveQuery config) {
@@ -86,7 +86,7 @@ public class SysConfigController extends BaseController {
     /**
      * 修改参数配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:edit')")
+    @PreAuthorize("@ss.hasPermission('system:config:edit')")
     @Log(title = "参数管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysConfigSaveQuery config) {
@@ -99,7 +99,7 @@ public class SysConfigController extends BaseController {
     /**
      * 删除参数配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:remove')")
+    @PreAuthorize("@ss.hasPermission('system:config:remove')")
     @Log(title = "参数管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{configIds}")
     public R<Void> remove(@PathVariable Long[] configIds) {
@@ -110,7 +110,7 @@ public class SysConfigController extends BaseController {
     /**
      * 刷新参数缓存
      */
-    @PreAuthorize("@ss.hasPermi('system:config:remove')")
+    @PreAuthorize("@ss.hasPermission('system:config:remove')")
     @Log(title = "参数管理", businessType = BusinessType.CLEAN)
     @DeleteMapping("/refreshCache")
     public R<Void> refreshCache() {

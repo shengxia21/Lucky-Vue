@@ -89,7 +89,7 @@ public class AiChatMessageController extends BaseController {
     /**
      * 获得消息分页
      */
-    @PreAuthorize("@ss.hasPermi('ai:chat-conversation:list')")
+    @PreAuthorize("@ss.hasPermission('ai:chat-conversation:list')")
     @GetMapping("/page")
     public TableDataInfo<AiChatMessageVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageQuery query) {
         return chatMessageService.getChatMessagePage(pageQuery, query);
@@ -99,7 +99,7 @@ public class AiChatMessageController extends BaseController {
      * 删除消息（管理员）
      */
     @Log(title = "删除消息（管理员）", businessType = BusinessType.DELETE)
-    @PreAuthorize("@ss.hasPermi('ai:chat-message:delete')")
+    @PreAuthorize("@ss.hasPermission('ai:chat-message:delete')")
     @DeleteMapping("/delete-by-admin")
     public R<Integer> deleteChatMessageByAdmin(@RequestParam("id") Long id) {
         return R.ok(chatMessageService.deleteChatMessageById(id));

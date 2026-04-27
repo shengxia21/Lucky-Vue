@@ -35,7 +35,7 @@ public class SysMenuController extends BaseController {
     /**
      * 获取菜单列表
      */
-    @PreAuthorize("@ss.hasPermi('system:menu:list')")
+    @PreAuthorize("@ss.hasPermission('system:menu:list')")
     @GetMapping("/list")
     public R<List<SysMenu>> list(SysMenuQuery query) {
         List<SysMenu> menus = menuService.selectMenuList(query, getUserId());
@@ -45,7 +45,7 @@ public class SysMenuController extends BaseController {
     /**
      * 根据菜单编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:menu:query')")
+    @PreAuthorize("@ss.hasPermission('system:menu:query')")
     @GetMapping(value = "/{menuId}")
     public R<SysMenu> getInfo(@PathVariable Long menuId) {
         return R.ok(menuService.selectMenuById(menuId));
@@ -75,7 +75,7 @@ public class SysMenuController extends BaseController {
     /**
      * 新增菜单
      */
-    @PreAuthorize("@ss.hasPermi('system:menu:add')")
+    @PreAuthorize("@ss.hasPermission('system:menu:add')")
     @Log(title = "菜单管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysMenuSaveQuery menu) {
@@ -92,7 +92,7 @@ public class SysMenuController extends BaseController {
     /**
      * 修改菜单
      */
-    @PreAuthorize("@ss.hasPermi('system:menu:edit')")
+    @PreAuthorize("@ss.hasPermission('system:menu:edit')")
     @Log(title = "菜单管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysMenuSaveQuery menu) {
@@ -111,7 +111,7 @@ public class SysMenuController extends BaseController {
     /**
      * 保存菜单排序
      */
-    @PreAuthorize("@ss.hasPermi('system:menu:edit')")
+    @PreAuthorize("@ss.hasPermission('system:menu:edit')")
     @Log(title = "保存菜单排序", businessType = BusinessType.UPDATE)
     @PutMapping("/updateSort")
     public R<Void> updateSort(@RequestBody Map<String, String> params) {
@@ -124,7 +124,7 @@ public class SysMenuController extends BaseController {
     /**
      * 删除菜单
      */
-    @PreAuthorize("@ss.hasPermi('system:menu:remove')")
+    @PreAuthorize("@ss.hasPermission('system:menu:remove')")
     @Log(title = "菜单管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{menuId}")
     public R<Void> remove(@PathVariable Long menuId) {

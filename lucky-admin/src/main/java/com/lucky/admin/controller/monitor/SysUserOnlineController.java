@@ -38,7 +38,7 @@ public class SysUserOnlineController extends BaseController {
     /**
      * 获取在线用户列表
      */
-    @PreAuthorize("@ss.hasPermi('monitor:online:list')")
+    @PreAuthorize("@ss.hasPermission('monitor:online:list')")
     @GetMapping("/list")
     public TableDataInfo<SysUserOnline> list(String ipaddr, String userName) {
         Collection<String> keys = redisCache.keys(CacheConstants.LOGIN_TOKEN_KEY + "*");
@@ -63,7 +63,7 @@ public class SysUserOnlineController extends BaseController {
     /**
      * 强退用户
      */
-    @PreAuthorize("@ss.hasPermi('monitor:online:forceLogout')")
+    @PreAuthorize("@ss.hasPermission('monitor:online:forceLogout')")
     @Log(title = "在线用户", businessType = BusinessType.FORCE)
     @DeleteMapping("/{tokenId}")
     public R<Void> forceLogout(@PathVariable String tokenId) {

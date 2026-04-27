@@ -73,7 +73,7 @@
           plain
           icon="Plus"
           @click="handleAdd"
-          v-hasPermi="['${permissionPrefix}:add']"
+          v-hasPermission="['${permissionPrefix}:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -137,11 +137,11 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
 #if($genView)
-          <el-button link type="primary" icon="View" @click="handleViewData(scope.row)" v-hasPermi="['${permissionPrefix}:query']">详情</el-button>
+          <el-button link type="primary" icon="View" @click="handleViewData(scope.row)" v-hasPermission="['${permissionPrefix}:query']">详情</el-button>
 #end
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['${permissionPrefix}:edit']">修改</el-button>
-          <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)" v-hasPermi="['${permissionPrefix}:add']">新增</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['${permissionPrefix}:remove']">删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermission="['${permissionPrefix}:edit']">修改</el-button>
+          <el-button link type="primary" icon="Plus" @click="handleAdd(scope.row)" v-hasPermission="['${permissionPrefix}:add']">新增</el-button>
+          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermission="['${permissionPrefix}:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -45,7 +45,7 @@ public class GenController extends BaseController {
     /**
      * 查询代码生成列表
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:list')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:list')")
     @GetMapping("/list")
     public TableDataInfo<GenTableVO> genList(PageQuery pageQuery, GenTableQuery query) {
         return genTableService.selectGenTableList(pageQuery, query);
@@ -54,7 +54,7 @@ public class GenController extends BaseController {
     /**
      * 获取代码生成信息
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:query')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:query')")
     @GetMapping(value = "/{tableId}")
     public R<Map<String, Object>> getInfo(@PathVariable Long tableId) {
         GenTable table = genTableService.selectGenTableById(tableId);
@@ -70,7 +70,7 @@ public class GenController extends BaseController {
     /**
      * 查询数据库列表
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:list')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:list')")
     @GetMapping("/db/list")
     public TableDataInfo<GenTableVO> dataList(PageQuery pageQuery, GenTableQuery query) {
         return genTableService.selectDbTableList(pageQuery, query);
@@ -79,7 +79,7 @@ public class GenController extends BaseController {
     /**
      * 查询数据表字段列表
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:list')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:list')")
     @GetMapping(value = "/column/{tableId}")
     public TableDataInfo<GenTableColumnVO> columnList(Long tableId) {
         List<GenTableColumnVO> list = genTableColumnService.getGenTableColumnListByTableId(tableId);
@@ -89,7 +89,7 @@ public class GenController extends BaseController {
     /**
      * 导入表结构（保存）
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:import')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:import')")
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
     @PostMapping("/importTable")
     public R<Void> importTableSave(@RequestParam("tables") String tables, @RequestParam("tplWebType") String tplWebType) {
@@ -103,7 +103,7 @@ public class GenController extends BaseController {
     /**
      * 修改保存代码生成业务
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:edit')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:edit')")
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> editSave(@Validated @RequestBody GenTable genTable) {
@@ -115,7 +115,7 @@ public class GenController extends BaseController {
     /**
      * 删除代码生成
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:remove')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:remove')")
     @Log(title = "代码生成", businessType = BusinessType.DELETE)
     @DeleteMapping("/{tableIds}")
     public R<Void> remove(@PathVariable Long[] tableIds) {
@@ -126,7 +126,7 @@ public class GenController extends BaseController {
     /**
      * 预览代码
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:preview')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:preview')")
     @GetMapping("/preview/{tableId}")
     public R<Map<String, String>> preview(@PathVariable Long tableId) {
         return R.ok(genTableService.previewCode(tableId));
@@ -135,7 +135,7 @@ public class GenController extends BaseController {
     /**
      * 生成代码（下载方式）
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:code')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:code')")
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
     @GetMapping("/download/{tableName}")
     public void download(HttpServletResponse response, @PathVariable String tableName) throws IOException {
@@ -146,7 +146,7 @@ public class GenController extends BaseController {
     /**
      * 生成代码（自定义路径）
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:code')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:code')")
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
     @GetMapping("/genCode/{tableName}")
     public R<Void> genCode(@PathVariable String tableName) {
@@ -160,7 +160,7 @@ public class GenController extends BaseController {
     /**
      * 同步数据库
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:edit')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:edit')")
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     @GetMapping("/syncDb/{tableName}")
     public R<Void> syncDb(@PathVariable String tableName) {
@@ -171,7 +171,7 @@ public class GenController extends BaseController {
     /**
      * 批量生成代码
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:code')")
+    @PreAuthorize("@ss.hasPermission('tool:gen:code')")
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
     @GetMapping("/batchGenCode")
     public void batchGenCode(HttpServletResponse response, String tables) throws IOException {

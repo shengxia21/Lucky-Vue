@@ -35,7 +35,7 @@ public class SysDictTypeController extends BaseController {
     /**
      * 获取字典类型列表
      */
-    @PreAuthorize("@ss.hasPermi('system:dict:list')")
+    @PreAuthorize("@ss.hasPermission('system:dict:list')")
     @GetMapping("/list")
     public TableDataInfo<SysDictTypeVO> list(PageQuery pageQuery, SysDictTypeQuery query) {
         return dictTypeService.selectDictTypeList(pageQuery, query);
@@ -44,7 +44,7 @@ public class SysDictTypeController extends BaseController {
     /**
      * 导出字典类型列表
      */
-    @PreAuthorize("@ss.hasPermi('system:dict:export')")
+    @PreAuthorize("@ss.hasPermission('system:dict:export')")
     @Log(title = "字典类型", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysDictTypeQuery query) {
@@ -56,7 +56,7 @@ public class SysDictTypeController extends BaseController {
     /**
      * 根据字典类型编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:dict:query')")
+    @PreAuthorize("@ss.hasPermission('system:dict:query')")
     @GetMapping(value = "/{dictId}")
     public R<SysDictTypeVO> getInfo(@PathVariable Long dictId) {
         return R.ok(dictTypeService.selectDictTypeById(dictId));
@@ -65,7 +65,7 @@ public class SysDictTypeController extends BaseController {
     /**
      * 新增字典类型
      */
-    @PreAuthorize("@ss.hasPermi('system:dict:add')")
+    @PreAuthorize("@ss.hasPermission('system:dict:add')")
     @Log(title = "字典类型", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysDictTypeSaveQuery dictType) {
@@ -78,7 +78,7 @@ public class SysDictTypeController extends BaseController {
     /**
      * 修改字典类型
      */
-    @PreAuthorize("@ss.hasPermi('system:dict:edit')")
+    @PreAuthorize("@ss.hasPermission('system:dict:edit')")
     @Log(title = "字典类型", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysDictTypeSaveQuery dictType) {
@@ -91,7 +91,7 @@ public class SysDictTypeController extends BaseController {
     /**
      * 删除字典类型
      */
-    @PreAuthorize("@ss.hasPermi('system:dict:remove')")
+    @PreAuthorize("@ss.hasPermission('system:dict:remove')")
     @Log(title = "字典类型", businessType = BusinessType.DELETE)
     @DeleteMapping("/{dictIds}")
     public R<Void> remove(@PathVariable Long[] dictIds) {
@@ -102,7 +102,7 @@ public class SysDictTypeController extends BaseController {
     /**
      * 刷新字典缓存
      */
-    @PreAuthorize("@ss.hasPermi('system:dict:remove')")
+    @PreAuthorize("@ss.hasPermission('system:dict:remove')")
     @Log(title = "字典类型", businessType = BusinessType.CLEAN)
     @DeleteMapping("/refreshCache")
     public R<Void> refreshCache() {

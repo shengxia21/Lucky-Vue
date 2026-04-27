@@ -92,7 +92,7 @@ public class AiChatConversationController extends BaseController {
     /**
      * 获取对话分页列表
      */
-    @PreAuthorize("@ss.hasPermi('ai:chat-conversation:list')")
+    @PreAuthorize("@ss.hasPermission('ai:chat-conversation:list')")
     @GetMapping("/page")
     public TableDataInfo<AiChatConversationVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageQuery query) {
         return chatConversationService.getChatConversationPage(pageQuery, query);
@@ -103,7 +103,7 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "管理员删除对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-by-admin")
-    @PreAuthorize("@ss.hasPermi('ai:chat-conversation:delete')")
+    @PreAuthorize("@ss.hasPermission('ai:chat-conversation:delete')")
     public R<Integer> deleteChatConversationById(@RequestParam("id") Long id) {
         return R.ok(chatConversationService.deleteChatConversationById(id));
     }

@@ -40,7 +40,7 @@ public class SysNoticeController extends BaseController {
     /**
      * 获取通知公告列表
      */
-    @PreAuthorize("@ss.hasPermi('system:notice:list')")
+    @PreAuthorize("@ss.hasPermission('system:notice:list')")
     @GetMapping("/list")
     public TableDataInfo<SysNoticeVO> list(PageQuery pageQuery, SysNoticeQuery query) {
         return noticeService.selectNoticeList(pageQuery, query);
@@ -57,7 +57,7 @@ public class SysNoticeController extends BaseController {
     /**
      * 新增通知公告
      */
-    @PreAuthorize("@ss.hasPermi('system:notice:add')")
+    @PreAuthorize("@ss.hasPermission('system:notice:add')")
     @Log(title = "通知公告", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysNoticeSaveQuery notice) {
@@ -67,7 +67,7 @@ public class SysNoticeController extends BaseController {
     /**
      * 修改通知公告
      */
-    @PreAuthorize("@ss.hasPermi('system:notice:edit')")
+    @PreAuthorize("@ss.hasPermission('system:notice:edit')")
     @Log(title = "通知公告", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysNoticeSaveQuery notice) {
@@ -111,7 +111,7 @@ public class SysNoticeController extends BaseController {
     /**
      * 已读用户列表数据
      */
-    @PreAuthorize("@ss.hasPermi('system:notice:list')")
+    @PreAuthorize("@ss.hasPermission('system:notice:list')")
     @GetMapping("/readUsers/list")
     public TableDataInfo<SysNoticeReadUserVO> readUsersList(PageQuery pageQuery, Long noticeId, String searchValue) {
         return noticeReadService.selectReadUsersByNoticeId(pageQuery, noticeId, searchValue);
@@ -120,7 +120,7 @@ public class SysNoticeController extends BaseController {
     /**
      * 删除通知公告
      */
-    @PreAuthorize("@ss.hasPermi('system:notice:remove')")
+    @PreAuthorize("@ss.hasPermission('system:notice:remove')")
     @Log(title = "通知公告", businessType = BusinessType.DELETE)
     @DeleteMapping("/{noticeIds}")
     public R<Void> remove(@PathVariable Long[] noticeIds) {

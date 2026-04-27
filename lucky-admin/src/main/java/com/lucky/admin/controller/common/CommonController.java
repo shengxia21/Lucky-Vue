@@ -8,8 +8,7 @@ import com.lucky.common.core.utils.file.FileUtils;
 import com.lucky.common.web.config.ServerConfig;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,11 +24,11 @@ import java.util.List;
  *
  * @author ruoyi
  */
+@Slf4j
 @RestController
 @RequestMapping("/common")
 public class CommonController {
 
-    private static final Logger log = LoggerFactory.getLogger(CommonController.class);
     private static final String FILE_DELIMITER = ",";
 
     @Resource

@@ -37,7 +37,7 @@ public class SysLoginInfoController extends BaseController {
     /**
      * 获取登录日志列表
      */
-    @PreAuthorize("@ss.hasPermi('monitor:loginInfo:list')")
+    @PreAuthorize("@ss.hasPermission('monitor:loginInfo:list')")
     @GetMapping("/list")
     public TableDataInfo<SysLoginInfoVO> list(PageQuery pageQuery, SysLoginInfoQuery query) {
         return loginInfoService.selectLoginInfoList(pageQuery, query);
@@ -47,7 +47,7 @@ public class SysLoginInfoController extends BaseController {
      * 导出登录日志
      */
     @Log(title = "登录日志", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermi('monitor:loginInfo:export')")
+    @PreAuthorize("@ss.hasPermission('monitor:loginInfo:export')")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysLoginInfoQuery query) {
         List<SysLoginInfo> list = loginInfoService.selectLoginInfoList(query);
@@ -58,7 +58,7 @@ public class SysLoginInfoController extends BaseController {
     /**
      * 删除登录日志
      */
-    @PreAuthorize("@ss.hasPermi('monitor:loginInfo:remove')")
+    @PreAuthorize("@ss.hasPermission('monitor:loginInfo:remove')")
     @Log(title = "登录日志", businessType = BusinessType.DELETE)
     @DeleteMapping("/{infoIds}")
     public R<Void> remove(@PathVariable Long[] infoIds) {
@@ -68,7 +68,7 @@ public class SysLoginInfoController extends BaseController {
     /**
      * 清空登录日志
      */
-    @PreAuthorize("@ss.hasPermi('monitor:loginInfo:remove')")
+    @PreAuthorize("@ss.hasPermission('monitor:loginInfo:remove')")
     @Log(title = "登录日志", businessType = BusinessType.CLEAN)
     @DeleteMapping("/clean")
     public R<Void> clean() {
@@ -78,7 +78,7 @@ public class SysLoginInfoController extends BaseController {
     /**
      * 解锁账户
      */
-    @PreAuthorize("@ss.hasPermi('monitor:loginInfo:unlock')")
+    @PreAuthorize("@ss.hasPermission('monitor:loginInfo:unlock')")
     @Log(title = "账户解锁", businessType = BusinessType.OTHER)
     @GetMapping("/unlock/{userName}")
     public R<Void> unlock(@PathVariable String userName) {
