@@ -1,0 +1,10 @@
+com.lucky.common.web.config.ApplicationConfig
+com.lucky.common.web.config.CaptchaConfig
+com.lucky.common.web.config.FilterConfig
+com.lucky.common.web.config.I18nConfig
+com.lucky.common.web.config.ResourcesConfig
+com.lucky.common.web.config.ServerConfig
+com.lucky.common.web.config.SwaggerConfig
+com.lucky.common.web.config.ThreadPoolConfig
+com.lucky.common.web.config.UndertowConfig
+com.lucky.common.web.interceptor.impl.SameUrlDataInterceptor

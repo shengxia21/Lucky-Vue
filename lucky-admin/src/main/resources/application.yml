@@ -141,15 +141,15 @@ springdoc:
     - group: 'common'
       display-name: '公共模块'
       paths-to-match: '/**'
-      packages-to-scan: com.lucky.web.controller.common
+      packages-to-scan: com.lucky.admin.controller.common
     - group: 'monitor'
       display-name: '监控模块'
       paths-to-match: '/**'
-      packages-to-scan: com.lucky.web.controller.monitor
+      packages-to-scan: com.lucky.admin.controller.monitor
     - group: 'system'
       display-name: '系统模块'
       paths-to-match: '/**'
-      packages-to-scan: com.lucky.web.controller.system
+      packages-to-scan: com.lucky.admin.controller.system
 
 # 防盗链配置
 referer:

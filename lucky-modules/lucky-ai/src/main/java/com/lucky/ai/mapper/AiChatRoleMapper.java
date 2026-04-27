@@ -1,0 +1,62 @@
+package com.lucky.ai.mapper;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.lucky.ai.domain.AiChatRole;
+import com.lucky.ai.domain.query.chatRole.AiChatRolePageQuery;
+import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
+import com.lucky.ai.enums.CommonStatusEnum;
+import com.lucky.common.core.utils.StringUtils;
+import com.lucky.common.mybatis.core.mapper.BaseMapperX;
+
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * AI 聊天角色Mapper接口
+ *
+ * @author lucky
+ */
+public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, AiChatRoleVO> {
+
+    default IPage<AiChatRoleVO> selectPage(IPage<AiChatRole> page, AiChatRolePageQuery query) {
+        LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
+                .like(StringUtils.isNotEmpty(query.getName()), AiChatRole::getName, query.getName())
+                .eq(StringUtils.isNotEmpty(query.getCategory()), AiChatRole::getCategory, query.getCategory())
+                .eq(StringUtils.isNotNull(query.getPublicStatus()), AiChatRole::getStatus, query.getPublicStatus())
+                .orderByAsc(AiChatRole::getSort);
+        return selectVoPage(page, wrapper);
+    }
+
+    default IPage<AiChatRoleVO> selectMyPage(IPage<AiChatRole> page, AiChatRolePageQuery query, Long userId) {
+        LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
+                .like(StringUtils.isNotEmpty(query.getName()), AiChatRole::getName, query.getName())
+                .eq(StringUtils.isNotEmpty(query.getCategory()), AiChatRole::getCategory, query.getCategory())
+                // 情况一：公开
+                .eq(Boolean.TRUE.equals(query.getPublicStatus()), AiChatRole::getPublicStatus, query.getPublicStatus())
+                // 情况二：私有
+                .eq(Boolean.FALSE.equals(query.getPublicStatus()), AiChatRole::getUserId, userId)
+                .eq(Boolean.FALSE.equals(query.getPublicStatus()), AiChatRole::getStatus, CommonStatusEnum.ENABLE.getStatus())
+                .orderByAsc(AiChatRole::getSort);
+        return selectVoPage(page, wrapper);
+    }
+
+    default List<String> selectListGroupByCategory(Integer status) {
+        LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
+                .select(AiChatRole::getCategory)
+                .eq(StringUtils.isNotNull(status), AiChatRole::getStatus, status)
+                .groupBy(AiChatRole::getCategory);
+        return selectObjs(wrapper).stream()
+                .map(Objects::toString)
+                .toList();
+    }
+
+    default List<AiChatRoleVO> selectListByName(String name) {
+        LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
+                .like(StringUtils.isNotEmpty(name), AiChatRole::getName, name)
+                .orderByAsc(AiChatRole::getSort);
+        return selectVoList(wrapper);
+    }
+
+}

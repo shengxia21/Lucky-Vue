@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.lucky</groupId>
+    <artifactId>lucky-common-bom</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <description>
+        lucky-common-bom common依赖项
+    </description>
+
+    <properties>
+        <revision>1.0.0</revision>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- 核心模块 -->
+            <dependency>
+                <groupId>com.lucky</groupId>
+                <artifactId>lucky-common-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- excel -->
+            <dependency>
+                <groupId>com.lucky</groupId>
+                <artifactId>lucky-common-excel</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- json -->
+            <dependency>
+                <groupId>com.lucky</groupId>
+                <artifactId>lucky-common-log</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 数据库服务 -->
+            <dependency>
+                <groupId>com.lucky</groupId>
+                <artifactId>lucky-common-mybatis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 缓存服务 -->
+            <dependency>
+                <groupId>com.lucky</groupId>
+                <artifactId>lucky-common-redis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 安全模块 -->
+            <dependency>
+                <groupId>com.lucky</groupId>
+                <artifactId>lucky-common-security</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- web服务 -->
+            <dependency>
+                <groupId>com.lucky</groupId>
+                <artifactId>lucky-common-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+</project>

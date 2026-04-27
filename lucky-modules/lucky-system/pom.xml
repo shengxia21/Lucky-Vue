@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.lucky</groupId>
+        <artifactId>lucky-modules</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>lucky-system</artifactId>
+
+    <description>
+        system系统模块
+    </description>
+
+    <dependencies>
+
+        <!-- common 核心模块 -->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-common-core</artifactId>
+        </dependency>
+
+        <!-- common Mybatis 模块 -->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-common-mybatis</artifactId>
+        </dependency>
+
+        <!-- common Excel 模块 -->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-common-excel</artifactId>
+        </dependency>
+
+        <!-- common 日志模块 -->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-common-log</artifactId>
+        </dependency>
+
+        <!-- common security 模块 -->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-common-security</artifactId>
+        </dependency>
+
+        <!-- common Web 模块 -->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-common-web</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -6,15 +6,15 @@
 
     <groupId>com.lucky</groupId>
     <artifactId>lucky-vue</artifactId>
-    <version>1.0.0</version>
+    <version>${revision}</version>
 
-    <name>lucky</name>
-    <url>https://yuanlin.asia</url>
-    <description>浮生管理系统</description>
+    <name>Lucky-Vue</name>
+    <url>https://gitee.com/fushengxuyu/Lucky-Vue</url>
+    <description>Lucky-Vue管理系统</description>
 
     <properties>
         <!-- 项目版本 -->
-        <lucky.version>1.0.0</lucky.version>
+        <revision>1.0.0</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
@@ -112,6 +112,15 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-bom</artifactId>
                 <version>${hutool.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- common 模块依赖配置 -->
+            <dependency>
+                <groupId>com.lucky</groupId>
+                <artifactId>lucky-common-bom</artifactId>
+                <version>${revision}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -246,35 +255,21 @@
             <dependency>
                 <groupId>com.lucky</groupId>
                 <artifactId>lucky-generator</artifactId>
-                <version>${lucky.version}</version>
-            </dependency>
-
-            <!-- 核心模块 -->
-            <dependency>
-                <groupId>com.lucky</groupId>
-                <artifactId>lucky-framework</artifactId>
-                <version>${lucky.version}</version>
+                <version>${revision}</version>
             </dependency>
 
             <!-- 系统模块 -->
             <dependency>
                 <groupId>com.lucky</groupId>
                 <artifactId>lucky-system</artifactId>
-                <version>${lucky.version}</version>
-            </dependency>
-
-            <!-- 通用工具 -->
-            <dependency>
-                <groupId>com.lucky</groupId>
-                <artifactId>lucky-common</artifactId>
-                <version>${lucky.version}</version>
+                <version>${revision}</version>
             </dependency>
 
             <!-- ai大模型 -->
             <dependency>
                 <groupId>com.lucky</groupId>
                 <artifactId>lucky-ai</artifactId>
-                <version>${lucky.version}</version>
+                <version>${revision}</version>
             </dependency>
 
         </dependencies>
@@ -282,11 +277,8 @@
 
     <modules>
         <module>lucky-admin</module>
-        <module>lucky-framework</module>
-        <module>lucky-system</module>
-        <module>lucky-generator</module>
         <module>lucky-common</module>
-        <module>lucky-ai</module>
+        <module>lucky-modules</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -355,7 +347,7 @@
             <name>aliyun nexus</name>
             <url>https://maven.aliyun.com/repository/public</url>
             <releases>
-                <enabled>true</enabled> <!-- 启用正式版依赖下载 -->
+                <enabled>true</enabled>     <!-- 启用正式版依赖下载 -->
             </releases>
         </repository>
     </repositories>
@@ -367,7 +359,7 @@
             <name>aliyun nexus</name>
             <url>https://maven.aliyun.com/repository/public</url>
             <releases>
-                <enabled>true</enabled> <!-- 插件启用正式版依赖下载 -->
+                <enabled>true</enabled>     <!-- 插件启用正式版依赖下载 -->
             </releases>
             <snapshots>
                 <enabled>false</enabled>    <!-- 禁用快照版插件 -->

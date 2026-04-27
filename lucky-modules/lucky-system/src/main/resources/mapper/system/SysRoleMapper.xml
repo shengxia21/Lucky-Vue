@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.system.mapper.SysRoleMapper">
+
+	<sql id="selectRoleVo">
+	    select distinct
+	        r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.menu_check_strictly,
+	        r.dept_check_strictly,r.status, r.create_time, r.remark
+        from sys_role r
+	        left join sys_user_role ur on ur.role_id = r.role_id
+	        left join sys_user u on u.user_id = ur.user_id
+	        left join sys_dept d on u.dept_id = d.dept_id
+    </sql>
+
+    <select id="selectRoleList" resultType="SysRole">
+		<include refid="selectRoleVo"/>
+		where r.del_flag = '0'
+		<if test="query.roleId != null and query.roleId != 0">
+			AND r.role_id = #{query.roleId}
+		</if>
+		<if test="query.roleName != null and query.roleName != ''">
+			AND r.role_name like concat('%', #{query.roleName}, '%')
+		</if>
+		<if test="query.status != null and query.status != ''">
+			AND r.status = #{query.status}
+		</if>
+		<if test="query.roleKey != null and query.roleKey != ''">
+			AND r.role_key like concat('%', #{query.roleKey}, '%')
+		</if>
+		<if test="query.params.beginTime != null and query.params.beginTime != ''">
+			and date_format(r.create_time,'%Y%m%d') &gt;= date_format(#{query.params.beginTime},'%Y%m%d')
+		</if>
+		<if test="query.params.endTime != null and query.params.endTime != ''">
+			and date_format(r.create_time,'%Y%m%d') &lt;= date_format(#{query.params.endTime},'%Y%m%d')
+		</if>
+		<!-- 数据范围过滤 -->
+		${query.params.dataScopeEntity}
+		order by r.role_sort
+	</select>
+
+	<select id="selectRolePermissionByUserId" parameterType="Long" resultType="SysRole">
+		<include refid="selectRoleVo"/>
+		WHERE r.del_flag = '0' and ur.user_id = #{userId}
+	</select>
+
+	<select id="selectRoleListByUserId" parameterType="Long" resultType="Long">
+		select
+		    r.role_id
+        from sys_role r
+	        left join sys_user_role ur on ur.role_id = r.role_id
+	        left join sys_user u on u.user_id = ur.user_id
+	    where u.user_id = #{userId}
+	</select>
+
+	<select id="selectRolesByUserName" parameterType="String" resultType="SysRole">
+		<include refid="selectRoleVo"/>
+		WHERE r.del_flag = '0' and u.user_name = #{userName}
+	</select>
+
+</mapper> 
