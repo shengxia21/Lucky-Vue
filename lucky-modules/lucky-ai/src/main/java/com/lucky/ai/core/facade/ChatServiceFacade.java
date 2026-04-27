@@ -18,8 +18,7 @@ import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.MessageType;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -40,10 +39,9 @@ import java.util.List;
  *
  * @author lucky
  */
+@Slf4j
 @Service
 public class ChatServiceFacade implements ChatService {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Resource
     private AiChatMessageMapper chatMessageMapper;
@@ -131,6 +129,7 @@ public class ChatServiceFacade implements ChatService {
         chatMessageMapper.insert(message);
         // userMessageId
         message.setReplyId(message.getId());
+        message.setId(null);
         message.setType(MessageType.ASSISTANT.getValue());
         message.setContent(StringUtils.EMPTY);
         message.setAttachmentUrls(request.getAttachmentUrls());
