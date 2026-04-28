@@ -12,6 +12,7 @@ import com.lucky.system.domain.vo.operLog.SysOperLogVO;
 import com.lucky.system.mapper.SysOperLogMapper;
 import com.lucky.system.service.ISysOperLogService;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.util.List;
  *
  * @author lucky
  */
+@Slf4j
 @Service
 public class SysOperLogServiceImpl implements ISysOperLogService {
 
@@ -33,6 +35,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     @Async
     @EventListener
     public void recordOper(OperLogEvent operLogEvent) {
+        log.info("异步线程测试");
         SysOperLog operLog = new SysOperLog();
         BeanUtils.copyProperties(operLogEvent, operLog);
         operLogMapper.insert(operLog);

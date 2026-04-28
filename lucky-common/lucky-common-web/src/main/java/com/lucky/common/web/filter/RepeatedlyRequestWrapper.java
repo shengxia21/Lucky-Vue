@@ -41,12 +41,12 @@ public class RepeatedlyRequestWrapper extends HttpServletRequestWrapper {
         final ByteArrayInputStream bais = new ByteArrayInputStream(body);
         return new ServletInputStream() {
             @Override
-            public int read() throws IOException {
+            public int read() {
                 return bais.read();
             }
 
             @Override
-            public int available() throws IOException {
+            public int available() {
                 return body.length;
             }
 

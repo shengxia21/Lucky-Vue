@@ -1,0 +1,241 @@
+package com.lucky.system.controller.system;
+
+import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
+import com.lucky.common.core.utils.StringUtils;
+import com.lucky.common.excel.utils.ExcelUtil;
+import com.lucky.common.log.annotation.Log;
+import com.lucky.common.log.enums.BusinessType;
+import com.lucky.common.mybatis.core.controller.BaseController;
+import com.lucky.common.mybatis.core.page.PageQuery;
+import com.lucky.common.mybatis.core.page.TableDataInfo;
+import com.lucky.common.security.utils.SecurityUtils;
+import com.lucky.system.domain.SysRole;
+import com.lucky.system.domain.SysUser;
+import com.lucky.system.domain.query.dept.SysDeptQuery;
+import com.lucky.system.domain.query.user.SysUserQuery;
+import com.lucky.system.domain.query.user.SysUserSaveQuery;
+import com.lucky.system.domain.vo.TreeSelect;
+import com.lucky.system.service.ISysDeptService;
+import com.lucky.system.service.ISysPostService;
+import com.lucky.system.service.ISysRoleService;
+import com.lucky.system.service.ISysUserService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+/**
+ * 用户信息
+ *
+ * @author ruoyi
+ */
+@RestController
+@RequestMapping("/system/user")
+public class SysUserController extends BaseController {
+
+    @Resource
+    private ISysUserService userService;
+
+    @Resource
+    private ISysRoleService roleService;
+
+    @Resource
+    private ISysDeptService deptService;
+
+    @Resource
+    private ISysPostService postService;
+
+    /**
+     * 获取用户列表
+     */
+    @PreAuthorize("@ss.hasPermission('system:user:list')")
+    @GetMapping("/list")
+    public TableDataInfo<SysUser> list(PageQuery pageQuery, SysUserQuery query) {
+        return userService.selectUserList(pageQuery, query);
+    }
+
+    /**
+     * 导出用户列表
+     */
+    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermission('system:user:export')")
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, SysUserQuery query) {
+        List<SysUser> list = userService.selectUserList(query);
+        ExcelUtil<SysUser> util = new ExcelUtil<>(SysUser.class);
+        util.exportExcel(response, list, "用户数据");
+    }
+
+    /**
+     * 导入用户数据
+     */
+    @Log(title = "用户管理", businessType = BusinessType.IMPORT)
+    @PreAuthorize("@ss.hasPermission('system:user:import')")
+    @PostMapping("/importData")
+    public R<String> importData(MultipartFile file, boolean updateSupport) throws Exception {
+        ExcelUtil<SysUser> util = new ExcelUtil<>(SysUser.class);
+        List<SysUser> userList = util.importExcel(file.getInputStream());
+        String operName = getUsername();
+        String message = userService.importUser(userList, updateSupport, operName);
+        return R.ok(message);
+    }
+
+    /**
+     * 导入用户数据模板
+     */
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) {
+        ExcelUtil<SysUser> util = new ExcelUtil<>(SysUser.class);
+        util.importTemplateExcel(response, "用户数据");
+    }
+
+    /**
+     * 根据用户编号获取详细信息
+     */
+    @PreAuthorize("@ss.hasPermission('system:user:query')")
+    @GetMapping(value = {"/", "/{userId}"})
+    public AjaxResult getInfo(@PathVariable(required = false) Long userId) {
+        AjaxResult ajax = AjaxResult.success();
+        if (StringUtils.isNotNull(userId)) {
+            userService.checkUserDataScope(userId);
+            SysUser sysUser = userService.selectUserById(userId);
+            ajax.put(AjaxResult.DATA_TAG, sysUser);
+            ajax.put("postIds", postService.selectPostIdsByUserId(userId));
+            ajax.put("roleIds", sysUser.getRoles().stream().map(SysRole::getRoleId).toList());
+        }
+        List<SysRole> roles = roleService.selectRoleAll();
+        ajax.put("roles", SecurityUtils.isAdmin(userId) ? roles : roles.stream().filter(r -> !SecurityUtils.isAdmin(r.getRoleId())).toList());
+        ajax.put("posts", postService.selectPostAll());
+        return ajax;
+    }
+
+    /**
+     * 新增用户
+     */
+    @PreAuthorize("@ss.hasPermission('system:user:add')")
+    @Log(title = "用户管理", businessType = BusinessType.INSERT)
+    @PostMapping
+    public R<Void> add(@Validated @RequestBody SysUserSaveQuery user) {
+        deptService.checkDeptDataScope(user.getDeptId());
+        roleService.checkRoleDataScope(user.getRoleIds());
+        if (!userService.checkUserNameUnique(user.getUserId(), user.getUserName())) {
+            return R.fail("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
+        } else if (StringUtils.isNotEmpty(user.getPhoneNumber()) && !userService.checkPhoneUnique(user.getUserId(), user.getPhoneNumber())) {
+            return R.fail("新增用户'" + user.getUserName() + "'失败，手机号码已存在");
+        } else if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user.getUserId(), user.getEmail())) {
+            return R.fail("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
+        }
+        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+        return toAjax(userService.insertUser(user));
+    }
+
+    /**
+     * 修改用户
+     */
+    @PreAuthorize("@ss.hasPermission('system:user:edit')")
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @PutMapping
+    public R<Void> edit(@Validated @RequestBody SysUserSaveQuery user) {
+        userService.checkUserAllowed(user.getUserId());
+        userService.checkUserDataScope(user.getUserId());
+        deptService.checkDeptDataScope(user.getDeptId());
+        roleService.checkRoleDataScope(user.getRoleIds());
+        if (!userService.checkUserNameUnique(user.getUserId(), user.getUserName())) {
+            return R.fail("修改用户'" + user.getUserName() + "'失败，登录账号已存在");
+        } else if (StringUtils.isNotEmpty(user.getPhoneNumber()) && !userService.checkPhoneUnique(user.getUserId(), user.getPhoneNumber())) {
+            return R.fail("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
+        } else if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user.getUserId(), user.getEmail())) {
+            return R.fail("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
+        }
+        return toAjax(userService.updateUser(user));
+    }
+
+    /**
+     * 删除用户
+     */
+    @PreAuthorize("@ss.hasPermission('system:user:remove')")
+    @Log(title = "用户管理", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{userIds}")
+    public R<Void> remove(@PathVariable Long[] userIds) {
+        if (ArrayUtils.contains(userIds, getUserId())) {
+            return R.fail("当前用户不能删除");
+        }
+        return toAjax(userService.deleteUserByIds(userIds));
+    }
+
+    /**
+     * 重置密码
+     */
+    @PreAuthorize("@ss.hasPermission('system:user:resetPwd')")
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @PutMapping("/resetPwd")
+    public R<Void> resetPwd(@RequestBody SysUserSaveQuery user) {
+        userService.checkUserAllowed(user.getUserId());
+        userService.checkUserDataScope(user.getUserId());
+        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+        return toAjax(userService.resetPwd(user));
+    }
+
+    /**
+     * 状态修改
+     */
+    @PreAuthorize("@ss.hasPermission('system:user:edit')")
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatus")
+    public R<Void> changeStatus(@RequestBody SysUserSaveQuery user) {
+        userService.checkUserAllowed(user.getUserId());
+        userService.checkUserDataScope(user.getUserId());
+        return toAjax(userService.updateUserStatus(user));
+    }
+
+    /**
+     * 根据用户编号获取授权角色
+     */
+    @PreAuthorize("@ss.hasPermission('system:user:query')")
+    @GetMapping("/authRole/{userId}")
+    public AjaxResult authRole(@PathVariable Long userId) {
+        AjaxResult ajax = AjaxResult.success();
+        SysUser user = userService.selectUserById(userId);
+        List<SysRole> roles = roleService.selectRolesByUserId(userId);
+        ajax.put("user", user);
+        ajax.put("roles", SecurityUtils.isAdmin(userId) ? roles : roles.stream().filter(r -> !SecurityUtils.isAdmin(r.getRoleId())).toList());
+        return ajax;
+    }
+
+    /**
+     * 用户授权角色
+     */
+    @PreAuthorize("@ss.hasPermission('system:user:edit')")
+    @Log(title = "用户管理", businessType = BusinessType.GRANT)
+    @PutMapping("/authRole")
+    public R<Void> insertAuthRole(Long userId, Long[] roleIds) {
+        userService.checkUserDataScope(userId);
+        roleService.checkRoleDataScope(roleIds);
+        userService.insertUserAuth(userId, roleIds);
+        return R.ok();
+    }
+
+    /**
+     * 获取部门树列表
+     */
+    @PreAuthorize("@ss.hasPermission('system:user:list')")
+    @GetMapping("/deptTree")
+    public R<List<TreeSelect>> deptTree(SysDeptQuery dept) {
+        return R.ok(deptService.selectDeptTreeList(dept));
+    }
+
+    /**
+     * 获取用户选择框列表
+     */
+    @GetMapping("/optionSelect")
+    public R<List<SysUser>> optionSelect() {
+        return R.ok(userService.selectUserAll());
+    }
+
+}

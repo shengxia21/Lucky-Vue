@@ -5,7 +5,7 @@ import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.utils.MessageUtils;
 import com.lucky.common.core.utils.ServletUtils;
 import com.lucky.common.core.utils.spring.SpringUtils;
-import com.lucky.common.security.event.LogoutSuccessEvent;
+import com.lucky.common.security.domain.event.LogoutSuccessEvent;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;

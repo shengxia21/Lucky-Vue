@@ -7,6 +7,8 @@ import com.lucky.common.core.utils.MessageUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.security.domain.LoginUser;
 import com.lucky.system.service.ISysUserService;
+import com.lucky.system.web.SysPasswordService;
+import com.lucky.system.web.SysPermissionService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

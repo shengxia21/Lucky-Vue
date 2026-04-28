@@ -16,6 +16,7 @@ import com.lucky.common.web.manager.AsyncManager;
 import com.lucky.system.factory.AsyncSystemFactory;
 import com.lucky.system.service.ISysConfigService;
 import com.lucky.system.service.ISysUserService;
+import com.lucky.system.web.TokenService;
 import jakarta.annotation.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -61,7 +62,7 @@ public class SysLoginService {
         // 登录前置校验
         loginPreCheck(username, password);
         // 用户验证
-        Authentication authentication = null;
+        Authentication authentication;
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
             AuthenticationContextHolder.setContext(authenticationToken);

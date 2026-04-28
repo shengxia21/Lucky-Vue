@@ -1,7 +1,7 @@
 package com.lucky.common.security.filter;
 
 import com.lucky.common.core.utils.spring.SpringUtils;
-import com.lucky.common.security.event.AuthenticationTokenEvent;
+import com.lucky.common.security.domain.event.AuthenticationTokenEvent;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

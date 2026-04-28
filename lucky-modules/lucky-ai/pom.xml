@@ -17,22 +17,10 @@
 
     <dependencies>
 
-        <!-- common 核心模块 -->
-        <dependency>
-            <groupId>com.lucky</groupId>
-            <artifactId>lucky-common-core</artifactId>
-        </dependency>
-
         <!-- common Mybatis 模块 -->
         <dependency>
             <groupId>com.lucky</groupId>
             <artifactId>lucky-common-mybatis</artifactId>
-        </dependency>
-
-        <!-- common Excel 模块 -->
-        <dependency>
-            <groupId>com.lucky</groupId>
-            <artifactId>lucky-common-excel</artifactId>
         </dependency>
 
         <!-- common 日志模块 -->
@@ -41,10 +29,10 @@
             <artifactId>lucky-common-log</artifactId>
         </dependency>
 
-        <!-- common security 模块 -->
+        <!-- common Excel 模块 -->
         <dependency>
             <groupId>com.lucky</groupId>
-            <artifactId>lucky-common-security</artifactId>
+            <artifactId>lucky-common-excel</artifactId>
         </dependency>
 
         <!-- common Web 模块 -->

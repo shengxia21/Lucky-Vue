@@ -1,9 +1,9 @@
 package com.lucky.admin.service;
 
-import com.lucky.admin.domain.RegisterBody;
 import com.lucky.common.core.constant.CacheConstants;
 import com.lucky.common.core.constant.Constants;
 import com.lucky.common.core.constant.UserConstants;
+import com.lucky.common.core.domain.model.RegisterBody;
 import com.lucky.common.core.exception.user.CaptchaException;
 import com.lucky.common.core.exception.user.CaptchaExpireException;
 import com.lucky.common.core.utils.DateUtils;

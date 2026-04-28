@@ -21,7 +21,7 @@ public class RefererFilter implements Filter {
     public List<String> allowedDomains;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         String domains = filterConfig.getInitParameter("allowedDomains");
         this.allowedDomains = Arrays.asList(domains.split(","));
     }
