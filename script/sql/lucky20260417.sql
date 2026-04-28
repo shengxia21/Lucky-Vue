@@ -210,8 +210,8 @@ CREATE TABLE `ai_model`  (
 -- ----------------------------
 -- Records of ai_model
 -- ----------------------------
-INSERT INTO `ai_model` VALUES (1, 1, 'DeepSeek聊天模型', 'deepseek-chat', 'DeepSeek', 1, 0, 1, 1, 2000, 10, '0', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (2, 1, 'DeepSeek深度思考模型', 'deepseek-reasoner', 'DeepSeek', 1, 0, 2, 1, 2000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (1, 1, 'DeepSeek-Flash', 'deepseek-v4-flash', 'DeepSeek', 1, 0, 1, 1, 2000, 10, '0', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (2, 1, 'DeepSeek-Pro', 'deepseek-v4-pro', 'DeepSeek', 1, 0, 2, 1, 2000, 10, '0', '', NULL, '', NULL);
 INSERT INTO `ai_model` VALUES (3, 2, '通义千问-plus', 'qwen-plus', 'TongYi', 1, 0, 3, 1, 4000, 10, '0', '', NULL, '', NULL);
 INSERT INTO `ai_model` VALUES (4, 2, '通义千问-image-plus', 'qwen-image-plus', 'TongYi', 2, 0, 4, NULL, NULL, NULL, '0', '', NULL, '', NULL);
 INSERT INTO `ai_model` VALUES (5, 2, '通义万相2.2-文生图-plus', 'wan2.2-t2i-plus', 'TongYi', 2, 0, 5, NULL, NULL, NULL, '0', '', NULL, '', NULL);
