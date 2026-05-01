@@ -28,6 +28,9 @@ target/
 ### VS Code ###
 .vscode/
 
+### Trae ###
+.trae/
+
 ### JRebel ###
 rebel.xml
 
