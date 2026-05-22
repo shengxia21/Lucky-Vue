@@ -1,5 +1,6 @@
 package com.lucky.system.controller.system;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.excel.utils.ExcelUtil;
 import com.lucky.common.log.annotation.Log;
@@ -14,7 +15,6 @@ import com.lucky.system.domain.vo.post.SysPostVO;
 import com.lucky.system.service.ISysPostService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +35,7 @@ public class SysPostController extends BaseController {
     /**
      * 获取岗位列表
      */
-    @PreAuthorize("@ss.hasPermission('system:post:list')")
+    @SaCheckPermission("system:post:list")
     @GetMapping("/list")
     public TableDataInfo<SysPostVO> list(PageQuery pageQuery, SysPostQuery query) {
         return postService.selectPostList(pageQuery, query);
@@ -45,7 +45,7 @@ public class SysPostController extends BaseController {
      * 导出岗位数据
      */
     @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermission('system:post:export')")
+    @SaCheckPermission("system:post:export")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysPostQuery query) {
         List<SysPost> list = postService.selectPostList(query);
@@ -56,7 +56,7 @@ public class SysPostController extends BaseController {
     /**
      * 根据岗位编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermission('system:post:query')")
+    @SaCheckPermission("system:post:query")
     @GetMapping(value = "/{postId}")
     public R<SysPostVO> getInfo(@PathVariable Long postId) {
         return R.ok(postService.selectPostById(postId));
@@ -65,7 +65,7 @@ public class SysPostController extends BaseController {
     /**
      * 新增岗位
      */
-    @PreAuthorize("@ss.hasPermission('system:post:add')")
+    @SaCheckPermission("system:post:add")
     @Log(title = "岗位管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysPostSaveQuery post) {
@@ -80,7 +80,7 @@ public class SysPostController extends BaseController {
     /**
      * 修改岗位
      */
-    @PreAuthorize("@ss.hasPermission('system:post:edit')")
+    @SaCheckPermission("system:post:edit")
     @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysPostSaveQuery post) {
@@ -95,7 +95,7 @@ public class SysPostController extends BaseController {
     /**
      * 删除岗位
      */
-    @PreAuthorize("@ss.hasPermission('system:post:remove')")
+    @SaCheckPermission("system:post:remove")
     @Log(title = "岗位管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{postIds}")
     public R<Void> remove(@PathVariable Long[] postIds) {

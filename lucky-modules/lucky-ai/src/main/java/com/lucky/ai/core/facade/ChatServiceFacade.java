@@ -16,7 +16,6 @@ import com.lucky.ai.mapper.AiChatMessageMapper;
 import com.lucky.ai.util.SpringAiUtils;
 import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.StringUtils;
-import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.messages.Message;
@@ -124,8 +123,6 @@ public class ChatServiceFacade implements ChatService {
         message.setContent(request.getContent());
         message.setUseContext(request.getUseContext());
         message.setAttachmentUrls(request.getAttachmentUrls());
-        message.setCreateBy(SecurityUtils.getUsername());
-        message.setCreateTime(DateUtils.getNowDate());
         chatMessageMapper.insert(message);
         // userMessageId
         message.setReplyId(message.getId());

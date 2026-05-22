@@ -1,5 +1,6 @@
 package com.lucky.system.controller.system;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.excel.utils.ExcelUtil;
 import com.lucky.common.log.annotation.Log;
@@ -14,7 +15,6 @@ import com.lucky.system.domain.vo.config.SysConfigVO;
 import com.lucky.system.service.ISysConfigService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +35,7 @@ public class SysConfigController extends BaseController {
     /**
      * 获取参数配置列表
      */
-    @PreAuthorize("@ss.hasPermission('system:config:list')")
+    @SaCheckPermission("system:config:list")
     @GetMapping("/list")
     public TableDataInfo<SysConfigVO> list(PageQuery pageQuery, SysConfigQuery query) {
         return configService.selectConfigList(pageQuery, query);
@@ -45,7 +45,7 @@ public class SysConfigController extends BaseController {
      * 导出参数配置列表
      */
     @Log(title = "参数管理", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermission('system:config:export')")
+    @SaCheckPermission("system:config:export")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysConfigQuery query) {
         List<SysConfig> list = configService.selectConfigList(query);
@@ -56,7 +56,7 @@ public class SysConfigController extends BaseController {
     /**
      * 根据参数编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermission('system:config:query')")
+    @SaCheckPermission("system:config:query")
     @GetMapping(value = "/{configId}")
     public R<SysConfigVO> getInfo(@PathVariable Long configId) {
         return R.ok(configService.selectConfigById(configId));
@@ -73,7 +73,7 @@ public class SysConfigController extends BaseController {
     /**
      * 新增参数配置
      */
-    @PreAuthorize("@ss.hasPermission('system:config:add')")
+    @SaCheckPermission("system:config:add")
     @Log(title = "参数管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysConfigSaveQuery config) {
@@ -86,7 +86,7 @@ public class SysConfigController extends BaseController {
     /**
      * 修改参数配置
      */
-    @PreAuthorize("@ss.hasPermission('system:config:edit')")
+    @SaCheckPermission("system:config:edit")
     @Log(title = "参数管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysConfigSaveQuery config) {
@@ -99,7 +99,7 @@ public class SysConfigController extends BaseController {
     /**
      * 删除参数配置
      */
-    @PreAuthorize("@ss.hasPermission('system:config:remove')")
+    @SaCheckPermission("system:config:remove")
     @Log(title = "参数管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{configIds}")
     public R<Void> remove(@PathVariable Long[] configIds) {
@@ -110,7 +110,7 @@ public class SysConfigController extends BaseController {
     /**
      * 刷新参数缓存
      */
-    @PreAuthorize("@ss.hasPermission('system:config:remove')")
+    @SaCheckPermission("system:config:remove")
     @Log(title = "参数管理", businessType = BusinessType.CLEAN)
     @DeleteMapping("/refreshCache")
     public R<Void> refreshCache() {

@@ -48,8 +48,8 @@ public class SysIndexController {
         if (StringUtils.isEmpty(password)) {
             return R.fail("密码不能为空");
         }
-        String username = SecurityUtils.getUsername();
-        UserDTO user = userService.selectUserByUserName(username);
+        String userName = SecurityUtils.getUserName();
+        UserDTO user = userService.selectUserByUserName(userName);
         if (user == null) {
             return R.fail("服务器超时，请重新登录");
         }

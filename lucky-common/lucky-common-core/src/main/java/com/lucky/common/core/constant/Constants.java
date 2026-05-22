@@ -110,31 +110,6 @@ public class Constants {
     public static final String LOGIN_USER_KEY = "login_user_key";
 
     /**
-     * 用户ID
-     */
-    public static final String JWT_USERID = "userid";
-
-    /**
-     * 用户名称
-     */
-    public static final String JWT_USERNAME = "sub";
-
-    /**
-     * 用户头像
-     */
-    public static final String JWT_AVATAR = "avatar";
-
-    /**
-     * 创建时间
-     */
-    public static final String JWT_CREATED = "created";
-
-    /**
-     * 用户权限
-     */
-    public static final String JWT_AUTHORITIES = "authorities";
-
-    /**
      * 资源映射路径 前缀
      */
     public static final String RESOURCE_PREFIX = "/profile";

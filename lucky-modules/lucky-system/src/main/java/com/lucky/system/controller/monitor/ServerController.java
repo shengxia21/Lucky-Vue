@@ -1,8 +1,8 @@
 package com.lucky.system.controller.monitor;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.web.domain.Server;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +19,7 @@ public class ServerController {
     /**
      * 获取服务器信息
      */
-    @PreAuthorize("@ss.hasPermission('monitor:server:list')")
+    @SaCheckPermission("monitor:server:list")
     @GetMapping()
     public R<Server> getInfo() {
         Server server = new Server();

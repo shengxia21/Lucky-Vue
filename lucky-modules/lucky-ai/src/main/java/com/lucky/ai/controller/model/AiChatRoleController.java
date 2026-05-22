@@ -1,5 +1,6 @@
 package com.lucky.ai.controller.model;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.domain.query.chatRole.AiChatRolePageQuery;
 import com.lucky.ai.domain.query.chatRole.AiChatRoleSaveMyQuery;
@@ -13,7 +14,6 @@ import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,7 +92,7 @@ public class AiChatRoleController extends BaseController {
      * 创建聊天角色
      */
     @Log(title = "创建聊天角色", businessType = BusinessType.INSERT)
-    @PreAuthorize("@ss.hasPermission('ai:chat-role:create')")
+    @SaCheckPermission("ai:chat-role:create")
     @PostMapping("/create")
     public R<Long> createChatRole(@Validated @RequestBody AiChatRoleSaveQuery query) {
         return R.ok(chatRoleService.createChatRole(query));
@@ -102,7 +102,7 @@ public class AiChatRoleController extends BaseController {
      * 更新聊天角色
      */
     @Log(title = "更新聊天角色", businessType = BusinessType.UPDATE)
-    @PreAuthorize("@ss.hasPermission('ai:chat-role:update')")
+    @SaCheckPermission("ai:chat-role:update")
     @PutMapping("/update")
     public R<Integer> updateChatRole(@Validated @RequestBody AiChatRoleSaveQuery query) {
         return R.ok(chatRoleService.updateChatRole(query));
@@ -112,7 +112,7 @@ public class AiChatRoleController extends BaseController {
      * 删除聊天角色
      */
     @Log(title = "删除聊天角色", businessType = BusinessType.DELETE)
-    @PreAuthorize("@ss.hasPermission('ai:chat-role:delete')")
+    @SaCheckPermission("ai:chat-role:delete")
     @DeleteMapping("/delete")
     public R<Integer> deleteChatRole(@RequestParam("id") Long id) {
         return R.ok(chatRoleService.deleteChatRoleById(id));
@@ -121,7 +121,7 @@ public class AiChatRoleController extends BaseController {
     /**
      * 获得聊天角色
      */
-    @PreAuthorize("@ss.hasPermission('ai:chat-role:query')")
+    @SaCheckPermission("ai:chat-role:query")
     @GetMapping("/get")
     public R<AiChatRoleVO> getChatRole(@RequestParam("id") Long id) {
         return R.ok(chatRoleService.getChatRoleById(id));
@@ -130,7 +130,7 @@ public class AiChatRoleController extends BaseController {
     /**
      * 获得聊天角色分页
      */
-    @PreAuthorize("@ss.hasPermission('ai:chat-role:list')")
+    @SaCheckPermission("ai:chat-role:list")
     @GetMapping("/page")
     public TableDataInfo<AiChatRoleVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageQuery query) {
         return chatRoleService.getChatRolePage(pageQuery, query);

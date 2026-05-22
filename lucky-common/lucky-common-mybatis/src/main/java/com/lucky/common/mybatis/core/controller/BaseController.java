@@ -1,8 +1,8 @@
 package com.lucky.common.mybatis.core.controller;
 
 import com.lucky.common.core.domain.R;
+import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.utils.StringUtils;
-import com.lucky.common.security.domain.LoginUser;
 import com.lucky.common.security.utils.SecurityUtils;
 
 /**
@@ -63,8 +63,8 @@ public class BaseController {
     /**
      * 获取登录用户名
      */
-    public String getUsername() {
-        return getLoginUser().getUsername();
+    public String getUserName() {
+        return getLoginUser().getUserName();
     }
 
 }

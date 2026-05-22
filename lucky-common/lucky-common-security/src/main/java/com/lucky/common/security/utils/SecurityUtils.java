@@ -1,19 +1,14 @@
 package com.lucky.common.security.utils;
 
-import com.lucky.common.core.constant.Constants;
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.stp.parameter.SaLoginParameter;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.crypto.digest.BCrypt;
 import com.lucky.common.core.constant.HttpStatus;
-import com.lucky.common.core.domain.dto.RoleDTO;
+import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.exception.ServiceException;
-import com.lucky.common.core.utils.StringUtils;
-import com.lucky.common.security.domain.LoginUser;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.util.PatternMatchUtils;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 安全服务工具类
@@ -22,55 +17,100 @@ import java.util.stream.Collectors;
  */
 public class SecurityUtils {
 
-    /**
-     * 用户ID
-     **/
-    public static Long getUserId() {
-        try {
-            return getLoginUser().getUserId();
-        } catch (Exception e) {
-            throw new ServiceException("获取用户ID异常", HttpStatus.UNAUTHORIZED);
-        }
-    }
+    public static final String LOGIN_USER_KEY = "loginUser";
+    public static final String USER_KEY = "userId";
+    public static final String USER_NAME_KEY = "userName";
+    public static final String DEPT_KEY = "deptId";
+    public static final String DEPT_NAME_KEY = "deptName";
 
     /**
-     * 获取部门ID
-     **/
-    public static Long getDeptId() {
-        try {
-            return getLoginUser().getDeptId();
-        } catch (Exception e) {
-            throw new ServiceException("获取部门ID异常", HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    /**
-     * 获取用户账户
-     **/
-    public static String getUsername() {
-        try {
-            return getLoginUser().getUsername();
-        } catch (Exception e) {
-            throw new ServiceException("获取用户账户异常", HttpStatus.UNAUTHORIZED);
-        }
+     * 登录操作
+     *
+     * @param loginUser 登录用户信息
+     */
+    public static void login(LoginUser loginUser) {
+        SaLoginParameter parameter = new SaLoginParameter();
+        parameter.setExtra(USER_KEY, loginUser.getUserId());
+        parameter.setExtra(USER_NAME_KEY, loginUser.getUserName());
+        parameter.setExtra(DEPT_KEY, loginUser.getDeptId());
+        parameter.setExtra(DEPT_NAME_KEY, loginUser.getDeptName());
+        StpUtil.login(loginUser.getUserId(), parameter);
+        StpUtil.getTokenSession().set(LOGIN_USER_KEY, loginUser);
     }
 
     /**
      * 获取用户
      **/
     public static LoginUser getLoginUser() {
-        try {
-            return (LoginUser) getAuthentication().getPrincipal();
-        } catch (Exception e) {
+        SaSession session = StpUtil.getTokenSession();
+        if (ObjectUtil.isNull(session)) {
             throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
+        }
+        return (LoginUser) session.get(LOGIN_USER_KEY);
+    }
+
+    /**
+     * 通过Token获取用户
+     **/
+    public static LoginUser getLoginUser(String token) {
+        SaSession session = StpUtil.getTokenSessionByToken(token);
+        if (ObjectUtil.isNull(session)) {
+            throw new ServiceException("通过Token获取用户信息异常", HttpStatus.UNAUTHORIZED);
+        }
+        return (LoginUser) session.get(LOGIN_USER_KEY);
+    }
+
+    /**
+     * 刷新用户信息
+     *
+     * @param loginUser 登录用户信息
+     */
+    public static void refreshLoginUser(LoginUser loginUser) {
+        if (ObjectUtil.isNotNull(loginUser)) {
+            StpUtil.getTokenSession().set(LOGIN_USER_KEY, loginUser);
         }
     }
 
     /**
-     * 获取Authentication
+     * 获取用户ID
+     **/
+    public static Long getUserId() {
+        return Convert.toLong(getExtra(USER_KEY));
+    }
+
+    /**
+     * 获取部门ID
+     **/
+    public static Long getDeptId() {
+        return Convert.toLong(getExtra(DEPT_KEY));
+    }
+
+    /**
+     * 获取用户账户
+     **/
+    public static String getUserName() {
+        return Convert.toStr(getExtra(USER_NAME_KEY));
+    }
+
+    /**
+     * 获取部门名称
+     **/
+    public static String getDeptName() {
+        return Convert.toStr(getExtra(DEPT_NAME_KEY));
+    }
+
+    /**
+     * 获取当前 Token 的扩展信息
+     *
+     * @param key 键值
+     * @return 对应的扩展数据
      */
-    public static Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
+    private static Object getExtra(String key) {
+        try {
+            return StpUtil.getExtra(key);
+        } catch (Exception e) {
+            throw new ServiceException("获取扩展Key信息异常：" + key, HttpStatus.ERROR);
+        }
     }
 
     /**
@@ -80,8 +120,7 @@ public class SecurityUtils {
      * @return 加密字符串
      */
     public static String encryptPassword(String password) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.encode(password);
+        return BCrypt.hashpw(password);
     }
 
     /**
@@ -92,8 +131,7 @@ public class SecurityUtils {
      * @return 结果
      */
     public static boolean matchesPassword(String rawPassword, String encodedPassword) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.matches(rawPassword, encodedPassword);
+        return BCrypt.checkpw(rawPassword, encodedPassword);
     }
 
     /**
@@ -113,52 +151,6 @@ public class SecurityUtils {
      */
     public static boolean isAdmin(Long userId) {
         return userId != null && 1L == userId;
-    }
-
-    /**
-     * 验证用户是否具备某权限
-     *
-     * @param permission 权限字符串
-     * @return 用户是否具备某权限
-     */
-    public static boolean hasPermission(String permission) {
-        return hasPermission(getLoginUser().getPermissions(), permission);
-    }
-
-    /**
-     * 判断是否包含权限
-     *
-     * @param authorities 权限列表
-     * @param permission  权限字符串
-     * @return 用户是否具备某权限
-     */
-    public static boolean hasPermission(Collection<String> authorities, String permission) {
-        return authorities.stream().filter(StringUtils::hasText)
-                .anyMatch(x -> Constants.ALL_PERMISSION.equals(x) || PatternMatchUtils.simpleMatch(x, permission));
-    }
-
-    /**
-     * 验证用户是否拥有某个角色
-     *
-     * @param role 角色标识
-     * @return 用户是否具备某角色
-     */
-    public static boolean hasRole(String role) {
-        List<RoleDTO> roleList = getLoginUser().getUser().getRoles();
-        Collection<String> roles = roleList.stream().map(RoleDTO::getRoleKey).collect(Collectors.toSet());
-        return hasRole(roles, role);
-    }
-
-    /**
-     * 判断是否包含角色
-     *
-     * @param roles 角色列表
-     * @param role  角色
-     * @return 用户是否具备某角色权限
-     */
-    public static boolean hasRole(Collection<String> roles, String role) {
-        return roles.stream().filter(StringUtils::hasText)
-                .anyMatch(x -> Constants.SUPER_ADMIN.equals(x) || PatternMatchUtils.simpleMatch(x, role));
     }
 
 }

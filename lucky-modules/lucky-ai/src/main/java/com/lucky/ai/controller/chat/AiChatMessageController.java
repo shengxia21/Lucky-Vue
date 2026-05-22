@@ -1,5 +1,7 @@
 package com.lucky.ai.controller.chat;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.core.vo.chat.ChatMessageRequest;
@@ -17,7 +19,6 @@ import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -42,6 +43,7 @@ public class AiChatMessageController extends BaseController {
     /**
      * 发送消息（流式）
      */
+    @SaIgnore
     @PostMapping(value = "/send-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ChatMessageResponse> sendChatMessageStream(@Validated @RequestBody ChatMessageRequest query) {
         return chatMessageService.sendChatMessageStream(query, getUserId());
@@ -89,7 +91,7 @@ public class AiChatMessageController extends BaseController {
     /**
      * 获得消息分页
      */
-    @PreAuthorize("@ss.hasPermission('ai:chat-conversation:list')")
+    @SaCheckPermission("ai:chat-conversation:list")
     @GetMapping("/page")
     public TableDataInfo<AiChatMessageVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageQuery query) {
         return chatMessageService.getChatMessagePage(pageQuery, query);
@@ -99,7 +101,7 @@ public class AiChatMessageController extends BaseController {
      * 删除消息（管理员）
      */
     @Log(title = "删除消息（管理员）", businessType = BusinessType.DELETE)
-    @PreAuthorize("@ss.hasPermission('ai:chat-message:delete')")
+    @SaCheckPermission("ai:chat-message:delete")
     @DeleteMapping("/delete-by-admin")
     public R<Integer> deleteChatMessageByAdmin(@RequestParam("id") Long id) {
         return R.ok(chatMessageService.deleteChatMessageById(id));

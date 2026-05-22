@@ -2,14 +2,26 @@ package com.lucky.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.lucky.common.core.constant.Constants;
+import com.lucky.common.core.utils.DateUtils;
+import com.lucky.common.core.utils.LogUtils;
+import com.lucky.common.core.utils.StringUtils;
+import com.lucky.common.core.utils.ip.AddressUtils;
+import com.lucky.common.core.utils.ip.IpUtils;
+import com.lucky.common.log.event.LoginInfoEvent;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
+import com.lucky.common.web.utils.UserAgentUtils;
 import com.lucky.system.domain.SysLoginInfo;
 import com.lucky.system.domain.query.loginInfo.SysLoginInfoQuery;
 import com.lucky.system.domain.vo.loginInfo.SysLoginInfoVO;
 import com.lucky.system.mapper.SysLoginInfoMapper;
 import com.lucky.system.service.ISysLoginInfoService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -20,14 +32,46 @@ import java.util.List;
  *
  * @author lucky
  */
+@Slf4j
 @Service
 public class SysLoginInfoServiceImpl implements ISysLoginInfoService {
 
     @Resource
     private SysLoginInfoMapper loginInfoMapper;
 
-    @Override
-    public void insertLoginInfo(SysLoginInfo loginInfo) {
+    @Async
+    @EventListener
+    public void recordLoginInfo(LoginInfoEvent loginInfoEvent) {
+        HttpServletRequest request = loginInfoEvent.getRequest();
+        final String userAgent = request.getHeader("User-Agent");
+        final String ip = IpUtils.getIpAddr(request);
+        String address = AddressUtils.getRealAddressByIP(ip);
+        String s = LogUtils.getBlock(ip) +
+                address +
+                LogUtils.getBlock(loginInfoEvent.getUserName()) +
+                LogUtils.getBlock(loginInfoEvent.getStatus()) +
+                LogUtils.getBlock(loginInfoEvent.getMessage());
+        // 打印信息到日志
+        log.info(s, loginInfoEvent.getArgs());
+        // 获取客户端操作系统
+        String os = UserAgentUtils.getOperatingSystem(userAgent);
+        // 获取客户端浏览器
+        String browser = UserAgentUtils.getBrowser(userAgent);
+        // 封装对象
+        SysLoginInfo loginInfo = new SysLoginInfo();
+        loginInfo.setUserName(loginInfoEvent.getUserName());
+        loginInfo.setIpaddr(ip);
+        loginInfo.setLoginLocation(address);
+        loginInfo.setBrowser(browser);
+        loginInfo.setOs(os);
+        loginInfo.setMsg(loginInfoEvent.getMessage());
+        loginInfo.setLoginTime(DateUtils.getNowDate());
+        // 日志状态
+        if (StringUtils.equalsAny(loginInfoEvent.getStatus(), Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER)) {
+            loginInfo.setStatus(Constants.SUCCESS);
+        } else if (Constants.LOGIN_FAIL.equals(loginInfoEvent.getStatus())) {
+            loginInfo.setStatus(Constants.FAIL);
+        }
         loginInfoMapper.insert(loginInfo);
     }
 

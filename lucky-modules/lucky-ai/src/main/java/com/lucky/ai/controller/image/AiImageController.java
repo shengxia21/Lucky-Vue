@@ -1,5 +1,6 @@
 package com.lucky.ai.controller.image;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
@@ -14,7 +15,6 @@ import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,7 +90,7 @@ public class AiImageController extends BaseController {
     /**
      * 获得绘画分页
      */
-    @PreAuthorize("@ss.hasPermission('ai:image:list')")
+    @SaCheckPermission("ai:image:list")
     @GetMapping("/page")
     public TableDataInfo<AiImageVO> getImagePage(PageQuery pageQuery, AiImagePageQuery query) {
         return AiImageService.getImagePage(pageQuery, query);
@@ -100,7 +100,7 @@ public class AiImageController extends BaseController {
      * 更新绘画
      */
     @Log(title = "更新绘画", businessType = BusinessType.UPDATE)
-    @PreAuthorize("@ss.hasPermission('ai:image:update')")
+    @SaCheckPermission("ai:image:update")
     @PutMapping("/update")
     public R<Integer> updateImage(@Validated @RequestBody AiImageUpdateQuery query) {
         return R.ok(AiImageService.updateImage(query));
@@ -110,7 +110,7 @@ public class AiImageController extends BaseController {
      * 删除绘画
      */
     @Log(title = "删除绘画", businessType = BusinessType.DELETE)
-    @PreAuthorize("@ss.hasPermission('ai:image:delete')")
+    @SaCheckPermission("ai:image:delete")
     @DeleteMapping("/delete")
     public R<Integer> deleteImage(@RequestParam("id") Long id) {
         return R.ok(AiImageService.deleteImageById(id));

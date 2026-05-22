@@ -22,7 +22,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 下划线
      */
-    private static final char SEPARATOR = '_';
+    private static final char UNDERLINE = '_';
 
     /**
      * 星号
@@ -32,7 +32,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 逗号
      */
-    public static final String COMMA = ",";
+    public static final String SEPARATOR = ",";
 
     /**
      * 获取参数不为空值
@@ -460,9 +460,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             }
 
             if (preCharIsUpperCase && curreCharIsUpperCase && !nexteCharIsUpperCase) {
-                sb.append(SEPARATOR);
+                sb.append(UNDERLINE);
             } else if ((i != 0 && !preCharIsUpperCase) && curreCharIsUpperCase) {
-                sb.append(SEPARATOR);
+                sb.append(UNDERLINE);
             }
             sb.append(Character.toLowerCase(c));
         }
@@ -526,7 +526,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         if (s == null) {
             return null;
         }
-        if (s.indexOf(SEPARATOR) == -1) {
+        if (s.indexOf(UNDERLINE) == -1) {
             return s;
         }
         s = s.toLowerCase();
@@ -535,7 +535,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
 
-            if (c == SEPARATOR) {
+            if (c == UNDERLINE) {
                 upperCase = true;
             } else if (upperCase) {
                 sb.append(Character.toUpperCase(c));

@@ -1,9 +1,9 @@
-package com.lucky.common.mybatis.core.domain;
+package com.lucky.common.core.domain.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +13,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TreeEntity extends BaseEntity {
+public class TreeEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

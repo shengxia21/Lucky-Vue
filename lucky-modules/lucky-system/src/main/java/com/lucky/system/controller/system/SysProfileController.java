@@ -4,6 +4,7 @@ import com.lucky.common.core.config.LuckyConfig;
 import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.core.domain.dto.UserDTO;
+import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.bean.BeanUtils;
@@ -13,11 +14,9 @@ import com.lucky.common.core.utils.file.MimeTypeUtils;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessType;
 import com.lucky.common.mybatis.core.controller.BaseController;
-import com.lucky.common.security.domain.LoginUser;
 import com.lucky.common.security.utils.SecurityUtils;
 import com.lucky.system.domain.SysUser;
 import com.lucky.system.service.ISysUserService;
-import com.lucky.system.web.TokenService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,9 +35,6 @@ public class SysProfileController extends BaseController {
     @Resource
     private ISysUserService userService;
 
-    @Resource
-    private TokenService tokenService;
-
     /**
      * 个人信息
      */
@@ -47,8 +43,8 @@ public class SysProfileController extends BaseController {
         LoginUser loginUser = getLoginUser();
         UserDTO user = loginUser.getUser();
         AjaxResult ajax = AjaxResult.success(user);
-        ajax.put("roleGroup", userService.selectUserRoleGroup(loginUser.getUsername()));
-        ajax.put("postGroup", userService.selectUserPostGroup(loginUser.getUsername()));
+        ajax.put("roleGroup", userService.selectUserRoleGroup(loginUser.getUserName()));
+        ajax.put("postGroup", userService.selectUserPostGroup(loginUser.getUserName()));
         return ajax;
     }
 
@@ -65,16 +61,16 @@ public class SysProfileController extends BaseController {
         currentUser.setPhoneNumber(user.getPhoneNumber());
         currentUser.setSex(user.getSex());
         if (StringUtils.isNotEmpty(user.getPhoneNumber()) && !userService.checkPhoneUnique(currentUser.getUserId(), user.getPhoneNumber())) {
-            return R.fail("修改用户'" + loginUser.getUsername() + "'失败，手机号码已存在");
+            return R.fail("修改用户'" + loginUser.getUserName() + "'失败，手机号码已存在");
         }
         if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(currentUser.getUserId(), user.getEmail())) {
-            return R.fail("修改用户'" + loginUser.getUsername() + "'失败，邮箱账号已存在");
+            return R.fail("修改用户'" + loginUser.getUserName() + "'失败，邮箱账号已存在");
         }
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(currentUser, sysUser);
         if (userService.updateUserProfile(sysUser) > 0) {
-            // 更新缓存用户信息
-            tokenService.setLoginUser(loginUser);
+            // 更新用户信息
+            SecurityUtils.refreshLoginUser(loginUser);
             return R.ok();
         }
         return R.fail("修改个人信息异常，请联系管理员");
@@ -100,10 +96,10 @@ public class SysProfileController extends BaseController {
         }
         newPassword = SecurityUtils.encryptPassword(newPassword);
         if (userService.resetUserPwd(userId, newPassword) > 0) {
-            // 更新缓存用户密码&密码最后更新时间
+            // 更新用户密码&密码最后更新时间
             loginUser.getUser().setPwdUpdateDate(DateUtils.getNowDate());
             loginUser.getUser().setPassword(newPassword);
-            tokenService.setLoginUser(loginUser);
+            SecurityUtils.refreshLoginUser(loginUser);
             return R.ok();
         }
         return R.fail("修改密码异常，请联系管理员");
@@ -125,9 +121,9 @@ public class SysProfileController extends BaseController {
                 }
                 AjaxResult ajax = AjaxResult.success();
                 ajax.put("imgUrl", avatar);
-                // 更新缓存用户头像
+                // 更新用户头像
                 loginUser.getUser().setAvatar(avatar);
-                tokenService.setLoginUser(loginUser);
+                SecurityUtils.refreshLoginUser(loginUser);
                 return ajax;
             }
         }

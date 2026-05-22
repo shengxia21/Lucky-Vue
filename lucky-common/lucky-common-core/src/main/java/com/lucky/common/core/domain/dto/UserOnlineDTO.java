@@ -1,14 +1,14 @@
-package com.lucky.system.domain;
+package com.lucky.common.core.domain.dto;
 
 import lombok.Data;
 
 /**
  * 当前在线会话
  *
- * @author ruoyi
+ * @author lucky
  */
 @Data
-public class SysUserOnline {
+public class UserOnlineDTO {
 
     /**
      * 会话编号

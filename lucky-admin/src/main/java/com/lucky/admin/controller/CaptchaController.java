@@ -1,5 +1,6 @@
 package com.lucky.admin.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import com.google.code.kaptcha.Producer;
 import com.lucky.common.core.config.LuckyConfig;
 import com.lucky.common.core.constant.CacheConstants;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author ruoyi
  */
+@SaIgnore
 @RestController
 public class CaptchaController {
 

@@ -1,5 +1,6 @@
 package com.lucky.system.controller.system;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lucky.common.core.constant.UserConstants;
 import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.domain.R;
@@ -13,7 +14,6 @@ import com.lucky.system.domain.query.menu.SysMenuSaveQuery;
 import com.lucky.system.domain.vo.TreeSelect;
 import com.lucky.system.service.ISysMenuService;
 import jakarta.annotation.Resource;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +35,7 @@ public class SysMenuController extends BaseController {
     /**
      * 获取菜单列表
      */
-    @PreAuthorize("@ss.hasPermission('system:menu:list')")
+    @SaCheckPermission("system:menu:list")
     @GetMapping("/list")
     public R<List<SysMenu>> list(SysMenuQuery query) {
         List<SysMenu> menus = menuService.selectMenuList(query, getUserId());
@@ -45,7 +45,7 @@ public class SysMenuController extends BaseController {
     /**
      * 根据菜单编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermission('system:menu:query')")
+    @SaCheckPermission("system:menu:query")
     @GetMapping(value = "/{menuId}")
     public R<SysMenu> getInfo(@PathVariable Long menuId) {
         return R.ok(menuService.selectMenuById(menuId));
@@ -75,7 +75,7 @@ public class SysMenuController extends BaseController {
     /**
      * 新增菜单
      */
-    @PreAuthorize("@ss.hasPermission('system:menu:add')")
+    @SaCheckPermission("system:menu:add")
     @Log(title = "菜单管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysMenuSaveQuery menu) {
@@ -92,7 +92,7 @@ public class SysMenuController extends BaseController {
     /**
      * 修改菜单
      */
-    @PreAuthorize("@ss.hasPermission('system:menu:edit')")
+    @SaCheckPermission("system:menu:edit")
     @Log(title = "菜单管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysMenuSaveQuery menu) {
@@ -111,7 +111,7 @@ public class SysMenuController extends BaseController {
     /**
      * 保存菜单排序
      */
-    @PreAuthorize("@ss.hasPermission('system:menu:edit')")
+    @SaCheckPermission("system:menu:edit")
     @Log(title = "保存菜单排序", businessType = BusinessType.UPDATE)
     @PutMapping("/updateSort")
     public R<Void> updateSort(@RequestBody Map<String, String> params) {
@@ -124,7 +124,7 @@ public class SysMenuController extends BaseController {
     /**
      * 删除菜单
      */
-    @PreAuthorize("@ss.hasPermission('system:menu:remove')")
+    @SaCheckPermission("system:menu:remove")
     @Log(title = "菜单管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{menuId}")
     public R<Void> remove(@PathVariable Long menuId) {

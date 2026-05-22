@@ -1,5 +1,6 @@
 package com.lucky.ai.controller.chat;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.domain.query.conversation.AiChatConversationCreateMyQuery;
 import com.lucky.ai.domain.query.conversation.AiChatConversationPageQuery;
@@ -13,7 +14,6 @@ import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,7 +92,7 @@ public class AiChatConversationController extends BaseController {
     /**
      * 获取对话分页列表
      */
-    @PreAuthorize("@ss.hasPermission('ai:chat-conversation:list')")
+    @SaCheckPermission("ai:chat-conversation:list")
     @GetMapping("/page")
     public TableDataInfo<AiChatConversationVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageQuery query) {
         return chatConversationService.getChatConversationPage(pageQuery, query);
@@ -103,7 +103,7 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "管理员删除对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-by-admin")
-    @PreAuthorize("@ss.hasPermission('ai:chat-conversation:delete')")
+    @SaCheckPermission("ai:chat-conversation:delete")
     public R<Integer> deleteChatConversationById(@RequestParam("id") Long id) {
         return R.ok(chatConversationService.deleteChatConversationById(id));
     }

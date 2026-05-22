@@ -1,5 +1,6 @@
 package com.lucky.ai.controller.model;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lucky.ai.domain.query.model.AiModelPageQuery;
 import com.lucky.ai.domain.query.model.AiModelSaveQuery;
 import com.lucky.ai.domain.vo.model.AiModelVO;
@@ -12,7 +13,6 @@ import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +34,7 @@ public class AiModelController extends BaseController {
      * 创建模型
      */
     @Log(title = "创建模型", businessType = BusinessType.INSERT)
-    @PreAuthorize("@ss.hasPermission('ai:model:create')")
+    @SaCheckPermission("ai:model:create")
     @PostMapping("/create")
     public R<Long> createModel(@Validated @RequestBody AiModelSaveQuery query) {
         return R.ok(modelService.createModel(query));
@@ -44,7 +44,7 @@ public class AiModelController extends BaseController {
      * 更新模型
      */
     @Log(title = "更新模型", businessType = BusinessType.UPDATE)
-    @PreAuthorize("@ss.hasPermission('ai:model:update')")
+    @SaCheckPermission("ai:model:update")
     @PutMapping("/update")
     public R<Integer> updateModel(@Validated @RequestBody AiModelSaveQuery query) {
         return R.ok(modelService.updateModel(query));
@@ -54,7 +54,7 @@ public class AiModelController extends BaseController {
      * 删除模型
      */
     @Log(title = "删除模型", businessType = BusinessType.DELETE)
-    @PreAuthorize("@ss.hasPermission('ai:model:delete')")
+    @SaCheckPermission("ai:model:delete")
     @DeleteMapping("/delete")
     public R<Integer> deleteModel(@RequestParam("id") Long id) {
         return R.ok(modelService.deleteModelById(id));
@@ -63,7 +63,7 @@ public class AiModelController extends BaseController {
     /**
      * 获得模型
      */
-    @PreAuthorize("@ss.hasPermission('ai:model:query')")
+    @SaCheckPermission("ai:model:query")
     @GetMapping("/get")
     public R<AiModelVO> getModel(@RequestParam("id") Long id) {
         return R.ok(modelService.getModelById(id));
@@ -72,7 +72,7 @@ public class AiModelController extends BaseController {
     /**
      * 获得模型分页
      */
-    @PreAuthorize("@ss.hasPermission('ai:model:list')")
+    @SaCheckPermission("ai:model:list")
     @GetMapping("/page")
     public TableDataInfo<AiModelVO> getModelPage(PageQuery pageQuery, AiModelPageQuery query) {
         return modelService.getModelPage(pageQuery, query);

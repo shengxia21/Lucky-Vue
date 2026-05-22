@@ -73,18 +73,6 @@ public class SysMenuServiceImpl implements ISysMenuService {
     }
 
     @Override
-    public Set<String> selectMenuPermsByRoleId(Long roleId) {
-        List<String> perms = menuMapper.selectMenuPermsByRoleId(roleId);
-        Set<String> permsSet = new HashSet<>();
-        for (String perm : perms) {
-            if (StringUtils.isNotEmpty(perm)) {
-                permsSet.addAll(Arrays.asList(perm.trim().split(",")));
-            }
-        }
-        return permsSet;
-    }
-
-    @Override
     public List<SysMenu> selectMenuTreeByUserId(Long userId) {
         List<SysMenu> menus;
         if (SecurityUtils.isAdmin(userId)) {

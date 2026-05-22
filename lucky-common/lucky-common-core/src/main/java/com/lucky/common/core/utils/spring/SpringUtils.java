@@ -4,6 +4,7 @@ import com.lucky.common.core.utils.StringUtils;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -22,10 +23,13 @@ import org.springframework.stereotype.Component;
 public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware {
 
     /**
-     * Spring应用上下文环境
+     * Spring Bean工厂
      */
     private static ConfigurableListableBeanFactory beanFactory;
 
+    /**
+     * Spring应用上下文环境
+     */
     private static ApplicationContext applicationContext;
 
     /**
@@ -132,9 +136,18 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     }
 
     /**
+     * 获取Spring Bean工厂
+     *
+     * @return BeanFactory
+     */
+    public static BeanFactory getBeanFactory() {
+        return beanFactory;
+    }
+
+    /**
      * 获取应用上下文环境
      *
-     * @return 上下文
+     * @return applicationContext
      */
     public static ApplicationContext context() {
         return applicationContext;

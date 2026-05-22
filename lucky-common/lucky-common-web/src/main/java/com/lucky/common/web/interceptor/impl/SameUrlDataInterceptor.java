@@ -31,7 +31,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor {
     public final String REPEAT_TIME = "repeatTime";
 
     // 令牌自定义标识
-    @Value("${token.header}")
+    @Value("${sa-token.token-name}")
     private String header;
 
     @Resource

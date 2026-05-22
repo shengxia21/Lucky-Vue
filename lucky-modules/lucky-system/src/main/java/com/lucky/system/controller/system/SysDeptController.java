@@ -1,5 +1,6 @@
 package com.lucky.system.controller.system;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lucky.common.core.constant.UserConstants;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.core.utils.StringUtils;
@@ -12,7 +13,6 @@ import com.lucky.system.domain.vo.dept.SysDeptVO;
 import com.lucky.system.service.ISysDeptService;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +34,7 @@ public class SysDeptController extends BaseController {
     /**
      * 获取部门列表
      */
-    @PreAuthorize("@ss.hasPermission('system:dept:list')")
+    @SaCheckPermission("system:dept:list")
     @GetMapping("/list")
     public R<List<SysDeptVO>> list(SysDeptQuery query) {
         return R.ok(deptService.selectDeptList(query));
@@ -43,7 +43,7 @@ public class SysDeptController extends BaseController {
     /**
      * 查询部门列表（排除节点）
      */
-    @PreAuthorize("@ss.hasPermission('system:dept:list')")
+    @SaCheckPermission("system:dept:list")
     @GetMapping("/list/exclude/{deptId}")
     public R<List<SysDeptVO>> excludeChild(@PathVariable(required = false) Long deptId) {
         List<SysDeptVO> list = deptService.selectDeptList(new SysDeptQuery());
@@ -54,7 +54,7 @@ public class SysDeptController extends BaseController {
     /**
      * 根据部门编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermission('system:dept:query')")
+    @SaCheckPermission("system:dept:query")
     @GetMapping(value = "/{deptId}")
     public R<SysDeptVO> getInfo(@PathVariable Long deptId) {
         deptService.checkDeptDataScope(deptId);
@@ -64,7 +64,7 @@ public class SysDeptController extends BaseController {
     /**
      * 新增部门
      */
-    @PreAuthorize("@ss.hasPermission('system:dept:add')")
+    @SaCheckPermission("system:dept:add")
     @Log(title = "部门管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysDeptSaveQuery dept) {
@@ -77,7 +77,7 @@ public class SysDeptController extends BaseController {
     /**
      * 修改部门
      */
-    @PreAuthorize("@ss.hasPermission('system:dept:edit')")
+    @SaCheckPermission("system:dept:edit")
     @Log(title = "部门管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysDeptSaveQuery dept) {
@@ -96,7 +96,7 @@ public class SysDeptController extends BaseController {
     /**
      * 保存部门排序
      */
-    @PreAuthorize("@ss.hasPermission('system:dept:edit')")
+    @SaCheckPermission("system:dept:edit")
     @Log(title = "保存部门排序", businessType = BusinessType.UPDATE)
     @PutMapping("/updateSort")
     public R<Void> updateSort(@RequestBody Map<String, String> params) {
@@ -109,7 +109,7 @@ public class SysDeptController extends BaseController {
     /**
      * 删除部门
      */
-    @PreAuthorize("@ss.hasPermission('system:dept:remove')")
+    @SaCheckPermission("system:dept:remove")
     @Log(title = "部门管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{deptId}")
     public R<Void> remove(@PathVariable Long deptId) {

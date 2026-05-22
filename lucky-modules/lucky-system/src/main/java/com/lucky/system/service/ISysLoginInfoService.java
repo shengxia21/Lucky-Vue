@@ -16,13 +16,6 @@ import java.util.List;
 public interface ISysLoginInfoService {
 
     /**
-     * 新增系统登录日志
-     *
-     * @param loginInfo 访问日志对象
-     */
-    void insertLoginInfo(SysLoginInfo loginInfo);
-
-    /**
      * 查询系统登录日志集合
      *
      * @param pageQuery 分页查询对象

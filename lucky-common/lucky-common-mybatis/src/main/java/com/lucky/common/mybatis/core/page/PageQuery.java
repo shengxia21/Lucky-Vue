@@ -55,6 +55,9 @@ public class PageQuery implements Serializable {
      */
     public static final int DEFAULT_PAGE_SIZE = Integer.MAX_VALUE;
 
+    /**
+     * 构造函数
+     */
     public PageQuery(Integer pageSize, Integer pageNum) {
         this.pageSize = pageSize;
         this.pageNum = pageNum;
@@ -96,8 +99,8 @@ public class PageQuery implements Serializable {
         // 兼容前端排序类型
         isAsc = StringUtils.replaceEach(isAsc, new String[]{"ascending", "descending"}, new String[]{"asc", "desc"});
 
-        String[] orderByArr = orderBy.split(StringUtils.COMMA);
-        String[] isAscArr = isAsc.split(StringUtils.COMMA);
+        String[] orderByArr = orderBy.split(StringUtils.SEPARATOR);
+        String[] isAscArr = isAsc.split(StringUtils.SEPARATOR);
         if (isAscArr.length != 1 && isAscArr.length != orderByArr.length) {
             throw new ServiceException("排序参数有误");
         }

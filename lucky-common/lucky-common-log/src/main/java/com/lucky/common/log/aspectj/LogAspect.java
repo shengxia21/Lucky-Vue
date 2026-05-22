@@ -2,6 +2,7 @@ package com.lucky.common.log.aspectj;
 
 import com.alibaba.fastjson2.JSON;
 import com.lucky.common.core.domain.dto.UserDTO;
+import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.enums.HttpMethod;
 import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.ExceptionUtil;
@@ -15,7 +16,6 @@ import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessStatus;
 import com.lucky.common.log.event.OperLogEvent;
 import com.lucky.common.log.filter.PropertyPreExcludeFilter;
-import com.lucky.common.security.domain.LoginUser;
 import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -96,7 +96,7 @@ public class LogAspect {
             operLog.setOperIp(ip);
             operLog.setOperUrl(StringUtils.substring(ServletUtils.getRequest().getRequestURI(), 0, 255));
             if (loginUser != null) {
-                operLog.setOperName(loginUser.getUsername());
+                operLog.setOperName(loginUser.getUserName());
                 UserDTO currentUser = loginUser.getUser();
                 if (StringUtils.isNotNull(currentUser) && StringUtils.isNotNull(currentUser.getDept())) {
                     operLog.setDeptName(currentUser.getDept().getDeptName());

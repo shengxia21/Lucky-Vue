@@ -1,17 +1,17 @@
-package com.lucky.system.domain;
+package com.lucky.system.domain.vo.cache;
 
 import com.lucky.common.core.utils.StringUtils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 缓存信息
+ * 缓存信息VO
  *
- * @author ruoyi
+ * @author lucky
  */
 @Data
 @NoArgsConstructor
-public class SysCache {
+public class SysCacheVo {
 
     /**
      * 缓存名称
@@ -33,12 +33,12 @@ public class SysCache {
      */
     private String remark = "";
 
-    public SysCache(String cacheName, String remark) {
+    public SysCacheVo(String cacheName, String remark) {
         this.cacheName = cacheName;
         this.remark = remark;
     }
 
-    public SysCache(String cacheName, String cacheKey, String cacheValue) {
+    public SysCacheVo(String cacheName, String cacheKey, String cacheValue) {
         this.cacheName = StringUtils.replace(cacheName, ":", "");
         this.cacheKey = StringUtils.replace(cacheKey, cacheName, "");
         this.cacheValue = cacheValue;

@@ -1,20 +1,21 @@
 package com.lucky.admin.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import com.lucky.admin.service.SysLoginService;
 import com.lucky.common.core.constant.Constants;
 import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.domain.R;
 import com.lucky.common.core.domain.dto.UserDTO;
 import com.lucky.common.core.domain.model.LoginBody;
+import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.text.Convert;
-import com.lucky.common.security.domain.LoginUser;
 import com.lucky.common.security.utils.SecurityUtils;
 import com.lucky.system.domain.SysMenu;
+import com.lucky.system.domain.vo.RouterVo;
 import com.lucky.system.service.ISysConfigService;
 import com.lucky.system.service.ISysMenuService;
-import com.lucky.system.web.SysPermissionService;
-import com.lucky.system.web.TokenService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 登录验证
@@ -40,12 +40,6 @@ public class SysLoginController {
     private ISysMenuService menuService;
 
     @Resource
-    private SysPermissionService permissionService;
-
-    @Resource
-    private TokenService tokenService;
-
-    @Resource
     private ISysConfigService configService;
 
     /**
@@ -54,12 +48,12 @@ public class SysLoginController {
      * @param loginBody 登录信息
      * @return 结果
      */
+    @SaIgnore
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginBody loginBody) {
         AjaxResult ajax = AjaxResult.success();
         // 生成令牌
-        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(),
-                loginBody.getCode(), loginBody.getUuid());
+        String token = loginService.login(loginBody);
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
@@ -73,18 +67,10 @@ public class SysLoginController {
     public AjaxResult getInfo() {
         LoginUser loginUser = SecurityUtils.getLoginUser();
         UserDTO user = loginUser.getUser();
-        // 角色集合
-        Set<String> roles = permissionService.getRolePermission(user);
-        // 权限集合
-        Set<String> permissions = permissionService.getMenuPermission(user);
-        if (!loginUser.getPermissions().equals(permissions)) {
-            loginUser.setPermissions(permissions);
-            tokenService.refreshToken(loginUser);
-        }
         AjaxResult ajax = AjaxResult.success();
         ajax.put("user", user);
-        ajax.put("roles", roles);
-        ajax.put("permissions", permissions);
+        ajax.put("roles", loginUser.getRolePermission());
+        ajax.put("permissions", loginUser.getMenuPermission());
         ajax.put("pwdChrtype", getSysAccountChrtype());
         ajax.put("isDefaultModifyPwd", initPasswordIsModify(user.getPwdUpdateDate()));
         ajax.put("isPasswordExpired", passwordIsExpiration(user.getPwdUpdateDate()));
@@ -97,10 +83,20 @@ public class SysLoginController {
      * @return 路由信息
      */
     @GetMapping("getRouters")
-    public AjaxResult getRouters() {
+    public R<List<RouterVo>> getRouters() {
         Long userId = SecurityUtils.getUserId();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
-        return AjaxResult.success(menuService.buildMenus(menus));
+        return R.ok(menuService.buildMenus(menus));
+    }
+
+    /**
+     * 退出登录
+     */
+    @SaIgnore
+    @PostMapping("/logout")
+    public R<Void> logout() {
+        loginService.logout();
+        return R.ok();
     }
 
     // 获取用户密码自定义配置规则

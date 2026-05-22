@@ -1,5 +1,6 @@
 package com.lucky.admin.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import com.lucky.admin.service.SysRegisterService;
 import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.domain.R;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
  *
  * @author ruoyi
  */
+@SaIgnore
 @RestController
 @RequestMapping("/register")
 public class SysRegisterController extends BaseController {

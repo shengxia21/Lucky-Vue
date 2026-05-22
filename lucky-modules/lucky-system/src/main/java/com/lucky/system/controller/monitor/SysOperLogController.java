@@ -1,5 +1,6 @@
 package com.lucky.system.controller.monitor;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.excel.utils.ExcelUtil;
 import com.lucky.common.log.annotation.Log;
@@ -13,7 +14,6 @@ import com.lucky.system.domain.vo.operLog.SysOperLogVO;
 import com.lucky.system.service.ISysOperLogService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class SysOperLogController extends BaseController {
     /**
      * 查询操作日志列表
      */
-    @PreAuthorize("@ss.hasPermission('monitor:operLog:list')")
+    @SaCheckPermission("monitor:operLog:list")
     @GetMapping("/list")
     public TableDataInfo<SysOperLogVO> list(PageQuery pageQuery, SysOperLogQuery query) {
         return operLogService.selectOperLogList(pageQuery, query);
@@ -43,7 +43,7 @@ public class SysOperLogController extends BaseController {
      * 导出操作日志列表
      */
     @Log(title = "操作日志", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermission('monitor:operLog:export')")
+    @SaCheckPermission("monitor:operLog:export")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysOperLogQuery query) {
         List<SysOperLog> list = operLogService.selectOperLogList(query);
@@ -55,7 +55,7 @@ public class SysOperLogController extends BaseController {
      * 删除操作日志
      */
     @Log(title = "操作日志", businessType = BusinessType.DELETE)
-    @PreAuthorize("@ss.hasPermission('monitor:operLog:remove')")
+    @SaCheckPermission("monitor:operLog:remove")
     @DeleteMapping("/{operIds}")
     public R<Void> remove(@PathVariable Long[] operIds) {
         return toAjax(operLogService.deleteOperLogByIds(operIds));
@@ -65,7 +65,7 @@ public class SysOperLogController extends BaseController {
      * 清空操作日志
      */
     @Log(title = "操作日志", businessType = BusinessType.CLEAN)
-    @PreAuthorize("@ss.hasPermission('monitor:operLog:remove')")
+    @SaCheckPermission("monitor:operLog:remove")
     @DeleteMapping("/clean")
     public R<Void> clean() {
         return toAjax(operLogService.cleanOperLog());

@@ -23,22 +23,16 @@
             <artifactId>lucky-common-redis</artifactId>
         </dependency>
 
-        <!-- spring security 安全认证 -->
+        <!-- Sa-Token 权限认证, 在线文档：http://sa-token.dev33.cn/ -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot3-starter</artifactId>
         </dependency>
 
-        <!-- Token生成与解析 -->
+        <!-- Sa-Token 整合 jwt -->
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-        </dependency>
-
-        <!-- Jaxb -->
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-jwt</artifactId>
         </dependency>
 
     </dependencies>

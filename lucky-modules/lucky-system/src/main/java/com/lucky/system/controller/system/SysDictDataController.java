@@ -1,5 +1,6 @@
 package com.lucky.system.controller.system;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.excel.utils.ExcelUtil;
 import com.lucky.common.log.annotation.Log;
@@ -15,7 +16,6 @@ import com.lucky.system.service.ISysDictDataService;
 import com.lucky.system.service.ISysDictTypeService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +39,7 @@ public class SysDictDataController extends BaseController {
     /**
      * 获取字典数据列表
      */
-    @PreAuthorize("@ss.hasPermission('system:dict:list')")
+    @SaCheckPermission("system:dict:list")
     @GetMapping("/list")
     public TableDataInfo<SysDictDataVO> list(PageQuery pageQuery, SysDictDataQuery query) {
         return dictDataService.selectDictDataList(pageQuery, query);
@@ -48,7 +48,7 @@ public class SysDictDataController extends BaseController {
     /**
      * 导出字典数据列表
      */
-    @PreAuthorize("@ss.hasPermission('system:dict:export')")
+    @SaCheckPermission("system:dict:export")
     @Log(title = "字典数据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysDictDataQuery query) {
@@ -60,7 +60,7 @@ public class SysDictDataController extends BaseController {
     /**
      * 根据字典数据编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermission('system:dict:query')")
+    @SaCheckPermission("system:dict:query")
     @GetMapping(value = "/{dictCode}")
     public R<SysDictDataVO> getInfo(@PathVariable Long dictCode) {
         return R.ok(dictDataService.selectDictDataById(dictCode));
@@ -77,7 +77,7 @@ public class SysDictDataController extends BaseController {
     /**
      * 新增字典数据
      */
-    @PreAuthorize("@ss.hasPermission('system:dict:add')")
+    @SaCheckPermission("system:dict:add")
     @Log(title = "字典数据", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysDictDataSaveQuery dictData) {
@@ -87,7 +87,7 @@ public class SysDictDataController extends BaseController {
     /**
      * 修改字典数据
      */
-    @PreAuthorize("@ss.hasPermission('system:dict:edit')")
+    @SaCheckPermission("system:dict:edit")
     @Log(title = "字典数据", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysDictDataSaveQuery dictData) {
@@ -97,7 +97,7 @@ public class SysDictDataController extends BaseController {
     /**
      * 删除字典数据
      */
-    @PreAuthorize("@ss.hasPermission('system:dict:remove')")
+    @SaCheckPermission("system:dict:remove")
     @Log(title = "字典数据", businessType = BusinessType.DELETE)
     @DeleteMapping("/{dictCodes}")
     public R<Void> remove(@PathVariable Long[] dictCodes) {

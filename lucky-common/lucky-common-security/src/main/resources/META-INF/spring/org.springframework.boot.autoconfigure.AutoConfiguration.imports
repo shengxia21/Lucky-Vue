@@ -1,5 +1,2 @@
-com.lucky.common.security.config.properties.PermitAllUrlProperties
+com.lucky.common.security.config.SaTokenConfig
 com.lucky.common.security.config.SecurityConfig
-com.lucky.common.security.handler.AuthenticationEntryPointImpl
-com.lucky.common.security.handler.LogoutSuccessHandlerImpl
-com.lucky.common.security.service.PermissionService
