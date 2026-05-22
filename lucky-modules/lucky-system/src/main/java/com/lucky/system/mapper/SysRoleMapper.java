@@ -2,6 +2,8 @@ package com.lucky.system.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.lucky.common.mybatis.annotation.DataColumn;
+import com.lucky.common.mybatis.annotation.DataPermission;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 import com.lucky.system.domain.SysRole;
 import com.lucky.system.domain.query.role.SysRoleQuery;
@@ -23,6 +25,10 @@ public interface SysRoleMapper extends BaseMapperX<SysRole, SysRole> {
      * @param query 查询参数
      * @return 角色数据集合信息
      */
+    @DataPermission({
+        @DataColumn(key = "deptName", value = "r.create_dept"),
+        @DataColumn(key = "userName", value = "r.create_by")
+    })
     IPage<SysRole> selectRoleList(IPage<SysRole> page, @Param("query") SysRoleQuery query);
 
     /**
@@ -31,6 +37,10 @@ public interface SysRoleMapper extends BaseMapperX<SysRole, SysRole> {
      * @param query 查询参数
      * @return 角色数据集合信息
      */
+    @DataPermission({
+        @DataColumn(key = "deptName", value = "r.create_dept"),
+        @DataColumn(key = "userName", value = "r.create_by")
+    })
     List<SysRole> selectRoleList(@Param("query") SysRoleQuery query);
 
     /**

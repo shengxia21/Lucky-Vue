@@ -1,8 +1,9 @@
 package com.lucky.system.domain.query.role;
 
-import com.lucky.common.mybatis.core.domain.DataScopeEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 角色查询参数
@@ -10,8 +11,7 @@ import lombok.EqualsAndHashCode;
  * @author lucky
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class SysRoleQuery extends DataScopeEntity {
+public class SysRoleQuery {
 
     /**
      * 角色ID
@@ -32,5 +32,17 @@ public class SysRoleQuery extends DataScopeEntity {
      * 角色状态（0正常 1停用）
      */
     private String status;
+
+    /**
+     * 请求参数（时间查询）
+     */
+    private Map<String, Object> params;
+
+    public Map<String, Object> getParams() {
+        if (params == null) {
+            params = new HashMap<>();
+        }
+        return params;
+    }
 
 }

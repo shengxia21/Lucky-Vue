@@ -8,7 +8,6 @@ import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.bean.BeanValidators;
 import com.lucky.common.core.utils.spring.SpringUtils;
-import com.lucky.common.mybatis.annotation.DataScope;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import com.lucky.common.security.utils.SecurityUtils;
@@ -63,27 +62,23 @@ public class SysUserServiceImpl implements ISysUserService {
     private ISysDeptService deptService;
 
     @Override
-    @DataScope(deptAlias = "d", userAlias = "u")
     public TableDataInfo<SysUser> selectUserList(PageQuery pageQuery, SysUserQuery query) {
         IPage<SysUser> page = userMapper.selectUserList(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
     @Override
-    @DataScope(deptAlias = "d", userAlias = "u")
     public List<SysUser> selectUserList(SysUserQuery query) {
         return userMapper.selectUserList(query);
     }
 
     @Override
-    @DataScope(deptAlias = "d", userAlias = "u")
     public TableDataInfo<SysUser> selectAllocatedList(PageQuery pageQuery, SysUserQuery query) {
         IPage<SysUser> page = userMapper.selectAllocatedList(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
     @Override
-    @DataScope(deptAlias = "d", userAlias = "u")
     public TableDataInfo<SysUser> selectUnallocatedList(PageQuery pageQuery, SysUserQuery query) {
         IPage<SysUser> page = userMapper.selectUnallocatedList(pageQuery.build(), query);
         return TableDataInfo.build(page);

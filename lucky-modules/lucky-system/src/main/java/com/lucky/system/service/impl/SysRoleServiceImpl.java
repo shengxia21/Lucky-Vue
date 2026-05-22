@@ -6,7 +6,6 @@ import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.spring.SpringUtils;
-import com.lucky.common.mybatis.annotation.DataScope;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import com.lucky.common.security.utils.SecurityUtils;
@@ -46,14 +45,12 @@ public class SysRoleServiceImpl implements ISysRoleService {
     private SysRoleDeptMapper roleDeptMapper;
 
     @Override
-    @DataScope(deptAlias = "d")
     public TableDataInfo<SysRole> selectRoleList(PageQuery pageQuery, SysRoleQuery query) {
         IPage<SysRole> page = roleMapper.selectRoleList(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
     @Override
-    @DataScope(deptAlias = "d")
     public List<SysRole> selectRoleList(SysRoleQuery query) {
         return roleMapper.selectRoleList(query);
     }

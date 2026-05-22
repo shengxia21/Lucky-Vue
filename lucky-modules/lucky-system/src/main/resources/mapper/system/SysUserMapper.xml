@@ -121,8 +121,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="query.deptId != null">
 			AND (u.dept_id = #{query.deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE find_in_set(#{query.deptId}, ancestors) ))
 		</if>
-		<!-- 数据范围过滤 -->
-		${query.params.dataScopeEntity}
 	</select>
 
 	<select id="selectAllocatedList" resultMap="SysUserResult">
@@ -139,8 +137,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="query.phoneNumber != null and query.phoneNumber != ''">
 			AND u.phone_number like concat('%', #{query.phoneNumber}, '%')
 		</if>
-		<!-- 数据范围过滤 -->
-		${query.params.dataScopeEntity}
 	</select>
 
 	<select id="selectUnallocatedList" resultMap="SysUserResult">
@@ -158,8 +154,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="query.phoneNumber != null and query.phoneNumber != ''">
 			AND u.phone_number like concat('%', #{query.phoneNumber}, '%')
 		</if>
-		<!-- 数据范围过滤 -->
-		${query.params.dataScopeEntity}
 	</select>
 
 	<select id="selectUserByUserName" parameterType="String" resultMap="UserDTOResult">

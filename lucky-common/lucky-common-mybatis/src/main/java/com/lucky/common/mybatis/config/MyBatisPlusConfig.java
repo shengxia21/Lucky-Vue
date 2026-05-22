@@ -6,11 +6,15 @@ import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.lucky.common.mybatis.aspectj.DataPermissionPointcutAdvisor;
 import com.lucky.common.mybatis.handler.InjectionMetaObjectHandler;
 import com.lucky.common.mybatis.handler.MybatisExceptionHandler;
+import com.lucky.common.mybatis.interceptor.PlusDataPermissionInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Role;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -19,6 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author lucky
  */
 @AutoConfiguration
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @MapperScan("${mybatis-plus.mapperPackage}")
 @EnableTransactionManagement(proxyTargetClass = true)
 public class MyBatisPlusConfig {
@@ -26,9 +31,27 @@ public class MyBatisPlusConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        // 数据权限处理
+        interceptor.addInnerInterceptor(dataPermissionInterceptor());
         // 分页插件
         interceptor.addInnerInterceptor(paginationInnerInterceptor());
         return interceptor;
+    }
+
+    /**
+     * 数据权限拦截器
+     */
+    public PlusDataPermissionInterceptor dataPermissionInterceptor() {
+        return new PlusDataPermissionInterceptor();
+    }
+
+    /**
+     * 数据权限切面处理器
+     */
+    @Bean
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    public DataPermissionPointcutAdvisor dataPermissionPointcutAdvisor() {
+        return new DataPermissionPointcutAdvisor();
     }
 
     /**

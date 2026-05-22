@@ -1,8 +1,6 @@
 package com.lucky.system.domain.query.dept;
 
-import com.lucky.common.mybatis.core.domain.DataScopeEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 部门查询对象
@@ -10,8 +8,7 @@ import lombok.EqualsAndHashCode;
  * @author lucky
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class SysDeptQuery extends DataScopeEntity {
+public class SysDeptQuery {
 
     /**
      * 部门ID

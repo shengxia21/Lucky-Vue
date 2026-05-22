@@ -1,7 +1,10 @@
 package com.lucky.system.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.common.core.constant.UserConstants;
+import com.lucky.common.mybatis.annotation.DataColumn;
+import com.lucky.common.mybatis.annotation.DataPermission;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 import com.lucky.system.domain.SysDept;
 import com.lucky.system.domain.query.dept.SysDeptQuery;
@@ -10,6 +13,8 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 部门管理 数据层
@@ -24,6 +29,9 @@ public interface SysDeptMapper extends BaseMapperX<SysDept, SysDeptVO> {
      * @param query 查询参数
      * @return 部门列表
      */
+    @DataPermission({
+        @DataColumn(key = "deptName", value = "d.dept_id")
+    })
     List<SysDeptVO> selectDeptList(SysDeptQuery query);
 
     /**
@@ -83,6 +91,15 @@ public interface SysDeptMapper extends BaseMapperX<SysDept, SysDeptVO> {
         return update(Wrappers.<SysDept>lambdaUpdate()
                 .set(SysDept::getOrderNum, orderNum)
                 .eq(SysDept::getDeptId, deptId));
+    }
+
+    default List<Long> selectDeptAndChildById(Long parentId) {
+        List<SysDept> deptList = selectList(new LambdaQueryWrapper<SysDept>()
+                .select(SysDept::getDeptId)
+                .apply("find_in_set({0}, ancestors)", parentId));
+        List<Long> list = deptList.stream().map(SysDept::getDeptId).filter(Objects::nonNull).collect(Collectors.toList());
+        list.add(parentId);
+        return list;
     }
 
 }

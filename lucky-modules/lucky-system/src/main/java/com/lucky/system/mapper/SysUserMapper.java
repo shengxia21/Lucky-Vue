@@ -3,6 +3,8 @@ package com.lucky.system.mapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.common.core.domain.dto.UserDTO;
+import com.lucky.common.mybatis.annotation.DataColumn;
+import com.lucky.common.mybatis.annotation.DataPermission;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 import com.lucky.system.domain.SysUser;
 import com.lucky.system.domain.query.user.SysUserQuery;
@@ -25,6 +27,10 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
      * @param query 用户信息
      * @return 用户信息集合信息
      */
+    @DataPermission({
+        @DataColumn(key = "deptName", value = "d.dept_id"),
+        @DataColumn(key = "userName", value = "u.create_by")
+    })
     IPage<SysUser> selectUserList(IPage<SysUser> page, @Param("query") SysUserQuery query);
 
     /**
@@ -33,6 +39,10 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
      * @param query 用户信息
      * @return 用户信息集合信息
      */
+    @DataPermission({
+        @DataColumn(key = "deptName", value = "d.dept_id"),
+        @DataColumn(key = "userName", value = "u.create_by")
+    })
     List<SysUser> selectUserList(@Param("query") SysUserQuery query);
 
     /**
@@ -42,6 +52,10 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
      * @param query 查询参数
      * @return 用户信息集合信息
      */
+    @DataPermission({
+        @DataColumn(key = "deptName", value = "d.dept_id"),
+        @DataColumn(key = "userName", value = "u.create_by")
+    })
     IPage<SysUser> selectAllocatedList(IPage<SysUser> page, @Param("query") SysUserQuery query);
 
     /**
@@ -51,6 +65,10 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
      * @param query 查询参数
      * @return 用户信息集合信息
      */
+    @DataPermission({
+        @DataColumn(key = "deptName", value = "d.dept_id"),
+        @DataColumn(key = "userName", value = "u.create_by")
+    })
     IPage<SysUser> selectUnallocatedList(IPage<SysUser> page, @Param("query") SysUserQuery query);
 
     /**

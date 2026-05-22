@@ -3,10 +3,10 @@ package com.lucky.common.mybatis.handler;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.lucky.common.core.constant.HttpStatus;
+import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.domain.BaseEntity;
-import com.lucky.common.security.domain.LoginUser;
 import com.lucky.common.security.utils.SecurityUtils;
 import org.apache.ibatis.reflection.MetaObject;
 
@@ -36,10 +36,12 @@ public class InjectionMetaObjectHandler implements MetaObjectHandler {
                 if (ObjectUtil.isNull(baseEntity.getCreateBy())) {
                     LoginUser loginUser = getLoginUser();
                     if (ObjectUtil.isNotNull(loginUser)) {
-                        // 填充创建人
-                        baseEntity.setCreateBy(loginUser.getUsername());
+                        // 填充创建部门、创建人信息
+                        baseEntity.setCreateDept(loginUser.getDeptId());
+                        baseEntity.setCreateBy(loginUser.getUserName());
                     } else {
-                        // 填充创建人默认值
+                        // 填充创建部门、创建人默认值
+                        baseEntity.setCreateDept(Long.valueOf(DEFAULT_USER_ID));
                         baseEntity.setCreateBy(DEFAULT_USER_ID);
                     }
                 }
@@ -62,7 +64,7 @@ public class InjectionMetaObjectHandler implements MetaObjectHandler {
                 // 获取当前登录用户名，并填充更新人信息
                 LoginUser loginUser = getLoginUser();
                 if (ObjectUtil.isNotNull(loginUser)) {
-                    baseEntity.setUpdateBy(loginUser.getUsername());
+                    baseEntity.setUpdateBy(loginUser.getUserName());
                 } else {
                     baseEntity.setUpdateBy(DEFAULT_USER_ID);
                 }

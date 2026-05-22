@@ -35,8 +35,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="query.params.endTime != null and query.params.endTime != ''">
 			and date_format(r.create_time,'%Y%m%d') &lt;= date_format(#{query.params.endTime},'%Y%m%d')
 		</if>
-		<!-- 数据范围过滤 -->
-		${query.params.dataScopeEntity}
 		order by r.role_sort
 	</select>
 

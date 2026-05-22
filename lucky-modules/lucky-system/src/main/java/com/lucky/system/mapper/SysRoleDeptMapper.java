@@ -5,6 +5,7 @@ import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 import com.lucky.system.domain.SysRoleDept;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 角色与部门关联表 数据层
@@ -21,6 +22,12 @@ public interface SysRoleDeptMapper extends BaseMapperX<SysRoleDept, SysRoleDept>
     default int deleteByRoleIds(Long[] roleIds) {
         return delete(Wrappers.<SysRoleDept>lambdaQuery()
                 .in(SysRoleDept::getRoleId, Arrays.asList(roleIds)));
+    }
+
+    default List<SysRoleDept> getRoleCustom(Long roleId) {
+        return selectList(Wrappers.<SysRoleDept>lambdaQuery()
+                .select(SysRoleDept::getDeptId)
+                .eq(SysRoleDept::getRoleId, roleId));
     }
 
 }

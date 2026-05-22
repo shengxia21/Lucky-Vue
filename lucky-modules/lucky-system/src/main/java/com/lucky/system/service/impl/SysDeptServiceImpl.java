@@ -6,7 +6,6 @@ import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.spring.SpringUtils;
 import com.lucky.common.core.utils.text.Convert;
-import com.lucky.common.mybatis.annotation.DataScope;
 import com.lucky.common.security.utils.SecurityUtils;
 import com.lucky.system.domain.SysDept;
 import com.lucky.system.domain.SysRole;
@@ -42,7 +41,6 @@ public class SysDeptServiceImpl implements ISysDeptService {
     private SysUserMapper userMapper;
 
     @Override
-    @DataScope(deptAlias = "d")
     public List<SysDeptVO> selectDeptList(SysDeptQuery query) {
         return deptMapper.selectDeptList(query);
     }

@@ -2,8 +2,6 @@ package com.lucky.common.core.domain.dto;
 
 import lombok.Data;
 
-import java.util.Set;
-
 /**
  * 角色DTO
  *
@@ -41,10 +39,5 @@ public class RoleDTO {
      * 角色状态（0正常 1停用）
      */
     private String status;
-
-    /**
-     * 角色菜单权限
-     */
-    private Set<String> permissions;
 
 }
