@@ -108,7 +108,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService {
         Map<String, List<SysDictData>> dictDataMap = dictDataMapper.selectList(query).stream().collect(Collectors.groupingBy(SysDictData::getDictType));
         for (Map.Entry<String, List<SysDictData>> entry : dictDataMap.entrySet()) {
             List<DictDataDTO> dtoList = DictDataConvertUtils.convertDto(entry.getValue());
-            DictUtils.setDictCache(entry.getKey(), dtoList.stream().sorted(Comparator.comparing(DictDataDTO::getDictSort)).toList());
+            DictUtils.setDictCache(entry.getKey(), dtoList.stream().sorted(Comparator.comparing(DictDataDTO::getDictSort)).collect(Collectors.toList()));
         }
     }
 

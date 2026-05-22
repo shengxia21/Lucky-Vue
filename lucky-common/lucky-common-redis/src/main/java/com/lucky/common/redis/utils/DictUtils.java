@@ -1,6 +1,5 @@
 package com.lucky.common.redis.utils;
 
-import com.alibaba.fastjson2.JSONArray;
 import com.lucky.common.core.constant.CacheConstants;
 import com.lucky.common.core.domain.dto.DictDataDTO;
 import com.lucky.common.core.utils.StringUtils;
@@ -40,9 +39,9 @@ public class DictUtils {
      * @return dictDatas 字典数据列表
      */
     public static List<DictDataDTO> getDictCache(String key) {
-        JSONArray arrayCache = SpringUtils.getBean(RedisCache.class).getCacheObject(getCacheKey(key));
-        if (StringUtils.isNotNull(arrayCache)) {
-            return arrayCache.toList(DictDataDTO.class);
+        List<DictDataDTO> dictDataList = SpringUtils.getBean(RedisCache.class).getCacheObject(getCacheKey(key));
+        if (StringUtils.isNotNull(dictDataList)) {
+            return dictDataList;
         }
         return null;
     }
