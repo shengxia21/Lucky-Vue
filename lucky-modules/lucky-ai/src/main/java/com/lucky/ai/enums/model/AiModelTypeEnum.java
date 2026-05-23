@@ -1,6 +1,6 @@
 package com.lucky.ai.enums.model;
 
-import com.lucky.common.core.enums.check.ArrayValuable;
+import com.lucky.common.core.enumeration.ArrayValuable;
 
 import java.util.Arrays;
 

@@ -4,7 +4,7 @@ import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.enums.model.AiModelTypeEnum;
 import com.lucky.ai.enums.model.AiPlatformEnum;
-import com.lucky.common.core.verify.InEnum;
+import com.lucky.common.core.enumeration.InEnum;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

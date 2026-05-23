@@ -1,4 +1,4 @@
-package com.lucky.common.core.enums.check;
+package com.lucky.common.core.enumeration;
 
 /**
  * 可生成 T 数组的接口

@@ -1,6 +1,5 @@
-package com.lucky.common.core.verify;
+package com.lucky.common.core.enumeration;
 
-import com.lucky.common.core.enums.check.ArrayValuable;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

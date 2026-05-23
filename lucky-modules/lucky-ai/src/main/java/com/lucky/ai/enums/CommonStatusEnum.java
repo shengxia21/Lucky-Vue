@@ -1,7 +1,7 @@
 package com.lucky.ai.enums;
 
 import cn.hutool.core.util.ObjUtil;
-import com.lucky.common.core.enums.check.ArrayValuable;
+import com.lucky.common.core.enumeration.ArrayValuable;
 
 import java.util.Arrays;
 
