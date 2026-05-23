@@ -1,12 +1,16 @@
 package com.lucky.common.excel.utils;
 
 import com.lucky.common.core.config.LuckyConfig;
+import com.lucky.common.core.constant.HttpStatus;
 import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.exception.UtilException;
+import com.lucky.common.core.service.DictService;
 import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.file.FileTypeUtils;
 import com.lucky.common.core.utils.file.FileUtils;
+import com.lucky.common.core.utils.spring.SpringUtils;
 import com.lucky.common.core.utils.text.Convert;
 import com.lucky.common.excel.annotation.Excel;
 import com.lucky.common.excel.annotation.Excel.ColumnType;
@@ -14,7 +18,6 @@ import com.lucky.common.excel.annotation.Excel.Type;
 import com.lucky.common.excel.annotation.Excels;
 import com.lucky.common.excel.domain.ExcelSheet;
 import com.lucky.common.excel.handler.ExcelHandlerAdapter;
-import com.lucky.common.redis.utils.DictUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -29,6 +32,7 @@ import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.*;
 import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTMarker;
+import org.springframework.beans.BeansException;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -986,11 +990,11 @@ public class ExcelUtil<T> {
             String[] comboArray = attr.combo();
             if (attr.comboReadDict()) {
                 if (!sysDictMap.containsKey("combo_" + attr.dictType())) {
-                    String labels = DictUtils.getDictLabels(attr.dictType());
+                    String labels = getDictService().getDictLabels(attr.dictType());
                     sysDictMap.put("combo_" + attr.dictType(), labels);
                 }
                 String val = sysDictMap.get("combo_" + attr.dictType());
-                comboArray = StringUtils.split(val, DictUtils.SEPARATOR);
+                comboArray = StringUtils.split(val, DictService.SEPARATOR);
             }
             if (comboArray.length > 15 || StringUtils.join(comboArray).length() > 255) {
                 // 如果下拉数大于15或字符串长度大于255，则使用一个新sheet存储，避免生成的模板下拉值获取不到
@@ -1235,7 +1239,7 @@ public class ExcelUtil<T> {
      * @return 字典标签
      */
     public static String convertDictByExp(String dictValue, String dictType, String separator) {
-        return DictUtils.getDictLabel(dictType, dictValue, separator);
+        return getDictService().getDictLabel(dictType, dictValue, separator);
     }
 
     /**
@@ -1247,7 +1251,7 @@ public class ExcelUtil<T> {
      * @return 字典值
      */
     public static String reverseDictByExp(String dictLabel, String dictType, String separator) {
-        return DictUtils.getDictValue(dictType, dictLabel, separator);
+        return getDictService().getDictValue(dictType, dictLabel, separator);
     }
 
     /**
@@ -1668,6 +1672,19 @@ public class ExcelUtil<T> {
             log.error("获取对象异常{}", e.getMessage());
         }
         return method;
+    }
+
+    /**
+     * 获取字典服务
+     *
+     * @return 字典服务
+     */
+    private static DictService getDictService() {
+        try {
+            return SpringUtils.getBean(DictService.class);
+        } catch (BeansException e) {
+            throw new ServiceException("DictService 实现类不存在", HttpStatus.NOT_IMPLEMENTED);
+        }
     }
 
 }

@@ -20,7 +20,7 @@
         <!-- common 核心模块 -->
         <dependency>
             <groupId>com.lucky</groupId>
-            <artifactId>lucky-common-redis</artifactId>
+            <artifactId>lucky-common-core</artifactId>
         </dependency>
 
         <!-- excel工具 -->

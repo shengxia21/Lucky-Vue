@@ -2,10 +2,10 @@ package com.lucky.system.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.common.core.domain.dto.DictDataDTO;
+import com.lucky.common.core.service.DictService;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
-import com.lucky.common.redis.utils.DictUtils;
 import com.lucky.system.domain.SysDictData;
 import com.lucky.system.domain.query.dict.SysDictDataQuery;
 import com.lucky.system.domain.query.dict.SysDictDataSaveQuery;
@@ -29,6 +29,9 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
 
     @Resource
     private SysDictDataMapper dictDataMapper;
+
+    @Resource
+    private DictService dictService;
 
     /**
      * 根据字典数据ID查询信息
@@ -78,7 +81,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
         if (row > 0) {
             List<SysDictData> dictDatas = dictDataMapper.selectListByType(dictData.getDictType());
             List<DictDataDTO> convertList = DictDataConvertUtils.convertDto(dictDatas);
-            DictUtils.setDictCache(dictData.getDictType(), convertList);
+            dictService.setDictCache(dictData.getDictType(), convertList);
         }
         return row;
     }
@@ -96,7 +99,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
         if (row > 0) {
             List<SysDictData> dictDatas = dictDataMapper.selectListByType(dictData.getDictType());
             List<DictDataDTO> convertList = DictDataConvertUtils.convertDto(dictDatas);
-            DictUtils.setDictCache(dictData.getDictType(), convertList);
+            dictService.setDictCache(dictData.getDictType(), convertList);
         }
         return row;
     }
@@ -114,7 +117,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
             dictDataMapper.deleteById(dictCode);
             List<SysDictData> dictDatas = dictDataMapper.selectListByType(data.getDictType());
             List<DictDataDTO> convertList = DictDataConvertUtils.convertDto(dictDatas);
-            DictUtils.setDictCache(data.getDictType(), convertList);
+            dictService.setDictCache(data.getDictType(), convertList);
         }
     }
 
