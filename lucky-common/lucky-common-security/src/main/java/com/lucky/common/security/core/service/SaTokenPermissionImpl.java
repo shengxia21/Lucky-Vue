@@ -3,6 +3,7 @@ package com.lucky.common.security.core.service;
 import cn.dev33.satoken.stp.StpInterface;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.lucky.common.core.constant.HttpStatus;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.service.PermissionService;
@@ -36,7 +37,7 @@ public class SaTokenPermissionImpl implements StpInterface {
                 Set<String> permissionList = permissionService.getMenuPermission(Long.valueOf(userId.toString()));
                 return new ArrayList<>(permissionList);
             } else {
-                throw new ServiceException("PermissionService 实现类不存在");
+                throw new ServiceException("PermissionService 实现类不存在", HttpStatus.NOT_IMPLEMENTED);
             }
         }
     }
@@ -57,7 +58,7 @@ public class SaTokenPermissionImpl implements StpInterface {
                 Set<String> permissionList = permissionService.getRolePermission(Long.valueOf(userId.toString()));
                 return new ArrayList<>(permissionList);
             } else {
-                throw new ServiceException("PermissionService 实现类不存在");
+                throw new ServiceException("PermissionService 实现类不存在", HttpStatus.NOT_IMPLEMENTED);
             }
         }
     }

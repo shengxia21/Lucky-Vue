@@ -142,39 +142,10 @@ public class Constants {
     /**
      * 定时任务违规的字符
      */
-    public static final String[] JOB_ERROR_STR = {"java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
-            "org.springframework", "org.apache", "com.lucky.common.utils.file", "com.lucky.common.config", "com.lucky.generator"};
-
-    /**
-     * 部门相关常量
-     */
-    public static class Dept {
-
-        /**
-         * 全部数据权限
-         */
-        public static final String DATA_SCOPE_ALL = "1";
-
-        /**
-         * 自定数据权限
-         */
-        public static final String DATA_SCOPE_CUSTOM = "2";
-
-        /**
-         * 部门数据权限
-         */
-        public static final String DATA_SCOPE_DEPT = "3";
-
-        /**
-         * 部门及以下数据权限
-         */
-        public static final String DATA_SCOPE_DEPT_AND_CHILD = "4";
-
-        /**
-         * 仅本人数据权限
-         */
-        public static final String DATA_SCOPE_SELF = "5";
-
-    }
+    public static final String[] JOB_ERROR_STR = {
+            "java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
+            "org.springframework", "org.apache", "com.lucky.common.core.utils.file",
+            "com.lucky.common.core.config", "com.lucky.generator"
+    };
 
 }

@@ -22,7 +22,7 @@ import java.util.TimeZone;
 public class ApplicationConfig {
 
     /**
-     * 时区配置
+     * Jackson增强配置
      */
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jacksonObjectMapperCustomization() {

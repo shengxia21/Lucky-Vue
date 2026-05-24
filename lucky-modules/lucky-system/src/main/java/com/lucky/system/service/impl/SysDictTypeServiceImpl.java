@@ -1,5 +1,6 @@
 package com.lucky.system.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.common.core.constant.UserConstants;
 import com.lucky.common.core.domain.dto.DictDataDTO;
@@ -19,7 +20,6 @@ import com.lucky.system.domain.vo.dict.SysDictTypeVO;
 import com.lucky.system.mapper.SysDictDataMapper;
 import com.lucky.system.mapper.SysDictTypeMapper;
 import com.lucky.system.service.ISysDictTypeService;
-import com.lucky.system.utils.DictDataConvertUtils;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -80,12 +80,12 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService {
     public List<SysDictDataVO> selectDictDataByType(String dictType) {
         List<DictDataDTO> dictDatas = dictService.getDictCache(dictType);
         if (StringUtils.isNotEmpty(dictDatas)) {
-            List<SysDictData> convertList = DictDataConvertUtils.convertSys(dictDatas);
+            List<SysDictData> convertList = BeanUtil.copyToList(dictDatas, SysDictData.class);
             return MapstructUtils.convert(convertList, SysDictDataVO.class);
         }
         List<SysDictData> sysDictData = dictDataMapper.selectListByType(dictType);
         if (StringUtils.isNotEmpty(sysDictData)) {
-            List<DictDataDTO> convertList = DictDataConvertUtils.convertDto(sysDictData);
+            List<DictDataDTO> convertList = BeanUtil.copyToList(sysDictData, DictDataDTO.class);
             dictService.setDictCache(dictType, convertList);
             return MapstructUtils.convert(sysDictData, SysDictDataVO.class);
         }
@@ -110,7 +110,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService {
         query.setStatus("0");
         Map<String, List<SysDictData>> dictDataMap = dictDataMapper.selectList(query).stream().collect(Collectors.groupingBy(SysDictData::getDictType));
         for (Map.Entry<String, List<SysDictData>> entry : dictDataMap.entrySet()) {
-            List<DictDataDTO> dtoList = DictDataConvertUtils.convertDto(entry.getValue());
+            List<DictDataDTO> dtoList = BeanUtil.copyToList(entry.getValue(), DictDataDTO.class);
             dictService.setDictCache(entry.getKey(), dtoList.stream().sorted(Comparator.comparing(DictDataDTO::getDictSort)).collect(Collectors.toList()));
         }
     }
@@ -145,7 +145,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService {
         int row = dictTypeMapper.updateById(sysDictType);
         if (row > 0) {
             List<SysDictData> dictDatas = dictDataMapper.selectListByType(dictType.getDictType());
-            List<DictDataDTO> convertList = DictDataConvertUtils.convertDto(dictDatas);
+            List<DictDataDTO> convertList = BeanUtil.copyToList(dictDatas, DictDataDTO.class);
             dictService.setDictCache(dictType.getDictType(), convertList);
         }
         return row;

@@ -1,7 +1,6 @@
 package com.lucky.common.log.aspectj;
 
 import com.alibaba.fastjson2.JSON;
-import com.lucky.common.core.domain.dto.UserDTO;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.enums.HttpMethod;
 import com.lucky.common.core.utils.DateUtils;
@@ -95,13 +94,8 @@ public class LogAspect {
             String ip = IpUtils.getIpAddr();
             operLog.setOperIp(ip);
             operLog.setOperUrl(StringUtils.substring(ServletUtils.getRequest().getRequestURI(), 0, 255));
-            if (loginUser != null) {
-                operLog.setOperName(loginUser.getUserName());
-                UserDTO currentUser = loginUser.getUser();
-                if (StringUtils.isNotNull(currentUser) && StringUtils.isNotNull(currentUser.getDept())) {
-                    operLog.setDeptName(currentUser.getDept().getDeptName());
-                }
-            }
+            operLog.setOperName(loginUser.getUserName());
+            operLog.setDeptName(loginUser.getDeptName());
 
             if (e != null) {
                 operLog.setStatus(BusinessStatus.FAIL.ordinal());
@@ -126,7 +120,6 @@ public class LogAspect {
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("异常信息:{}", exp.getMessage());
-            exp.printStackTrace();
         } finally {
             TIME_THREADLOCAL.remove();
         }
@@ -176,19 +169,20 @@ public class LogAspect {
      * 参数拼装
      */
     private String argsArrayToString(Object[] paramsArray, String[] excludeParamNames) {
-        String params = "";
+        StringBuilder params = new StringBuilder();
         if (paramsArray != null) {
             for (Object o : paramsArray) {
                 if (StringUtils.isNotNull(o) && !isFilterObject(o)) {
                     try {
                         String jsonObj = JSON.toJSONString(o, excludePropertyPreFilter(excludeParamNames));
-                        params += jsonObj + " ";
+                        params.append(jsonObj).append(" ");
                     } catch (Exception e) {
+                        log.error("参数拼装异常:{}", e.getMessage());
                     }
                 }
             }
         }
-        return params.trim();
+        return params.toString().trim();
     }
 
     /**
