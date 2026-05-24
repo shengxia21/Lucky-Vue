@@ -231,13 +231,9 @@ public class SysLoginService {
             LoginUser loginUser = SecurityUtils.getLoginUser();
             // 记录退出登录信息
             recordLoginInfo(loginUser.getUserName(), Constants.LOGOUT, MessageUtils.message("user.logout.success"));
-        } catch (NotLoginException e) {
-            log.error("退出登录异常，错误信息：{}", e.getMessage());
+        } catch (NotLoginException ignored) {
         } finally {
-            try {
-                StpUtil.logout();
-            } catch (NotLoginException ignored) {
-            }
+            StpUtil.logout();
         }
     }
 

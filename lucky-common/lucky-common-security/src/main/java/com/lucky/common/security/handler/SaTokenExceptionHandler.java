@@ -7,6 +7,7 @@ import com.lucky.common.core.constant.HttpStatus;
 import com.lucky.common.core.domain.R;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author lucky
  */
 @Slf4j
+@Order(1)
 @RestControllerAdvice
 public class SaTokenExceptionHandler {
 

@@ -8,6 +8,7 @@ import com.lucky.common.core.utils.html.EscapeUtil;
 import com.lucky.common.core.utils.text.Convert;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,6 +23,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
  * @author ruoyi
  */
 @Slf4j
+@Order(2)
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

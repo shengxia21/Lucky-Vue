@@ -113,7 +113,7 @@ public class UserActionListener implements SaTokenListener {
     }
 
     /**
-     * 每次创建Session时触发
+     * 每次关闭二级认证时触发
      */
     @Override
     public void doCloseSafe(String loginType, String tokenValue, String service) {
