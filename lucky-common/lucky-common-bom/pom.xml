@@ -27,14 +27,14 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- excel -->
+            <!-- excel工具 -->
             <dependency>
                 <groupId>com.lucky</groupId>
                 <artifactId>lucky-common-excel</artifactId>
                 <version>${revision}</version>
             </dependency>
 
-            <!-- json -->
+            <!-- log日志 -->
             <dependency>
                 <groupId>com.lucky</groupId>
                 <artifactId>lucky-common-log</artifactId>

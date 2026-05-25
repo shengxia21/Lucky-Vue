@@ -5,10 +5,10 @@ import cn.dev33.satoken.util.SaFoxUtil;
 import com.lucky.common.core.utils.spring.SpringUtils;
 import com.lucky.common.redis.utils.RedisCache;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Sa-Token持久层实现类（使用redis实现）
@@ -41,7 +41,7 @@ public class SaTokenDaoPlus implements SaTokenDaoBySessionFollowObject {
             redisCache.setCacheObject(key, value);
         } else {
             // Sa-Token 传入的是秒，RedisCache 通常需要指定单位，这里直接使用秒
-            redisCache.setCacheObject(key, value, timeout, TimeUnit.SECONDS);
+            redisCache.setCacheObject(key, value, Duration.ofSeconds(timeout));
         }
     }
 
@@ -79,7 +79,7 @@ public class SaTokenDaoPlus implements SaTokenDaoBySessionFollowObject {
      */
     @Override
     public void updateTimeout(String key, long timeout) {
-        redisCache.expire(key, timeout, TimeUnit.SECONDS);
+        redisCache.expire(key, Duration.ofSeconds(timeout));
     }
 
     /**
@@ -115,7 +115,7 @@ public class SaTokenDaoPlus implements SaTokenDaoBySessionFollowObject {
             redisCache.setCacheObject(key, object);
         } else {
             // Sa-Token 传入的是秒，RedisCache 通常需要指定单位，这里直接使用秒
-            redisCache.setCacheObject(key, object, timeout, TimeUnit.SECONDS);
+            redisCache.setCacheObject(key, object, Duration.ofSeconds(timeout));
         }
     }
 
@@ -152,7 +152,7 @@ public class SaTokenDaoPlus implements SaTokenDaoBySessionFollowObject {
      */
     @Override
     public void updateObjectTimeout(String key, long timeout) {
-        redisCache.expire(key, timeout, TimeUnit.SECONDS);
+        redisCache.expire(key, Duration.ofSeconds(timeout));
     }
 
     /**

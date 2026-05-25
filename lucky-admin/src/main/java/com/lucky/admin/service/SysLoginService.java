@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 /**
  * 登录校验方法
@@ -184,7 +184,7 @@ public class SysLoginService {
 
         if (!SecurityUtils.matchesPassword(inputPassword, password)) {
             retryCount = retryCount + 1;
-            redisCache.setCacheObject(cacheKey, retryCount, lockTime, TimeUnit.MINUTES);
+            redisCache.setCacheObject(cacheKey, retryCount, Duration.ofMinutes(lockTime));
             throw new UserPasswordNotMatchException();
         } else {
             if (redisCache.hasKey(cacheKey)) {

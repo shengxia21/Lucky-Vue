@@ -13,7 +13,7 @@ public class LuckyApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(LuckyApplication.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  心云启动成功   ლ(´ڡ`ლ)ﾞ");
+        System.out.println("(♥◠‿◠)ﾉﾞ  Lucky-Vue启动成功   ლ(´ڡ`ლ)ﾞ");
     }
 
 }

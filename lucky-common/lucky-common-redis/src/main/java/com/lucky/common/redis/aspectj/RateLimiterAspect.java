@@ -5,12 +5,12 @@ import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.ip.IpUtils;
 import com.lucky.common.redis.annotation.RateLimiter;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
@@ -29,19 +29,11 @@ import java.util.List;
 @Component
 public class RateLimiterAspect {
 
+    @Resource
     private RedisTemplate<Object, Object> redisTemplate;
 
+    @Resource
     private RedisScript<Long> limitScript;
-
-    @Autowired
-    public void setRedisTemplate1(RedisTemplate<Object, Object> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
-
-    @Autowired
-    public void setLimitScript(RedisScript<Long> limitScript) {
-        this.limitScript = limitScript;
-    }
 
     @Before("@annotation(rateLimiter)")
     public void doBefore(JoinPoint point, RateLimiter rateLimiter) {

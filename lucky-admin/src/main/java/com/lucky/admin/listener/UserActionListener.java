@@ -17,7 +17,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 /**
  * 用户行为监听器
@@ -55,7 +55,7 @@ public class UserActionListener implements SaTokenListener {
         if (loginParameter.getTimeout() == -1) {
             redisCache.setCacheObject(CacheConstants.LOGIN_TOKEN_KEY + tokenValue, dto);
         } else {
-            redisCache.setCacheObject(CacheConstants.LOGIN_TOKEN_KEY + tokenValue, dto, loginParameter.getTimeout(), TimeUnit.SECONDS);
+            redisCache.setCacheObject(CacheConstants.LOGIN_TOKEN_KEY + tokenValue, dto, Duration.ofSeconds(loginParameter.getTimeout()));
         }
         // 记录登录日志
         loginService.recordLoginInfo(userName, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success"));

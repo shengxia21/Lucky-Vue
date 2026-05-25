@@ -1,5 +1,6 @@
 package com.lucky.common.redis.config;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,15 +8,19 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.lucky.common.core.utils.spring.SpringUtils;
+import com.lucky.common.redis.config.properties.RedissonProperties;
+import jakarta.annotation.Resource;
+import org.redisson.client.codec.StringCodec;
+import org.redisson.codec.CompositeCodec;
+import org.redisson.codec.TypedJsonJacksonCodec;
+import org.redisson.config.Config;
+import org.redisson.spring.starter.RedissonAutoConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.core.task.VirtualThreadTaskExecutor;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -25,31 +30,33 @@ import java.util.TimeZone;
 /**
  * redis配置
  *
- * @author lucky
+ * @author Lion Li
  */
-@SuppressWarnings("deprecation")
-@EnableCaching
 @AutoConfiguration
-public class RedisConfig extends CachingConfigurerSupport {
+@EnableConfigurationProperties(RedissonProperties.class)
+public class RedisConfig {
+
+    @Resource
+    private RedissonProperties redissonProperties;
 
     @Bean
-    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<Object, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(connectionFactory);
-
-        // 创建 ObjectMapper
-        ObjectMapper objectMapper = createObjectMapper();
-        // 创建 Jackson2JsonRedisSerializer
-        Jackson2JsonRedisSerializer<Object> jacksonSerializer = new Jackson2JsonRedisSerializer<>(objectMapper, Object.class);
-
-        // 配置 RedisTemplate序列化
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(jacksonSerializer);
-        template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(jacksonSerializer);
-
-        template.afterPropertiesSet();
-        return template;
+    public RedissonAutoConfigurationCustomizer redissonCustomizer() {
+        return config -> {
+            ObjectMapper objectMapper = createObjectMapper();
+            TypedJsonJacksonCodec jsonCodec = new TypedJsonJacksonCodec(Object.class, objectMapper);
+            // 组合序列化 key 使用 String 内容使用通用 json 格式
+            CompositeCodec codec = new CompositeCodec(StringCodec.INSTANCE, jsonCodec, jsonCodec);
+            config.setThreads(redissonProperties.getThreads())
+                    .setNettyThreads(redissonProperties.getNettyThreads())
+                    // 缓存 Lua 脚本 减少网络传输(redisson 大部分的功能都是基于 Lua 脚本实现)
+                    .setUseScriptCache(true)
+                    .setCodec(codec);
+            if (SpringUtils.isVirtual()) {
+                config.setNettyExecutor(new VirtualThreadTaskExecutor("redisson-"));
+            }
+            singleServerConfig(config, redissonProperties.getSingleServerConfig());
+            clusterServersConfig(config, redissonProperties.getClusterServersConfig());
+        };
     }
 
     private ObjectMapper createObjectMapper() {
@@ -71,6 +78,35 @@ public class RedisConfig extends CachingConfigurerSupport {
         // 指定序列化输入的类型，类必须是非final修饰的。序列化时将对象全类名一起保存下来
         om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
         return om;
+    }
+
+    private void singleServerConfig(Config config, RedissonProperties.SingleServerConfig singleServerConfig) {
+        if (ObjectUtil.isNotNull(singleServerConfig)) {
+            // 使用单机模式
+            config.useSingleServer()
+                    .setTimeout(singleServerConfig.getTimeout())
+                    .setClientName(singleServerConfig.getClientName())
+                    .setIdleConnectionTimeout(singleServerConfig.getIdleConnectionTimeout())
+                    .setSubscriptionConnectionPoolSize(singleServerConfig.getSubscriptionConnectionPoolSize())
+                    .setConnectionMinimumIdleSize(singleServerConfig.getConnectionMinimumIdleSize())
+                    .setConnectionPoolSize(singleServerConfig.getConnectionPoolSize());
+        }
+    }
+
+    private void clusterServersConfig(Config config, RedissonProperties.ClusterServersConfig clusterServersConfig) {
+        if (ObjectUtil.isNotNull(clusterServersConfig)) {
+            config.useClusterServers()
+                    .setTimeout(clusterServersConfig.getTimeout())
+                    .setClientName(clusterServersConfig.getClientName())
+                    .setIdleConnectionTimeout(clusterServersConfig.getIdleConnectionTimeout())
+                    .setSubscriptionConnectionPoolSize(clusterServersConfig.getSubscriptionConnectionPoolSize())
+                    .setMasterConnectionMinimumIdleSize(clusterServersConfig.getMasterConnectionMinimumIdleSize())
+                    .setMasterConnectionPoolSize(clusterServersConfig.getMasterConnectionPoolSize())
+                    .setSlaveConnectionMinimumIdleSize(clusterServersConfig.getSlaveConnectionMinimumIdleSize())
+                    .setSlaveConnectionPoolSize(clusterServersConfig.getSlaveConnectionPoolSize())
+                    .setReadMode(clusterServersConfig.getReadMode())
+                    .setSubscriptionMode(clusterServersConfig.getSubscriptionMode());
+        }
     }
 
     @Bean
@@ -98,5 +134,52 @@ public class RedisConfig extends CachingConfigurerSupport {
                 "end\n" +
                 "return tonumber(current);";
     }
+
+    /*
+      redis集群配置 yml
+
+      --- # redis 集群配置(单机与集群只能开启一个另一个需要注释掉)
+      spring.data:
+        redis:
+          cluster:
+            nodes:
+              - 192.168.0.100:6379
+              - 192.168.0.101:6379
+              - 192.168.0.102:6379
+          # 密码
+          password:
+          # 连接超时时间
+          timeout: 10s
+          # 是否开启ssl
+          ssl.enabled: false
+
+      redisson:
+        # 线程池数量
+        threads: 16
+        # Netty线程池数量
+        nettyThreads: 32
+        # 集群配置
+        clusterServersConfig:
+          # 客户端名称
+          clientName: ${ruoyi.name}
+          # master最小空闲连接数
+          masterConnectionMinimumIdleSize: 32
+          # master连接池大小
+          masterConnectionPoolSize: 64
+          # slave最小空闲连接数
+          slaveConnectionMinimumIdleSize: 32
+          # slave连接池大小
+          slaveConnectionPoolSize: 64
+          # 连接空闲超时，单位：毫秒
+          idleConnectionTimeout: 10000
+          # 命令等待超时，单位：毫秒
+          timeout: 3000
+          # 发布和订阅连接池大小
+          subscriptionConnectionPoolSize: 50
+          # 读取模式
+          readMode: "SLAVE"
+          # 订阅模式
+          subscriptionMode: "MASTER"
+     */
 
 }
