@@ -96,8 +96,8 @@ sa-token:
   is-share: false
   # jwt秘钥
   jwt-secret-key: abcdefghijklmnopqrstuvwxyz
-  # token 总有效期（单位：秒，设为3天）
-  timeout: 259200
+  # token 总有效期（单位：秒，设为1天）
+  timeout: 86400
   # token 活跃时间（单位：秒，设为30分钟）
   active-timeout: 1800
   # 允许从 请求参数 读取 token

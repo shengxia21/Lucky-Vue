@@ -37,10 +37,10 @@ public class SaTokenDaoPlus implements SaTokenDaoBySessionFollowObject {
         }
         // 判断是否为永不过期
         if (timeout == NEVER_EXPIRE) {
-            // timeout == -1 通常表示永久或不设置，这里设为永久（实际业务需根据需求调整）
+            // timeout == -1 通常表示永久或不设置
             redisCache.setCacheObject(key, value);
         } else {
-            // Sa-Token 传入的是秒，RedisCache 通常需要指定单位，这里直接使用秒
+            // Sa-Token 传入的是秒
             redisCache.setCacheObject(key, value, Duration.ofSeconds(timeout));
         }
     }
@@ -51,8 +51,7 @@ public class SaTokenDaoPlus implements SaTokenDaoBySessionFollowObject {
     @Override
     public void update(String key, String value) {
         if (redisCache.hasKey(key)) {
-            // Redis 的 set 操作默认会覆盖 value 但保留原有的 TTL
-            redisCache.setCacheObject(key, value);
+            redisCache.setCacheObject(key, value, true);
         }
     }
 
@@ -111,10 +110,10 @@ public class SaTokenDaoPlus implements SaTokenDaoBySessionFollowObject {
         }
         // 判断是否为永不过期
         if (timeout == NEVER_EXPIRE) {
-            // timeout == -1 通常表示永久或不设置，这里设为永久（实际业务需根据需求调整）
+            // timeout == -1 通常表示永久或不设置
             redisCache.setCacheObject(key, object);
         } else {
-            // Sa-Token 传入的是秒，RedisCache 通常需要指定单位，这里直接使用秒
+            // Sa-Token 传入的是秒
             redisCache.setCacheObject(key, object, Duration.ofSeconds(timeout));
         }
     }
@@ -125,7 +124,7 @@ public class SaTokenDaoPlus implements SaTokenDaoBySessionFollowObject {
     @Override
     public void updateObject(String key, Object object) {
         if (redisCache.hasKey(key)) {
-            redisCache.setCacheObject(key, object);
+            redisCache.setCacheObject(key, object, true);
         }
     }
 

@@ -32,8 +32,7 @@ public class RedisCache {
      * @param value 缓存的值
      */
     public <T> void setCacheObject(final String key, final T value) {
-        RBucket<T> bucket = redissonClient.getBucket(key);
-        bucket.set(value);
+        setCacheObject(key, value, false);
     }
 
     /**
@@ -46,6 +45,32 @@ public class RedisCache {
     public <T> void setCacheObject(final String key, final T value, final Duration duration) {
         RBucket<T> bucket = redissonClient.getBucket(key);
         bucket.set(value, duration);
+    }
+
+    /**
+     * 缓存基本的对象，保留当前对象 TTL 有效期
+     *
+     * @param key       缓存的键值
+     * @param value     缓存的值
+     * @param isSaveTtl 是否保留TTL有效期(例如: set之前ttl剩余90 set之后还是为90)
+     * @since Redis 6.X 以上使用 setAndKeepTTL 兼容 5.X 方案
+     */
+    public <T> void setCacheObject(final String key, final T value, final boolean isSaveTtl) {
+        RBucket<T> bucket = redissonClient.getBucket(key);
+        if (isSaveTtl) {
+            try {
+                bucket.setAndKeepTTL(value);
+            } catch (Exception e) {
+                long timeToLive = bucket.remainTimeToLive();
+                if (timeToLive == -1) {
+                    bucket.set(value);
+                } else {
+                    bucket.set(value, Duration.ofMillis(timeToLive));
+                }
+            }
+        } else {
+            bucket.set(value);
+        }
     }
 
     /**

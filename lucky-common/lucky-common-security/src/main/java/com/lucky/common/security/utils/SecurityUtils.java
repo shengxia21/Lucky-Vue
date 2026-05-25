@@ -13,7 +13,7 @@ import com.lucky.common.core.exception.ServiceException;
 /**
  * 安全服务工具类
  *
- * @author ruoyi
+ * @author lucky
  */
 public class SecurityUtils {
 
