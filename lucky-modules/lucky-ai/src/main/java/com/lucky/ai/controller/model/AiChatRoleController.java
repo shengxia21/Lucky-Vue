@@ -65,8 +65,8 @@ public class AiChatRoleController extends BaseController {
      */
     @Log(title = "更新【我的】聊天角色", businessType = BusinessType.UPDATE)
     @PutMapping("/update-my")
-    public R<Integer> updateChatRoleMy(@Validated @RequestBody AiChatRoleSaveMyQuery query) {
-        return R.ok(chatRoleService.updateChatRoleMy(query, getUserId()));
+    public R<Void> updateChatRoleMy(@Validated @RequestBody AiChatRoleSaveMyQuery query) {
+        return toAjax(chatRoleService.updateChatRoleMy(query, getUserId()));
     }
 
     /**
@@ -74,8 +74,8 @@ public class AiChatRoleController extends BaseController {
      */
     @Log(title = "删除【我的】聊天角色", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
-    public R<Integer> deleteChatRoleMy(@RequestParam("id") Long id) {
-        return R.ok(chatRoleService.deleteChatRoleMy(id, getUserId()));
+    public R<Void> deleteChatRoleMy(@RequestParam("id") Long id) {
+        return toAjax(chatRoleService.deleteChatRoleMy(id, getUserId()));
     }
 
     /**
@@ -104,8 +104,8 @@ public class AiChatRoleController extends BaseController {
     @Log(title = "更新聊天角色", businessType = BusinessType.UPDATE)
     @SaCheckPermission("ai:chat-role:update")
     @PutMapping("/update")
-    public R<Integer> updateChatRole(@Validated @RequestBody AiChatRoleSaveQuery query) {
-        return R.ok(chatRoleService.updateChatRole(query));
+    public R<Void> updateChatRole(@Validated @RequestBody AiChatRoleSaveQuery query) {
+        return toAjax(chatRoleService.updateChatRole(query));
     }
 
     /**
@@ -114,8 +114,8 @@ public class AiChatRoleController extends BaseController {
     @Log(title = "删除聊天角色", businessType = BusinessType.DELETE)
     @SaCheckPermission("ai:chat-role:delete")
     @DeleteMapping("/delete")
-    public R<Integer> deleteChatRole(@RequestParam("id") Long id) {
-        return R.ok(chatRoleService.deleteChatRoleById(id));
+    public R<Void> deleteChatRole(@RequestParam("id") Long id) {
+        return toAjax(chatRoleService.deleteChatRoleById(id));
     }
 
     /**

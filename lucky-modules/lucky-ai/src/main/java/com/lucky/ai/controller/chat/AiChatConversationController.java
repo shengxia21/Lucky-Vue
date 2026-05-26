@@ -45,8 +45,8 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "更新【我的】聊天对话", businessType = BusinessType.UPDATE)
     @PutMapping("/update-my")
-    public R<Integer> updateChatConversationMy(@Validated @RequestBody AiChatConversationUpdateMyQuery query) {
-        return R.ok(chatConversationService.updateChatConversationMy(query, getUserId()));
+    public R<Void> updateChatConversationMy(@Validated @RequestBody AiChatConversationUpdateMyQuery query) {
+        return toAjax(chatConversationService.updateChatConversationMy(query, getUserId()));
     }
 
     /**
@@ -74,8 +74,8 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "删除【我的】聊天对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
-    public R<Integer> deleteChatConversationMy(@RequestParam("id") Long id) {
-        return R.ok(chatConversationService.deleteChatConversationMyById(id, getUserId()));
+    public R<Void> deleteChatConversationMy(@RequestParam("id") Long id) {
+        return toAjax(chatConversationService.deleteChatConversationMyById(id, getUserId()));
     }
 
     /**
@@ -83,8 +83,8 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "删除未置顶的聊天对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-by-unpinned")
-    public R<Integer> deleteChatConversationMyByUnpinned() {
-        return R.ok(chatConversationService.deleteChatConversationMy(getUserId()));
+    public R<Void> deleteChatConversationMyByUnpinned() {
+        return toAjax(chatConversationService.deleteChatConversationMy(getUserId()));
     }
 
     // ========== 对话管理 ==========
@@ -104,8 +104,8 @@ public class AiChatConversationController extends BaseController {
     @Log(title = "管理员删除对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-by-admin")
     @SaCheckPermission("ai:chat-conversation:delete")
-    public R<Integer> deleteChatConversationById(@RequestParam("id") Long id) {
-        return R.ok(chatConversationService.deleteChatConversationById(id));
+    public R<Void> deleteChatConversationById(@RequestParam("id") Long id) {
+        return toAjax(chatConversationService.deleteChatConversationById(id));
     }
 
 }

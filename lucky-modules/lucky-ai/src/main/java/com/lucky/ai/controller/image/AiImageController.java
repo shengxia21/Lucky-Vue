@@ -81,8 +81,8 @@ public class AiImageController extends BaseController {
      */
     @Log(title = "删除【我的】绘图记录", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
-    public R<Integer> deleteImageMy(@RequestParam("id") Long id) {
-        return R.ok(AiImageService.deleteImageMyById(id, getUserId()));
+    public R<Void> deleteImageMy(@RequestParam("id") Long id) {
+        return toAjax(AiImageService.deleteImageMyById(id, getUserId()));
     }
 
     // ================ 绘图管理 ================
@@ -102,8 +102,8 @@ public class AiImageController extends BaseController {
     @Log(title = "更新绘画", businessType = BusinessType.UPDATE)
     @SaCheckPermission("ai:image:update")
     @PutMapping("/update")
-    public R<Integer> updateImage(@Validated @RequestBody AiImageUpdateQuery query) {
-        return R.ok(AiImageService.updateImage(query));
+    public R<Void> updateImage(@Validated @RequestBody AiImageUpdateQuery query) {
+        return toAjax(AiImageService.updateImage(query));
     }
 
     /**
@@ -112,8 +112,8 @@ public class AiImageController extends BaseController {
     @Log(title = "删除绘画", businessType = BusinessType.DELETE)
     @SaCheckPermission("ai:image:delete")
     @DeleteMapping("/delete")
-    public R<Integer> deleteImage(@RequestParam("id") Long id) {
-        return R.ok(AiImageService.deleteImageById(id));
+    public R<Void> deleteImage(@RequestParam("id") Long id) {
+        return toAjax(AiImageService.deleteImageById(id));
     }
 
 }

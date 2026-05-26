@@ -46,8 +46,8 @@ public class AiModelController extends BaseController {
     @Log(title = "更新模型", businessType = BusinessType.UPDATE)
     @SaCheckPermission("ai:model:update")
     @PutMapping("/update")
-    public R<Integer> updateModel(@Validated @RequestBody AiModelSaveQuery query) {
-        return R.ok(modelService.updateModel(query));
+    public R<Void> updateModel(@Validated @RequestBody AiModelSaveQuery query) {
+        return toAjax(modelService.updateModel(query));
     }
 
     /**
@@ -56,8 +56,8 @@ public class AiModelController extends BaseController {
     @Log(title = "删除模型", businessType = BusinessType.DELETE)
     @SaCheckPermission("ai:model:delete")
     @DeleteMapping("/delete")
-    public R<Integer> deleteModel(@RequestParam("id") Long id) {
-        return R.ok(modelService.deleteModelById(id));
+    public R<Void> deleteModel(@RequestParam("id") Long id) {
+        return toAjax(modelService.deleteModelById(id));
     }
 
     /**

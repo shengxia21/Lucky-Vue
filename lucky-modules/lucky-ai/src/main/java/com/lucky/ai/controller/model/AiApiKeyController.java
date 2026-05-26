@@ -45,8 +45,8 @@ public class AiApiKeyController extends BaseController {
     @Log(title = "更新 API 密钥", businessType = BusinessType.UPDATE)
     @SaCheckPermission("ai:api-key:update")
     @PutMapping("/update")
-    public R<Integer> updateApiKey(@Validated @RequestBody AiApiKeySaveQuery query) {
-        return R.ok(apiKeyService.updateApiKey(query));
+    public R<Void> updateApiKey(@Validated @RequestBody AiApiKeySaveQuery query) {
+        return toAjax(apiKeyService.updateApiKey(query));
     }
 
     /**
@@ -55,8 +55,8 @@ public class AiApiKeyController extends BaseController {
     @Log(title = "删除 API 密钥", businessType = BusinessType.DELETE)
     @SaCheckPermission("ai:api-key:delete")
     @DeleteMapping("/delete")
-    public R<Integer> deleteApiKey(@RequestParam("id") Long id) {
-        return R.ok(apiKeyService.deleteApiKeyById(id));
+    public R<Void> deleteApiKey(@RequestParam("id") Long id) {
+        return toAjax(apiKeyService.deleteApiKeyById(id));
     }
 
     /**

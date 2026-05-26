@@ -80,8 +80,8 @@ public class AiChatMessageController extends BaseController {
      */
     @Log(title = "删除消息", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete")
-    public R<Integer> deleteChatMessage(@RequestParam("id") Long id) {
-        return R.ok(chatMessageService.deleteChatMessageByIdAndUserId(id, getUserId()));
+    public R<Void> deleteChatMessage(@RequestParam("id") Long id) {
+        return toAjax(chatMessageService.deleteChatMessageByIdAndUserId(id, getUserId()));
     }
 
     /**
@@ -89,8 +89,8 @@ public class AiChatMessageController extends BaseController {
      */
     @Log(title = "删除指定对话的消息", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-by-conversation-id")
-    public R<Integer> deleteChatMessageByConversationId(@RequestParam("conversationId") Long conversationId) {
-        return R.ok(chatMessageService.deleteChatMessageByConversationIdAndUserId(conversationId, getUserId()));
+    public R<Void> deleteChatMessageByConversationId(@RequestParam("conversationId") Long conversationId) {
+        return toAjax(chatMessageService.deleteChatMessageByConversationIdAndUserId(conversationId, getUserId()));
     }
 
     // ========== 对话管理 ==========
@@ -110,8 +110,8 @@ public class AiChatMessageController extends BaseController {
     @Log(title = "删除消息（管理员）", businessType = BusinessType.DELETE)
     @SaCheckPermission("ai:chat-message:delete")
     @DeleteMapping("/delete-by-admin")
-    public R<Integer> deleteChatMessageByAdmin(@RequestParam("id") Long id) {
-        return R.ok(chatMessageService.deleteChatMessageById(id));
+    public R<Void> deleteChatMessageByAdmin(@RequestParam("id") Long id) {
+        return toAjax(chatMessageService.deleteChatMessageById(id));
     }
 
 }
