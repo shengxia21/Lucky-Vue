@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.lucky.common.core.constant.HttpStatus;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.exception.ServiceException;
-import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.domain.BaseEntity;
 import com.lucky.common.security.utils.SecurityUtils;
 import org.apache.ibatis.reflection.MetaObject;
@@ -28,8 +27,8 @@ public class InjectionMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         try {
             if (ObjectUtil.isNotNull(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity baseEntity) {
-                // 获取当前时间作为创建时间和更新时间，如果创建时间不为空，则使用创建时间，否则使用当前时间
-                Date current = StringUtils.isNotNull(baseEntity.getCreateTime()) ? baseEntity.getCreateTime() : new Date();
+                // 获取当前时间作为创建时间
+                Date current = new Date();
                 baseEntity.setCreateTime(current);
 
                 // 如果创建人为空，则填充当前登录用户的信息
