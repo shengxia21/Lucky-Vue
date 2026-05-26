@@ -83,12 +83,12 @@ public class ChatServiceFacade implements ChatService {
             return response;
         }).doOnComplete(() -> {
             // 流式响应完成时触发
-            updateAssistantMessage(assistantId, contentBuffer.toString(), reasoningContentBuffer.toString());
+            updateAssistantMessage(assistantId, chatContext.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString());
         }).doOnCancel(() -> {
             // 用户取消请求时触发
             log.warn("流式响应 - [userId({}) 用户取消请求]", chatContext.getUserId());
             // 更新assistant聊天消息
-            updateAssistantMessage(assistantId, contentBuffer.toString(), reasoningContentBuffer.toString());
+            updateAssistantMessage(assistantId, chatContext.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString());
         }).onErrorResume(error -> {
             // 流式响应过程中触发异常（包含LLM大模型返回的错误信息）
             log.error("流式响应 - [模型标识({}) 请求过程中发生异常: {}]", chatContext.getModel().getModel(), error.getMessage());
@@ -138,14 +138,16 @@ public class ChatServiceFacade implements ChatService {
      * 更新assistant聊天消息
      *
      * @param assistantId      assistantId
+     * @param userName         用户名
      * @param content          内容
      * @param reasoningContent 思考内容
      */
-    private void updateAssistantMessage(Long assistantId, String content, String reasoningContent) {
+    private void updateAssistantMessage(Long assistantId, String userName, String content, String reasoningContent) {
         AiChatMessage message = new AiChatMessage();
         message.setId(assistantId);
         message.setContent(content);
         message.setReasoningContent(reasoningContent);
+        message.setUpdateBy(userName);
         chatMessageMapper.updateById(message);
     }
 

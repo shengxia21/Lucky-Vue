@@ -40,4 +40,9 @@ public class ChatContext {
      */
     private Long userId;
 
+    /**
+     * 用户名
+     */
+    private String userName;
+
 }

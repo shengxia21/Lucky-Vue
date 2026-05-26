@@ -24,9 +24,10 @@ public interface AiChatMessageService {
      *
      * @param query 发送消息（流式）请求VO
      * @param userId    用户ID
+     * @param userName  用户名
      * @return 发送消息（流式）响应VO
      */
-    Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest query, Long userId);
+    Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest query, Long userId, String userName);
 
     /**
      * 根据会话ID查询聊天消息列表

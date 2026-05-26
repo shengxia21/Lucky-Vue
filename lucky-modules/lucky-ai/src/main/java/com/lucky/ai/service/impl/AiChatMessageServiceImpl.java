@@ -54,7 +54,7 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
     private ChatServiceFacade chatService;
 
     @Override
-    public Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest query, Long userId) {
+    public Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest query, Long userId, String userName) {
         // 校验对话存在
         AiChatConversation conversation = chatConversationService.validateChatConversationExists(query.getConversationId());
         if (ObjUtil.notEqual(conversation.getUserId(), userId)) {
@@ -72,6 +72,7 @@ public class AiChatMessageServiceImpl implements AiChatMessageService {
         chatContext.setModel(model);
         chatContext.setApiKey(apiKey);
         chatContext.setUserId(userId);
+        chatContext.setUserName(userName);
         // 调用处理器处理流式聊天
         return chatService.chat(chatContext);
     }

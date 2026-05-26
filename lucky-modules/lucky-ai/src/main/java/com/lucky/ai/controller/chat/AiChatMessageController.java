@@ -53,7 +53,7 @@ public class AiChatMessageController extends BaseController {
             errorResponse.setContent("请登录后操作");
             return Flux.just(errorResponse);
         }
-        return chatMessageService.sendChatMessageStream(query, getUserId());
+        return chatMessageService.sendChatMessageStream(query, getUserId(), getUserName());
     }
 
     /**
