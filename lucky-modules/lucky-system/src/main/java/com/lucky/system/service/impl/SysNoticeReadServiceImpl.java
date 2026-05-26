@@ -13,7 +13,6 @@ import jakarta.annotation.Resource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -61,19 +60,17 @@ public class SysNoticeReadServiceImpl implements ISysNoticeReadService {
         if (noticeIds == null || noticeIds.length == 0) {
             return;
         }
-        List<SysNoticeRead> records = new ArrayList<>(noticeIds.length);
         Date nowDate = DateUtils.getNowDate();
         for (Long noticeId : noticeIds) {
             SysNoticeRead record = new SysNoticeRead();
             record.setNoticeId(noticeId);
             record.setUserId(userId);
             record.setReadTime(nowDate);
-            records.add(record);
-        }
-        try {
-            noticeReadMapper.insertBatch(records);
-        } catch (DuplicateKeyException e) {
-            // 忽略重复插入异常
+            try {
+                noticeReadMapper.insert(record);
+            } catch (DuplicateKeyException e) {
+                // 忽略重复插入异常
+            }
         }
     }
 
