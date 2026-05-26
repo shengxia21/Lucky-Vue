@@ -14,7 +14,6 @@ import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.factory.ChatModelFactory;
 import com.lucky.ai.mapper.AiChatMessageMapper;
 import com.lucky.ai.util.SpringAiUtils;
-import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.StringUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -87,7 +86,7 @@ public class ChatServiceFacade implements ChatService {
             updateAssistantMessage(assistantId, contentBuffer.toString(), reasoningContentBuffer.toString());
         }).doOnCancel(() -> {
             // 用户取消请求时触发
-            log.info("流式响应 - [userId({}) 用户取消请求]", chatContext.getUserId());
+            log.warn("流式响应 - [userId({}) 用户取消请求]", chatContext.getUserId());
             // 更新assistant聊天消息
             updateAssistantMessage(assistantId, contentBuffer.toString(), reasoningContentBuffer.toString());
         }).onErrorResume(error -> {
@@ -147,7 +146,6 @@ public class ChatServiceFacade implements ChatService {
         message.setId(assistantId);
         message.setContent(content);
         message.setReasoningContent(reasoningContent);
-        message.setCreateTime(DateUtils.getNowDate());
         chatMessageMapper.updateById(message);
     }
 
