@@ -97,14 +97,14 @@ public class RedisCache {
     }
 
     /**
-     * 获取有效时间
+     * 获取key剩余存活时间
      *
      * @param key Redis键
-     * @return 有效时间
+     * @return 剩余存活时间
      */
-    public long getExpire(final String key) {
-        RBucket<Object> rBucket = redissonClient.getBucket(key);
-        return rBucket.getExpireTime();
+    public <T> long getTimeToLive(final String key) {
+        RBucket<T> rBucket = redissonClient.getBucket(key);
+        return rBucket.remainTimeToLive();
     }
 
     /**

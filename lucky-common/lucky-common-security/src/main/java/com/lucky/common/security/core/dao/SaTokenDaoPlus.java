@@ -68,7 +68,7 @@ public class SaTokenDaoPlus implements SaTokenDaoBySessionFollowObject {
      */
     @Override
     public long getTimeout(String key) {
-        long timeout = redisCache.getExpire(key);
+        long timeout = redisCache.getTimeToLive(key);
         // 加1的目的 解决sa-token使用秒 redis是毫秒导致1秒的精度问题 手动补偿
         return timeout < 0 ? timeout : timeout / 1000 + 1;
     }
@@ -141,7 +141,7 @@ public class SaTokenDaoPlus implements SaTokenDaoBySessionFollowObject {
      */
     @Override
     public long getObjectTimeout(String key) {
-        long timeout = redisCache.getExpire(key);
+        long timeout = redisCache.getTimeToLive(key);
         // 加1的目的 解决sa-token使用秒 redis是毫秒导致1秒的精度问题 手动补偿
         return timeout < 0 ? timeout : timeout / 1000 + 1;
     }

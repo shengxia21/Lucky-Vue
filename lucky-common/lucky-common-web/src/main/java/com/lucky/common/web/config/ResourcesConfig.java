@@ -2,6 +2,7 @@ package com.lucky.common.web.config;
 
 import com.lucky.common.core.config.LuckyConfig;
 import com.lucky.common.core.constant.Constants;
+import com.lucky.common.web.handler.GlobalExceptionHandler;
 import com.lucky.common.web.interceptor.RepeatSubmitInterceptor;
 import jakarta.annotation.Resource;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -66,6 +67,14 @@ public class ResourcesConfig implements WebMvcConfigurer {
         source.registerCorsConfiguration("/**", config);
         // 返回新的CorsFilter
         return new CorsFilter(source);
+    }
+
+    /**
+     * 全局异常处理器
+     */
+    @Bean
+    public GlobalExceptionHandler globalExceptionHandler() {
+        return new GlobalExceptionHandler();
     }
 
 }
