@@ -3,11 +3,11 @@ package com.lucky.system.controller.monitor;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.bean.BeanUtil;
 import com.lucky.common.core.constant.CacheConstants;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.core.domain.dto.UserOnlineDTO;
 import com.lucky.common.core.utils.StringUtils;
-import com.lucky.common.core.utils.bean.BeanUtils;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessType;
 import com.lucky.common.mybatis.core.controller.BaseController;
@@ -70,12 +70,7 @@ public class SysUserOnlineController extends BaseController {
             ).toList();
         }
         Collections.reverse(userOnlineList);
-        List<SysUserOnlineVo> list = new ArrayList<>();
-        for (UserOnlineDTO userOnlineDTO : userOnlineList) {
-            SysUserOnlineVo vo = new SysUserOnlineVo();
-            BeanUtils.copyProperties(userOnlineDTO, vo);
-            list.add(vo);
-        }
+        List<SysUserOnlineVo> list = BeanUtil.copyToList(userOnlineList, SysUserOnlineVo.class);
         return TableDataInfo.build(list);
     }
 

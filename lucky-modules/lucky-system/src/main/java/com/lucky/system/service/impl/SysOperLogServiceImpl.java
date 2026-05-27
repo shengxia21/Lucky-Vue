@@ -1,8 +1,8 @@
 package com.lucky.system.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lucky.common.core.utils.bean.BeanUtils;
 import com.lucky.common.log.event.OperLogEvent;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
@@ -33,8 +33,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     @Async
     @EventListener
     public void recordOper(OperLogEvent operLogEvent) {
-        SysOperLog operLog = new SysOperLog();
-        BeanUtils.copyProperties(operLogEvent, operLog);
+        SysOperLog operLog = BeanUtil.toBean(operLogEvent, SysOperLog.class);
         operLogMapper.insert(operLog);
     }
 

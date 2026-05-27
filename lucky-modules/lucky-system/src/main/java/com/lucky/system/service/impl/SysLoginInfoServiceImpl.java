@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.common.core.constant.Constants;
 import com.lucky.common.core.utils.DateUtils;
-import com.lucky.common.core.utils.LogUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.ip.AddressUtils;
 import com.lucky.common.core.utils.ip.IpUtils;
@@ -46,13 +45,8 @@ public class SysLoginInfoServiceImpl implements ISysLoginInfoService {
         final String userAgent = request.getHeader("User-Agent");
         final String ip = IpUtils.getIpAddr(request);
         String address = AddressUtils.getRealAddressByIP(ip);
-        String s = LogUtils.getBlock(ip) +
-                address +
-                LogUtils.getBlock(loginInfoEvent.getUserName()) +
-                LogUtils.getBlock(loginInfoEvent.getStatus()) +
-                LogUtils.getBlock(loginInfoEvent.getMessage());
         // 打印信息到日志
-        log.info(s, loginInfoEvent.getArgs());
+        log.info("[{}]{}[{}][{}][{}]", ip, address, loginInfoEvent.getUserName(), loginInfoEvent.getStatus(), loginInfoEvent.getMessage());
         // 获取客户端操作系统
         String os = UserAgentUtils.getOperatingSystem(userAgent);
         // 获取客户端浏览器

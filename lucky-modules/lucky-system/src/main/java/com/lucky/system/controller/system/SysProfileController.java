@@ -1,5 +1,6 @@
 package com.lucky.system.controller.system;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.lucky.common.core.config.LuckyConfig;
 import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.domain.R;
@@ -7,7 +8,6 @@ import com.lucky.common.core.domain.dto.UserDTO;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.StringUtils;
-import com.lucky.common.core.utils.bean.BeanUtils;
 import com.lucky.common.core.utils.file.FileUploadUtils;
 import com.lucky.common.core.utils.file.FileUtils;
 import com.lucky.common.core.utils.file.MimeTypeUtils;
@@ -66,8 +66,7 @@ public class SysProfileController extends BaseController {
         if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(currentUser.getUserId(), user.getEmail())) {
             return R.fail("修改用户'" + loginUser.getUserName() + "'失败，邮箱账号已存在");
         }
-        SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(currentUser, sysUser);
+        SysUser sysUser = BeanUtil.toBean(currentUser, SysUser.class);
         if (userService.updateUserProfile(sysUser) > 0) {
             // 更新用户信息
             SecurityUtils.refreshLoginUser(loginUser);
