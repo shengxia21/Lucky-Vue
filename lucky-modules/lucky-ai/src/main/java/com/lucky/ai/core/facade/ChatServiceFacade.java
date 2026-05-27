@@ -11,10 +11,12 @@ import com.lucky.ai.core.vo.chat.ChatMessageResponse;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.domain.AiModel;
+import com.lucky.ai.factory.AsyncAiFactory;
 import com.lucky.ai.factory.ChatModelFactory;
 import com.lucky.ai.mapper.AiChatMessageMapper;
 import com.lucky.ai.util.SpringAiUtils;
 import com.lucky.common.core.utils.StringUtils;
+import com.lucky.common.web.manager.AsyncManager;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.messages.Message;
@@ -82,18 +84,18 @@ public class ChatServiceFacade implements ChatService {
             response.setReasoningContent(reasoningContent);
             return response;
         }).doOnComplete(() -> {
-            // 流式响应完成时触发
-            updateAssistantMessage(assistantId, chatContext.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString());
+            // 流式响应完成时触发, 异步更新消息
+            AsyncManager.me().execute(AsyncAiFactory.updateAssistantMessage(assistantId, chatContext.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString()));
         }).doOnCancel(() -> {
             // 用户取消请求时触发
             log.warn("流式响应 - [userId({}) 用户取消请求]", chatContext.getUserId());
-            // 更新assistant聊天消息
-            updateAssistantMessage(assistantId, chatContext.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString());
+            // 异步更新assistant聊天消息
+            AsyncManager.me().execute(AsyncAiFactory.updateAssistantMessage(assistantId, chatContext.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString()));
         }).onErrorResume(error -> {
             // 流式响应过程中触发异常（包含LLM大模型返回的错误信息）
             log.error("流式响应 - [模型标识({}) 请求过程中发生异常: {}]", chatContext.getModel().getModel(), error.getMessage());
-            // 删除创建的assistant聊天消息
-            chatMessageMapper.deleteById(assistantId);
+            // 异步删除创建的assistant聊天消息
+            AsyncManager.me().execute(AsyncAiFactory.deleteAssistantMessage(assistantId));
             // 将异常信息设置为响应内容(有些错误可能是用户的配置问题,需要提示用户)
             response.setContent(error.getMessage());
             return Flux.just(response);
@@ -132,23 +134,6 @@ public class ChatServiceFacade implements ChatService {
         chatMessageMapper.insert(message);
         // assistantMessageId
         return message.getId();
-    }
-
-    /**
-     * 更新assistant聊天消息
-     *
-     * @param assistantId      assistantId
-     * @param userName         用户名
-     * @param content          内容
-     * @param reasoningContent 思考内容
-     */
-    private void updateAssistantMessage(Long assistantId, String userName, String content, String reasoningContent) {
-        AiChatMessage message = new AiChatMessage();
-        message.setId(assistantId);
-        message.setContent(content);
-        message.setReasoningContent(reasoningContent);
-        message.setUpdateBy(userName);
-        chatMessageMapper.updateById(message);
     }
 
     /**

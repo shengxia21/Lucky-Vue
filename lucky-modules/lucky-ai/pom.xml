@@ -41,6 +41,12 @@
             <artifactId>lucky-common-web</artifactId>
         </dependency>
 
+        <!-- WebFlux 响应式支持 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
         <!-- DeepSeek模型 -->
         <dependency>
             <groupId>org.springframework.ai</groupId>

@@ -1,12 +1,8 @@
 package com.lucky.ai.controller.chat;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.annotation.SaIgnore;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
-import com.lucky.ai.core.vo.chat.ChatMessageRequest;
-import com.lucky.ai.core.vo.chat.ChatMessageResponse;
 import com.lucky.ai.domain.query.message.AiChatMessagePageQuery;
 import com.lucky.ai.domain.vo.conversation.AiChatConversationVO;
 import com.lucky.ai.domain.vo.message.AiChatMessageVO;
@@ -19,10 +15,7 @@ import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
-import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,21 +33,6 @@ public class AiChatMessageController extends BaseController {
     private AiChatMessageService chatMessageService;
     @Resource
     private AiChatConversationService chatConversationService;
-
-    /**
-     * 发送消息（流式）
-     */
-    @SaIgnore
-    @PostMapping(value = "/send-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<ChatMessageResponse> sendChatMessageStream(@Validated @RequestBody ChatMessageRequest query) {
-        // 手动校验登录状态
-        if (!StpUtil.isLogin()) {
-            ChatMessageResponse errorResponse = new ChatMessageResponse();
-            errorResponse.setContent("请登录后操作");
-            return Flux.just(errorResponse);
-        }
-        return chatMessageService.sendChatMessageStream(query, getUserId(), getUserName());
-    }
 
     /**
      * 获得指定对话的消息列表

@@ -1,12 +1,9 @@
 package com.lucky.ai.service;
 
-import com.lucky.ai.core.vo.chat.ChatMessageRequest;
-import com.lucky.ai.core.vo.chat.ChatMessageResponse;
 import com.lucky.ai.domain.query.message.AiChatMessagePageQuery;
 import com.lucky.ai.domain.vo.message.AiChatMessageVO;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
-import reactor.core.publisher.Flux;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,16 +15,6 @@ import java.util.Map;
  * @author lucky
  */
 public interface AiChatMessageService {
-
-    /**
-     * 发送消息（流式）
-     *
-     * @param query 发送消息（流式）请求VO
-     * @param userId    用户ID
-     * @param userName  用户名
-     * @return 发送消息（流式）响应VO
-     */
-    Flux<ChatMessageResponse> sendChatMessageStream(ChatMessageRequest query, Long userId, String userName);
 
     /**
      * 根据会话ID查询聊天消息列表
@@ -59,7 +46,7 @@ public interface AiChatMessageService {
      * 查询聊天消息分页列表
      *
      * @param pageQuery 分页查询参数
-     * @param query 查询参数
+     * @param query     查询参数
      * @return 聊天消息分页列表
      */
     TableDataInfo<AiChatMessageVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageQuery query);

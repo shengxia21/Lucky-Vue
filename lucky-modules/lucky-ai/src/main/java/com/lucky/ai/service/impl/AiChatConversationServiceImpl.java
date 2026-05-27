@@ -25,7 +25,6 @@ import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,7 +45,6 @@ public class AiChatConversationServiceImpl implements AiChatConversationService 
     private AiModelService modelService;
     @Resource
     private AiChatRoleService chatRoleService;
-    @Lazy
     @Resource
     private AiChatMessageService chatMessageService;
 
