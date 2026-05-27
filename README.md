@@ -19,10 +19,10 @@
 
 ### 在线演示
 
-|   平台   | 地址   | 账号 |
-|:------:|------|---|
-|  用户端   | 待实现  | admin / admin123 |
-| 管理后台 | 经费不足 | admin / admin123 |
+|   平台   | 地址  | 账号 |
+|:------:|-----|---|
+|  用户端   | 待实现 | admin / admin123 |
+| 管理后台 | 暂无  | admin / admin123 |
 
 ### 项目源码
 
@@ -35,10 +35,10 @@
 ## 🛠️ 技术架构
 
 ### 核心框架
-- **后端架构**：Spring Boot 3.5 + Spring ai 1.1
+- **后端架构**：Spring Boot 3.5 + Spring AI
 - **数据存储**：MySQL 8.0 + Redis + 向量数据库
 - **前端技术**：Vue 3 + pinia + element-plus
-- **安全认证**：Spring Security + JWT
+- **安全认证**：Sa-Token + JWT 双重保障
 
 ## 环境要求
 
@@ -74,10 +74,7 @@
 
 # 3.修改application-dev.yml文件，配置redis和数据库连接信息
 
-# 4.在环境变量中添加AI模型的API密钥
-# （DeepSeek[DEEPSEEK_API_KEY]/通义千问[DASHSCOPE_API_KEY]/智谱AI[ZHIPUAI_API_KEY]）
-
-# 5.启动后端服务
+# 4.启动后端服务
 # 后端服务地址: http://localhost:8082
 ```
 
@@ -148,4 +145,3 @@ pnpm run dev
 
 感谢以下优秀的开源项目为本项目提供支持：
 - [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue) - 基于SpringBoot的Java快速开发框架
-- [RuoYi-Vue3](https://gitcode.com/yangzongzhuan/RuoYi-Vue3) - 现代化的 Vue 后台管理模板
