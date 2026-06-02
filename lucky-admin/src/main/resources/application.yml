@@ -134,9 +134,9 @@ mybatis-plus:
 # VO 转换（数据翻译）相关
 easy-trans:
   # 是否开启全局翻译
-  # 【QPS > 2000 时建议禁用，启用对性能损耗大】，禁用则需要手动调用 TransService 触发翻译
+  # 禁用则需要手动调用 TransService 触发翻译
   # 启用全局翻译（拦截所有 SpringMVC ResponseBody 进行自动翻译 )
-  is-enable-global: true
+  is-enable-global: false
 
 # Springdoc配置
 springdoc:

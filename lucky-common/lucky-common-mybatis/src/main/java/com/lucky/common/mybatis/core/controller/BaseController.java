@@ -1,8 +1,10 @@
 package com.lucky.common.mybatis.core.controller;
 
+import com.fhs.trans.service.impl.TransService;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.utils.StringUtils;
+import com.lucky.common.core.utils.spring.SpringUtils;
 import com.lucky.common.security.utils.SecurityUtils;
 
 /**
@@ -11,6 +13,8 @@ import com.lucky.common.security.utils.SecurityUtils;
  * @author lucky
  */
 public class BaseController {
+
+    public final TransService transService = SpringUtils.getBean(TransService.class);
 
     /**
      * 响应返回结果

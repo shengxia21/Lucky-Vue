@@ -54,7 +54,9 @@ public class AiChatConversationController extends BaseController {
      */
     @GetMapping("/my-list")
     public R<List<AiChatConversationVO>> getChatConversationMyList() {
-        return R.ok(chatConversationService.getChatConversationListByUserId(getUserId()));
+        List<AiChatConversationVO> list = chatConversationService.getChatConversationListByUserId(getUserId());
+        transService.transBatch(list);
+        return R.ok(list);
     }
 
     /**
@@ -66,6 +68,7 @@ public class AiChatConversationController extends BaseController {
         if (conversation != null && ObjUtil.notEqual(conversation.getUserId(), getUserId())) {
             return R.fail("对话不存在或不属于当前用户");
         }
+        transService.transOne(conversation);
         return R.ok(conversation);
     }
 
@@ -95,7 +98,9 @@ public class AiChatConversationController extends BaseController {
     @SaCheckPermission("ai:chat-conversation:list")
     @GetMapping("/page")
     public TableDataInfo<AiChatConversationVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageQuery query) {
-        return chatConversationService.getChatConversationPage(pageQuery, query);
+        TableDataInfo<AiChatConversationVO> page = chatConversationService.getChatConversationPage(pageQuery, query);
+        transService.transBatch(page.getRows());
+        return page;
     }
 
     /**

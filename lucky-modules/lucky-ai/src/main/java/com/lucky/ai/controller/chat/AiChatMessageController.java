@@ -50,6 +50,7 @@ public class AiChatMessageController extends BaseController {
         }
         // 2. 拼接数据，主要是知识库段落信息
 
+        transService.transBatch(messageList);
         return R.ok(messageList);
     }
 
@@ -79,7 +80,9 @@ public class AiChatMessageController extends BaseController {
     @SaCheckPermission("ai:chat-conversation:list")
     @GetMapping("/page")
     public TableDataInfo<AiChatMessageVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageQuery query) {
-        return chatMessageService.getChatMessagePage(pageQuery, query);
+        TableDataInfo<AiChatMessageVO> page = chatMessageService.getChatMessagePage(pageQuery, query);
+        transService.transBatch(page.getRows());
+        return page;
     }
 
     /**

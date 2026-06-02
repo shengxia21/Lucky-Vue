@@ -36,7 +36,9 @@ public class AiChatRoleController extends BaseController {
      */
     @GetMapping("/my-page")
     public TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query) {
-        return chatRoleService.getChatRoleMyPage(pageQuery, query, getUserId());
+        TableDataInfo<AiChatRoleVO> page = chatRoleService.getChatRoleMyPage(pageQuery, query, getUserId());
+        transService.transBatch(page.getRows());
+        return page;
     }
 
     /**
@@ -48,6 +50,7 @@ public class AiChatRoleController extends BaseController {
         if (ObjUtil.notEqual(chatRole.getUserId(), getUserId())) {
             return R.fail("聊天角色不属于您");
         }
+        transService.transOne(chatRole);
         return R.ok(chatRole);
     }
 
@@ -124,7 +127,9 @@ public class AiChatRoleController extends BaseController {
     @SaCheckPermission("ai:chat-role:query")
     @GetMapping("/get")
     public R<AiChatRoleVO> getChatRole(@RequestParam("id") Long id) {
-        return R.ok(chatRoleService.getChatRoleById(id));
+        AiChatRoleVO vo = chatRoleService.getChatRoleById(id);
+        transService.transOne(vo);
+        return R.ok(vo);
     }
 
     /**
@@ -133,7 +138,9 @@ public class AiChatRoleController extends BaseController {
     @SaCheckPermission("ai:chat-role:list")
     @GetMapping("/page")
     public TableDataInfo<AiChatRoleVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageQuery query) {
-        return chatRoleService.getChatRolePage(pageQuery, query);
+        TableDataInfo<AiChatRoleVO> page = chatRoleService.getChatRolePage(pageQuery, query);
+        transService.transBatch(page.getRows());
+        return page;
     }
 
 }
