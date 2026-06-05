@@ -1,7 +1,7 @@
 # 项目相关配置
 lucky:
   # 名称
-  name: lucky
+  name: lucky-vue
   # 版本
   version: 1.0.0
   # 版权年份

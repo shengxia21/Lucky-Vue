@@ -9,7 +9,7 @@
     <version>${revision}</version>
 
     <name>Lucky-Vue</name>
-    <url>https://gitee.com/fushengxuyu/Lucky-Vue</url>
+    <url>https://gitee.com/fushengxuyu/lucky-vue</url>
     <description>Lucky-Vue管理系统</description>
 
     <properties>
