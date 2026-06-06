@@ -1,6 +1,7 @@
 package com.lucky.system.controller.monitor;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.stp.StpUtil;
 import com.lucky.common.core.constant.CacheConstants;
 import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.domain.R;
@@ -13,6 +14,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 缓存监控
@@ -81,6 +83,12 @@ public class CacheController {
     @GetMapping("/getKeys/{cacheName}")
     public R<Set<String>> getCacheKeys(@PathVariable String cacheName) {
         Set<String> cacheKeys = redisTemplate.keys(cacheName + "*");
+        if (cacheName.equals(CacheConstants.LOGIN_TOKEN_KEY)) {
+            cacheKeys = cacheKeys.stream().filter(key -> {
+                String token = StringUtils.substringAfterLast(key, ":");
+                return !(StpUtil.stpLogic.getTokenActiveTimeoutByToken(token) < -1);
+            }).collect(Collectors.toSet());
+        }
         return R.ok(new TreeSet<>(cacheKeys));
     }
 
