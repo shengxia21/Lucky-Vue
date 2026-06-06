@@ -37,7 +37,7 @@ public class TongYiChatStrategy implements ChatModelStrategy {
         AiModel model = chatContext.getModel();
         return DashScopeChatOptions.builder()
                 .model(model.getModel())
-                .enableThinking(true)
+                .enableThinking(request.getUseThinking())
                 .enableSearch(request.getUseSearch())
                 .temperature(conversation.getTemperature())
                 .maxToken(conversation.getMaxTokens())

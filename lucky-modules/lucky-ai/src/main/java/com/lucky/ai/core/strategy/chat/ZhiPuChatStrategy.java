@@ -2,6 +2,7 @@ package com.lucky.ai.core.strategy.chat;
 
 import com.lucky.ai.core.context.ChatContext;
 import com.lucky.ai.core.strategy.ChatModelStrategy;
+import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiPlatformEnum;
@@ -32,8 +33,10 @@ public class ZhiPuChatStrategy implements ChatModelStrategy {
     public ChatOptions buildChatOptions(ChatContext chatContext) {
         AiChatConversation conversation = chatContext.getConversation();
         AiModel model = chatContext.getModel();
+        ChatMessageRequest request = chatContext.getRequest();
         return ZhiPuAiChatOptions.builder()
                 .model(model.getModel())
+                .thinking(request.getUseThinking() ? ZhiPuAiApi.ChatCompletionRequest.Thinking.enabled() : ZhiPuAiApi.ChatCompletionRequest.Thinking.disabled())
                 .temperature(conversation.getTemperature())
                 .maxTokens(conversation.getMaxTokens())
                 .build();

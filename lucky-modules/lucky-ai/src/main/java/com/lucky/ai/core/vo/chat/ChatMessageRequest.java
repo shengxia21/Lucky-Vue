@@ -27,9 +27,9 @@ public class ChatMessageRequest {
     private String content;
 
     /**
-     * 是否携带上下文
+     * 是否深度思考
      */
-    private Boolean useContext;
+    private Boolean useThinking;
 
     /**
      * 是否联网搜索

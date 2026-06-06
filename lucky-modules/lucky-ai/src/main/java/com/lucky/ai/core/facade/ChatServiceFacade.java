@@ -122,7 +122,6 @@ public class ChatServiceFacade implements ChatService {
         message.setRoleId(conversation.getRoleId());
         message.setType(MessageType.USER.getValue());
         message.setContent(request.getContent());
-        message.setUseContext(request.getUseContext());
         message.setAttachmentUrls(request.getAttachmentUrls());
         chatMessageMapper.insert(message);
         // userMessageId
@@ -153,7 +152,7 @@ public class ChatServiceFacade implements ChatService {
             chatMessages.add(new SystemMessage(conversation.getSystemMessage()));
         }
         // 添加历史消息
-        chatMessages.addAll(buildHistoryMessages(request, conversation));
+        chatMessages.addAll(buildHistoryMessages(conversation));
         // 添加发送消息
         chatMessages.add(new UserMessage(request.getContent()));
         return chatMessages;
@@ -162,12 +161,11 @@ public class ChatServiceFacade implements ChatService {
     /**
      * 构建历史消息
      *
-     * @param request      聊天请求VO
      * @param conversation 会话VO
      * @return 历史消息列表
      */
-    private List<Message> buildHistoryMessages(ChatMessageRequest request, AiChatConversation conversation) {
-        if (conversation.getMaxContexts() == null || conversation.getMaxContexts() <= 0 || ObjUtil.notEqual(request.getUseContext(), Boolean.TRUE)) {
+    private List<Message> buildHistoryMessages(AiChatConversation conversation) {
+        if (conversation.getMaxContexts() == null || conversation.getMaxContexts() <= 0) {
             return Collections.emptyList();
         }
         List<AiChatMessage> historyMessages = chatMessageMapper.selectListByConversationId(conversation.getId());
