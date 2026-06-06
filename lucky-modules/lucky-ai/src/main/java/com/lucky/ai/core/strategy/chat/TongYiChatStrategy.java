@@ -9,6 +9,7 @@ import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiPlatformEnum;
+import com.lucky.common.core.utils.StringUtils;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
@@ -23,8 +24,12 @@ import org.springframework.stereotype.Component;
 public class TongYiChatStrategy implements ChatModelStrategy {
 
     @Override
-    public ChatModel buildChatModel(String apiKey) {
-        DashScopeApi dashScopeApi = DashScopeApi.builder().apiKey(apiKey).build();
+    public ChatModel buildChatModel(String baseUrl, String apiKey) {
+        DashScopeApi.Builder builder = DashScopeApi.builder().apiKey(apiKey);
+        if (StringUtils.isNotBlank(baseUrl)) {
+            builder.baseUrl(baseUrl);
+        }
+        DashScopeApi dashScopeApi = builder.build();
         return DashScopeChatModel.builder()
                 .dashScopeApi(dashScopeApi)
                 .build();

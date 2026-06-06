@@ -62,7 +62,7 @@ public class ChatServiceFacade implements ChatService {
         // 构建Prompt
         Prompt prompt = new Prompt(chatMessages, chatOptions);
         // 构建模型
-        ChatModel chatModel = strategy.buildChatModel(chatContext.getApiKey().getApiKey());
+        ChatModel chatModel = strategy.buildChatModel(chatContext.getApiKey().getUrl(), chatContext.getApiKey().getApiKey());
         // 流式处理
         Flux<ChatResponse> responseFlux = chatModel.stream(prompt);
 

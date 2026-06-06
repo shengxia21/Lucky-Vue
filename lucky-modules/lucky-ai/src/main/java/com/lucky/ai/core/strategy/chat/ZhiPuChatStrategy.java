@@ -6,6 +6,7 @@ import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiPlatformEnum;
+import com.lucky.common.core.utils.StringUtils;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
@@ -24,8 +25,12 @@ import org.springframework.stereotype.Component;
 public class ZhiPuChatStrategy implements ChatModelStrategy {
 
     @Override
-    public ChatModel buildChatModel(String apiKey) {
-        ZhiPuAiApi zhiPuApi = ZhiPuAiApi.builder().apiKey(apiKey).build();
+    public ChatModel buildChatModel(String baseUrl, String apiKey) {
+        ZhiPuAiApi.Builder builder = ZhiPuAiApi.builder().apiKey(apiKey);
+        if (StringUtils.isNotBlank(baseUrl)) {
+            builder.baseUrl(baseUrl);
+        }
+        ZhiPuAiApi zhiPuApi = builder.build();
         return new ZhiPuAiChatModel(zhiPuApi);
     }
 

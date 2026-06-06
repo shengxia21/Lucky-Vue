@@ -40,8 +40,8 @@ CREATE TABLE `ai_api_key`  (
 -- ----------------------------
 -- Records of ai_api_key
 -- ----------------------------
-INSERT INTO `ai_api_key` VALUES (1, 'DeepSeek3.1', '填写你自己的api_key', 'DeepSeek', '', 0, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_api_key` VALUES (2, '通义千问3', '填写你自己的api_key', 'TongYi', '', 0, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (1, 'DeepSeek', '填写你自己的api_key', 'DeepSeek', 'https://api.deepseek.com', 0, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (2, '通义千问', '填写你自己的api_key', 'TongYi', 'https://dashscope.aliyuncs.com', 0, '0', '', '', NULL, '', NULL);
 INSERT INTO `ai_api_key` VALUES (4, '百度千帆', '填写你自己的api_key', 'YiYan', NULL, 0, '0', '', '', NULL, '', NULL);
 INSERT INTO `ai_api_key` VALUES (5, '豆包火山引擎', '填写你自己的api_key', 'DouBao', NULL, 0, '0', '', '', NULL, '', NULL);
 INSERT INTO `ai_api_key` VALUES (6, '腾讯混元', '填写你自己的api_key', 'HunYuan', NULL, 0, '0', '', '', NULL, '', NULL);

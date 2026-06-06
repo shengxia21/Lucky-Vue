@@ -15,10 +15,11 @@ public interface ChatModelStrategy {
     /**
      * 构建模型
      *
-     * @param apiKey apiKey
+     * @param baseUrl 基础Url
+     * @param apiKey  apiKey
      * @return 聊天模型
      */
-    ChatModel buildChatModel(String apiKey);
+    ChatModel buildChatModel(String baseUrl, String apiKey);
 
     /**
      * 构建选项

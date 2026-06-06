@@ -5,6 +5,7 @@ import com.lucky.ai.core.strategy.ChatModelStrategy;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.enums.model.AiPlatformEnum;
+import com.lucky.common.core.utils.StringUtils;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
@@ -23,8 +24,12 @@ import org.springframework.stereotype.Component;
 public class DeepSeekChatStrategy implements ChatModelStrategy {
 
     @Override
-    public ChatModel buildChatModel(String apiKey) {
-        DeepSeekApi deepSeekApi = DeepSeekApi.builder().apiKey(apiKey).build();
+    public ChatModel buildChatModel(String baseUrl, String apiKey) {
+        DeepSeekApi.Builder builder = DeepSeekApi.builder().apiKey(apiKey);
+        if (StringUtils.isNotBlank(baseUrl)) {
+            builder.baseUrl(baseUrl);
+        }
+        DeepSeekApi deepSeekApi = builder.build();
         return DeepSeekChatModel.builder()
                 .deepSeekApi(deepSeekApi)
                 .build();
