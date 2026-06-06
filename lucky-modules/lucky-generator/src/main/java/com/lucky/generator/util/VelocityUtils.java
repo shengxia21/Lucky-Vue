@@ -159,10 +159,13 @@ public class VelocityUtils {
         }
         List<String> templates = new ArrayList<>();
         templates.add("vm/java/domain.java.vm");
-        templates.add("vm/java/mapper.java.vm");
+        templates.add("vm/java/vo.java.vm");
+        templates.add("vm/java/saveQuery.java.vm");
+        templates.add("vm/java/Query.java.vm");
+        templates.add("vm/java/controller.java.vm");
         templates.add("vm/java/service.java.vm");
         templates.add("vm/java/serviceImpl.java.vm");
-        templates.add("vm/java/controller.java.vm");
+        templates.add("vm/java/mapper.java.vm");
         templates.add("vm/xml/mapper.xml.vm");
         templates.add("vm/sql/sql.vm");
         templates.add(apiTemplate);
@@ -205,6 +208,15 @@ public class VelocityUtils {
 
         if (template.contains("domain.java.vm")) {
             fileName = StringUtils.format("{}/domain/{}.java", javaPath, className);
+        }
+        if (template.contains("vo.java.vm")) {
+            fileName = StringUtils.format("{}/domain/vo/{}/{}VO.java", javaPath, businessName, className);
+        }
+        if (template.contains("saveQuery.java.vm")) {
+            fileName = StringUtils.format("{}/domain/query/{}/{}SaveQuery.java", javaPath, businessName, className);
+        }
+        if (template.contains("Query.java.vm")) {
+            fileName = StringUtils.format("{}/domain/query/{}/{}Query.java", javaPath, businessName, className);
         }
         if (template.contains("sub-domain.java.vm") && StringUtils.equals(GenConstants.TPL_SUB, genTable.getTplCategory())) {
             fileName = StringUtils.format("{}/domain/{}.java", javaPath, genTable.getSubTable().getClassName());

@@ -1,0 +1,23 @@
+package ${packageName}.domain.vo.${businessName};
+
+import ${packageName}.domain.${ClassName};
+import io.github.linpeilie.annotations.AutoMapper;
+import lombok.Data;
+
+/**
+ * ${functionName}响应VO
+ *
+ * @author ${author}
+ */
+@Data
+@AutoMapper(target = ${ClassName}.class)
+public class ${ClassName}VO {
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.javaField))
+    /** ${column.columnComment} */
+    private ${column.javaType} ${column.javaField};
+
+#end
+#end
+}

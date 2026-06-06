@@ -1,0 +1,37 @@
+package ${packageName}.domain.query.${businessName};
+
+import ${packageName}.domain.${ClassName};
+import io.github.linpeilie.annotations.AutoMapper;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+/**
+ * ${functionName}新增/修改 请求对象
+ *
+ * @author ${author}
+ */
+@Data
+@AutoMapper(target = ${ClassName}.class, reverseConvertGenerate = false)
+public class ${ClassName}SaveQuery {
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.javaField))
+    /** ${column.columnComment} */
+#if($column.pk)
+    private ${column.javaType} ${column.javaField};
+#elseif($column.edit)
+#if($column.javaType == 'String')
+    @NotEmpty(message = "${column.columnComment}不能为空")
+    private ${column.javaType} ${column.javaField};
+#else
+    @NotNull(message = "${column.columnComment}不能为空")
+    private ${column.javaType} ${column.javaField};
+#end
+#else
+    private ${column.javaType} ${column.javaField};
+#end
+
+#end
+#end
+}

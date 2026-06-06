@@ -1,7 +1,15 @@
 package ${packageName}.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lucky.common.core.utils.StringUtils;
+import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 import java.util.List;
 import ${packageName}.domain.${ClassName};
+import ${packageName}.domain.query.${businessName}.${ClassName}Query;
+import ${packageName}.domain.vo.${businessName}.${ClassName}VO;
 #if($table.sub)
 import ${packageName}.domain.${subClassName};
 #end
@@ -11,55 +19,7 @@ import ${packageName}.domain.${subClassName};
  * 
  * @author ${author}
  */
-public interface ${ClassName}Mapper {
-
-    /**
-     * 查询${functionName}
-     * 
-     * @param ${pkColumn.javaField} ${functionName}主键
-     * @return ${functionName}
-     */
-    ${ClassName} select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaType} ${pkColumn.javaField});
-
-    /**
-     * 查询${functionName}列表
-     * 
-     * @param ${className} ${functionName}
-     * @return ${functionName}集合
-     */
-    List<${ClassName}> select${ClassName}List(${ClassName} ${className});
-
-    /**
-     * 新增${functionName}
-     * 
-     * @param ${className} ${functionName}
-     * @return 结果
-     */
-    int insert${ClassName}(${ClassName} ${className});
-
-    /**
-     * 修改${functionName}
-     * 
-     * @param ${className} ${functionName}
-     * @return 结果
-     */
-    int update${ClassName}(${ClassName} ${className});
-
-    /**
-     * 删除${functionName}
-     * 
-     * @param ${pkColumn.javaField} ${functionName}主键
-     * @return 结果
-     */
-    int delete${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaType} ${pkColumn.javaField});
-
-    /**
-     * 批量删除${functionName}
-     * 
-     * @param ${pkColumn.javaField}s 需要删除的数据主键集合
-     * @return 结果
-     */
-    int delete${ClassName}By${pkColumn.capJavaField}s(${pkColumn.javaType}[] ${pkColumn.javaField}s);
+public interface ${ClassName}Mapper extends BaseMapperX<${ClassName}, ${ClassName}VO> {
 #if($table.sub)
 
     /**
@@ -86,5 +46,35 @@ public interface ${ClassName}Mapper {
      */
     int delete${subClassName}By${subTableFkClassName}(${pkColumn.javaType} ${pkColumn.javaField});
 #end
+
+    default IPage<${ClassName}VO> selectPage(Page<${ClassName}> page, ${ClassName}Query query) {
+        return selectVoPage(page, buildWrapper(query));
+    }
+
+    default List<${ClassName}> selectList(${ClassName}Query query) {
+        return selectList(buildWrapper(query));
+    }
+
+    default Wrapper<${ClassName}> buildWrapper(${ClassName}Query query) {
+        Wrapper<${ClassName}> wrapper = Wrappers.<${ClassName}>lambdaQuery();
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.javaField) && $column.query)
+    #if($column.queryType == "EQ")
+        wrapper.eq(StringUtils.#if($column.javaType == 'String')isNotBlank#else isNotNull#end(query.get${column.capJavaField}()), ${ClassName}::get${column.capJavaField}, query.get${column.capJavaField}());
+    #elseif($column.queryType == "NE")
+        wrapper.ne(StringUtils.#if($column.javaType == 'String')isNotBlank#else isNotNull#end(query.get${column.capJavaField}()), ${ClassName}::get${column.capJavaField}, query.get${column.capJavaField}());
+    #elseif($column.queryType == "GT")
+        wrapper.gt(StringUtils.#if($column.javaType == 'String')isNotBlank#else isNotNull#end(query.get${column.capJavaField}()), ${ClassName}::get${column.capJavaField}, query.get${column.capJavaField}());
+    #elseif($column.queryType == "LT")
+        wrapper.lt(StringUtils.#if($column.javaType == 'String')isNotBlank#else isNotNull#end(query.get${column.capJavaField}()), ${ClassName}::get${column.capJavaField}, query.get${column.capJavaField}());
+    #elseif($column.queryType == "LIKE")
+        wrapper.like(StringUtils.#if($column.javaType == 'String')isNotBlank#else isNotNull#end(query.get${column.capJavaField}()), ${ClassName}::get${column.capJavaField}, query.get${column.capJavaField}());
+    #elseif($column.queryType == "BETWEEN")
+        wrapper.between(!query.getParams().isEmpty(), ${ClassName}::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"));
+    #end
+#end
+#end
+        return wrapper;
+    }
 
 }
