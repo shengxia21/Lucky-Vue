@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface AiModelService {
+public interface IAiModelService {
 
     /**
      * 获得默认的模型

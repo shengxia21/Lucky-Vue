@@ -15,9 +15,9 @@ import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.ai.enums.image.AiImageStatusEnum;
 import com.lucky.ai.factory.AsyncAiFactory;
 import com.lucky.ai.mapper.AiImageMapper;
-import com.lucky.ai.service.AiApiKeyService;
-import com.lucky.ai.service.AiImageService;
-import com.lucky.ai.service.AiModelService;
+import com.lucky.ai.service.IAiApiKeyService;
+import com.lucky.ai.service.IAiImageService;
+import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -36,15 +36,15 @@ import java.util.List;
  * @author lucky
  */
 @Service
-public class AiImageServiceImpl implements AiImageService {
+public class AiImageServiceImpl implements IAiImageService {
 
     @Resource
     private AiImageMapper imageMapper;
 
     @Resource
-    private AiModelService modelService;
+    private IAiModelService modelService;
     @Resource
-    private AiApiKeyService apiKeyService;
+    private IAiApiKeyService apiKeyService;
 
     @Override
     public TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query, Long userId) {

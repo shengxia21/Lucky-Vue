@@ -5,7 +5,7 @@ import com.lucky.ai.domain.query.model.AiModelPageQuery;
 import com.lucky.ai.domain.query.model.AiModelSaveQuery;
 import com.lucky.ai.domain.vo.model.AiModelVO;
 import com.lucky.ai.enums.CommonStatusEnum;
-import com.lucky.ai.service.AiModelService;
+import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessType;
@@ -28,7 +28,7 @@ import java.util.List;
 public class AiModelController extends BaseController {
 
     @Resource
-    private AiModelService modelService;
+    private IAiModelService modelService;
 
     /**
      * 创建模型

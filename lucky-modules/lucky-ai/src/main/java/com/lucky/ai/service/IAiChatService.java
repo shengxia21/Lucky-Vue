@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
  *
  * @author lucky
  */
-public interface AiChatService {
+public interface IAiChatService {
 
     /**
      * 发送消息（流式）

@@ -4,7 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lucky.ai.domain.query.apiKey.AiApiKeyPageQuery;
 import com.lucky.ai.domain.query.apiKey.AiApiKeySaveQuery;
 import com.lucky.ai.domain.vo.apikey.AiApiKeyVO;
-import com.lucky.ai.service.AiApiKeyService;
+import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessType;
@@ -27,7 +27,7 @@ import java.util.List;
 public class AiApiKeyController extends BaseController {
 
     @Resource
-    private AiApiKeyService apiKeyService;
+    private IAiApiKeyService apiKeyService;
 
     /**
      * 创建 API 密钥

@@ -7,7 +7,7 @@ import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.domain.query.message.AiChatMessagePageQuery;
 import com.lucky.ai.domain.vo.message.AiChatMessageVO;
 import com.lucky.ai.mapper.AiChatMessageMapper;
-import com.lucky.ai.service.AiChatMessageService;
+import com.lucky.ai.service.IAiChatMessageService;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.mybatis.core.page.PageQuery;
@@ -25,7 +25,7 @@ import java.util.Map;
  * @author lucky
  */
 @Service
-public class AiChatMessageServiceImpl implements AiChatMessageService {
+public class AiChatMessageServiceImpl implements IAiChatMessageService {
 
     @Resource
     private AiChatMessageMapper chatMessageMapper;

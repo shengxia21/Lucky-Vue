@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface AiChatConversationService {
+public interface IAiChatConversationService {
 
     /**
      * 创建我的聊天对话

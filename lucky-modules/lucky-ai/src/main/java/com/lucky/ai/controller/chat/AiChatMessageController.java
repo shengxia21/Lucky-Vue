@@ -6,8 +6,8 @@ import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.domain.query.message.AiChatMessagePageQuery;
 import com.lucky.ai.domain.vo.conversation.AiChatConversationVO;
 import com.lucky.ai.domain.vo.message.AiChatMessageVO;
-import com.lucky.ai.service.AiChatConversationService;
-import com.lucky.ai.service.AiChatMessageService;
+import com.lucky.ai.service.IAiChatConversationService;
+import com.lucky.ai.service.IAiChatMessageService;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessType;
@@ -30,9 +30,9 @@ import java.util.List;
 public class AiChatMessageController extends BaseController {
 
     @Resource
-    private AiChatMessageService chatMessageService;
+    private IAiChatMessageService chatMessageService;
     @Resource
-    private AiChatConversationService chatConversationService;
+    private IAiChatConversationService chatConversationService;
 
     /**
      * 获得指定对话的消息列表

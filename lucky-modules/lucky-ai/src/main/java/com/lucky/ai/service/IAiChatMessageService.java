@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author lucky
  */
-public interface AiChatMessageService {
+public interface IAiChatMessageService {
 
     /**
      * 根据会话ID查询聊天消息列表

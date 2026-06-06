@@ -8,8 +8,8 @@ import com.lucky.ai.domain.vo.model.AiModelVO;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.enums.model.AiPlatformEnum;
 import com.lucky.ai.mapper.AiModelMapper;
-import com.lucky.ai.service.AiApiKeyService;
-import com.lucky.ai.service.AiModelService;
+import com.lucky.ai.service.IAiApiKeyService;
+import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -26,13 +26,13 @@ import java.util.List;
  * @author lucky
  */
 @Service
-public class AiModelServiceImpl implements AiModelService {
+public class AiModelServiceImpl implements IAiModelService {
 
     @Resource
     private AiModelMapper modelMapper;
 
     @Resource
-    private AiApiKeyService apiKeyService;
+    private IAiApiKeyService apiKeyService;
 
     @Override
     public AiModel getDefaultModelByType(Integer type) {

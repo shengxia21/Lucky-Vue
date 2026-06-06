@@ -6,7 +6,7 @@ import com.lucky.ai.domain.query.chatRole.AiChatRolePageQuery;
 import com.lucky.ai.domain.query.chatRole.AiChatRoleSaveMyQuery;
 import com.lucky.ai.domain.query.chatRole.AiChatRoleSaveQuery;
 import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
-import com.lucky.ai.service.AiChatRoleService;
+import com.lucky.ai.service.IAiChatRoleService;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessType;
@@ -29,7 +29,7 @@ import java.util.List;
 public class AiChatRoleController extends BaseController {
 
     @Resource
-    private AiChatRoleService chatRoleService;
+    private IAiChatRoleService chatRoleService;
 
     /**
      * 获得【我的】聊天角色分页

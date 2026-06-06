@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface AiChatRoleService {
+public interface IAiChatRoleService {
 
     /**
      * 创建聊天角色

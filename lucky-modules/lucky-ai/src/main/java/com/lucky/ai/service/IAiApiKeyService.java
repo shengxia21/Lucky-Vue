@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface AiApiKeyService {
+public interface IAiApiKeyService {
 
     /**
      * 创建 API 密钥

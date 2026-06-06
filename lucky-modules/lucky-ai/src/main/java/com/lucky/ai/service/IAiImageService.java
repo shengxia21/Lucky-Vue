@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author lucky
  */
-public interface AiImageService {
+public interface IAiImageService {
 
     /**
      * 获取【我的】绘图分页

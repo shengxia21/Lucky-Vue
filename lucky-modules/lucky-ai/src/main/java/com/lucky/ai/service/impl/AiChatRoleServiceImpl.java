@@ -11,7 +11,7 @@ import com.lucky.ai.domain.query.chatRole.AiChatRoleSaveQuery;
 import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
 import com.lucky.ai.enums.CommonStatusEnum;
 import com.lucky.ai.mapper.AiChatRoleMapper;
-import com.lucky.ai.service.AiChatRoleService;
+import com.lucky.ai.service.IAiChatRoleService;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -31,7 +31,7 @@ import java.util.List;
  * @author lucky
  */
 @Service
-public class AiChatRoleServiceImpl implements AiChatRoleService {
+public class AiChatRoleServiceImpl implements IAiChatRoleService {
 
     @Resource
     private AiChatRoleMapper chatRoleMapper;

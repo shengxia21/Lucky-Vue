@@ -6,7 +6,7 @@ import com.lucky.ai.domain.query.conversation.AiChatConversationCreateMyQuery;
 import com.lucky.ai.domain.query.conversation.AiChatConversationPageQuery;
 import com.lucky.ai.domain.query.conversation.AiChatConversationUpdateMyQuery;
 import com.lucky.ai.domain.vo.conversation.AiChatConversationVO;
-import com.lucky.ai.service.AiChatConversationService;
+import com.lucky.ai.service.IAiChatConversationService;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessType;
@@ -29,7 +29,7 @@ import java.util.List;
 public class AiChatConversationController extends BaseController {
 
     @Resource
-    private AiChatConversationService chatConversationService;
+    private IAiChatConversationService chatConversationService;
 
     /**
      * 创建我的聊天对话

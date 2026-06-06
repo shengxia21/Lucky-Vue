@@ -4,7 +4,7 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
 import com.lucky.ai.core.vo.chat.ChatMessageRequest;
 import com.lucky.ai.core.vo.chat.ChatMessageResponse;
-import com.lucky.ai.service.AiChatService;
+import com.lucky.ai.service.IAiChatService;
 import com.lucky.common.mybatis.core.controller.BaseController;
 import jakarta.annotation.Resource;
 import org.springframework.http.MediaType;
@@ -24,7 +24,7 @@ import reactor.core.publisher.Flux;
 public class AiChatController extends BaseController {
 
     @Resource
-    private AiChatService chatService;
+    private IAiChatService chatService;
 
     /**
      * 发送消息（流式 SSE）

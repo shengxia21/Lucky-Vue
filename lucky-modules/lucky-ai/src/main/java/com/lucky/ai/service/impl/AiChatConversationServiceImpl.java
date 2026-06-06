@@ -14,10 +14,10 @@ import com.lucky.ai.domain.query.conversation.AiChatConversationUpdateMyQuery;
 import com.lucky.ai.domain.vo.conversation.AiChatConversationVO;
 import com.lucky.ai.enums.model.AiModelTypeEnum;
 import com.lucky.ai.mapper.AiChatConversationMapper;
-import com.lucky.ai.service.AiChatConversationService;
-import com.lucky.ai.service.AiChatMessageService;
-import com.lucky.ai.service.AiChatRoleService;
-import com.lucky.ai.service.AiModelService;
+import com.lucky.ai.service.IAiChatConversationService;
+import com.lucky.ai.service.IAiChatMessageService;
+import com.lucky.ai.service.IAiChatRoleService;
+import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.DateUtils;
@@ -36,17 +36,17 @@ import java.util.Map;
  * @author lucky
  */
 @Service
-public class AiChatConversationServiceImpl implements AiChatConversationService {
+public class AiChatConversationServiceImpl implements IAiChatConversationService {
 
     @Resource
     private AiChatConversationMapper chatConversationMapper;
 
     @Resource
-    private AiModelService modelService;
+    private IAiModelService modelService;
     @Resource
-    private AiChatRoleService chatRoleService;
+    private IAiChatRoleService chatRoleService;
     @Resource
-    private AiChatMessageService chatMessageService;
+    private IAiChatMessageService chatMessageService;
 
     @Override
     public Long createChatConversationMy(AiChatConversationCreateMyQuery query, Long userId) {

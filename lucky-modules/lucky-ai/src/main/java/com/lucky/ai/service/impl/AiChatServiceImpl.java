@@ -8,10 +8,10 @@ import com.lucky.ai.core.vo.chat.ChatMessageResponse;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
-import com.lucky.ai.service.AiApiKeyService;
-import com.lucky.ai.service.AiChatConversationService;
-import com.lucky.ai.service.AiChatService;
-import com.lucky.ai.service.AiModelService;
+import com.lucky.ai.service.IAiApiKeyService;
+import com.lucky.ai.service.IAiChatConversationService;
+import com.lucky.ai.service.IAiChatService;
+import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import jakarta.annotation.Resource;
@@ -24,14 +24,14 @@ import reactor.core.publisher.Flux;
  * @author lucky
  */
 @Service
-public class AiChatServiceImpl implements AiChatService {
+public class AiChatServiceImpl implements IAiChatService {
 
     @Resource
-    private AiChatConversationService chatConversationService;
+    private IAiChatConversationService chatConversationService;
     @Resource
-    private AiModelService modelService;
+    private IAiModelService modelService;
     @Resource
-    private AiApiKeyService apiKeyService;
+    private IAiApiKeyService apiKeyService;
 
     @Resource
     private ChatServiceFacade chatService;

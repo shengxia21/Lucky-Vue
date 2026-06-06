@@ -7,7 +7,7 @@ import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
 import com.lucky.ai.domain.query.image.AiImagePageQuery;
 import com.lucky.ai.domain.query.image.AiImageUpdateQuery;
 import com.lucky.ai.domain.vo.image.AiImageVO;
-import com.lucky.ai.service.AiImageService;
+import com.lucky.ai.service.IAiImageService;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessType;
@@ -30,14 +30,14 @@ import java.util.List;
 public class AiImageController extends BaseController {
 
     @Resource
-    private AiImageService AiImageService;
+    private IAiImageService imageService;
 
     /**
      * 获取【我的】绘图分页
      */
     @GetMapping("/my-page")
     public TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query) {
-        return AiImageService.getImagePageMy(pageQuery, query, getUserId());
+        return imageService.getImagePageMy(pageQuery, query, getUserId());
     }
 
     /**
@@ -45,7 +45,7 @@ public class AiImageController extends BaseController {
      */
     @GetMapping("/public-page")
     public TableDataInfo<AiImageVO> getImagePagePublic(PageQuery pageQuery, AiImagePagePublicQuery query) {
-        return AiImageService.getImagePagePublic(pageQuery, query);
+        return imageService.getImagePagePublic(pageQuery, query);
     }
 
     /**
@@ -53,7 +53,7 @@ public class AiImageController extends BaseController {
      */
     @GetMapping("/get-my")
     public R<AiImageVO> getImageMy(@RequestParam("id") Long id) {
-        AiImageVO image = AiImageService.getImageById(id);
+        AiImageVO image = imageService.getImageById(id);
         if (image == null || ObjUtil.notEqual(getUserId(), image.getUserId())) {
             return R.fail("绘图记录不存在或不属于当前用户");
         }
@@ -65,7 +65,7 @@ public class AiImageController extends BaseController {
      */
     @GetMapping("/my-list-by-ids")
     public R<List<AiImageVO>> getImageListMyByIds(@RequestParam("ids") List<Long> ids) {
-        return R.ok(AiImageService.getImageListByIdsAndUserId(ids, getUserId()));
+        return R.ok(imageService.getImageListByIdsAndUserId(ids, getUserId()));
     }
 
     /**
@@ -73,7 +73,7 @@ public class AiImageController extends BaseController {
      */
     @PostMapping("/draw")
     public R<Long> drawImage(@Validated @RequestBody ImageDrawRequest request) {
-        return R.ok(AiImageService.drawImage(getUserId(), request));
+        return R.ok(imageService.drawImage(getUserId(), request));
     }
 
     /**
@@ -82,7 +82,7 @@ public class AiImageController extends BaseController {
     @Log(title = "删除【我的】绘图记录", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
     public R<Void> deleteImageMy(@RequestParam("id") Long id) {
-        return toAjax(AiImageService.deleteImageMyById(id, getUserId()));
+        return toAjax(imageService.deleteImageMyById(id, getUserId()));
     }
 
     // ================ 绘图管理 ================
@@ -93,7 +93,7 @@ public class AiImageController extends BaseController {
     @SaCheckPermission("ai:image:list")
     @GetMapping("/page")
     public TableDataInfo<AiImageVO> getImagePage(PageQuery pageQuery, AiImagePageQuery query) {
-        return AiImageService.getImagePage(pageQuery, query);
+        return imageService.getImagePage(pageQuery, query);
     }
 
     /**
@@ -103,7 +103,7 @@ public class AiImageController extends BaseController {
     @SaCheckPermission("ai:image:update")
     @PutMapping("/update")
     public R<Void> updateImage(@Validated @RequestBody AiImageUpdateQuery query) {
-        return toAjax(AiImageService.updateImage(query));
+        return toAjax(imageService.updateImage(query));
     }
 
     /**
@@ -113,7 +113,7 @@ public class AiImageController extends BaseController {
     @SaCheckPermission("ai:image:delete")
     @DeleteMapping("/delete")
     public R<Void> deleteImage(@RequestParam("id") Long id) {
-        return toAjax(AiImageService.deleteImageById(id));
+        return toAjax(imageService.deleteImageById(id));
     }
 
 }
