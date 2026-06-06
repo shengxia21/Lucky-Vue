@@ -116,7 +116,7 @@ mybatis-plus:
   # 指定要扫描的Mapper类的包的路径
   mapperPackage: com.lucky.**.mapper
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
-  mapperLocations: classpath*:mapper/**/*Mapper.xml
+  mapperLocations: classpath*:mapper/*Mapper.xml
   # 全局配置信息
   configuration:
     # 指定 MyBatis 所用日志的具体实现（控制台输出日志需修改 logging.level 为 DEBUG 级别）
