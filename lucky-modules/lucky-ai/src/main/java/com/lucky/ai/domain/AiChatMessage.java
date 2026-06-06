@@ -80,11 +80,6 @@ public class AiChatMessage extends BaseEntity {
     private String reasoningContent;
 
     /**
-     * 是否携带上下文（0否 1是）
-     */
-    private Boolean useContext;
-
-    /**
      * 知识库段落编号数组
      */
     @TableField(typeHandler = LongListTypeHandler.class)

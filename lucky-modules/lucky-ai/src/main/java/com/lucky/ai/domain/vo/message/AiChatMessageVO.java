@@ -73,11 +73,6 @@ public class AiChatMessageVO implements VO {
     private String reasoningContent;
 
     /**
-     * 是否携带上下文
-     */
-    private Boolean useContext;
-
-    /**
      * 知识库段落编号数组
      */
     private List<Long> segmentIds;

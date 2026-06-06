@@ -96,7 +96,6 @@ CREATE TABLE `ai_chat_message`  (
   `model_id` bigint(0) NOT NULL COMMENT '模型编号',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '聊天内容',
   `reasoning_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '推理内容',
-  `use_context` tinyint(0) NOT NULL DEFAULT 0 COMMENT '是否携带上下文（0否 1是）',
   `segment_ids` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '知识库段落编号数组',
   `web_search_pages` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '联网搜索的网页内容数组',
   `attachment_urls` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '附件 URL 数组',
