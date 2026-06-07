@@ -1,7 +1,5 @@
 package com.lucky.ai.controller.chat;
 
-import cn.dev33.satoken.annotation.SaIgnore;
-import cn.dev33.satoken.stp.StpUtil;
 import com.lucky.ai.domain.request.chat.ChatMessageRequest;
 import com.lucky.ai.service.IAiChatService;
 import com.lucky.common.ai.domain.response.ChatMessageResponse;
@@ -29,15 +27,8 @@ public class AiChatController extends BaseController {
     /**
      * 发送消息（流式 SSE）
      */
-    @SaIgnore
     @PostMapping(value = "/send-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ChatMessageResponse> sendChatStream(@RequestBody ChatMessageRequest query) {
-        // 手动校验登录状态
-        if (!StpUtil.isLogin()) {
-            ChatMessageResponse errorResponse = new ChatMessageResponse();
-            errorResponse.setContent("请登录后操作");
-            return Flux.just(errorResponse);
-        }
         return chatService.sendChatStream(query, getUserId(), getUserName());
     }
 
