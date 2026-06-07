@@ -17,16 +17,34 @@
 
     <dependencies>
 
-        <!-- common Mybatis 模块 -->
+        <!-- common 核心模块 -->
         <dependency>
             <groupId>com.lucky</groupId>
-            <artifactId>lucky-common-mybatis</artifactId>
+            <artifactId>lucky-common-core</artifactId>
         </dependency>
 
         <!-- common 日志模块 -->
         <dependency>
             <groupId>com.lucky</groupId>
             <artifactId>lucky-common-log</artifactId>
+        </dependency>
+
+        <!-- common Mybatis 模块 -->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-common-mybatis</artifactId>
+        </dependency>
+
+        <!-- common redis 模块 -->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-common-redis</artifactId>
+        </dependency>
+
+        <!-- common security 模块 -->
+        <dependency>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-common-security</artifactId>
         </dependency>
 
         <!-- common Web 模块 -->
