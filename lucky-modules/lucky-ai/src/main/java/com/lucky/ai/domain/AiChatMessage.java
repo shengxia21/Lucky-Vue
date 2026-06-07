@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import com.lucky.ai.core.vo.search.WebSearchResponse;
+import com.lucky.ai.domain.request.search.WebSearchResponse;
 import com.lucky.common.mybatis.core.domain.BaseEntity;
 import com.lucky.common.mybatis.handler.type.LongListTypeHandler;
 import com.lucky.common.mybatis.handler.type.StringListTypeHandler;

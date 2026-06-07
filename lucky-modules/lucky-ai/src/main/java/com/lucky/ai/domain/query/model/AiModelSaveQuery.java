@@ -1,9 +1,9 @@
 package com.lucky.ai.domain.query.model;
 
 import com.lucky.ai.domain.AiModel;
-import com.lucky.ai.enums.CommonStatusEnum;
-import com.lucky.ai.enums.model.AiModelTypeEnum;
-import com.lucky.ai.enums.model.AiPlatformEnum;
+import com.lucky.common.ai.enums.AiModelTypeEnum;
+import com.lucky.common.ai.enums.AiPlatformEnum;
+import com.lucky.common.ai.enums.CommonStatusEnum;
 import com.lucky.common.core.enumeration.InEnum;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;

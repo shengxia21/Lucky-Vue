@@ -41,13 +41,13 @@
             <artifactId>mybatis-plus-jsqlparser</artifactId>
         </dependency>
 
-        <!-- VO翻译服务 -->
+        <!-- easy-trans翻译 -->
         <dependency>
             <groupId>com.fhs-opensource</groupId>
             <artifactId>easy-trans-spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- VO翻译服务扩展 -->
+        <!-- easy-trans翻译扩展 -->
         <dependency>
             <groupId>com.fhs-opensource</groupId>
             <artifactId>easy-trans-mybatis-plus-extend</artifactId>

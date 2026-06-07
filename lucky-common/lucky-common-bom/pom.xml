@@ -69,6 +69,13 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- ai服务 -->
+            <dependency>
+                <groupId>com.lucky</groupId>
+                <artifactId>lucky-common-ai</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

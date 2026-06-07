@@ -2,9 +2,9 @@ package com.lucky.ai.controller.chat;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
-import com.lucky.ai.core.vo.chat.ChatMessageRequest;
-import com.lucky.ai.core.vo.chat.ChatMessageResponse;
+import com.lucky.ai.domain.request.chat.ChatMessageRequest;
 import com.lucky.ai.service.IAiChatService;
+import com.lucky.common.ai.domain.response.ChatMessageResponse;
 import com.lucky.common.mybatis.core.controller.BaseController;
 import jakarta.annotation.Resource;
 import org.springframework.http.MediaType;

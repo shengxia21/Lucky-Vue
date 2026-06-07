@@ -1,0 +1,55 @@
+package com.lucky.common.ai.strategy.chat;
+
+import com.lucky.common.ai.domain.context.ChatContext;
+import com.lucky.common.ai.enums.AiPlatformEnum;
+import com.lucky.common.ai.strategy.ChatModelStrategy;
+import com.lucky.common.core.utils.StringUtils;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.ai.deepseek.DeepSeekAssistantMessage;
+import org.springframework.ai.deepseek.DeepSeekChatModel;
+import org.springframework.ai.deepseek.DeepSeekChatOptions;
+import org.springframework.ai.deepseek.api.DeepSeekApi;
+import org.springframework.stereotype.Component;
+
+/**
+ * DeepSeek聊天策略
+ *
+ * @author lucky
+ */
+@Component
+public class DeepSeekChatStrategy implements ChatModelStrategy {
+
+    @Override
+    public ChatModel buildChatModel(String baseUrl, String apiKey) {
+        DeepSeekApi.Builder builder = DeepSeekApi.builder().apiKey(apiKey);
+        if (StringUtils.isNotBlank(baseUrl)) {
+            builder.baseUrl(baseUrl);
+        }
+        DeepSeekApi deepSeekApi = builder.build();
+        return DeepSeekChatModel.builder()
+                .deepSeekApi(deepSeekApi)
+                .build();
+    }
+
+    @Override
+    public ChatOptions buildChatOptions(ChatContext chatContext) {
+        return DeepSeekChatOptions.builder()
+                .model(chatContext.getModel())
+                .temperature(chatContext.getTemperature())
+                .maxTokens(chatContext.getMaxTokens())
+                .build();
+    }
+
+    @Override
+    public String extractChatResponseReasoningContent(ChatResponse response) {
+        return ((DeepSeekAssistantMessage) (response.getResult().getOutput())).getReasoningContent();
+    }
+
+    @Override
+    public String getStrategyName() {
+        return AiPlatformEnum.DEEP_SEEK.getPlatform();
+    }
+
+}

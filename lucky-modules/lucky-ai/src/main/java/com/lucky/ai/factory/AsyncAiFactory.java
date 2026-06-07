@@ -1,9 +1,9 @@
 package com.lucky.ai.factory;
 
-import com.lucky.ai.core.context.ImageContext;
-import com.lucky.ai.core.facade.ImageServiceFacade;
 import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.mapper.AiChatMessageMapper;
+import com.lucky.ai.service.impl.ImageServiceFacade;
+import com.lucky.common.ai.domain.context.ImageContext;
 import com.lucky.common.core.utils.spring.SpringUtils;
 
 import java.util.TimerTask;

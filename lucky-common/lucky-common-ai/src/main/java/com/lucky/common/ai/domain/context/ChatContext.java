@@ -1,0 +1,111 @@
+package com.lucky.common.ai.domain.context;
+
+import lombok.Data;
+
+import java.util.List;
+
+/**
+ * 聊天上下文
+ * 用于存储聊天相关的上下文信息，例如请求参数、会话信息、模型信息等
+ *
+ * @author lucky
+ */
+@Data
+public class ChatContext {
+
+    // =======请求参数相关=======
+
+    /**
+     * 聊天内容
+     */
+    private String content;
+
+    /**
+     * 是否深度思考
+     */
+    private Boolean useThinking;
+
+    /**
+     * 是否联网搜索
+     */
+    private Boolean useSearch;
+
+    /**
+     * 附件 URL 数组
+     */
+    private List<String> attachmentUrls;
+
+    // =======会话信息相关=======
+
+    /**
+     * ID
+     */
+    private Long conversationId;
+
+    /**
+     * 角色编号
+     */
+    private Long roleId;
+
+    /**
+     * 角色设定
+     */
+    private String systemMessage;
+
+    /**
+     * 温度参数
+     */
+    private Double temperature;
+
+    /**
+     * 单条回复的最大 Token 数量
+     */
+    private Integer maxTokens;
+
+    /**
+     * 上下文的最大 Message 数量
+     */
+    private Integer maxContexts;
+
+    // =======模型信息相关=======
+
+    /**
+     * 编号
+     */
+    private Long modelId;
+
+    /**
+     * 模型标志
+     */
+    private String model;
+
+    /**
+     * 平台
+     */
+    private String platform;
+
+    // =======api key相关=======
+
+    /**
+     * 密钥
+     */
+    private String apiKey;
+
+    /**
+     * API 地址
+     */
+    private String url;
+
+    // =======用户信息相关=======
+
+    /**
+     * 用户 ID
+     */
+    private Long userId;
+
+    /**
+     * 用户名
+     */
+    private String userName;
+
+}

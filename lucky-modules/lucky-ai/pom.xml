@@ -41,29 +41,10 @@
             <artifactId>lucky-common-web</artifactId>
         </dependency>
 
-        <!-- WebFlux 响应式支持 -->
+        <!-- common AI 模块 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-
-        <!-- DeepSeek模型 -->
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-model-deepseek</artifactId>
-        </dependency>
-
-        <!-- 智谱模型 -->
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-model-zhipuai</artifactId>
-        </dependency>
-
-        <!-- 通义千问模型 -->
-        <dependency>
-            <groupId>com.alibaba.cloud.ai</groupId>
-            <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
-            <version>${spring-ai-alibaba.version}</version>
+            <groupId>com.lucky</groupId>
+            <artifactId>lucky-common-ai</artifactId>
         </dependency>
 
     </dependencies>

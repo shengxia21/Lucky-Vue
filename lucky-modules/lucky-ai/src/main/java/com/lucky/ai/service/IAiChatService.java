@@ -1,7 +1,7 @@
 package com.lucky.ai.service;
 
-import com.lucky.ai.core.vo.chat.ChatMessageRequest;
-import com.lucky.ai.core.vo.chat.ChatMessageResponse;
+import com.lucky.ai.domain.request.chat.ChatMessageRequest;
+import com.lucky.common.ai.domain.response.ChatMessageResponse;
 import reactor.core.publisher.Flux;
 
 /**

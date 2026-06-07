@@ -1,9 +1,9 @@
 package com.lucky.ai.service;
 
-import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
 import com.lucky.ai.domain.query.image.AiImagePageQuery;
 import com.lucky.ai.domain.query.image.AiImageUpdateQuery;
+import com.lucky.ai.domain.request.image.ImageDrawRequest;
 import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.domain.query.chatRole.AiChatRolePageQuery;
 import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
-import com.lucky.ai.enums.CommonStatusEnum;
+import com.lucky.common.ai.enums.CommonStatusEnum;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 

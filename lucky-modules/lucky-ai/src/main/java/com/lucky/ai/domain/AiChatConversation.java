@@ -26,7 +26,7 @@ public class AiChatConversation extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID 编号，自增
+     * ID 编号
      */
     @TableId(value = "id")
     private Long id;

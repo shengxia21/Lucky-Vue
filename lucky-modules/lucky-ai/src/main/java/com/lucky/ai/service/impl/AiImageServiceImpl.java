@@ -3,21 +3,21 @@ package com.lucky.ai.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lucky.ai.core.context.ImageContext;
-import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
 import com.lucky.ai.domain.query.image.AiImagePageQuery;
 import com.lucky.ai.domain.query.image.AiImageUpdateQuery;
+import com.lucky.ai.domain.request.image.ImageDrawRequest;
 import com.lucky.ai.domain.vo.image.AiImageVO;
-import com.lucky.ai.enums.image.AiImageStatusEnum;
 import com.lucky.ai.factory.AsyncAiFactory;
 import com.lucky.ai.mapper.AiImageMapper;
 import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiImageService;
 import com.lucky.ai.service.IAiModelService;
+import com.lucky.common.ai.domain.context.ImageContext;
+import com.lucky.common.ai.enums.AiImageStatusEnum;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -90,10 +90,15 @@ public class AiImageServiceImpl implements IAiImageService {
 
         // 构建图片上下文
         ImageContext imageContext = new ImageContext();
-        imageContext.setImage(image);
-        imageContext.setRequest(request);
-        imageContext.setModel(model);
-        imageContext.setApiKey(apiKey);
+        imageContext.setPrompt(request.getPrompt());
+        imageContext.setWidth(request.getWidth());
+        imageContext.setHeight(request.getHeight());
+        imageContext.setOptions(request.getOptions());
+        imageContext.setImageId(image.getId());
+        imageContext.setModel(model.getModel());
+        imageContext.setPlatform(model.getPlatform());
+        imageContext.setApiKey(apiKey.getApiKey());
+        imageContext.setUrl(apiKey.getUrl());
 
         // 异步绘制，后续前端通过返回的 id 进行轮询结果
         AsyncManager.me().execute(AsyncAiFactory.executeDrawImage(imageContext));

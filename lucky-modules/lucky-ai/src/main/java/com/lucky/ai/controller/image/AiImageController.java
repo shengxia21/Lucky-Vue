@@ -2,10 +2,10 @@ package com.lucky.ai.controller.image;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.ObjUtil;
-import com.lucky.ai.core.vo.image.ImageDrawRequest;
 import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
 import com.lucky.ai.domain.query.image.AiImagePageQuery;
 import com.lucky.ai.domain.query.image.AiImageUpdateQuery;
+import com.lucky.ai.domain.request.image.ImageDrawRequest;
 import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.ai.service.IAiImageService;
 import com.lucky.common.core.domain.R;

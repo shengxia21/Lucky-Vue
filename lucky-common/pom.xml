@@ -18,6 +18,7 @@
         <module>lucky-common-redis</module>
         <module>lucky-common-security</module>
         <module>lucky-common-web</module>
+        <module>lucky-common-ai</module>
     </modules>
 
     <artifactId>lucky-common</artifactId>

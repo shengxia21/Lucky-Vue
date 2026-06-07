@@ -162,14 +162,14 @@
                 <version>${redisson.version}</version>
             </dependency>
 
-            <!-- VO转换工具 -->
+            <!-- easy-trans翻译 -->
             <dependency>
                 <groupId>com.fhs-opensource</groupId>
                 <artifactId>easy-trans-spring-boot-starter</artifactId>
                 <version>${easy-trans.version}</version>
             </dependency>
 
-            <!-- VO转换工具扩展 -->
+            <!-- easy-trans翻译扩展 -->
             <dependency>
                 <groupId>com.fhs-opensource</groupId>
                 <artifactId>easy-trans-mybatis-plus-extend</artifactId>
