@@ -2,8 +2,6 @@ package com.lucky.ai.factory;
 
 import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.mapper.AiChatMessageMapper;
-import com.lucky.ai.service.impl.ImageServiceFacade;
-import com.lucky.common.ai.domain.context.ImageContext;
 import com.lucky.common.core.utils.spring.SpringUtils;
 
 import java.util.TimerTask;
@@ -14,24 +12,6 @@ import java.util.TimerTask;
  * @author lucky
  */
 public class AsyncAiFactory {
-
-    /**
-     * 执行绘制图片任务
-     *
-     * @param imageContext 图片上下文
-     * @return 任务
-     */
-    public static TimerTask executeDrawImage(ImageContext imageContext) {
-        return new TimerTask() {
-            @Override
-            public void run() {
-                // 获取图片服务实例
-                ImageServiceFacade imageService = SpringUtils.getBean(ImageServiceFacade.class);
-                // 生成图片
-                imageService.generateImage(imageContext);
-            }
-        };
-    }
 
     /**
      * 执行更新assistant消息任务

@@ -11,7 +11,6 @@ import com.lucky.ai.domain.query.image.AiImagePageQuery;
 import com.lucky.ai.domain.query.image.AiImageUpdateQuery;
 import com.lucky.ai.domain.request.image.ImageDrawRequest;
 import com.lucky.ai.domain.vo.image.AiImageVO;
-import com.lucky.ai.factory.AsyncAiFactory;
 import com.lucky.ai.mapper.AiImageMapper;
 import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiImageService;
@@ -23,7 +22,6 @@ import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
-import com.lucky.common.web.manager.AsyncManager;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +43,9 @@ public class AiImageServiceImpl implements IAiImageService {
     private IAiModelService modelService;
     @Resource
     private IAiApiKeyService apiKeyService;
+
+    @Resource
+    private ImageServiceFacade imageServiceFacade;
 
     @Override
     public TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query, Long userId) {
@@ -101,7 +102,7 @@ public class AiImageServiceImpl implements IAiImageService {
         imageContext.setUrl(apiKey.getUrl());
 
         // 异步绘制，后续前端通过返回的 id 进行轮询结果
-        AsyncManager.me().execute(AsyncAiFactory.executeDrawImage(imageContext));
+        imageServiceFacade.generateImage(imageContext);
         return image.getId();
     }
 

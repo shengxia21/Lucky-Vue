@@ -14,6 +14,7 @@ import org.springframework.ai.image.ImageModel;
 import org.springframework.ai.image.ImageOptions;
 import org.springframework.ai.image.ImagePrompt;
 import org.springframework.ai.image.ImageResponse;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,6 +32,7 @@ public class ImageServiceFacade implements ImageService {
     @Resource
     private ImageModelFactory imageFactory;
 
+    @Async
     @Override
     public void generateImage(ImageContext imageContext) {
         try {
