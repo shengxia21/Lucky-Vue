@@ -14,6 +14,7 @@ import com.lucky.common.log.enums.BusinessType;
 import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
+import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +41,7 @@ public class AiChatMessageController extends BaseController {
     @GetMapping("/list-by-conversation-id")
     public R<List<AiChatMessageVO>> getChatMessageListByConversationId(@RequestParam("conversationId") Long conversationId) {
         AiChatConversationVO conversation = chatConversationService.getChatConversationById(conversationId);
-        if (conversation == null || ObjUtil.notEqual(conversation.getUserId(), getUserId())) {
+        if (conversation == null || ObjUtil.notEqual(conversation.getUserId(), SecurityUtils.getUserId())) {
             return R.fail("对话不存在或不属于当前用户");
         }
         // 1. 获取消息列表
@@ -60,7 +61,7 @@ public class AiChatMessageController extends BaseController {
     @Log(title = "删除消息", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete")
     public R<Void> deleteChatMessage(@RequestParam("id") Long id) {
-        return toAjax(chatMessageService.deleteChatMessageByIdAndUserId(id, getUserId()));
+        return toAjax(chatMessageService.deleteChatMessageByIdAndUserId(id));
     }
 
     /**
@@ -69,7 +70,7 @@ public class AiChatMessageController extends BaseController {
     @Log(title = "删除指定对话的消息", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-by-conversation-id")
     public R<Void> deleteChatMessageByConversationId(@RequestParam("conversationId") Long conversationId) {
-        return toAjax(chatMessageService.deleteChatMessageByConversationIdAndUserId(conversationId, getUserId()));
+        return toAjax(chatMessageService.deleteChatMessageByConversationIdAndUserId(conversationId));
     }
 
     // ========== 对话管理 ==========

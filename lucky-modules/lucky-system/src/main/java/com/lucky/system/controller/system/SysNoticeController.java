@@ -79,8 +79,7 @@ public class SysNoticeController extends BaseController {
      */
     @GetMapping("/listTop")
     public AjaxResult listTop() {
-        Long userId = getUserId();
-        List<SysNoticeReadVO> list = noticeReadService.selectNoticeListWithReadStatus(userId, 5);
+        List<SysNoticeReadVO> list = noticeReadService.selectNoticeListWithReadStatus(5);
         long unreadCount = list.stream().filter(n -> !n.isRead()).count();
         AjaxResult result = AjaxResult.success(list);
         result.put("unreadCount", unreadCount);
@@ -92,8 +91,7 @@ public class SysNoticeController extends BaseController {
      */
     @PostMapping("/markRead")
     public R<Void> markRead(Long noticeId) {
-        Long userId = getUserId();
-        noticeReadService.markRead(noticeId, userId);
+        noticeReadService.markRead(noticeId);
         return R.ok();
     }
 
@@ -102,9 +100,8 @@ public class SysNoticeController extends BaseController {
      */
     @PostMapping("/markReadAll")
     public R<Void> markReadAll(String ids) {
-        Long userId = getUserId();
         Long[] noticeIds = Convert.toLongArray(ids);
-        noticeReadService.markReadBatch(userId, noticeIds);
+        noticeReadService.markReadBatch(noticeIds);
         return R.ok();
     }
 

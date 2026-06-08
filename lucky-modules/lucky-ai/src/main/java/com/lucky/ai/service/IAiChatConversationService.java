@@ -20,26 +20,24 @@ public interface IAiChatConversationService {
     /**
      * 创建我的聊天对话
      *
-     * @param userId 用户ID
      * @return 聊天对话ID
      */
-    Long createChatConversationMy(AiChatConversationCreateMyQuery query, Long userId);
+    Long createChatConversationMy(AiChatConversationCreateMyQuery query);
 
     /**
      * 更新我的聊天对话
      *
      * @param query 更新对象
-     * @param userId      用户ID
+     * @return 是否成功
      */
-    int updateChatConversationMy(AiChatConversationUpdateMyQuery query, Long userId);
+    int updateChatConversationMy(AiChatConversationUpdateMyQuery query);
 
     /**
      * 获得我的聊天对话列表
      *
-     * @param userId 用户ID
      * @return 聊天对话列表
      */
-    List<AiChatConversationVO> getChatConversationListByUserId(Long userId);
+    List<AiChatConversationVO> getMyChatConversationList();
 
     /**
      * 获得我的聊天对话
@@ -52,25 +50,23 @@ public interface IAiChatConversationService {
     /**
      * 删除我的聊天对话
      *
-     * @param id     对话ID
-     * @param userId 用户ID
+     * @param id 对话ID
      * @return 是否成功
      */
-    int deleteChatConversationMyById(Long id, Long userId);
+    int deleteChatConversationMyById(Long id);
 
     /**
      * 删除我的未置顶聊天对话
      *
-     * @param userId 用户ID
      * @return 是否成功
      */
-    int deleteChatConversationMy(Long userId);
+    int deleteChatConversationMy();
 
     /**
      * 获得对话分页列表
      *
      * @param pageQuery 分页查询对象
-     * @param query 查询参数
+     * @param query     查询参数
      * @return 对话分页列表
      */
     TableDataInfo<AiChatConversationVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageQuery query);

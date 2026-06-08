@@ -44,12 +44,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
     private SysRoleMenuMapper roleMenuMapper;
 
     @Override
-    public List<SysMenu> selectMenuList(Long userId) {
-        return selectMenuList(new SysMenuQuery(), userId);
+    public List<SysMenu> selectMenuList() {
+        return selectMenuList(new SysMenuQuery());
     }
 
     @Override
-    public List<SysMenu> selectMenuList(SysMenuQuery query, Long userId) {
+    public List<SysMenu> selectMenuList(SysMenuQuery query) {
+        Long userId = SecurityUtils.getUserId();
         List<SysMenu> menuList;
         // 管理员显示所有菜单信息
         if (SecurityUtils.isAdmin(userId)) {
@@ -73,7 +74,8 @@ public class SysMenuServiceImpl implements ISysMenuService {
     }
 
     @Override
-    public List<SysMenu> selectMenuTreeByUserId(Long userId) {
+    public List<SysMenu> selectMenuTreeByCurrentUserId() {
+        Long userId = SecurityUtils.getUserId();
         List<SysMenu> menus;
         if (SecurityUtils.isAdmin(userId)) {
             menus = menuMapper.selectMenuTreeAll();

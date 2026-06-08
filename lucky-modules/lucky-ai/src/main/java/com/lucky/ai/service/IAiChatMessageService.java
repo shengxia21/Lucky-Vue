@@ -27,20 +27,18 @@ public interface IAiChatMessageService {
     /**
      * 删除消息
      *
-     * @param id     消息ID
-     * @param userId 用户ID
+     * @param id 消息ID
      * @return 结果
      */
-    int deleteChatMessageByIdAndUserId(Long id, Long userId);
+    int deleteChatMessageByIdAndUserId(Long id);
 
     /**
      * 删除指定对话的消息
      *
      * @param conversationId 会话ID
-     * @param userId         用户ID
      * @return 结果
      */
-    int deleteChatMessageByConversationIdAndUserId(Long conversationId, Long userId);
+    int deleteChatMessageByConversationIdAndUserId(Long conversationId);
 
     /**
      * 查询聊天消息分页列表

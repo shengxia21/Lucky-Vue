@@ -40,7 +40,7 @@ public class SysProfileController extends BaseController {
      */
     @GetMapping
     public AjaxResult profile() {
-        LoginUser loginUser = getLoginUser();
+        LoginUser loginUser = SecurityUtils.getLoginUser();
         UserDTO user = loginUser.getUser();
         AjaxResult ajax = AjaxResult.success(user);
         ajax.put("roleGroup", userService.selectUserRoleGroup(loginUser.getUserName()));
@@ -54,7 +54,7 @@ public class SysProfileController extends BaseController {
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> updateProfile(@RequestBody SysUser user) {
-        LoginUser loginUser = getLoginUser();
+        LoginUser loginUser = SecurityUtils.getLoginUser();
         UserDTO currentUser = loginUser.getUser();
         currentUser.setNickName(user.getNickName());
         currentUser.setEmail(user.getEmail());
@@ -83,7 +83,7 @@ public class SysProfileController extends BaseController {
     public R<Void> updatePwd(@RequestBody Map<String, String> params) {
         String oldPassword = params.get("oldPassword");
         String newPassword = params.get("newPassword");
-        LoginUser loginUser = getLoginUser();
+        LoginUser loginUser = SecurityUtils.getLoginUser();
         Long userId = loginUser.getUserId();
         SysUser user = userService.selectUserById(userId);
         String password = user.getPassword();
@@ -111,7 +111,7 @@ public class SysProfileController extends BaseController {
     @PostMapping("/avatar")
     public AjaxResult avatar(@RequestParam("avatarfile") MultipartFile file) throws Exception {
         if (!file.isEmpty()) {
-            LoginUser loginUser = getLoginUser();
+            LoginUser loginUser = SecurityUtils.getLoginUser();
             String avatar = FileUploadUtils.upload(LuckyConfig.getAvatarPath(), file, MimeTypeUtils.IMAGE_EXTENSION, true);
             if (userService.updateUserAvatar(loginUser.getUserId(), avatar)) {
                 String oldAvatar = loginUser.getUser().getAvatar();

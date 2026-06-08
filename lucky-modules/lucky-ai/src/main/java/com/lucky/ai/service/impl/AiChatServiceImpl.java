@@ -13,6 +13,7 @@ import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
+import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -36,10 +37,10 @@ public class AiChatServiceImpl implements IAiChatService {
     private ChatServiceFacade chatServiceFacade;
 
     @Override
-    public Flux<ChatResponseVO> chatStream(ChatQuery query, Long userId, String userName) {
+    public Flux<ChatResponseVO> chatStream(ChatQuery query) {
         // 校验对话存在
         AiChatConversation conversation = chatConversationService.validateChatConversationExists(query.getConversationId());
-        if (ObjUtil.notEqual(conversation.getUserId(), userId)) {
+        if (ObjUtil.notEqual(conversation.getUserId(), SecurityUtils.getUserId())) {
             throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
         }
         // 校验模型
@@ -64,8 +65,6 @@ public class AiChatServiceImpl implements IAiChatService {
         chatRequest.setPlatform(model.getPlatform());
         chatRequest.setApiKey(apiKey.getApiKey());
         chatRequest.setUrl(apiKey.getUrl());
-        chatRequest.setUserId(userId);
-        chatRequest.setUserName(userName);
         // 调用处理器处理流式聊天
         return chatServiceFacade.chat(chatRequest);
     }

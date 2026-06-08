@@ -10,6 +10,7 @@ import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.text.CharsetKit;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
+import com.lucky.common.security.utils.SecurityUtils;
 import com.lucky.generator.domain.GenTable;
 import com.lucky.generator.domain.GenTableColumn;
 import com.lucky.generator.domain.query.GenTableQuery;
@@ -108,7 +109,8 @@ public class GenTableServiceImpl implements IGenTableService {
 
     @Override
     @Transactional
-    public void importGenTable(List<GenTable> tableList, String tplWebType, String operName) {
+    public void importGenTable(List<GenTable> tableList, String tplWebType) {
+        String operName = SecurityUtils.getUserName();
         try {
             for (GenTable table : tableList) {
                 String tableName = table.getTableName();

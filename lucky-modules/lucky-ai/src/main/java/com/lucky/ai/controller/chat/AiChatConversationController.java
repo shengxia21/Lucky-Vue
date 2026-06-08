@@ -13,6 +13,7 @@ import com.lucky.common.log.enums.BusinessType;
 import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
+import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class AiChatConversationController extends BaseController {
     @Log(title = "创建【我的】聊天对话", businessType = BusinessType.INSERT)
     @PostMapping("/create-my")
     public R<Long> createChatConversationMy(@RequestBody AiChatConversationCreateMyQuery query) {
-        return R.ok(chatConversationService.createChatConversationMy(query, getUserId()));
+        return R.ok(chatConversationService.createChatConversationMy(query));
     }
 
     /**
@@ -46,15 +47,15 @@ public class AiChatConversationController extends BaseController {
     @Log(title = "更新【我的】聊天对话", businessType = BusinessType.UPDATE)
     @PutMapping("/update-my")
     public R<Void> updateChatConversationMy(@Validated @RequestBody AiChatConversationUpdateMyQuery query) {
-        return toAjax(chatConversationService.updateChatConversationMy(query, getUserId()));
+        return toAjax(chatConversationService.updateChatConversationMy(query));
     }
 
     /**
      * 获得我的聊天对话列表
      */
     @GetMapping("/my-list")
-    public R<List<AiChatConversationVO>> getChatConversationMyList() {
-        List<AiChatConversationVO> list = chatConversationService.getChatConversationListByUserId(getUserId());
+    public R<List<AiChatConversationVO>> getMyChatConversationList() {
+        List<AiChatConversationVO> list = chatConversationService.getMyChatConversationList();
         transService.transBatch(list);
         return R.ok(list);
     }
@@ -65,7 +66,7 @@ public class AiChatConversationController extends BaseController {
     @GetMapping("/get-my")
     public R<AiChatConversationVO> getChatConversationMy(@RequestParam("id") Long id) {
         AiChatConversationVO conversation = chatConversationService.getChatConversationById(id);
-        if (conversation != null && ObjUtil.notEqual(conversation.getUserId(), getUserId())) {
+        if (conversation != null && ObjUtil.notEqual(conversation.getUserId(), SecurityUtils.getUserId())) {
             return R.fail("对话不存在或不属于当前用户");
         }
         transService.transOne(conversation);
@@ -78,7 +79,7 @@ public class AiChatConversationController extends BaseController {
     @Log(title = "删除【我的】聊天对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
     public R<Void> deleteChatConversationMy(@RequestParam("id") Long id) {
-        return toAjax(chatConversationService.deleteChatConversationMyById(id, getUserId()));
+        return toAjax(chatConversationService.deleteChatConversationMyById(id));
     }
 
     /**
@@ -87,7 +88,7 @@ public class AiChatConversationController extends BaseController {
     @Log(title = "删除未置顶的聊天对话", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-by-unpinned")
     public R<Void> deleteChatConversationMyByUnpinned() {
-        return toAjax(chatConversationService.deleteChatConversationMy(getUserId()));
+        return toAjax(chatConversationService.deleteChatConversationMy());
     }
 
     // ========== 对话管理 ==========

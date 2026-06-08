@@ -253,7 +253,7 @@ public class SysUserServiceImpl implements ISysUserService {
     }
 
     @Override
-    public String importUser(List<SysUser> userList, Boolean isUpdateSupport, String operName) {
+    public String importUser(List<SysUser> userList, Boolean isUpdateSupport) {
         if (StringUtils.isNull(userList) || userList.isEmpty()) {
             throw new ServiceException("导入用户数据不能为空！");
         }
@@ -270,7 +270,6 @@ public class SysUserServiceImpl implements ISysUserService {
                     deptService.checkDeptDataScope(user.getDeptId());
                     String password = configService.selectConfigByKey("sys.user.initPassword");
                     user.setPassword(SecurityUtils.encryptPassword(password));
-                    user.setCreateBy(operName);
                     userMapper.insert(user);
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、账号 " + user.getUserName() + " 导入成功");
@@ -280,7 +279,6 @@ public class SysUserServiceImpl implements ISysUserService {
                     checkUserDataScope(u.getUserId());
                     deptService.checkDeptDataScope(user.getDeptId());
                     user.setUserId(u.getUserId());
-                    user.setUpdateBy(operName);
                     userMapper.updateById(user);
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、账号 " + user.getUserName() + " 更新成功");
@@ -323,7 +321,7 @@ public class SysUserServiceImpl implements ISysUserService {
     /**
      * 新增用户岗位信息
      *
-     * @param userId 用户ID
+     * @param userId  用户ID
      * @param postIds 岗位组
      */
     public void insertUserPost(Long userId, Long[] postIds) {

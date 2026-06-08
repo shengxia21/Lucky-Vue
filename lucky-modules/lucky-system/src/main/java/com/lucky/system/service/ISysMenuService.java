@@ -19,19 +19,17 @@ public interface ISysMenuService {
     /**
      * 根据用户查询系统菜单列表
      *
-     * @param userId 用户ID
      * @return 菜单列表
      */
-    List<SysMenu> selectMenuList(Long userId);
+    List<SysMenu> selectMenuList();
 
     /**
      * 根据用户查询系统菜单列表
      *
-     * @param query  菜单信息
-     * @param userId 用户ID
+     * @param query 菜单信息
      * @return 菜单列表
      */
-    List<SysMenu> selectMenuList(SysMenuQuery query, Long userId);
+    List<SysMenu> selectMenuList(SysMenuQuery query);
 
     /**
      * 根据用户ID查询权限
@@ -42,12 +40,11 @@ public interface ISysMenuService {
     Set<String> selectMenuPermsByUserId(Long userId);
 
     /**
-     * 根据用户ID查询菜单树信息
+     * 查询当前用户菜单树信息
      *
-     * @param userId 用户ID
      * @return 菜单列表
      */
-    List<SysMenu> selectMenuTreeByUserId(Long userId);
+    List<SysMenu> selectMenuTreeByCurrentUserId();
 
     /**
      * 根据角色ID查询菜单树信息

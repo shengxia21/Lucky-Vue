@@ -13,6 +13,7 @@ import com.lucky.common.log.enums.BusinessType;
 import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
+import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class AiChatRoleController extends BaseController {
      */
     @GetMapping("/my-page")
     public TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query) {
-        TableDataInfo<AiChatRoleVO> page = chatRoleService.getChatRoleMyPage(pageQuery, query, getUserId());
+        TableDataInfo<AiChatRoleVO> page = chatRoleService.getChatRoleMyPage(pageQuery, query);
         transService.transBatch(page.getRows());
         return page;
     }
@@ -47,7 +48,7 @@ public class AiChatRoleController extends BaseController {
     @GetMapping("/get-my")
     public R<AiChatRoleVO> getChatRoleMy(@RequestParam("id") Long id) {
         AiChatRoleVO chatRole = chatRoleService.getChatRoleById(id);
-        if (ObjUtil.notEqual(chatRole.getUserId(), getUserId())) {
+        if (ObjUtil.notEqual(chatRole.getUserId(), SecurityUtils.getUserId())) {
             return R.fail("聊天角色不属于您");
         }
         transService.transOne(chatRole);
@@ -60,7 +61,7 @@ public class AiChatRoleController extends BaseController {
     @Log(title = "创建【我的】聊天角色", businessType = BusinessType.INSERT)
     @PostMapping("/create-my")
     public R<Long> createChatRoleMy(@Validated @RequestBody AiChatRoleSaveMyQuery query) {
-        return R.ok(chatRoleService.createChatRoleMy(query, getUserId()));
+        return R.ok(chatRoleService.createChatRoleMy(query));
     }
 
     /**
@@ -69,7 +70,7 @@ public class AiChatRoleController extends BaseController {
     @Log(title = "更新【我的】聊天角色", businessType = BusinessType.UPDATE)
     @PutMapping("/update-my")
     public R<Void> updateChatRoleMy(@Validated @RequestBody AiChatRoleSaveMyQuery query) {
-        return toAjax(chatRoleService.updateChatRoleMy(query, getUserId()));
+        return toAjax(chatRoleService.updateChatRoleMy(query));
     }
 
     /**
@@ -78,7 +79,7 @@ public class AiChatRoleController extends BaseController {
     @Log(title = "删除【我的】聊天角色", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
     public R<Void> deleteChatRoleMy(@RequestParam("id") Long id) {
-        return toAjax(chatRoleService.deleteChatRoleMy(id, getUserId()));
+        return toAjax(chatRoleService.deleteChatRoleMy(id));
     }
 
     /**

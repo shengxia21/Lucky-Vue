@@ -13,6 +13,7 @@ import com.lucky.common.ai.factory.ChatServiceFactory;
 import com.lucky.common.ai.service.AbstractChatService;
 import com.lucky.common.ai.service.ChatService;
 import com.lucky.common.core.utils.StringUtils;
+import com.lucky.common.security.utils.SecurityUtils;
 import com.lucky.common.web.manager.AsyncManager;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +64,9 @@ public class ChatServiceFacade implements ChatService {
         // 流式处理
         Flux<ChatResponse> responseFlux = chatModel.stream(prompt);
 
+        Long userId = SecurityUtils.getUserId();
+        String userName = SecurityUtils.getUserName();
+
         // 文本内容
         StringBuffer contentBuffer = new StringBuffer();
         StringBuffer reasoningContentBuffer = new StringBuffer();
@@ -82,12 +86,12 @@ public class ChatServiceFacade implements ChatService {
             return response;
         }).doOnComplete(() -> {
             // 流式响应完成时触发, 异步更新消息
-            AsyncManager.me().execute(AsyncAiFactory.updateAssistantMessage(assistantId, chatRequest.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString()));
+            AsyncManager.me().execute(AsyncAiFactory.updateAssistantMessage(assistantId, userName, contentBuffer.toString(), reasoningContentBuffer.toString()));
         }).doOnCancel(() -> {
             // 用户取消请求时触发
-            log.warn("流式响应 - [userId({}) 用户取消请求]", chatRequest.getUserId());
+            log.warn("流式响应 - [userId({}) 用户取消请求]", userId);
             // 异步更新assistant聊天消息
-            AsyncManager.me().execute(AsyncAiFactory.updateAssistantMessage(assistantId, chatRequest.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString()));
+            AsyncManager.me().execute(AsyncAiFactory.updateAssistantMessage(assistantId, userName, contentBuffer.toString(), reasoningContentBuffer.toString()));
         }).onErrorResume(error -> {
             // 流式响应过程中触发异常（包含LLM大模型返回的错误信息）
             log.error("流式响应 - [模型标识({}) 请求过程中发生异常: {}]", chatRequest.getModel(), error.getMessage());
@@ -111,7 +115,7 @@ public class ChatServiceFacade implements ChatService {
         message.setReplyId(null);
         message.setModel(chatRequest.getModel());
         message.setModelId(chatRequest.getModelId());
-        message.setUserId(chatRequest.getUserId());
+        message.setUserId(SecurityUtils.getUserId());
         message.setRoleId(chatRequest.getRoleId());
         message.setType(MessageType.USER.getValue());
         message.setContent(chatRequest.getContent());

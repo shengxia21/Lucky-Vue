@@ -14,6 +14,7 @@ import com.lucky.common.log.enums.BusinessType;
 import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
+import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class AiImageController extends BaseController {
      */
     @GetMapping("/my-page")
     public TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query) {
-        return imageService.getImagePageMy(pageQuery, query, getUserId());
+        return imageService.getImagePageMy(pageQuery, query);
     }
 
     /**
@@ -54,7 +55,7 @@ public class AiImageController extends BaseController {
     @GetMapping("/get-my")
     public R<AiImageVO> getImageMy(@RequestParam("id") Long id) {
         AiImageVO image = imageService.getImageById(id);
-        if (image == null || ObjUtil.notEqual(getUserId(), image.getUserId())) {
+        if (image == null || ObjUtil.notEqual(SecurityUtils.getUserId(), image.getUserId())) {
             return R.fail("绘图记录不存在或不属于当前用户");
         }
         return R.ok(image);
@@ -65,7 +66,7 @@ public class AiImageController extends BaseController {
      */
     @GetMapping("/my-list-by-ids")
     public R<List<AiImageVO>> getImageListMyByIds(@RequestParam("ids") List<Long> ids) {
-        return R.ok(imageService.getImageListByIdsAndUserId(ids, getUserId()));
+        return R.ok(imageService.getImageListByIdsAndUserId(ids));
     }
 
     /**
@@ -73,7 +74,7 @@ public class AiImageController extends BaseController {
      */
     @PostMapping("/draw")
     public R<Long> drawImage(@Validated @RequestBody ImageQuery request) {
-        return R.ok(imageService.drawImage(getUserId(), request));
+        return R.ok(imageService.drawImage(request));
     }
 
     /**
@@ -82,7 +83,7 @@ public class AiImageController extends BaseController {
     @Log(title = "删除【我的】绘图记录", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete-my")
     public R<Void> deleteImageMy(@RequestParam("id") Long id) {
-        return toAjax(imageService.deleteImageMyById(id, getUserId()));
+        return toAjax(imageService.deleteImageMyById(id));
     }
 
     // ================ 绘图管理 ================

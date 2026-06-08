@@ -12,6 +12,7 @@ import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
+import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,8 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
     }
 
     @Override
-    public int deleteChatMessageByIdAndUserId(Long id, Long userId) {
+    public int deleteChatMessageByIdAndUserId(Long id) {
+        Long userId = SecurityUtils.getUserId();
         // 1. 校验消息存在
         AiChatMessage message = chatMessageMapper.selectById(id);
         if (message == null || ObjUtil.notEqual(message.getUserId(), userId)) {
@@ -47,7 +49,8 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
     }
 
     @Override
-    public int deleteChatMessageByConversationIdAndUserId(Long conversationId, Long userId) {
+    public int deleteChatMessageByConversationIdAndUserId(Long conversationId) {
+        Long userId = SecurityUtils.getUserId();
         List<AiChatMessage> messages = chatMessageMapper.selectListByConversationId(conversationId);
         // 校验消息存在
         if (CollUtil.isEmpty(messages) || ObjUtil.notEqual(messages.get(0).getUserId(), userId)) {

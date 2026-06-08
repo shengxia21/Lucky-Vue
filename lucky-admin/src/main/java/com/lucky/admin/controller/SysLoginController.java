@@ -84,8 +84,7 @@ public class SysLoginController {
      */
     @GetMapping("getRouters")
     public R<List<RouterVo>> getRouters() {
-        Long userId = SecurityUtils.getUserId();
-        List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
+        List<SysMenu> menus = menuService.selectMenuTreeByCurrentUserId();
         return R.ok(menuService.buildMenus(menus));
     }
 

@@ -81,8 +81,7 @@ public class SysUserController extends BaseController {
     public R<String> importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<SysUser> util = new ExcelUtil<>(SysUser.class);
         List<SysUser> userList = util.importExcel(file.getInputStream());
-        String operName = getUserName();
-        String message = userService.importUser(userList, updateSupport, operName);
+        String message = userService.importUser(userList, updateSupport);
         return R.ok(message);
     }
 
@@ -163,7 +162,7 @@ public class SysUserController extends BaseController {
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{userIds}")
     public R<Void> remove(@PathVariable Long[] userIds) {
-        if (ArrayUtils.contains(userIds, getUserId())) {
+        if (ArrayUtils.contains(userIds, SecurityUtils.getUserId())) {
             return R.fail("当前用户不能删除");
         }
         return toAjax(userService.deleteUserByIds(userIds));

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
+import com.lucky.common.security.utils.SecurityUtils;
 import com.lucky.system.domain.SysNoticeRead;
 import com.lucky.system.domain.vo.notice.SysNoticeReadUserVO;
 import com.lucky.system.domain.vo.notice.SysNoticeReadVO;
@@ -32,7 +33,8 @@ public class SysNoticeReadServiceImpl implements ISysNoticeReadService {
      * 标记已读
      */
     @Override
-    public void markRead(Long noticeId, Long userId) {
+    public void markRead(Long noticeId) {
+        Long userId = SecurityUtils.getUserId();
         SysNoticeRead record = new SysNoticeRead();
         record.setNoticeId(noticeId);
         record.setUserId(userId);
@@ -48,7 +50,8 @@ public class SysNoticeReadServiceImpl implements ISysNoticeReadService {
      * 查询公告列表并标记当前用户已读状态
      */
     @Override
-    public List<SysNoticeReadVO> selectNoticeListWithReadStatus(Long userId, int limit) {
+    public List<SysNoticeReadVO> selectNoticeListWithReadStatus(int limit) {
+        Long userId = SecurityUtils.getUserId();
         return noticeReadMapper.selectNoticeListWithReadStatus(userId, limit);
     }
 
@@ -56,7 +59,8 @@ public class SysNoticeReadServiceImpl implements ISysNoticeReadService {
      * 批量标记已读
      */
     @Override
-    public void markReadBatch(Long userId, Long[] noticeIds) {
+    public void markReadBatch(Long[] noticeIds) {
+        Long userId = SecurityUtils.getUserId();
         if (noticeIds == null || noticeIds.length == 0) {
             return;
         }

@@ -30,10 +30,9 @@ public interface IAiChatRoleService {
      * 创建【我的】聊天角色
      *
      * @param query 创建信息
-     * @param userId      用户编号
      * @return 编号
      */
-    Long createChatRoleMy(AiChatRoleSaveMyQuery query, Long userId);
+    Long createChatRoleMy(AiChatRoleSaveMyQuery query);
 
     /**
      * 更新聊天角色
@@ -46,9 +45,8 @@ public interface IAiChatRoleService {
      * 更新【我的】聊天角色
      *
      * @param query 更新信息
-     * @param userId      用户编号
      */
-    int updateChatRoleMy(AiChatRoleSaveMyQuery query, Long userId);
+    int updateChatRoleMy(AiChatRoleSaveMyQuery query);
 
     /**
      * 删除聊天角色
@@ -60,10 +58,9 @@ public interface IAiChatRoleService {
     /**
      * 删除【我的】聊天角色
      *
-     * @param id     编号
-     * @param userId 用户编号
+     * @param id 编号
      */
-    int deleteChatRoleMy(Long id, Long userId);
+    int deleteChatRoleMy(Long id);
 
     /**
      * 获得聊天角色
@@ -102,10 +99,9 @@ public interface IAiChatRoleService {
      *
      * @param pageQuery 分页查询对象
      * @param query 查询参数
-     * @param userId    用户编号
      * @return 聊天角色分页
      */
-    TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query, Long userId);
+    TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query);
 
     /**
      * 获得聊天角色的分类列表

@@ -8,7 +8,6 @@ import com.lucky.common.log.enums.BusinessType;
 import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
-import com.lucky.common.security.utils.SecurityUtils;
 import com.lucky.generator.config.GenConfig;
 import com.lucky.generator.domain.GenTable;
 import com.lucky.generator.domain.query.GenTableQuery;
@@ -96,7 +95,7 @@ public class GenController extends BaseController {
         String[] tableNames = Convert.toStrArray(tables);
         // 查询表信息
         List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
-        genTableService.importGenTable(tableList, tplWebType, SecurityUtils.getUserName());
+        genTableService.importGenTable(tableList, tplWebType);
         return R.ok();
     }
 

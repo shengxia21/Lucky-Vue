@@ -18,6 +18,7 @@ import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
+import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -48,13 +49,13 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     }
 
     @Override
-    public Long createChatRoleMy(AiChatRoleSaveMyQuery query, Long userId) {
+    public Long createChatRoleMy(AiChatRoleSaveMyQuery query) {
         // 校验文档
         // 校验工具
 
         // 保存角色
         AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
-        chatRole.setUserId(userId);
+        chatRole.setUserId(SecurityUtils.getUserId());
         chatRole.setStatus(CommonStatusEnum.ENABLE.getStatus());
         chatRole.setPublicStatus(false);
         chatRoleMapper.insert(chatRole);
@@ -74,10 +75,10 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     }
 
     @Override
-    public int updateChatRoleMy(AiChatRoleSaveMyQuery query, Long userId) {
+    public int updateChatRoleMy(AiChatRoleSaveMyQuery query) {
         // 校验存在
         AiChatRole chatRole = validateChatRoleExists(query.getId());
-        if (ObjectUtil.notEqual(chatRole.getUserId(), userId)) {
+        if (ObjectUtil.notEqual(chatRole.getUserId(), SecurityUtils.getUserId())) {
             throw new ServiceException(AiErrorConstants.CHAT_ROLE_NOT_EXISTS);
         }
         // 校验文档
@@ -97,10 +98,10 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     }
 
     @Override
-    public int deleteChatRoleMy(Long id, Long userId) {
+    public int deleteChatRoleMy(Long id) {
         // 校验存在
         AiChatRole chatRole = validateChatRoleExists(id);
-        if (ObjectUtil.notEqual(chatRole.getUserId(), userId)) {
+        if (ObjectUtil.notEqual(chatRole.getUserId(), SecurityUtils.getUserId())) {
             throw new ServiceException(AiErrorConstants.CHAT_ROLE_NOT_EXISTS);
         }
         // 删除
@@ -136,8 +137,8 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     }
 
     @Override
-    public TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query, Long userId) {
-        IPage<AiChatRoleVO> page = chatRoleMapper.selectMyPage(pageQuery.build(), query, userId);
+    public TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query) {
+        IPage<AiChatRoleVO> page = chatRoleMapper.selectMyPage(pageQuery.build(), query, SecurityUtils.getUserId());
         return TableDataInfo.build(page);
     }
 

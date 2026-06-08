@@ -22,6 +22,7 @@ import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
+import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -48,8 +49,8 @@ public class AiImageServiceImpl implements IAiImageService {
     private ImageServiceFacade imageServiceFacade;
 
     @Override
-    public TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query, Long userId) {
-        IPage<AiImageVO> page = imageMapper.selectPageMy(pageQuery.build(), query, userId);
+    public TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query) {
+        IPage<AiImageVO> page = imageMapper.selectPageMy(pageQuery.build(), query, SecurityUtils.getUserId());
         return TableDataInfo.build(page);
     }
 
@@ -65,15 +66,15 @@ public class AiImageServiceImpl implements IAiImageService {
     }
 
     @Override
-    public List<AiImageVO> getImageListByIdsAndUserId(List<Long> ids, Long userId) {
+    public List<AiImageVO> getImageListByIdsAndUserId(List<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
             return Collections.emptyList();
         }
-        return imageMapper.selectListByIdsAndUserId(ids, userId);
+        return imageMapper.selectListByIdsAndUserId(ids, SecurityUtils.getUserId());
     }
 
     @Override
-    public Long drawImage(Long userId, ImageQuery request) {
+    public Long drawImage(ImageQuery request) {
         // 校验模型是否存在
         AiModel model = modelService.validateModel(request.getModelId());
         // 校验apiKey是否存在
@@ -81,7 +82,7 @@ public class AiImageServiceImpl implements IAiImageService {
 
         // 保存数据库
         AiImage image = MapstructUtils.convert(request, AiImage.class);
-        image.setUserId(userId);
+        image.setUserId(SecurityUtils.getUserId());
         image.setPlatform(model.getPlatform());
         image.setModelId(model.getId());
         image.setModel(model.getModel());
@@ -107,10 +108,10 @@ public class AiImageServiceImpl implements IAiImageService {
     }
 
     @Override
-    public int deleteImageMyById(Long id, Long userId) {
+    public int deleteImageMyById(Long id) {
         // 1. 校验是否存在
         AiImage image = validateImageExists(id);
-        if (ObjUtil.notEqual(image.getUserId(), userId)) {
+        if (ObjUtil.notEqual(image.getUserId(), SecurityUtils.getUserId())) {
             throw new ServiceException(AiErrorConstants.IMAGE_NOT_EXISTS);
         }
         // 2. 删除记录

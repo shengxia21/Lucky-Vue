@@ -22,10 +22,9 @@ public interface IAiImageService {
      *
      * @param pageQuery 分页查询对象
      * @param query 查询参数
-     * @param userId    用户ID
      * @return 分页结果
      */
-    TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query, Long userId);
+    TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query);
 
     /**
      * 获取公开的绘图列表
@@ -48,28 +47,25 @@ public interface IAiImageService {
      * 根据ID列表查询绘画列表
      *
      * @param ids 绘画主键列表
-     * @param userId 用户ID
      * @return 绘画列表
      */
-    List<AiImageVO> getImageListByIdsAndUserId(List<Long> ids, Long userId);
+    List<AiImageVO> getImageListByIdsAndUserId(List<Long> ids);
 
     /**
      * 生成图片
      *
-     * @param userId  用户ID
      * @param request 绘图参数
      * @return 绘图记录ID
      */
-    Long drawImage(Long userId, ImageQuery request);
+    Long drawImage(ImageQuery request);
 
     /**
      * 删除【我的】绘图记录
      *
-     * @param id     绘图记录ID
-     * @param userId 用户ID
+     * @param id 绘图记录ID
      * @return 结果
      */
-    int deleteImageMyById(Long id, Long userId);
+    int deleteImageMyById(Long id);
 
     /**
      * 获得绘画列表

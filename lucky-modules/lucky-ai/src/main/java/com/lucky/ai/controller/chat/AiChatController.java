@@ -29,7 +29,7 @@ public class AiChatController extends BaseController {
      */
     @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ChatResponseVO> chatStream(@RequestBody ChatQuery query) {
-        return chatService.chatStream(query, getUserId(), getUserName());
+        return chatService.chatStream(query);
     }
 
 }

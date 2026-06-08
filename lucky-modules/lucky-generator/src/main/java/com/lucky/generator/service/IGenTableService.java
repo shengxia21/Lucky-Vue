@@ -76,9 +76,8 @@ public interface IGenTableService {
      *
      * @param tableList  导入表列表
      * @param tplWebType 前端类型
-     * @param operName   操作人员
      */
-    void importGenTable(List<GenTable> tableList, String tplWebType, String operName);
+    void importGenTable(List<GenTable> tableList, String tplWebType);
 
     /**
      * 预览代码
