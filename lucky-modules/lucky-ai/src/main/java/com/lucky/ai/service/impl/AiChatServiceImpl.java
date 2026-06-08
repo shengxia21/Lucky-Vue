@@ -4,13 +4,13 @@ import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiModel;
-import com.lucky.ai.domain.request.chat.ChatMessageRequest;
+import com.lucky.ai.domain.query.chat.ChatQuery;
 import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiChatConversationService;
 import com.lucky.ai.service.IAiChatService;
 import com.lucky.ai.service.IAiModelService;
-import com.lucky.common.ai.domain.context.ChatContext;
-import com.lucky.common.ai.domain.response.ChatMessageResponse;
+import com.lucky.common.ai.domain.request.ChatRequest;
+import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import jakarta.annotation.Resource;
@@ -36,7 +36,7 @@ public class AiChatServiceImpl implements IAiChatService {
     private ChatServiceFacade chatServiceFacade;
 
     @Override
-    public Flux<ChatMessageResponse> sendChatStream(ChatMessageRequest query, Long userId, String userName) {
+    public Flux<ChatResponseVO> chatStream(ChatQuery query, Long userId, String userName) {
         // 校验对话存在
         AiChatConversation conversation = chatConversationService.validateChatConversationExists(query.getConversationId());
         if (ObjUtil.notEqual(conversation.getUserId(), userId)) {
@@ -47,27 +47,27 @@ public class AiChatServiceImpl implements IAiChatService {
         // 校验key
         AiApiKey apiKey = apiKeyService.validateApiKey(model.getKeyId());
 
-        // 构建聊天上下文
-        ChatContext chatContext = new ChatContext();
-        chatContext.setContent(query.getContent());
-        chatContext.setUseThinking(query.getUseThinking());
-        chatContext.setUseSearch(query.getUseSearch());
-        chatContext.setAttachmentUrls(query.getAttachmentUrls());
-        chatContext.setConversationId(conversation.getId());
-        chatContext.setRoleId(conversation.getRoleId());
-        chatContext.setSystemMessage(conversation.getSystemMessage());
-        chatContext.setTemperature(conversation.getTemperature());
-        chatContext.setMaxTokens(conversation.getMaxTokens());
-        chatContext.setMaxContexts(conversation.getMaxContexts());
-        chatContext.setModelId(model.getId());
-        chatContext.setModel(model.getModel());
-        chatContext.setPlatform(model.getPlatform());
-        chatContext.setApiKey(apiKey.getApiKey());
-        chatContext.setUrl(apiKey.getUrl());
-        chatContext.setUserId(userId);
-        chatContext.setUserName(userName);
+        // 构建聊天请求
+        ChatRequest chatRequest = new ChatRequest();
+        chatRequest.setContent(query.getContent());
+        chatRequest.setUseThinking(query.getUseThinking());
+        chatRequest.setUseSearch(query.getUseSearch());
+        chatRequest.setAttachmentUrls(query.getAttachmentUrls());
+        chatRequest.setConversationId(conversation.getId());
+        chatRequest.setRoleId(conversation.getRoleId());
+        chatRequest.setSystemMessage(conversation.getSystemMessage());
+        chatRequest.setTemperature(conversation.getTemperature());
+        chatRequest.setMaxTokens(conversation.getMaxTokens());
+        chatRequest.setMaxContexts(conversation.getMaxContexts());
+        chatRequest.setModelId(model.getId());
+        chatRequest.setModel(model.getModel());
+        chatRequest.setPlatform(model.getPlatform());
+        chatRequest.setApiKey(apiKey.getApiKey());
+        chatRequest.setUrl(apiKey.getUrl());
+        chatRequest.setUserId(userId);
+        chatRequest.setUserName(userName);
         // 调用处理器处理流式聊天
-        return chatServiceFacade.chat(chatContext);
+        return chatServiceFacade.chat(chatRequest);
     }
 
 }

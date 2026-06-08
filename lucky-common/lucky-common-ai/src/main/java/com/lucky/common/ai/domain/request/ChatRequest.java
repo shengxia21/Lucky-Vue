@@ -1,17 +1,17 @@
-package com.lucky.common.ai.domain.context;
+package com.lucky.common.ai.domain.request;
 
 import lombok.Data;
 
 import java.util.List;
 
 /**
- * 聊天上下文
- * 用于存储聊天相关的上下文信息，例如请求参数、会话信息、模型信息等
+ * 聊天请求
+ * 用于存储聊天相关的请求信息，例如请求参数、会话信息、模型信息等
  *
  * @author lucky
  */
 @Data
-public class ChatContext {
+public class ChatRequest {
 
     // =======请求参数相关=======
 

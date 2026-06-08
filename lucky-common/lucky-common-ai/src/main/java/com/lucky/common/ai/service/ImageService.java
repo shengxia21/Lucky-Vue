@@ -3,7 +3,7 @@ package com.lucky.common.ai.service;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
-import com.lucky.common.ai.domain.context.ImageContext;
+import com.lucky.common.ai.domain.request.ImageRequest;
 import com.lucky.common.core.config.LuckyConfig;
 import com.lucky.common.core.exception.file.FileUploadException;
 import com.lucky.common.core.utils.file.FileUtils;
@@ -21,9 +21,9 @@ public interface ImageService {
     /**
      * 生成图片
      *
-     * @param imageContext 图片上下文
+     * @param imageRequest 图片请求
      */
-    void generateImage(ImageContext imageContext);
+    void generateImage(ImageRequest imageRequest);
 
     /**
      * 上传图片到文件服务

@@ -1,4 +1,4 @@
-package com.lucky.ai.domain.request.image;
+package com.lucky.ai.domain.query.image;
 
 import com.lucky.ai.domain.AiImage;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Data
 @AutoMapper(target = AiImage.class, reverseConvertGenerate = false)
-public class ImageDrawRequest {
+public class ImageQuery {
 
     /**
      * 模型编号

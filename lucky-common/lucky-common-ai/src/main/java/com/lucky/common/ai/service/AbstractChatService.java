@@ -1,16 +1,16 @@
-package com.lucky.common.ai.strategy;
+package com.lucky.common.ai.service;
 
-import com.lucky.common.ai.domain.context.ChatContext;
+import com.lucky.common.ai.domain.request.ChatRequest;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 
 /**
- * 聊天模型策略
+ * 抽象聊天服务接口（策略）
  *
  * @author lucky
  */
-public interface ChatModelStrategy {
+public interface AbstractChatService {
 
     /**
      * 构建模型
@@ -24,10 +24,10 @@ public interface ChatModelStrategy {
     /**
      * 构建选项
      *
-     * @param chatContext 聊天上下文
+     * @param chatRequest 聊天请求
      * @return 聊天选项
      */
-    ChatOptions buildChatOptions(ChatContext chatContext);
+    ChatOptions buildChatOptions(ChatRequest chatRequest);
 
     /**
      * 提取聊天响应内容
@@ -48,10 +48,10 @@ public interface ChatModelStrategy {
     String extractChatResponseReasoningContent(ChatResponse response);
 
     /**
-     * 获取策略名称
+     * 获取服务提供商名称
      *
-     * @return 策略名称
+     * @return 提供商名称
      */
-    String getStrategyName();
+    String getProviderName();
 
 }

@@ -1,15 +1,15 @@
-package com.lucky.common.ai.strategy;
+package com.lucky.common.ai.service;
 
-import com.lucky.common.ai.domain.context.ImageContext;
+import com.lucky.common.ai.domain.request.ImageRequest;
 import org.springframework.ai.image.ImageModel;
 import org.springframework.ai.image.ImageOptions;
 
 /**
- * 图片模型策略
+ * 抽象图片服务接口（策略）
  *
  * @author lucky
  */
-public interface ImageModelStrategy {
+public interface AbstractImageService {
 
     /**
      * 构建图片模型
@@ -23,16 +23,16 @@ public interface ImageModelStrategy {
     /**
      * 构建图片生成选项
      *
-     * @param imageContext 图片上下文
+     * @param imageRequest 图片请求
      * @return 图片生成选项
      */
-    ImageOptions buildImageOptions(ImageContext imageContext);
+    ImageOptions buildImageOptions(ImageRequest imageRequest);
 
     /**
      * 获取策略名称
      *
      * @return 策略名称
      */
-    String getStrategyName();
+    String getProviderName();
 
 }

@@ -1,14 +1,14 @@
-package com.lucky.common.ai.domain.response;
+package com.lucky.common.ai.domain.vo;
 
 import lombok.Data;
 
 /**
- * 聊天消息响应
+ * 聊天响应VO
  *
  * @author lucky
  */
 @Data
-public class ChatMessageResponse {
+public class ChatResponseVO {
 
     /**
      * 聊天内容

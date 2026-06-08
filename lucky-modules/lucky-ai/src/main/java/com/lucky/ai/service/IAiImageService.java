@@ -3,7 +3,7 @@ package com.lucky.ai.service;
 import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
 import com.lucky.ai.domain.query.image.AiImagePageQuery;
 import com.lucky.ai.domain.query.image.AiImageUpdateQuery;
-import com.lucky.ai.domain.request.image.ImageDrawRequest;
+import com.lucky.ai.domain.query.image.ImageQuery;
 import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
@@ -60,7 +60,7 @@ public interface IAiImageService {
      * @param request 绘图参数
      * @return 绘图记录ID
      */
-    Long drawImage(Long userId, ImageDrawRequest request);
+    Long drawImage(Long userId, ImageQuery request);
 
     /**
      * 删除【我的】绘图记录

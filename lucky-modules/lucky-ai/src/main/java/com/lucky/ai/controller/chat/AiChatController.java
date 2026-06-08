@@ -1,8 +1,8 @@
 package com.lucky.ai.controller.chat;
 
-import com.lucky.ai.domain.request.chat.ChatMessageRequest;
+import com.lucky.ai.domain.query.chat.ChatQuery;
 import com.lucky.ai.service.IAiChatService;
-import com.lucky.common.ai.domain.response.ChatMessageResponse;
+import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.mybatis.core.controller.BaseController;
 import jakarta.annotation.Resource;
 import org.springframework.http.MediaType;
@@ -27,9 +27,9 @@ public class AiChatController extends BaseController {
     /**
      * 发送消息（流式 SSE）
      */
-    @PostMapping(value = "/send-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<ChatMessageResponse> sendChatStream(@RequestBody ChatMessageRequest query) {
-        return chatService.sendChatStream(query, getUserId(), getUserName());
+    @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<ChatResponseVO> chatStream(@RequestBody ChatQuery query) {
+        return chatService.chatStream(query, getUserId(), getUserName());
     }
 
 }

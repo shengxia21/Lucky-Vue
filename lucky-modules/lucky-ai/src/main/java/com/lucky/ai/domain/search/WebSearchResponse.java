@@ -1,4 +1,4 @@
-package com.lucky.ai.domain.request.search;
+package com.lucky.ai.domain.search;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.lucky.ai.service;
 
-import com.lucky.ai.domain.request.chat.ChatMessageRequest;
-import com.lucky.common.ai.domain.response.ChatMessageResponse;
+import com.lucky.ai.domain.query.chat.ChatQuery;
+import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import reactor.core.publisher.Flux;
 
 /**
@@ -19,6 +19,6 @@ public interface IAiChatService {
      * @param userName 用户名
      * @return Flux流式响应
      */
-    Flux<ChatMessageResponse> sendChatStream(ChatMessageRequest query, Long userId, String userName);
+    Flux<ChatResponseVO> chatStream(ChatQuery query, Long userId, String userName);
 
 }

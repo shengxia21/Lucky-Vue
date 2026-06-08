@@ -9,13 +9,13 @@ import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
 import com.lucky.ai.domain.query.image.AiImagePageQuery;
 import com.lucky.ai.domain.query.image.AiImageUpdateQuery;
-import com.lucky.ai.domain.request.image.ImageDrawRequest;
+import com.lucky.ai.domain.query.image.ImageQuery;
 import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.ai.mapper.AiImageMapper;
 import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiImageService;
 import com.lucky.ai.service.IAiModelService;
-import com.lucky.common.ai.domain.context.ImageContext;
+import com.lucky.common.ai.domain.request.ImageRequest;
 import com.lucky.common.ai.enums.AiImageStatusEnum;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
@@ -73,7 +73,7 @@ public class AiImageServiceImpl implements IAiImageService {
     }
 
     @Override
-    public Long drawImage(Long userId, ImageDrawRequest request) {
+    public Long drawImage(Long userId, ImageQuery request) {
         // 校验模型是否存在
         AiModel model = modelService.validateModel(request.getModelId());
         // 校验apiKey是否存在
@@ -89,20 +89,20 @@ public class AiImageServiceImpl implements IAiImageService {
         image.setStatus(AiImageStatusEnum.IN_PROGRESS.getStatus());
         imageMapper.insert(image);
 
-        // 构建图片上下文
-        ImageContext imageContext = new ImageContext();
-        imageContext.setPrompt(request.getPrompt());
-        imageContext.setWidth(request.getWidth());
-        imageContext.setHeight(request.getHeight());
-        imageContext.setOptions(request.getOptions());
-        imageContext.setImageId(image.getId());
-        imageContext.setModel(model.getModel());
-        imageContext.setPlatform(model.getPlatform());
-        imageContext.setApiKey(apiKey.getApiKey());
-        imageContext.setUrl(apiKey.getUrl());
+        // 构建图片请求
+        ImageRequest imageRequest = new ImageRequest();
+        imageRequest.setPrompt(request.getPrompt());
+        imageRequest.setWidth(request.getWidth());
+        imageRequest.setHeight(request.getHeight());
+        imageRequest.setOptions(request.getOptions());
+        imageRequest.setImageId(image.getId());
+        imageRequest.setModel(model.getModel());
+        imageRequest.setPlatform(model.getPlatform());
+        imageRequest.setApiKey(apiKey.getApiKey());
+        imageRequest.setUrl(apiKey.getUrl());
 
         // 异步绘制，后续前端通过返回的 id 进行轮询结果
-        imageServiceFacade.generateImage(imageContext);
+        imageServiceFacade.generateImage(imageRequest);
         return image.getId();
     }
 

@@ -7,11 +7,11 @@ import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.factory.AsyncAiFactory;
 import com.lucky.ai.mapper.AiChatMessageMapper;
 import com.lucky.ai.util.SpringAiUtils;
-import com.lucky.common.ai.domain.context.ChatContext;
-import com.lucky.common.ai.domain.response.ChatMessageResponse;
-import com.lucky.common.ai.factory.ChatModelFactory;
+import com.lucky.common.ai.domain.request.ChatRequest;
+import com.lucky.common.ai.domain.vo.ChatResponseVO;
+import com.lucky.common.ai.factory.ChatServiceFactory;
+import com.lucky.common.ai.service.AbstractChatService;
 import com.lucky.common.ai.service.ChatService;
-import com.lucky.common.ai.strategy.ChatModelStrategy;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.web.manager.AsyncManager;
 import jakarta.annotation.Resource;
@@ -44,33 +44,33 @@ public class ChatServiceFacade implements ChatService {
     private AiChatMessageMapper chatMessageMapper;
 
     @Resource
-    private ChatModelFactory chatFactory;
+    private ChatServiceFactory chatFactory;
 
     @Override
-    public Flux<ChatMessageResponse> chat(ChatContext chatContext) {
+    public Flux<ChatResponseVO> chat(ChatRequest chatRequest) {
         // 创建聊天消息
-        Long assistantId = createChatMessage(chatContext);
+        Long assistantId = createChatMessage(chatRequest);
         // 获取聊天模型策略
-        ChatModelStrategy strategy = chatFactory.getOriginalStrategy(chatContext.getPlatform());
+        AbstractChatService service = chatFactory.getOriginalService(chatRequest.getPlatform());
         // 构建聊天选项
-        ChatOptions chatOptions = strategy.buildChatOptions(chatContext);
+        ChatOptions chatOptions = service.buildChatOptions(chatRequest);
         // 构建聊天消息
-        List<Message> chatMessages = buildChatMessages(chatContext);
+        List<Message> chatMessages = buildChatMessages(chatRequest);
         // 构建Prompt
         Prompt prompt = new Prompt(chatMessages, chatOptions);
         // 构建模型
-        ChatModel chatModel = strategy.buildChatModel(chatContext.getUrl(), chatContext.getApiKey());
+        ChatModel chatModel = service.buildChatModel(chatRequest.getUrl(), chatRequest.getApiKey());
         // 流式处理
         Flux<ChatResponse> responseFlux = chatModel.stream(prompt);
 
         // 文本内容
         StringBuffer contentBuffer = new StringBuffer();
         StringBuffer reasoningContentBuffer = new StringBuffer();
-        ChatMessageResponse response = new ChatMessageResponse();
+        ChatResponseVO response = new ChatResponseVO();
         return responseFlux.map(chatResponse -> {
             // 提取响应内容
-            String content = strategy.extractChatResponseContent(chatResponse);
-            String reasoningContent = strategy.extractChatResponseReasoningContent(chatResponse);
+            String content = service.extractChatResponseContent(chatResponse);
+            String reasoningContent = service.extractChatResponseReasoningContent(chatResponse);
             if (StrUtil.isNotEmpty(content)) {
                 contentBuffer.append(content);
             }
@@ -82,15 +82,15 @@ public class ChatServiceFacade implements ChatService {
             return response;
         }).doOnComplete(() -> {
             // 流式响应完成时触发, 异步更新消息
-            AsyncManager.me().execute(AsyncAiFactory.updateAssistantMessage(assistantId, chatContext.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString()));
+            AsyncManager.me().execute(AsyncAiFactory.updateAssistantMessage(assistantId, chatRequest.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString()));
         }).doOnCancel(() -> {
             // 用户取消请求时触发
-            log.warn("流式响应 - [userId({}) 用户取消请求]", chatContext.getUserId());
+            log.warn("流式响应 - [userId({}) 用户取消请求]", chatRequest.getUserId());
             // 异步更新assistant聊天消息
-            AsyncManager.me().execute(AsyncAiFactory.updateAssistantMessage(assistantId, chatContext.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString()));
+            AsyncManager.me().execute(AsyncAiFactory.updateAssistantMessage(assistantId, chatRequest.getUserName(), contentBuffer.toString(), reasoningContentBuffer.toString()));
         }).onErrorResume(error -> {
             // 流式响应过程中触发异常（包含LLM大模型返回的错误信息）
-            log.error("流式响应 - [模型标识({}) 请求过程中发生异常: {}]", chatContext.getModel(), error.getMessage());
+            log.error("流式响应 - [模型标识({}) 请求过程中发生异常: {}]", chatRequest.getModel(), error.getMessage());
             // 异步删除创建的assistant聊天消息
             AsyncManager.me().execute(AsyncAiFactory.deleteAssistantMessage(assistantId));
             // 将异常信息设置为响应内容(有些错误可能是用户的配置问题,需要提示用户)
@@ -102,20 +102,20 @@ public class ChatServiceFacade implements ChatService {
     /**
      * 创建聊天消息
      *
-     * @param chatContext 聊天上下文
+     * @param chatRequest 聊天请求
      * @return assistantId
      */
-    private Long createChatMessage(ChatContext chatContext) {
+    private Long createChatMessage(ChatRequest chatRequest) {
         AiChatMessage message = new AiChatMessage();
-        message.setConversationId(chatContext.getConversationId());
+        message.setConversationId(chatRequest.getConversationId());
         message.setReplyId(null);
-        message.setModel(chatContext.getModel());
-        message.setModelId(chatContext.getModelId());
-        message.setUserId(chatContext.getUserId());
-        message.setRoleId(chatContext.getRoleId());
+        message.setModel(chatRequest.getModel());
+        message.setModelId(chatRequest.getModelId());
+        message.setUserId(chatRequest.getUserId());
+        message.setRoleId(chatRequest.getRoleId());
         message.setType(MessageType.USER.getValue());
-        message.setContent(chatContext.getContent());
-        message.setAttachmentUrls(chatContext.getAttachmentUrls());
+        message.setContent(chatRequest.getContent());
+        message.setAttachmentUrls(chatRequest.getAttachmentUrls());
         chatMessageMapper.insert(message);
         // userMessageId
         message.setReplyId(message.getId());
@@ -130,38 +130,38 @@ public class ChatServiceFacade implements ChatService {
     /**
      * 构建聊天消息
      *
-     * @param chatContext 聊天上下文
+     * @param chatRequest 聊天请求
      * @return 聊天消息列表
      */
-    private List<Message> buildChatMessages(ChatContext chatContext) {
+    private List<Message> buildChatMessages(ChatRequest chatRequest) {
         // 构建聊天消息列表
         List<Message> chatMessages = new ArrayList<>();
         //  添加角色设定
-        if (StrUtil.isNotBlank(chatContext.getSystemMessage())) {
-            chatMessages.add(new SystemMessage(chatContext.getSystemMessage()));
+        if (StrUtil.isNotBlank(chatRequest.getSystemMessage())) {
+            chatMessages.add(new SystemMessage(chatRequest.getSystemMessage()));
         }
         // 添加历史消息
-        chatMessages.addAll(buildHistoryMessages(chatContext));
+        chatMessages.addAll(buildHistoryMessages(chatRequest));
         // 添加发送消息
-        chatMessages.add(new UserMessage(chatContext.getContent()));
+        chatMessages.add(new UserMessage(chatRequest.getContent()));
         return chatMessages;
     }
 
     /**
      * 构建历史消息
      *
-     * @param chatContext 聊天上下文
+     * @param chatRequest 聊天请求
      * @return 历史消息列表
      */
-    private List<Message> buildHistoryMessages(ChatContext chatContext) {
-        if (chatContext.getMaxContexts() == null || chatContext.getMaxContexts() <= 0) {
+    private List<Message> buildHistoryMessages(ChatRequest chatRequest) {
+        if (chatRequest.getMaxContexts() == null || chatRequest.getMaxContexts() <= 0) {
             return Collections.emptyList();
         }
-        List<AiChatMessage> historyMessages = chatMessageMapper.selectListByConversationId(chatContext.getConversationId());
+        List<AiChatMessage> historyMessages = chatMessageMapper.selectListByConversationId(chatRequest.getConversationId());
         if (historyMessages.isEmpty()) {
             return Collections.emptyList();
         }
-        List<AiChatMessage> contextMessages = new ArrayList<>(chatContext.getMaxContexts() * 2);
+        List<AiChatMessage> contextMessages = new ArrayList<>(chatRequest.getMaxContexts() * 2);
         for (int i = historyMessages.size() - 1; i >= 0; i--) {
             AiChatMessage assistantMessage = CollUtil.get(historyMessages, i);
             if (assistantMessage == null || assistantMessage.getReplyId() == null) {
@@ -177,7 +177,7 @@ public class ChatServiceFacade implements ChatService {
             contextMessages.add(assistantMessage);
             contextMessages.add(userMessage);
             // 超过最大上下文，结束
-            if (contextMessages.size() >= chatContext.getMaxContexts() * 2) {
+            if (contextMessages.size() >= chatRequest.getMaxContexts() * 2) {
                 break;
             }
         }

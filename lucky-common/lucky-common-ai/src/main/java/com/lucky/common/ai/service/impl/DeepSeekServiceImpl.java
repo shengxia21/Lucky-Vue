@@ -1,8 +1,8 @@
-package com.lucky.common.ai.strategy.chat;
+package com.lucky.common.ai.service.impl;
 
-import com.lucky.common.ai.domain.context.ChatContext;
+import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.enums.AiPlatformEnum;
-import com.lucky.common.ai.strategy.ChatModelStrategy;
+import com.lucky.common.ai.service.AbstractChatService;
 import com.lucky.common.core.utils.StringUtils;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @author lucky
  */
 @Component
-public class DeepSeekChatStrategy implements ChatModelStrategy {
+public class DeepSeekServiceImpl implements AbstractChatService {
 
     @Override
     public ChatModel buildChatModel(String baseUrl, String apiKey) {
@@ -34,11 +34,11 @@ public class DeepSeekChatStrategy implements ChatModelStrategy {
     }
 
     @Override
-    public ChatOptions buildChatOptions(ChatContext chatContext) {
+    public ChatOptions buildChatOptions(ChatRequest chatRequest) {
         return DeepSeekChatOptions.builder()
-                .model(chatContext.getModel())
-                .temperature(chatContext.getTemperature())
-                .maxTokens(chatContext.getMaxTokens())
+                .model(chatRequest.getModel())
+                .temperature(chatRequest.getTemperature())
+                .maxTokens(chatRequest.getMaxTokens())
                 .build();
     }
 
@@ -48,7 +48,7 @@ public class DeepSeekChatStrategy implements ChatModelStrategy {
     }
 
     @Override
-    public String getStrategyName() {
+    public String getProviderName() {
         return AiPlatformEnum.DEEP_SEEK.getPlatform();
     }
 

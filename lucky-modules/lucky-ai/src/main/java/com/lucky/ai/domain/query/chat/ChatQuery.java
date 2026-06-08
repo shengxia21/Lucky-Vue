@@ -1,4 +1,4 @@
-package com.lucky.ai.domain.request.chat;
+package com.lucky.ai.domain.query.chat;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -7,12 +7,12 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 聊天消息请求
+ * 聊天查询对象
  *
  * @author lucky
  */
 @Data
-public class ChatMessageRequest {
+public class ChatQuery {
 
     /**
      * 聊天对话编号

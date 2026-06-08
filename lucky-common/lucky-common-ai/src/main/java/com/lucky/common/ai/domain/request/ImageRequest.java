@@ -1,17 +1,17 @@
-package com.lucky.common.ai.domain.context;
+package com.lucky.common.ai.domain.request;
 
 import lombok.Data;
 
 import java.util.Map;
 
 /**
- * 图片生成任务上下文
- * 用于存储图片生成任务的上下文信息，如模型、API Key等
+ * 图片生成任务请求
+ * 用于存储图片生成任务的请求信息，如模型、API Key等
  *
  * @author lucky
  */
 @Data
-public class ImageContext {
+public class ImageRequest {
 
     // =======请求参数相关=======
 

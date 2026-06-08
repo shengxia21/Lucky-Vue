@@ -5,7 +5,7 @@ import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
 import com.lucky.ai.domain.query.image.AiImagePageQuery;
 import com.lucky.ai.domain.query.image.AiImageUpdateQuery;
-import com.lucky.ai.domain.request.image.ImageDrawRequest;
+import com.lucky.ai.domain.query.image.ImageQuery;
 import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.ai.service.IAiImageService;
 import com.lucky.common.core.domain.R;
@@ -72,7 +72,7 @@ public class AiImageController extends BaseController {
      * 生成图片
      */
     @PostMapping("/draw")
-    public R<Long> drawImage(@Validated @RequestBody ImageDrawRequest request) {
+    public R<Long> drawImage(@Validated @RequestBody ImageQuery request) {
         return R.ok(imageService.drawImage(getUserId(), request));
     }
 

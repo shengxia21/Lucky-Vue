@@ -5,7 +5,7 @@ import com.fhs.core.trans.constant.TransType;
 import com.fhs.core.trans.vo.VO;
 import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.domain.AiChatRole;
-import com.lucky.ai.domain.request.search.WebSearchResponse;
+import com.lucky.ai.domain.search.WebSearchResponse;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 

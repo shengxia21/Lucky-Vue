@@ -2,11 +2,11 @@ package com.lucky.ai.service.impl;
 
 import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.mapper.AiImageMapper;
-import com.lucky.common.ai.domain.context.ImageContext;
+import com.lucky.common.ai.domain.request.ImageRequest;
 import com.lucky.common.ai.enums.AiImageStatusEnum;
-import com.lucky.common.ai.factory.ImageModelFactory;
+import com.lucky.common.ai.factory.ImageServiceFactory;
+import com.lucky.common.ai.service.AbstractImageService;
 import com.lucky.common.ai.service.ImageService;
-import com.lucky.common.ai.strategy.ImageModelStrategy;
 import com.lucky.common.core.utils.DateUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -30,20 +30,20 @@ public class ImageServiceFacade implements ImageService {
     private AiImageMapper imageMapper;
 
     @Resource
-    private ImageModelFactory imageFactory;
+    private ImageServiceFactory imageFactory;
 
     @Async
     @Override
-    public void generateImage(ImageContext imageContext) {
+    public void generateImage(ImageRequest imageRequest) {
         try {
             // 获取图片模型策略
-            ImageModelStrategy strategy = imageFactory.getOriginalStrategy(imageContext.getPlatform());
+            AbstractImageService strategy = imageFactory.getOriginalService(imageRequest.getPlatform());
             // 构建请求选项
-            ImageOptions imageOptions = strategy.buildImageOptions(imageContext);
+            ImageOptions imageOptions = strategy.buildImageOptions(imageRequest);
             // 构建 ImageModel
-            ImageModel imageModel = strategy.buildImageModel(imageContext.getUrl(), imageContext.getApiKey());
+            ImageModel imageModel = strategy.buildImageModel(imageRequest.getUrl(), imageRequest.getApiKey());
             // 构建 Prompt
-            ImagePrompt prompt = new ImagePrompt(imageContext.getPrompt(), imageOptions);
+            ImagePrompt prompt = new ImagePrompt(imageRequest.getPrompt(), imageOptions);
             // 执行请求
             ImageResponse response = imageModel.call(prompt);
             if (response.getResult() == null) {
@@ -54,15 +54,15 @@ public class ImageServiceFacade implements ImageService {
             String filePath = uploadImage(response);
             // 更新数据库
             AiImage aiImage = new AiImage();
-            aiImage.setId(imageContext.getImageId());
+            aiImage.setId(imageRequest.getImageId());
             aiImage.setStatus(AiImageStatusEnum.SUCCESS.getStatus());
             aiImage.setPicUrl(filePath);
             aiImage.setFinishTime(DateUtils.getNowDate());
             imageMapper.updateById(aiImage);
         } catch (Exception ex) {
-            log.error("执行异步绘制图片失败, imageId={}, model={}", imageContext.getImageId(), imageContext.getModel());
+            log.error("执行异步绘制图片失败, imageId={}, model={}", imageRequest.getImageId(), imageRequest.getModel());
             AiImage aiImage = new AiImage();
-            aiImage.setId(imageContext.getImageId());
+            aiImage.setId(imageRequest.getImageId());
             aiImage.setStatus(AiImageStatusEnum.FAIL.getStatus());
             aiImage.setErrorMessage(ex.getMessage());
             imageMapper.updateById(aiImage);
