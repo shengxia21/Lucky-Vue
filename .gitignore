@@ -31,6 +31,9 @@ target/
 ### Trae ###
 .trae/
 
+### Qoder ###
+.qoder/
+
 ### JRebel ###
 rebel.xml
 
