@@ -22,7 +22,7 @@ public interface IAiChatConversationService {
      *
      * @return 聊天对话ID
      */
-    Long createChatConversationMy(AiChatConversationCreateMyQuery query);
+    Long insertMyChatConversation(AiChatConversationCreateMyQuery query);
 
     /**
      * 更新我的聊天对话
@@ -30,14 +30,14 @@ public interface IAiChatConversationService {
      * @param query 更新对象
      * @return 是否成功
      */
-    int updateChatConversationMy(AiChatConversationUpdateMyQuery query);
+    int updateMyChatConversation(AiChatConversationUpdateMyQuery query);
 
     /**
      * 获得我的聊天对话列表
      *
      * @return 聊天对话列表
      */
-    List<AiChatConversationVO> getMyChatConversationList();
+    List<AiChatConversationVO> selectMyChatConversationList();
 
     /**
      * 获得我的聊天对话
@@ -45,7 +45,7 @@ public interface IAiChatConversationService {
      * @param id 对话ID
      * @return 聊天对话
      */
-    AiChatConversationVO getChatConversationById(Long id);
+    AiChatConversationVO selectChatConversationById(Long id);
 
     /**
      * 删除我的聊天对话
@@ -53,14 +53,14 @@ public interface IAiChatConversationService {
      * @param id 对话ID
      * @return 是否成功
      */
-    int deleteChatConversationMyById(Long id);
+    int deleteMyChatConversationById(Long id);
 
     /**
      * 删除我的未置顶聊天对话
      *
      * @return 是否成功
      */
-    int deleteChatConversationMy();
+    int deleteMyUnpinnedChatConversation();
 
     /**
      * 获得对话分页列表
@@ -69,15 +69,15 @@ public interface IAiChatConversationService {
      * @param query     查询参数
      * @return 对话分页列表
      */
-    TableDataInfo<AiChatConversationVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageQuery query);
+    TableDataInfo<AiChatConversationVO> selectChatConversationList(PageQuery pageQuery, AiChatConversationPageQuery query);
 
     /**
      * 管理员删除对话
      *
-     * @param id 对话ID
+     * @param ids 对话ID数组
      * @return 是否成功
      */
-    int deleteChatConversationById(Long id);
+    int deleteChatConversationByIds(Long[] ids);
 
     /**
      * 校验对话是否存在

@@ -16,6 +16,7 @@ import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -32,12 +33,12 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
     private AiChatMessageMapper chatMessageMapper;
 
     @Override
-    public List<AiChatMessageVO> getChatMessageListByConversationId(Long conversationId) {
+    public List<AiChatMessageVO> selectChatMessageListByConversationId(Long conversationId) {
         return chatMessageMapper.selectVoListByConversationId(conversationId);
     }
 
     @Override
-    public int deleteChatMessageByIdAndUserId(Long id) {
+    public int deleteMyChatMessageById(Long id) {
         Long userId = SecurityUtils.getUserId();
         // 1. 校验消息存在
         AiChatMessage message = chatMessageMapper.selectById(id);
@@ -49,7 +50,7 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
     }
 
     @Override
-    public int deleteChatMessageByConversationIdAndUserId(Long conversationId) {
+    public int deleteMyChatMessageByConversationId(Long conversationId) {
         Long userId = SecurityUtils.getUserId();
         List<AiChatMessage> messages = chatMessageMapper.selectListByConversationId(conversationId);
         // 校验消息存在
@@ -62,24 +63,18 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
     }
 
     @Override
-    public TableDataInfo<AiChatMessageVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageQuery query) {
+    public TableDataInfo<AiChatMessageVO> selectChatMessageList(PageQuery pageQuery, AiChatMessagePageQuery query) {
         IPage<AiChatMessageVO> page = chatMessageMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
     @Override
-    public int deleteChatMessageById(Long id) {
-        // 1. 校验消息存在
-        AiChatMessage message = chatMessageMapper.selectById(id);
-        if (message == null) {
-            throw new ServiceException(AiErrorConstants.CHAT_MESSAGE_NOT_EXIST);
-        }
-        // 2. 执行删除
-        return chatMessageMapper.deleteById(id);
+    public int deleteChatMessageByIds(Long[] ids) {
+        return chatMessageMapper.deleteByIds(Arrays.asList(ids));
     }
 
     @Override
-    public Map<Long, Integer> getChatMessageCountMap(Collection<Long> conversationIds) {
+    public Map<Long, Integer> selectChatMessageCountMap(Collection<Long> conversationIds) {
         return chatMessageMapper.selectCountMapByConversationIds(conversationIds);
     }
 

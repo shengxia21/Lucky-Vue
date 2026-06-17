@@ -22,23 +22,23 @@ public interface IAiChatMessageService {
      * @param conversationId 会话ID
      * @return 聊天消息列表
      */
-    List<AiChatMessageVO> getChatMessageListByConversationId(Long conversationId);
+    List<AiChatMessageVO> selectChatMessageListByConversationId(Long conversationId);
 
     /**
-     * 删除消息
+     * 删除我的消息
      *
      * @param id 消息ID
      * @return 结果
      */
-    int deleteChatMessageByIdAndUserId(Long id);
+    int deleteMyChatMessageById(Long id);
 
     /**
-     * 删除指定对话的消息
+     * 删除我的指定对话的消息
      *
      * @param conversationId 会话ID
      * @return 结果
      */
-    int deleteChatMessageByConversationIdAndUserId(Long conversationId);
+    int deleteMyChatMessageByConversationId(Long conversationId);
 
     /**
      * 查询聊天消息分页列表
@@ -47,15 +47,15 @@ public interface IAiChatMessageService {
      * @param query     查询参数
      * @return 聊天消息分页列表
      */
-    TableDataInfo<AiChatMessageVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageQuery query);
+    TableDataInfo<AiChatMessageVO> selectChatMessageList(PageQuery pageQuery, AiChatMessagePageQuery query);
 
     /**
      * 删除消息（管理员）
      *
-     * @param id 聊天消息ID
+     * @param ids 聊天消息ID数组
      * @return 结果
      */
-    int deleteChatMessageById(Long id);
+    int deleteChatMessageByIds(Long[] ids);
 
     /**
      * 获得聊天对话的消息数量 Map
@@ -63,6 +63,6 @@ public interface IAiChatMessageService {
      * @param conversationIds 对话编号数组
      * @return 消息数量 Map
      */
-    Map<Long, Integer> getChatMessageCountMap(Collection<Long> conversationIds);
+    Map<Long, Integer> selectChatMessageCountMap(Collection<Long> conversationIds);
 
 }

@@ -26,7 +26,7 @@ import java.util.List;
  * @author lucky
  */
 @RestController
-@RequestMapping("/ai/chat-role")
+@RequestMapping("/ai/chatRole")
 public class AiChatRoleController extends BaseController {
 
     @Resource
@@ -35,9 +35,9 @@ public class AiChatRoleController extends BaseController {
     /**
      * 获得【我的】聊天角色分页
      */
-    @GetMapping("/my-page")
-    public TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query) {
-        TableDataInfo<AiChatRoleVO> page = chatRoleService.getChatRoleMyPage(pageQuery, query);
+    @GetMapping("/my/list")
+    public TableDataInfo<AiChatRoleVO> myList(PageQuery pageQuery, AiChatRolePageQuery query) {
+        TableDataInfo<AiChatRoleVO> page = chatRoleService.selectMyChatRoleList(pageQuery, query);
         transService.transBatch(page.getRows());
         return page;
     }
@@ -45,9 +45,9 @@ public class AiChatRoleController extends BaseController {
     /**
      * 获得【我的】聊天角色
      */
-    @GetMapping("/get-my")
-    public R<AiChatRoleVO> getChatRoleMy(@RequestParam("id") Long id) {
-        AiChatRoleVO chatRole = chatRoleService.getChatRoleById(id);
+    @GetMapping("/my/{id}")
+    public R<AiChatRoleVO> getMyInfo(@PathVariable Long id) {
+        AiChatRoleVO chatRole = chatRoleService.selectChatRoleById(id);
         if (ObjUtil.notEqual(chatRole.getUserId(), SecurityUtils.getUserId())) {
             return R.fail("聊天角色不属于您");
         }
@@ -59,35 +59,35 @@ public class AiChatRoleController extends BaseController {
      * 创建【我的】聊天角色
      */
     @Log(title = "创建【我的】聊天角色", businessType = BusinessType.INSERT)
-    @PostMapping("/create-my")
-    public R<Long> createChatRoleMy(@Validated @RequestBody AiChatRoleSaveMyQuery query) {
-        return R.ok(chatRoleService.createChatRoleMy(query));
+    @PostMapping("/my")
+    public R<Long> addMy(@Validated @RequestBody AiChatRoleSaveMyQuery query) {
+        return R.ok(chatRoleService.insertMyChatRole(query));
     }
 
     /**
      * 更新【我的】聊天角色
      */
     @Log(title = "更新【我的】聊天角色", businessType = BusinessType.UPDATE)
-    @PutMapping("/update-my")
-    public R<Void> updateChatRoleMy(@Validated @RequestBody AiChatRoleSaveMyQuery query) {
-        return toAjax(chatRoleService.updateChatRoleMy(query));
+    @PutMapping("/my")
+    public R<Void> editMy(@Validated @RequestBody AiChatRoleSaveMyQuery query) {
+        return toAjax(chatRoleService.updateMyChatRole(query));
     }
 
     /**
      * 删除【我的】聊天角色
      */
     @Log(title = "删除【我的】聊天角色", businessType = BusinessType.DELETE)
-    @DeleteMapping("/delete-my")
-    public R<Void> deleteChatRoleMy(@RequestParam("id") Long id) {
-        return toAjax(chatRoleService.deleteChatRoleMy(id));
+    @DeleteMapping("/my/{id}")
+    public R<Void> removeMy(@PathVariable Long id) {
+        return toAjax(chatRoleService.deleteMyChatRoleById(id));
     }
 
     /**
      * 获得聊天角色的分类列表
      */
-    @GetMapping("/category-list")
-    public R<List<String>> getChatRoleCategoryList() {
-        return R.ok(chatRoleService.getChatRoleCategoryList());
+    @GetMapping("/categoryList")
+    public R<List<String>> categoryList() {
+        return R.ok(chatRoleService.selectChatRoleCategoryList());
     }
 
     // ========== 角色管理 ==========
@@ -96,19 +96,19 @@ public class AiChatRoleController extends BaseController {
      * 创建聊天角色
      */
     @Log(title = "创建聊天角色", businessType = BusinessType.INSERT)
-    @SaCheckPermission("ai:chat-role:create")
-    @PostMapping("/create")
-    public R<Long> createChatRole(@Validated @RequestBody AiChatRoleSaveQuery query) {
-        return R.ok(chatRoleService.createChatRole(query));
+    @SaCheckPermission("ai:chat-role:add")
+    @PostMapping
+    public R<Long> add(@Validated @RequestBody AiChatRoleSaveQuery query) {
+        return R.ok(chatRoleService.insertChatRole(query));
     }
 
     /**
      * 更新聊天角色
      */
     @Log(title = "更新聊天角色", businessType = BusinessType.UPDATE)
-    @SaCheckPermission("ai:chat-role:update")
-    @PutMapping("/update")
-    public R<Void> updateChatRole(@Validated @RequestBody AiChatRoleSaveQuery query) {
+    @SaCheckPermission("ai:chat-role:edit")
+    @PutMapping
+    public R<Void> edit(@Validated @RequestBody AiChatRoleSaveQuery query) {
         return toAjax(chatRoleService.updateChatRole(query));
     }
 
@@ -116,19 +116,19 @@ public class AiChatRoleController extends BaseController {
      * 删除聊天角色
      */
     @Log(title = "删除聊天角色", businessType = BusinessType.DELETE)
-    @SaCheckPermission("ai:chat-role:delete")
-    @DeleteMapping("/delete")
-    public R<Void> deleteChatRole(@RequestParam("id") Long id) {
-        return toAjax(chatRoleService.deleteChatRoleById(id));
+    @SaCheckPermission("ai:chat-role:remove")
+    @DeleteMapping("/{ids}")
+    public R<Void> remove(@PathVariable Long[] ids) {
+        return toAjax(chatRoleService.deleteChatRoleByIds(ids));
     }
 
     /**
      * 获得聊天角色
      */
     @SaCheckPermission("ai:chat-role:query")
-    @GetMapping("/get")
-    public R<AiChatRoleVO> getChatRole(@RequestParam("id") Long id) {
-        AiChatRoleVO vo = chatRoleService.getChatRoleById(id);
+    @GetMapping("/{id}")
+    public R<AiChatRoleVO> getInfo(@PathVariable Long id) {
+        AiChatRoleVO vo = chatRoleService.selectChatRoleById(id);
         transService.transOne(vo);
         return R.ok(vo);
     }
@@ -137,9 +137,9 @@ public class AiChatRoleController extends BaseController {
      * 获得聊天角色分页
      */
     @SaCheckPermission("ai:chat-role:list")
-    @GetMapping("/page")
-    public TableDataInfo<AiChatRoleVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageQuery query) {
-        TableDataInfo<AiChatRoleVO> page = chatRoleService.getChatRolePage(pageQuery, query);
+    @GetMapping("/list")
+    public TableDataInfo<AiChatRoleVO> list(PageQuery pageQuery, AiChatRolePageQuery query) {
+        TableDataInfo<AiChatRoleVO> page = chatRoleService.selectChatRoleList(pageQuery, query);
         transService.transBatch(page.getRows());
         return page;
     }

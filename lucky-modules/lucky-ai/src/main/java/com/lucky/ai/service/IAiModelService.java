@@ -41,7 +41,7 @@ public interface IAiModelService {
      * @param query 创建信息
      * @return 编号
      */
-    Long createModel(AiModelSaveQuery query);
+    Long insertModel(AiModelSaveQuery query);
 
     /**
      * 更新模型
@@ -54,10 +54,10 @@ public interface IAiModelService {
     /**
      * 删除模型
      *
-     * @param id 编号
+     * @param ids 编号数组
      * @return 影响行数
      */
-    int deleteModelById(Long id);
+    int deleteModelByIds(Long[] ids);
 
     /**
      * 获得模型
@@ -65,7 +65,7 @@ public interface IAiModelService {
      * @param id 编号
      * @return 模型
      */
-    AiModelVO getModelById(Long id);
+    AiModelVO selectModelById(Long id);
 
     /**
      * 获得模型分页
@@ -74,7 +74,7 @@ public interface IAiModelService {
      * @param query 请求参数
      * @return 模型分页
      */
-    TableDataInfo<AiModelVO> getModelPage(PageQuery pageQuery, AiModelPageQuery query);
+    TableDataInfo<AiModelVO> selectModelList(PageQuery pageQuery, AiModelPageQuery query);
 
     /**
      * 获得模型列表
@@ -84,6 +84,6 @@ public interface IAiModelService {
      * @param platform 平台
      * @return 模型列表
      */
-    List<AiModelVO> getModelList(Integer status, Integer type, String platform);
+    List<AiModelVO> selectModelAll(Integer status, Integer type, String platform);
 
 }

@@ -36,26 +36,26 @@ public class AiImageController extends BaseController {
     /**
      * 获取【我的】绘图分页
      */
-    @GetMapping("/my-page")
-    public TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query) {
-        return imageService.getImagePageMy(pageQuery, query);
+    @GetMapping("/my/list")
+    public TableDataInfo<AiImageVO> myList(PageQuery pageQuery, AiImagePageQuery query) {
+        return imageService.selectMyImageList(pageQuery, query);
     }
 
     /**
      * 获取公开的绘图分页
      */
-    @GetMapping("/public-page")
-    public TableDataInfo<AiImageVO> getImagePagePublic(PageQuery pageQuery, AiImagePagePublicQuery query) {
-        return imageService.getImagePagePublic(pageQuery, query);
+    @GetMapping("/public/list")
+    public TableDataInfo<AiImageVO> publicList(PageQuery pageQuery, AiImagePagePublicQuery query) {
+        return imageService.selectPublicImageList(pageQuery, query);
     }
 
     /**
      * 获取【我的】绘图记录
      */
-    @GetMapping("/get-my")
-    public R<AiImageVO> getImageMy(@RequestParam("id") Long id) {
-        AiImageVO image = imageService.getImageById(id);
-        if (image == null || ObjUtil.notEqual(SecurityUtils.getUserId(), image.getUserId())) {
+    @GetMapping("/my/{id}")
+    public R<AiImageVO> getMyInfo(@PathVariable Long id) {
+        AiImageVO image = imageService.selectImageById(id);
+        if (image == null || ObjUtil.notEqual(image.getUserId(), SecurityUtils.getUserId())) {
             return R.fail("绘图记录不存在或不属于当前用户");
         }
         return R.ok(image);
@@ -64,9 +64,9 @@ public class AiImageController extends BaseController {
     /**
      * 获取【我的】绘图记录列表
      */
-    @GetMapping("/my-list-by-ids")
-    public R<List<AiImageVO>> getImageListMyByIds(@RequestParam("ids") List<Long> ids) {
-        return R.ok(imageService.getImageListByIdsAndUserId(ids));
+    @GetMapping("/my/list/{ids}")
+    public R<List<AiImageVO>> myListByIds(@PathVariable List<Long> ids) {
+        return R.ok(imageService.selectMyImageListByIds(ids));
     }
 
     /**
@@ -81,9 +81,9 @@ public class AiImageController extends BaseController {
      * 删除【我的】绘图记录
      */
     @Log(title = "删除【我的】绘图记录", businessType = BusinessType.DELETE)
-    @DeleteMapping("/delete-my")
-    public R<Void> deleteImageMy(@RequestParam("id") Long id) {
-        return toAjax(imageService.deleteImageMyById(id));
+    @DeleteMapping("/my/{id}")
+    public R<Void> removeMy(@PathVariable Long id) {
+        return toAjax(imageService.deleteMyImageById(id));
     }
 
     // ================ 绘图管理 ================
@@ -92,18 +92,18 @@ public class AiImageController extends BaseController {
      * 获得绘画分页
      */
     @SaCheckPermission("ai:image:list")
-    @GetMapping("/page")
-    public TableDataInfo<AiImageVO> getImagePage(PageQuery pageQuery, AiImagePageQuery query) {
-        return imageService.getImagePage(pageQuery, query);
+    @GetMapping("/list")
+    public TableDataInfo<AiImageVO> list(PageQuery pageQuery, AiImagePageQuery query) {
+        return imageService.selectImageList(pageQuery, query);
     }
 
     /**
      * 更新绘画
      */
     @Log(title = "更新绘画", businessType = BusinessType.UPDATE)
-    @SaCheckPermission("ai:image:update")
-    @PutMapping("/update")
-    public R<Void> updateImage(@Validated @RequestBody AiImageUpdateQuery query) {
+    @SaCheckPermission("ai:image:edit")
+    @PutMapping
+    public R<Void> edit(@Validated @RequestBody AiImageUpdateQuery query) {
         return toAjax(imageService.updateImage(query));
     }
 
@@ -111,10 +111,10 @@ public class AiImageController extends BaseController {
      * 删除绘画
      */
     @Log(title = "删除绘画", businessType = BusinessType.DELETE)
-    @SaCheckPermission("ai:image:delete")
-    @DeleteMapping("/delete")
-    public R<Void> deleteImage(@RequestParam("id") Long id) {
-        return toAjax(imageService.deleteImageById(id));
+    @SaCheckPermission("ai:image:remove")
+    @DeleteMapping("/{ids}")
+    public R<Void> remove(@PathVariable Long[] ids) {
+        return toAjax(imageService.deleteImageByIds(ids));
     }
 
 }

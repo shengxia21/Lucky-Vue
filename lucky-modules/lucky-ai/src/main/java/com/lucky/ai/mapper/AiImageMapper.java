@@ -19,7 +19,7 @@ import java.util.List;
  */
 public interface AiImageMapper extends BaseMapperX<AiImage, AiImageVO> {
 
-    default IPage<AiImageVO> selectPageMy(IPage<AiImage> page, AiImagePageQuery query, Long userId) {
+    default IPage<AiImageVO> selectMyPage(IPage<AiImage> page, AiImagePageQuery query, Long userId) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getPrompt()), AiImage::getPrompt, query.getPrompt())
                 .eq(StringUtils.isNotNull(query.getPublicStatus()), AiImage::getPublicStatus, query.getPublicStatus())
@@ -28,7 +28,7 @@ public interface AiImageMapper extends BaseMapperX<AiImage, AiImageVO> {
         return selectVoPage(page, wrapper);
     }
 
-    default IPage<AiImageVO> selectPagePublic(IPage<AiImage> page, AiImagePagePublicQuery query) {
+    default IPage<AiImageVO> selectPublicPage(IPage<AiImage> page, AiImagePagePublicQuery query) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getPrompt()), AiImage::getPrompt, query.getPrompt())
                 .eq(AiImage::getPublicStatus, true)

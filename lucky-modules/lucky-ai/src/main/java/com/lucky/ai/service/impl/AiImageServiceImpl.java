@@ -26,6 +26,7 @@ import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,24 +50,24 @@ public class AiImageServiceImpl implements IAiImageService {
     private ImageServiceFacade imageServiceFacade;
 
     @Override
-    public TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query) {
-        IPage<AiImageVO> page = imageMapper.selectPageMy(pageQuery.build(), query, SecurityUtils.getUserId());
+    public TableDataInfo<AiImageVO> selectMyImageList(PageQuery pageQuery, AiImagePageQuery query) {
+        IPage<AiImageVO> page = imageMapper.selectMyPage(pageQuery.build(), query, SecurityUtils.getUserId());
         return TableDataInfo.build(page);
     }
 
     @Override
-    public TableDataInfo<AiImageVO> getImagePagePublic(PageQuery pageQuery, AiImagePagePublicQuery query) {
-        IPage<AiImageVO> page = imageMapper.selectPagePublic(pageQuery.build(), query);
+    public TableDataInfo<AiImageVO> selectPublicImageList(PageQuery pageQuery, AiImagePagePublicQuery query) {
+        IPage<AiImageVO> page = imageMapper.selectPublicPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
     @Override
-    public AiImageVO getImageById(Long id) {
+    public AiImageVO selectImageById(Long id) {
         return imageMapper.selectVoById(id);
     }
 
     @Override
-    public List<AiImageVO> getImageListByIdsAndUserId(List<Long> ids) {
+    public List<AiImageVO> selectMyImageListByIds(List<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
             return Collections.emptyList();
         }
@@ -108,7 +109,7 @@ public class AiImageServiceImpl implements IAiImageService {
     }
 
     @Override
-    public int deleteImageMyById(Long id) {
+    public int deleteMyImageById(Long id) {
         // 1. 校验是否存在
         AiImage image = validateImageExists(id);
         if (ObjUtil.notEqual(image.getUserId(), SecurityUtils.getUserId())) {
@@ -119,7 +120,7 @@ public class AiImageServiceImpl implements IAiImageService {
     }
 
     @Override
-    public TableDataInfo<AiImageVO> getImagePage(PageQuery pageQuery, AiImagePageQuery query) {
+    public TableDataInfo<AiImageVO> selectImageList(PageQuery pageQuery, AiImagePageQuery query) {
         IPage<AiImageVO> page = imageMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
@@ -134,11 +135,8 @@ public class AiImageServiceImpl implements IAiImageService {
     }
 
     @Override
-    public int deleteImageById(Long id) {
-        // 1. 校验存在
-        validateImageExists(id);
-        // 2. 删除
-        return imageMapper.deleteById(id);
+    public int deleteImageByIds(Long[] ids) {
+        return imageMapper.deleteByIds(Arrays.asList(ids));
     }
 
     private AiImage validateImageExists(Long id) {

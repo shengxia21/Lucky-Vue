@@ -24,7 +24,7 @@ public interface IAiChatRoleService {
      * @param query 创建信息
      * @return 编号
      */
-    Long createChatRole(AiChatRoleSaveQuery query);
+    Long insertChatRole(AiChatRoleSaveQuery query);
 
     /**
      * 创建【我的】聊天角色
@@ -32,7 +32,7 @@ public interface IAiChatRoleService {
      * @param query 创建信息
      * @return 编号
      */
-    Long createChatRoleMy(AiChatRoleSaveMyQuery query);
+    Long insertMyChatRole(AiChatRoleSaveMyQuery query);
 
     /**
      * 更新聊天角色
@@ -46,21 +46,21 @@ public interface IAiChatRoleService {
      *
      * @param query 更新信息
      */
-    int updateChatRoleMy(AiChatRoleSaveMyQuery query);
+    int updateMyChatRole(AiChatRoleSaveMyQuery query);
 
     /**
      * 删除聊天角色
      *
-     * @param id 编号
+     * @param ids 编号数组
      */
-    int deleteChatRoleById(Long id);
+    int deleteChatRoleByIds(Long[] ids);
 
     /**
      * 删除【我的】聊天角色
      *
      * @param id 编号
      */
-    int deleteChatRoleMy(Long id);
+    int deleteMyChatRoleById(Long id);
 
     /**
      * 获得聊天角色
@@ -68,7 +68,7 @@ public interface IAiChatRoleService {
      * @param id 编号
      * @return AI 聊天角色
      */
-    AiChatRoleVO getChatRoleById(Long id);
+    AiChatRoleVO selectChatRoleById(Long id);
 
     /**
      * 获得聊天角色列表
@@ -76,7 +76,7 @@ public interface IAiChatRoleService {
      * @param ids 编号数组
      * @return 聊天角色列表
      */
-    List<AiChatRoleVO> getChatRoleList(Collection<Long> ids);
+    List<AiChatRoleVO> selectChatRoleList(Collection<Long> ids);
 
     /**
      * 校验聊天角色是否合法
@@ -92,7 +92,7 @@ public interface IAiChatRoleService {
      * @param query 查询参数
      * @return 聊天角色分页
      */
-    TableDataInfo<AiChatRoleVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageQuery query);
+    TableDataInfo<AiChatRoleVO> selectChatRoleList(PageQuery pageQuery, AiChatRolePageQuery query);
 
     /**
      * 获得【我的】聊天角色分页
@@ -101,14 +101,14 @@ public interface IAiChatRoleService {
      * @param query 查询参数
      * @return 聊天角色分页
      */
-    TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query);
+    TableDataInfo<AiChatRoleVO> selectMyChatRoleList(PageQuery pageQuery, AiChatRolePageQuery query);
 
     /**
      * 获得聊天角色的分类列表
      *
      * @return 分类列表
      */
-    List<String> getChatRoleCategoryList();
+    List<String> selectChatRoleCategoryList();
 
     /**
      * 根据名字获得聊天角色
@@ -116,6 +116,6 @@ public interface IAiChatRoleService {
      * @param name 名字
      * @return 聊天角色列表
      */
-    List<AiChatRoleVO> getChatRoleListByName(String name);
+    List<AiChatRoleVO> selectChatRoleListByName(String name);
 
 }

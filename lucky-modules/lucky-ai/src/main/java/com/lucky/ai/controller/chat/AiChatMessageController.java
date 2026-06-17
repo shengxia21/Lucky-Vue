@@ -36,64 +36,62 @@ public class AiChatMessageController extends BaseController {
     private IAiChatConversationService chatConversationService;
 
     /**
-     * 获得指定对话的消息列表
+     * 获得我的指定对话的消息列表
      */
-    @GetMapping("/list-by-conversation-id")
-    public R<List<AiChatMessageVO>> getChatMessageListByConversationId(@RequestParam("conversationId") Long conversationId) {
-        AiChatConversationVO conversation = chatConversationService.getChatConversationById(conversationId);
+    @GetMapping("/my/list/{conversationId}")
+    public R<List<AiChatMessageVO>> listByConversationId(@PathVariable Long conversationId) {
+        AiChatConversationVO conversation = chatConversationService.selectChatConversationById(conversationId);
         if (conversation == null || ObjUtil.notEqual(conversation.getUserId(), SecurityUtils.getUserId())) {
             return R.fail("对话不存在或不属于当前用户");
         }
         // 1. 获取消息列表
-        List<AiChatMessageVO> messageList = chatMessageService.getChatMessageListByConversationId(conversationId);
+        List<AiChatMessageVO> messageList = chatMessageService.selectChatMessageListByConversationId(conversationId);
         if (CollUtil.isEmpty(messageList)) {
             return R.ok(Collections.emptyList());
         }
-        // 2. 拼接数据，主要是知识库段落信息
-
         transService.transBatch(messageList);
         return R.ok(messageList);
     }
 
     /**
-     * 删除消息
+     * 删除我的消息
      */
-    @Log(title = "删除消息", businessType = BusinessType.DELETE)
-    @DeleteMapping("/delete")
-    public R<Void> deleteChatMessage(@RequestParam("id") Long id) {
-        return toAjax(chatMessageService.deleteChatMessageByIdAndUserId(id));
+    @Log(title = "删除我的消息", businessType = BusinessType.DELETE)
+    @DeleteMapping("/my/{id}")
+    public R<Void> removeMy(@PathVariable Long id) {
+        return toAjax(chatMessageService.deleteMyChatMessageById(id));
     }
 
     /**
-     * 删除指定对话的消息
+     * 删除我的指定对话的消息
      */
-    @Log(title = "删除指定对话的消息", businessType = BusinessType.DELETE)
-    @DeleteMapping("/delete-by-conversation-id")
-    public R<Void> deleteChatMessageByConversationId(@RequestParam("conversationId") Long conversationId) {
-        return toAjax(chatMessageService.deleteChatMessageByConversationIdAndUserId(conversationId));
+    @Log(title = "删除我的指定对话的消息", businessType = BusinessType.DELETE)
+    @DeleteMapping("/my/conversation/{conversationId}")
+    public R<Void> removeByConversationId(@PathVariable Long conversationId) {
+        return toAjax(chatMessageService.deleteMyChatMessageByConversationId(conversationId));
     }
 
-    // ========== 对话管理 ==========
+    // ========== 消息管理 ==========
 
     /**
      * 获得消息分页
      */
     @SaCheckPermission("ai:chat-conversation:list")
-    @GetMapping("/page")
-    public TableDataInfo<AiChatMessageVO> getChatMessagePage(PageQuery pageQuery, AiChatMessagePageQuery query) {
-        TableDataInfo<AiChatMessageVO> page = chatMessageService.getChatMessagePage(pageQuery, query);
+    @GetMapping("/list")
+    public TableDataInfo<AiChatMessageVO> list(PageQuery pageQuery, AiChatMessagePageQuery query) {
+        TableDataInfo<AiChatMessageVO> page = chatMessageService.selectChatMessageList(pageQuery, query);
         transService.transBatch(page.getRows());
         return page;
     }
 
     /**
-     * 删除消息（管理员）
+     * 管理员删除消息
      */
-    @Log(title = "删除消息（管理员）", businessType = BusinessType.DELETE)
-    @SaCheckPermission("ai:chat-message:delete")
-    @DeleteMapping("/delete-by-admin")
-    public R<Void> deleteChatMessageByAdmin(@RequestParam("id") Long id) {
-        return toAjax(chatMessageService.deleteChatMessageById(id));
+    @Log(title = "管理员删除消息", businessType = BusinessType.DELETE)
+    @SaCheckPermission("ai:chat-message:remove")
+    @DeleteMapping("/{ids}")
+    public R<Void> remove(@PathVariable Long[] ids) {
+        return toAjax(chatMessageService.deleteChatMessageByIds(ids));
     }
 
 }

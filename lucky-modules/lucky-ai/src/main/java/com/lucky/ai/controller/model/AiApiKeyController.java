@@ -23,7 +23,7 @@ import java.util.List;
  * @author lucky
  */
 @RestController
-@RequestMapping("/ai/api-key")
+@RequestMapping("/ai/apiKey")
 public class AiApiKeyController extends BaseController {
 
     @Resource
@@ -33,19 +33,19 @@ public class AiApiKeyController extends BaseController {
      * 创建 API 密钥
      */
     @Log(title = "创建 API 密钥", businessType = BusinessType.INSERT)
-    @SaCheckPermission("ai:api-key:create")
-    @PostMapping("/create")
-    public R<Long> createApiKey(@Validated @RequestBody AiApiKeySaveQuery query) {
-        return R.ok(apiKeyService.createApiKey(query));
+    @SaCheckPermission("ai:api-key:add")
+    @PostMapping
+    public R<Long> add(@Validated @RequestBody AiApiKeySaveQuery query) {
+        return R.ok(apiKeyService.insertApiKey(query));
     }
 
     /**
      * 更新 API 密钥
      */
     @Log(title = "更新 API 密钥", businessType = BusinessType.UPDATE)
-    @SaCheckPermission("ai:api-key:update")
-    @PutMapping("/update")
-    public R<Void> updateApiKey(@Validated @RequestBody AiApiKeySaveQuery query) {
+    @SaCheckPermission("ai:api-key:edit")
+    @PutMapping
+    public R<Void> edit(@Validated @RequestBody AiApiKeySaveQuery query) {
         return toAjax(apiKeyService.updateApiKey(query));
     }
 
@@ -53,36 +53,36 @@ public class AiApiKeyController extends BaseController {
      * 删除 API 密钥
      */
     @Log(title = "删除 API 密钥", businessType = BusinessType.DELETE)
-    @SaCheckPermission("ai:api-key:delete")
-    @DeleteMapping("/delete")
-    public R<Void> deleteApiKey(@RequestParam("id") Long id) {
-        return toAjax(apiKeyService.deleteApiKeyById(id));
+    @SaCheckPermission("ai:api-key:remove")
+    @DeleteMapping("/{ids}")
+    public R<Void> remove(@PathVariable Long[] ids) {
+        return toAjax(apiKeyService.deleteApiKeyByIds(ids));
     }
 
     /**
      * 获取 API 密钥
      */
     @SaCheckPermission("ai:api-key:query")
-    @GetMapping("/get")
-    public R<AiApiKeyVO> getApiKey(@RequestParam("id") Long id) {
-        return R.ok(apiKeyService.getApiKeyById(id));
+    @GetMapping("/{id}")
+    public R<AiApiKeyVO> getInfo(@PathVariable Long id) {
+        return R.ok(apiKeyService.selectApiKeyById(id));
     }
 
     /**
      * 获得 API 密钥分页
      */
     @SaCheckPermission("ai:api-key:list")
-    @GetMapping("/page")
-    public TableDataInfo<AiApiKeyVO> getApiKeyPage(PageQuery pageQuery, AiApiKeyPageQuery query) {
-        return apiKeyService.getApiKeyPage(pageQuery, query);
+    @GetMapping("/list")
+    public TableDataInfo<AiApiKeyVO> list(PageQuery pageQuery, AiApiKeyPageQuery query) {
+        return apiKeyService.selectApiKeyList(pageQuery, query);
     }
 
     /**
      * 获得 API 密钥列表
      */
-    @GetMapping("/simple-list")
-    public R<List<AiApiKeyVO>> getApiKeySimpleList() {
-        return R.ok(apiKeyService.getApiKeyList());
+    @GetMapping("/optionSelect")
+    public R<List<AiApiKeyVO>> optionSelect() {
+        return R.ok(apiKeyService.selectApiKeyAll());
     }
 
 }

@@ -18,6 +18,7 @@ import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,11 +33,9 @@ public class AiApiKeyServiceImpl implements IAiApiKeyService {
     private AiApiKeyMapper apiKeyMapper;
 
     @Override
-    public Long createApiKey(AiApiKeySaveQuery query) {
-        // 插入
+    public Long insertApiKey(AiApiKeySaveQuery query) {
         AiApiKey apiKey = MapstructUtils.convert(query, AiApiKey.class);
         apiKeyMapper.insert(apiKey);
-        // 返回
         return apiKey.getId();
     }
 
@@ -50,26 +49,23 @@ public class AiApiKeyServiceImpl implements IAiApiKeyService {
     }
 
     @Override
-    public int deleteApiKeyById(Long id) {
-        // 校验存在
-        validateApiKeyExists(id);
-        // 删除
-        return apiKeyMapper.deleteById(id);
+    public int deleteApiKeyByIds(Long[] ids) {
+        return apiKeyMapper.deleteByIds(Arrays.asList(ids));
     }
 
     @Override
-    public AiApiKeyVO getApiKeyById(Long id) {
+    public AiApiKeyVO selectApiKeyById(Long id) {
         return apiKeyMapper.selectVoById(id);
     }
 
     @Override
-    public TableDataInfo<AiApiKeyVO> getApiKeyPage(PageQuery pageQuery, AiApiKeyPageQuery query) {
+    public TableDataInfo<AiApiKeyVO> selectApiKeyList(PageQuery pageQuery, AiApiKeyPageQuery query) {
         IPage<AiApiKeyVO> page = apiKeyMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
     @Override
-    public List<AiApiKeyVO> getApiKeyList() {
+    public List<AiApiKeyVO> selectApiKeyAll() {
         LambdaQueryWrapper<AiApiKey> wrapper = Wrappers.<AiApiKey>lambdaQuery()
                 .select(AiApiKey::getId, AiApiKey::getName);
         return apiKeyMapper.selectVoList(wrapper);

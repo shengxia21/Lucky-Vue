@@ -28,6 +28,7 @@ import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +51,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
     private IAiChatMessageService chatMessageService;
 
     @Override
-    public Long createChatConversationMy(AiChatConversationCreateMyQuery query) {
+    public Long insertMyChatConversation(AiChatConversationCreateMyQuery query) {
         // 1.1 获得 AiChatRoleDO 聊天角色
         AiChatRole role = query.getRoleId() != null ? chatRoleService.validateChatRole(query.getRoleId()) : null;
         // 1.2 获得 AiModelDO 聊天模型
@@ -58,8 +59,6 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
                 : modelService.getDefaultModelByType(AiModelTypeEnum.CHAT.getType());
         Assert.notNull(model, "必须找到默认模型");
         validateChatModel(model);
-
-        // 1.3 校验知识库
 
         // 2. 创建 AiChatConversation 聊天对话
         AiChatConversation conversation = new AiChatConversation();
@@ -82,7 +81,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
     }
 
     @Override
-    public int updateChatConversationMy(AiChatConversationUpdateMyQuery query) {
+    public int updateMyChatConversation(AiChatConversationUpdateMyQuery query) {
         // 1.1 校验对话是否存在
         AiChatConversation conversation = validateChatConversationExists(query.getId());
         if (ObjUtil.notEqual(conversation.getUserId(), SecurityUtils.getUserId())) {
@@ -93,7 +92,6 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         if (query.getModelId() != null) {
             model = modelService.validateModel(query.getModelId());
         }
-        // 1.3 校验知识库是否存在
 
         // 2. 更新对话信息
         AiChatConversation updateObj = MapstructUtils.convert(query, AiChatConversation.class);
@@ -107,19 +105,20 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
     }
 
     @Override
-    public List<AiChatConversationVO> getMyChatConversationList() {
+    public List<AiChatConversationVO> selectMyChatConversationList() {
         return chatConversationMapper.selectListByUserId(SecurityUtils.getUserId());
     }
 
     @Override
-    public AiChatConversationVO getChatConversationById(Long id) {
+    public AiChatConversationVO selectChatConversationById(Long id) {
         return chatConversationMapper.selectVoById(id);
     }
 
     @Override
-    public int deleteChatConversationMyById(Long id) {
+    public int deleteMyChatConversationById(Long id) {
         // 1. 校验对话是否存在
         AiChatConversation conversation = validateChatConversationExists(id);
+        // 1.1 校验对话是否属于当前用户
         if (conversation == null || ObjUtil.notEqual(conversation.getUserId(), SecurityUtils.getUserId())) {
             throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
         }
@@ -128,7 +127,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
     }
 
     @Override
-    public int deleteChatConversationMy() {
+    public int deleteMyUnpinnedChatConversation() {
         Long userId = SecurityUtils.getUserId();
         List<AiChatConversation> list = chatConversationMapper.selectListByUserIdAndPinned(userId, false);
         if (CollUtil.isEmpty(list)) {
@@ -139,29 +138,23 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
     }
 
     @Override
-    public TableDataInfo<AiChatConversationVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageQuery query) {
+    public TableDataInfo<AiChatConversationVO> selectChatConversationList(PageQuery pageQuery, AiChatConversationPageQuery query) {
         IPage<AiChatConversationVO> page = chatConversationMapper.selectPage(pageQuery.build(), query);
         if (CollUtil.isEmpty(page.getRecords())) {
             return TableDataInfo.build(page);
         }
-        // 提取对话ID列表
+        // 收集对话ID列表
         List<Long> ids = page.getRecords().stream().map(AiChatConversationVO::getId).toList();
         // 查询每个对话的消息数量
-        Map<Long, Integer> countMap = chatMessageService.getChatMessageCountMap(ids);
+        Map<Long, Integer> countMap = chatMessageService.selectChatMessageCountMap(ids);
         // 添加消息数量
         page.getRecords().forEach(conversation -> conversation.setMessageCount(countMap.getOrDefault(conversation.getId(), 0)));
         return TableDataInfo.build(page);
     }
 
     @Override
-    public int deleteChatConversationById(Long id) {
-        // 1. 校验对话是否存在
-        AiChatConversation conversation = validateChatConversationExists(id);
-        if (conversation == null) {
-            throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
-        }
-        // 2. 删除对话
-        return chatConversationMapper.deleteById(id);
+    public int deleteChatConversationByIds(Long[] ids) {
+        return chatConversationMapper.deleteByIds(Arrays.asList(ids));
     }
 
     @Override
@@ -173,6 +166,11 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         return conversation;
     }
 
+    /**
+     * 校验聊天模型是否正确
+     *
+     * @param model 聊天模型
+     */
     private void validateChatModel(AiModel model) {
         if (ObjectUtil.isAllNotEmpty(model.getTemperature(), model.getMaxTokens(), model.getMaxContexts())) {
             return;

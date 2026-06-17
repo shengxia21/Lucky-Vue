@@ -22,6 +22,7 @@ import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -38,22 +39,14 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     private AiChatRoleMapper chatRoleMapper;
 
     @Override
-    public Long createChatRole(AiChatRoleSaveQuery query) {
-        // 校验文档
-        // 校验工具
-
-        // 保存角色
+    public Long insertChatRole(AiChatRoleSaveQuery query) {
         AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
         chatRoleMapper.insert(chatRole);
         return chatRole.getId();
     }
 
     @Override
-    public Long createChatRoleMy(AiChatRoleSaveMyQuery query) {
-        // 校验文档
-        // 校验工具
-
-        // 保存角色
+    public Long insertMyChatRole(AiChatRoleSaveMyQuery query) {
         AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
         chatRole.setUserId(SecurityUtils.getUserId());
         chatRole.setStatus(CommonStatusEnum.ENABLE.getStatus());
@@ -66,39 +59,30 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     public int updateChatRole(AiChatRoleSaveQuery query) {
         // 校验存在
         validateChatRoleExists(query.getId());
-        // 校验文档
-        // 校验工具
-
         // 更新角色
         AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
         return chatRoleMapper.updateById(chatRole);
     }
 
     @Override
-    public int updateChatRoleMy(AiChatRoleSaveMyQuery query) {
+    public int updateMyChatRole(AiChatRoleSaveMyQuery query) {
         // 校验存在
         AiChatRole chatRole = validateChatRoleExists(query.getId());
         if (ObjectUtil.notEqual(chatRole.getUserId(), SecurityUtils.getUserId())) {
             throw new ServiceException(AiErrorConstants.CHAT_ROLE_NOT_EXISTS);
         }
-        // 校验文档
-        // 校验工具
-
         // 更新角色
         AiChatRole updateObj = MapstructUtils.convert(query, AiChatRole.class);
         return chatRoleMapper.updateById(updateObj);
     }
 
     @Override
-    public int deleteChatRoleById(Long id) {
-        // 校验存在
-        validateChatRoleExists(id);
-        // 删除
-        return chatRoleMapper.deleteById(id);
+    public int deleteChatRoleByIds(Long[] ids) {
+        return chatRoleMapper.deleteByIds(Arrays.asList(ids));
     }
 
     @Override
-    public int deleteChatRoleMy(Long id) {
+    public int deleteMyChatRoleById(Long id) {
         // 校验存在
         AiChatRole chatRole = validateChatRoleExists(id);
         if (ObjectUtil.notEqual(chatRole.getUserId(), SecurityUtils.getUserId())) {
@@ -109,12 +93,12 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     }
 
     @Override
-    public AiChatRoleVO getChatRoleById(Long id) {
+    public AiChatRoleVO selectChatRoleById(Long id) {
         return chatRoleMapper.selectVoById(id);
     }
 
     @Override
-    public List<AiChatRoleVO> getChatRoleList(Collection<Long> ids) {
+    public List<AiChatRoleVO> selectChatRoleList(Collection<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
             return Collections.emptyList();
         }
@@ -131,25 +115,25 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     }
 
     @Override
-    public TableDataInfo<AiChatRoleVO> getChatRolePage(PageQuery pageQuery, AiChatRolePageQuery query) {
+    public TableDataInfo<AiChatRoleVO> selectChatRoleList(PageQuery pageQuery, AiChatRolePageQuery query) {
         IPage<AiChatRoleVO> page = chatRoleMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
     }
 
     @Override
-    public TableDataInfo<AiChatRoleVO> getChatRoleMyPage(PageQuery pageQuery, AiChatRolePageQuery query) {
+    public TableDataInfo<AiChatRoleVO> selectMyChatRoleList(PageQuery pageQuery, AiChatRolePageQuery query) {
         IPage<AiChatRoleVO> page = chatRoleMapper.selectMyPage(pageQuery.build(), query, SecurityUtils.getUserId());
         return TableDataInfo.build(page);
     }
 
     @Override
-    public List<String> getChatRoleCategoryList() {
+    public List<String> selectChatRoleCategoryList() {
         List<String> list = chatRoleMapper.selectListGroupByCategory(CommonStatusEnum.ENABLE.getStatus());
         return list.stream().filter(StrUtil::isNotBlank).toList();
     }
 
     @Override
-    public List<AiChatRoleVO> getChatRoleListByName(String name) {
+    public List<AiChatRoleVO> selectChatRoleListByName(String name) {
         return chatRoleMapper.selectListByName(name);
     }
 

@@ -18,6 +18,7 @@ import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -53,7 +54,7 @@ public class AiModelServiceImpl implements IAiModelService {
     }
 
     @Override
-    public Long createModel(AiModelSaveQuery query) {
+    public Long insertModel(AiModelSaveQuery query) {
         // 1. 校验
         AiPlatformEnum.validatePlatform(query.getPlatform());
         apiKeyService.validateApiKey(query.getKeyId());
@@ -75,26 +76,23 @@ public class AiModelServiceImpl implements IAiModelService {
     }
 
     @Override
-    public int deleteModelById(Long id) {
-        // 校验存在
-        validateModelExists(id);
-        // 删除
-        return modelMapper.deleteById(id);
+    public int deleteModelByIds(Long[] ids) {
+        return modelMapper.deleteByIds(Arrays.asList(ids));
     }
 
     @Override
-    public AiModelVO getModelById(Long id) {
+    public AiModelVO selectModelById(Long id) {
         return modelMapper.selectVoById(id);
     }
 
     @Override
-    public TableDataInfo<AiModelVO> getModelPage(PageQuery pageQuery, AiModelPageQuery query) {
+    public TableDataInfo<AiModelVO> selectModelList(PageQuery pageQuery, AiModelPageQuery query) {
         IPage<AiModelVO> selectPage = modelMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(selectPage);
     }
 
     @Override
-    public List<AiModelVO> getModelList(Integer status, Integer type, String platform) {
+    public List<AiModelVO> selectModelAll(Integer status, Integer type, String platform) {
         return modelMapper.selectList(status, type, platform);
     }
 

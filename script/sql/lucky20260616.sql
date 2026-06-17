@@ -621,22 +621,22 @@ INSERT INTO `sys_menu` VALUES (1066, '聊天管理', 1064, 3, 'chatManager', 'ai
 INSERT INTO `sys_menu` VALUES (1067, 'API 密钥', 1064, 1, 'api-key', 'ai/console/apiKey/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:api-key:list', 'api-key', '', 'admin', '2025-12-08 01:55:05', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1068, '绘画管理', 1064, 4, 'imageManager', 'ai/console/image/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:image:list', 'imageManager', '', 'admin', '2025-12-08 02:01:52', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1069, 'API 密钥查询', 1067, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:query', '#', '', 'admin', '2025-12-08 02:25:55', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1070, 'API 密钥创建', 1067, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:create', '#', '', 'admin', '2025-12-08 02:26:19', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1071, 'API 密钥更新', 1067, 3, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:update', '#', '', 'admin', '2025-12-08 02:26:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1072, 'API 密钥删除', 1067, 4, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:delete', '#', '', 'admin', '2025-12-09 03:06:49', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1070, 'API 密钥创建', 1067, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:add', '#', '', 'admin', '2025-12-08 02:26:19', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1071, 'API 密钥更新', 1067, 3, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:edit', '#', '', 'admin', '2025-12-08 02:26:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1072, 'API 密钥删除', 1067, 4, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:api-key:remove', '#', '', 'admin', '2025-12-09 03:06:49', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1073, '模型配置查询', 1065, 1, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:model:query', '#', '', 'admin', '2025-12-10 18:07:13', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1074, '模型配置新增', 1065, 2, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:model:create', '#', '', 'admin', '2025-12-10 18:07:13', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1075, '模型配置修改', 1065, 3, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:model:update', '#', '', 'admin', '2025-12-10 18:07:13', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1076, '模型配置删除', 1065, 4, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:model:delete', '#', '', 'admin', '2025-12-10 18:07:13', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1077, '绘图更新', 1068, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:image:update', '#', '', 'admin', '2025-12-13 06:17:21', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1078, '绘画删除', 1068, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:image:delete', '#', '', 'admin', '2025-12-13 06:18:51', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1079, '对话删除', 1066, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-conversation:delete', '#', '', 'admin', '2025-12-13 18:50:55', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1080, '消息删除', 1066, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-message:delete', '#', '', 'admin', '2025-12-13 18:51:22', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1074, '模型配置新增', 1065, 2, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:model:add', '#', '', 'admin', '2025-12-10 18:07:13', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1075, '模型配置修改', 1065, 3, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:model:edit', '#', '', 'admin', '2025-12-10 18:07:13', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1076, '模型配置删除', 1065, 4, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:model:remove', '#', '', 'admin', '2025-12-10 18:07:13', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1077, '绘图更新', 1068, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:image:edit', '#', '', 'admin', '2025-12-13 06:17:21', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1078, '绘画删除', 1068, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:image:remove', '#', '', 'admin', '2025-12-13 06:18:51', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1079, '对话删除', 1066, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-conversation:remove', '#', '', 'admin', '2025-12-13 18:50:55', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1080, '消息删除', 1066, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-message:remove', '#', '', 'admin', '2025-12-13 18:51:22', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1081, '聊天角色', 1064, 5, 'chatRole', 'ai/console/chatRole/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:chat-role:list', 'chatRole', '', 'admin', '2026-01-27 22:25:08', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1082, '聊天角色查询', 1081, 1, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-role:query', '#', '', 'admin', '2026-01-27 22:25:08', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1083, '聊天角色新增', 1081, 2, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-role:create', '#', '', 'admin', '2026-01-27 22:25:08', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1084, '聊天角色修改', 1081, 3, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-role:update', '#', '', 'admin', '2026-01-27 22:25:08', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1085, '聊天角色删除', 1081, 4, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-role:delete', '#', '', 'admin', '2026-01-27 22:25:08', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1083, '聊天角色新增', 1081, 2, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-role:add', '#', '', 'admin', '2026-01-27 22:25:08', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1084, '聊天角色修改', 1081, 3, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-role:edit', '#', '', 'admin', '2026-01-27 22:25:08', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1085, '聊天角色删除', 1081, 4, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'ai:chat-role:remove', '#', '', 'admin', '2026-01-27 22:25:08', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_notice

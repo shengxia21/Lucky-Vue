@@ -24,7 +24,7 @@ public interface IAiImageService {
      * @param query 查询参数
      * @return 分页结果
      */
-    TableDataInfo<AiImageVO> getImagePageMy(PageQuery pageQuery, AiImagePageQuery query);
+    TableDataInfo<AiImageVO> selectMyImageList(PageQuery pageQuery, AiImagePageQuery query);
 
     /**
      * 获取公开的绘图列表
@@ -33,7 +33,7 @@ public interface IAiImageService {
      * @param query 查询参数
      * @return 分页结果
      */
-    TableDataInfo<AiImageVO> getImagePagePublic(PageQuery pageQuery, AiImagePagePublicQuery query);
+    TableDataInfo<AiImageVO> selectPublicImageList(PageQuery pageQuery, AiImagePagePublicQuery query);
 
     /**
      * 根据ID查询绘画详情
@@ -41,15 +41,15 @@ public interface IAiImageService {
      * @param id 绘画主键
      * @return 绘图详情
      */
-    AiImageVO getImageById(Long id);
+    AiImageVO selectImageById(Long id);
 
     /**
-     * 根据ID列表查询绘画列表
+     * 获取我的ID列表查询绘画列表
      *
      * @param ids 绘画主键列表
      * @return 绘画列表
      */
-    List<AiImageVO> getImageListByIdsAndUserId(List<Long> ids);
+    List<AiImageVO> selectMyImageListByIds(List<Long> ids);
 
     /**
      * 生成图片
@@ -65,7 +65,7 @@ public interface IAiImageService {
      * @param id 绘图记录ID
      * @return 结果
      */
-    int deleteImageMyById(Long id);
+    int deleteMyImageById(Long id);
 
     /**
      * 获得绘画列表
@@ -74,7 +74,7 @@ public interface IAiImageService {
      * @param query 查询参数
      * @return 分页结果
      */
-    TableDataInfo<AiImageVO> getImagePage(PageQuery pageQuery, AiImagePageQuery query);
+    TableDataInfo<AiImageVO> selectImageList(PageQuery pageQuery, AiImagePageQuery query);
 
     /**
      * 更新绘画
@@ -87,9 +87,9 @@ public interface IAiImageService {
     /**
      * 删除绘画
      *
-     * @param id 绘画主键
+     * @param ids 绘画主键数组
      * @return 结果
      */
-    int deleteImageById(Long id);
+    int deleteImageByIds(Long[] ids);
 
 }

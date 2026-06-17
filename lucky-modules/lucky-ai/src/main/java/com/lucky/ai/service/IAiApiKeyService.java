@@ -22,7 +22,7 @@ public interface IAiApiKeyService {
      * @param query 创建请求vo
      * @return 结果
      */
-    Long createApiKey(AiApiKeySaveQuery query);
+    Long insertApiKey(AiApiKeySaveQuery query);
 
     /**
      * 更新 API 密钥
@@ -35,10 +35,10 @@ public interface IAiApiKeyService {
      /**
      * 删除 API 密钥
      *
-     * @param id API 密钥主键
+     * @param ids API 密钥主键数组
      * @return 结果
      */
-    int deleteApiKeyById(Long id);
+    int deleteApiKeyByIds(Long[] ids);
 
     /**
      * 查询 API 密钥
@@ -46,7 +46,7 @@ public interface IAiApiKeyService {
      * @param id API 密钥主键
      * @return API 密钥
      */
-    AiApiKeyVO getApiKeyById(Long id);
+    AiApiKeyVO selectApiKeyById(Long id);
 
     /**
      * 查询 API 密钥分页
@@ -55,14 +55,14 @@ public interface IAiApiKeyService {
      * @param query 查询参数
      * @return API 密钥分页结果
      */
-    TableDataInfo<AiApiKeyVO> getApiKeyPage(PageQuery pageQuery, AiApiKeyPageQuery query);
+    TableDataInfo<AiApiKeyVO> selectApiKeyList(PageQuery pageQuery, AiApiKeyPageQuery query);
 
     /**
      * 获得 API 密钥列表
      *
      * @return API 密钥列表
      */
-    List<AiApiKeyVO> getApiKeyList();
+    List<AiApiKeyVO> selectApiKeyAll();
 
     /**
      * 校验 API 密钥是否有效

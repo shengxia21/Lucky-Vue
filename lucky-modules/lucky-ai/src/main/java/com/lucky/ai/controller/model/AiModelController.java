@@ -34,19 +34,19 @@ public class AiModelController extends BaseController {
      * 创建模型
      */
     @Log(title = "创建模型", businessType = BusinessType.INSERT)
-    @SaCheckPermission("ai:model:create")
-    @PostMapping("/create")
-    public R<Long> createModel(@Validated @RequestBody AiModelSaveQuery query) {
-        return R.ok(modelService.createModel(query));
+    @SaCheckPermission("ai:model:add")
+    @PostMapping
+    public R<Long> add(@Validated @RequestBody AiModelSaveQuery query) {
+        return R.ok(modelService.insertModel(query));
     }
 
     /**
      * 更新模型
      */
     @Log(title = "更新模型", businessType = BusinessType.UPDATE)
-    @SaCheckPermission("ai:model:update")
-    @PutMapping("/update")
-    public R<Void> updateModel(@Validated @RequestBody AiModelSaveQuery query) {
+    @SaCheckPermission("ai:model:edit")
+    @PutMapping
+    public R<Void> edit(@Validated @RequestBody AiModelSaveQuery query) {
         return toAjax(modelService.updateModel(query));
     }
 
@@ -54,38 +54,38 @@ public class AiModelController extends BaseController {
      * 删除模型
      */
     @Log(title = "删除模型", businessType = BusinessType.DELETE)
-    @SaCheckPermission("ai:model:delete")
-    @DeleteMapping("/delete")
-    public R<Void> deleteModel(@RequestParam("id") Long id) {
-        return toAjax(modelService.deleteModelById(id));
+    @SaCheckPermission("ai:model:remove")
+    @DeleteMapping("/{ids}")
+    public R<Void> remove(@PathVariable Long[] ids) {
+        return toAjax(modelService.deleteModelByIds(ids));
     }
 
     /**
      * 获得模型
      */
     @SaCheckPermission("ai:model:query")
-    @GetMapping("/get")
-    public R<AiModelVO> getModel(@RequestParam("id") Long id) {
-        return R.ok(modelService.getModelById(id));
+    @GetMapping("/{id}")
+    public R<AiModelVO> getInfo(@PathVariable Long id) {
+        return R.ok(modelService.selectModelById(id));
     }
 
     /**
      * 获得模型分页
      */
     @SaCheckPermission("ai:model:list")
-    @GetMapping("/page")
-    public TableDataInfo<AiModelVO> getModelPage(PageQuery pageQuery, AiModelPageQuery query) {
-        return modelService.getModelPage(pageQuery, query);
+    @GetMapping("/list")
+    public TableDataInfo<AiModelVO> list(PageQuery pageQuery, AiModelPageQuery query) {
+        return modelService.selectModelList(pageQuery, query);
     }
 
     /**
      * 获得模型列表
      */
-    @GetMapping("/simple-list")
-    public R<List<AiModelVO>> getModelSimpleList(
+    @GetMapping("/optionSelect")
+    public R<List<AiModelVO>> optionSelect(
             @RequestParam("type") Integer type,
             @RequestParam(value = "platform", required = false) String platform) {
-        List<AiModelVO> list = modelService.getModelList(CommonStatusEnum.ENABLE.getStatus(), type, platform);
+        List<AiModelVO> list = modelService.selectModelAll(CommonStatusEnum.ENABLE.getStatus(), type, platform);
         return R.ok(list);
     }
 

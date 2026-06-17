@@ -36,26 +36,26 @@ public class AiChatConversationController extends BaseController {
      * 创建我的聊天对话
      */
     @Log(title = "创建【我的】聊天对话", businessType = BusinessType.INSERT)
-    @PostMapping("/create-my")
-    public R<Long> createChatConversationMy(@RequestBody AiChatConversationCreateMyQuery query) {
-        return R.ok(chatConversationService.createChatConversationMy(query));
+    @PostMapping("/my")
+    public R<Long> addMy(@RequestBody AiChatConversationCreateMyQuery query) {
+        return R.ok(chatConversationService.insertMyChatConversation(query));
     }
 
     /**
      * 更新我的聊天对话
      */
     @Log(title = "更新【我的】聊天对话", businessType = BusinessType.UPDATE)
-    @PutMapping("/update-my")
-    public R<Void> updateChatConversationMy(@Validated @RequestBody AiChatConversationUpdateMyQuery query) {
-        return toAjax(chatConversationService.updateChatConversationMy(query));
+    @PutMapping("/my")
+    public R<Void> editMy(@Validated @RequestBody AiChatConversationUpdateMyQuery query) {
+        return toAjax(chatConversationService.updateMyChatConversation(query));
     }
 
     /**
      * 获得我的聊天对话列表
      */
-    @GetMapping("/my-list")
-    public R<List<AiChatConversationVO>> getMyChatConversationList() {
-        List<AiChatConversationVO> list = chatConversationService.getMyChatConversationList();
+    @GetMapping("/my/list")
+    public R<List<AiChatConversationVO>> myList() {
+        List<AiChatConversationVO> list = chatConversationService.selectMyChatConversationList();
         transService.transBatch(list);
         return R.ok(list);
     }
@@ -63,9 +63,9 @@ public class AiChatConversationController extends BaseController {
     /**
      * 获得我的聊天对话
      */
-    @GetMapping("/get-my")
-    public R<AiChatConversationVO> getChatConversationMy(@RequestParam("id") Long id) {
-        AiChatConversationVO conversation = chatConversationService.getChatConversationById(id);
+    @GetMapping("/my/{id}")
+    public R<AiChatConversationVO> getMyInfo(@PathVariable Long id) {
+        AiChatConversationVO conversation = chatConversationService.selectChatConversationById(id);
         if (conversation != null && ObjUtil.notEqual(conversation.getUserId(), SecurityUtils.getUserId())) {
             return R.fail("对话不存在或不属于当前用户");
         }
@@ -77,18 +77,18 @@ public class AiChatConversationController extends BaseController {
      * 删除我的聊天对话
      */
     @Log(title = "删除【我的】聊天对话", businessType = BusinessType.DELETE)
-    @DeleteMapping("/delete-my")
-    public R<Void> deleteChatConversationMy(@RequestParam("id") Long id) {
-        return toAjax(chatConversationService.deleteChatConversationMyById(id));
+    @DeleteMapping("/my/{id}")
+    public R<Void> removeMy(@PathVariable Long id) {
+        return toAjax(chatConversationService.deleteMyChatConversationById(id));
     }
 
     /**
-     * 删除未置顶的聊天对话
+     * 删除我的未置顶聊天对话
      */
-    @Log(title = "删除未置顶的聊天对话", businessType = BusinessType.DELETE)
-    @DeleteMapping("/delete-by-unpinned")
-    public R<Void> deleteChatConversationMyByUnpinned() {
-        return toAjax(chatConversationService.deleteChatConversationMy());
+    @Log(title = "删除【我的】未置顶聊天对话", businessType = BusinessType.DELETE)
+    @DeleteMapping("/my/unpinned")
+    public R<Void> removeMyUnpinned() {
+        return toAjax(chatConversationService.deleteMyUnpinnedChatConversation());
     }
 
     // ========== 对话管理 ==========
@@ -97,9 +97,9 @@ public class AiChatConversationController extends BaseController {
      * 获取对话分页列表
      */
     @SaCheckPermission("ai:chat-conversation:list")
-    @GetMapping("/page")
-    public TableDataInfo<AiChatConversationVO> getChatConversationPage(PageQuery pageQuery, AiChatConversationPageQuery query) {
-        TableDataInfo<AiChatConversationVO> page = chatConversationService.getChatConversationPage(pageQuery, query);
+    @GetMapping("/list")
+    public TableDataInfo<AiChatConversationVO> list(PageQuery pageQuery, AiChatConversationPageQuery query) {
+        TableDataInfo<AiChatConversationVO> page = chatConversationService.selectChatConversationList(pageQuery, query);
         transService.transBatch(page.getRows());
         return page;
     }
@@ -108,10 +108,10 @@ public class AiChatConversationController extends BaseController {
      * 管理员删除对话
      */
     @Log(title = "管理员删除对话", businessType = BusinessType.DELETE)
-    @DeleteMapping("/delete-by-admin")
-    @SaCheckPermission("ai:chat-conversation:delete")
-    public R<Void> deleteChatConversationById(@RequestParam("id") Long id) {
-        return toAjax(chatConversationService.deleteChatConversationById(id));
+    @DeleteMapping("/{ids}")
+    @SaCheckPermission("ai:chat-conversation:remove")
+    public R<Void> remove(@PathVariable Long[] ids) {
+        return toAjax(chatConversationService.deleteChatConversationByIds(ids));
     }
 
 }
