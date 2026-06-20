@@ -3,7 +3,7 @@ package com.lucky.common.core.domain.dto;
 import lombok.Data;
 
 /**
- * 当前在线会话
+ * 用户在线会话DTO
  *
  * @author lucky
  */

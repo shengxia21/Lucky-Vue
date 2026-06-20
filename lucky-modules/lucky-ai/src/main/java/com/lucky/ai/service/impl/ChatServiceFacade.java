@@ -7,11 +7,11 @@ import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.factory.AsyncAiFactory;
 import com.lucky.ai.mapper.AiChatMessageMapper;
 import com.lucky.ai.util.SpringAiUtils;
+import com.lucky.common.ai.chat.ChatService;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.ai.factory.ChatServiceFactory;
 import com.lucky.common.ai.service.AbstractChatService;
-import com.lucky.common.ai.service.ChatService;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.security.utils.SecurityUtils;
 import com.lucky.common.web.manager.AsyncManager;
@@ -62,7 +62,7 @@ public class ChatServiceFacade implements ChatService {
         // 构建模型
         ChatModel chatModel = service.buildChatModel(chatRequest.getUrl(), chatRequest.getApiKey());
         // 流式处理
-        Flux<ChatResponse> responseFlux = chatModel.stream(prompt);
+        Flux<ChatResponse> response = chatModel.stream(prompt);
 
         Long userId = SecurityUtils.getUserId();
         String userName = SecurityUtils.getUserName();
@@ -70,8 +70,8 @@ public class ChatServiceFacade implements ChatService {
         // 文本内容
         StringBuffer contentBuffer = new StringBuffer();
         StringBuffer reasoningContentBuffer = new StringBuffer();
-        ChatResponseVO response = new ChatResponseVO();
-        return responseFlux.map(chatResponse -> {
+        ChatResponseVO responseVo = new ChatResponseVO();
+        return response.map(chatResponse -> {
             // 提取响应内容
             String content = service.extractChatResponseContent(chatResponse);
             String reasoningContent = service.extractChatResponseReasoningContent(chatResponse);
@@ -81,9 +81,9 @@ public class ChatServiceFacade implements ChatService {
             if (StrUtil.isNotEmpty(reasoningContent)) {
                 reasoningContentBuffer.append(reasoningContent);
             }
-            response.setContent(content);
-            response.setReasoningContent(reasoningContent);
-            return response;
+            responseVo.setContent(content);
+            responseVo.setReasoningContent(reasoningContent);
+            return responseVo;
         }).doOnComplete(() -> {
             // 流式响应完成时触发, 异步更新消息
             AsyncManager.me().execute(AsyncAiFactory.updateAssistantMessage(assistantId, userName, contentBuffer.toString(), reasoningContentBuffer.toString()));
@@ -98,8 +98,8 @@ public class ChatServiceFacade implements ChatService {
             // 异步删除创建的assistant聊天消息
             AsyncManager.me().execute(AsyncAiFactory.deleteAssistantMessage(assistantId));
             // 将异常信息设置为响应内容(有些错误可能是用户的配置问题,需要提示用户)
-            response.setContent(error.getMessage());
-            return Flux.just(response);
+            responseVo.setContent(error.getMessage());
+            return Flux.just(responseVo);
         });
     }
 

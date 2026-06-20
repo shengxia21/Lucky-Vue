@@ -1,4 +1,4 @@
-package com.lucky.common.ai.service;
+package com.lucky.common.ai.image;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;

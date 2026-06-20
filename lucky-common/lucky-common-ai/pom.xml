@@ -41,11 +41,10 @@
             <artifactId>spring-ai-starter-model-zhipuai</artifactId>
         </dependency>
 
-        <!-- 通义千问模型 -->
+        <!-- 阿里百炼-dashscope -->
         <dependency>
             <groupId>com.alibaba.cloud.ai</groupId>
             <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
-            <version>${spring-ai-alibaba.version}</version>
         </dependency>
 
     </dependencies>
