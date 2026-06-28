@@ -67,7 +67,8 @@ public class AiApiKeyServiceImpl implements IAiApiKeyService {
     @Override
     public List<AiApiKeyVO> selectApiKeyAll() {
         LambdaQueryWrapper<AiApiKey> wrapper = Wrappers.<AiApiKey>lambdaQuery()
-                .select(AiApiKey::getId, AiApiKey::getName);
+                .select(AiApiKey::getId, AiApiKey::getName)
+                .eq(AiApiKey::getStatus, CommonStatusEnum.ENABLE.getStatus());
         return apiKeyMapper.selectVoList(wrapper);
     }
 
