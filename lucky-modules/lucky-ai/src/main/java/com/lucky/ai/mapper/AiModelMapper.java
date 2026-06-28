@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.domain.query.model.AiModelPageQuery;
 import com.lucky.ai.domain.vo.model.AiModelVO;
+import com.lucky.common.ai.enums.CommonStatusEnum;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 
@@ -35,10 +36,10 @@ public interface AiModelMapper extends BaseMapperX<AiModel, AiModelVO> {
         return selectOne(wrapper, false);
     }
 
-    default List<AiModelVO> selectList(Integer status, Integer type, String platform) {
+    default List<AiModelVO> selectList(Integer type, String platform) {
         LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
                 .select(AiModel::getId, AiModel::getName, AiModel::getModel, AiModel::getPlatform)
-                .eq(StringUtils.isNotNull(status), AiModel::getStatus, status)
+                .eq(AiModel::getStatus, CommonStatusEnum.ENABLE.getStatus())
                 .eq(StringUtils.isNotNull(type), AiModel::getType, type)
                 .eq(StringUtils.isNotEmpty(platform), AiModel::getPlatform, platform)
                 .orderByAsc(AiModel::getSort);

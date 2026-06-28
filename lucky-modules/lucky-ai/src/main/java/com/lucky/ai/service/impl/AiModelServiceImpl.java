@@ -92,8 +92,8 @@ public class AiModelServiceImpl implements IAiModelService {
     }
 
     @Override
-    public List<AiModelVO> selectModelAll(Integer status, Integer type, String platform) {
-        return modelMapper.selectList(status, type, platform);
+    public List<AiModelVO> selectModelAll(Integer type, String platform) {
+        return modelMapper.selectList(type, platform);
     }
 
     private AiModel validateModelExists(Long id) {

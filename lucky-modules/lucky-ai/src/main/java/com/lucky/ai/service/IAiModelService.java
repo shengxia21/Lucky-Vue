@@ -79,11 +79,10 @@ public interface IAiModelService {
     /**
      * 获得模型列表
      *
-     * @param status   状态
      * @param type     类型
      * @param platform 平台
      * @return 模型列表
      */
-    List<AiModelVO> selectModelAll(Integer status, Integer type, String platform);
+    List<AiModelVO> selectModelAll(Integer type, String platform);
 
 }

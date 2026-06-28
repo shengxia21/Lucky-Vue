@@ -5,7 +5,6 @@ import com.lucky.ai.domain.query.model.AiModelPageQuery;
 import com.lucky.ai.domain.query.model.AiModelSaveQuery;
 import com.lucky.ai.domain.vo.model.AiModelVO;
 import com.lucky.ai.service.IAiModelService;
-import com.lucky.common.ai.enums.CommonStatusEnum;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessType;
@@ -82,10 +81,8 @@ public class AiModelController extends BaseController {
      * 获得模型列表
      */
     @GetMapping("/optionSelect")
-    public R<List<AiModelVO>> optionSelect(
-            @RequestParam("type") Integer type,
-            @RequestParam(value = "platform", required = false) String platform) {
-        List<AiModelVO> list = modelService.selectModelAll(CommonStatusEnum.ENABLE.getStatus(), type, platform);
+    public R<List<AiModelVO>> optionSelect(@RequestParam Integer type, @RequestParam(required = false) String platform) {
+        List<AiModelVO> list = modelService.selectModelAll(type, platform);
         return R.ok(list);
     }
 
