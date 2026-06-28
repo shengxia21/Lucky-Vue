@@ -6,8 +6,8 @@ import com.lucky.common.ai.enums.AiPlatformEnum;
 import com.lucky.common.ai.service.AbstractChatService;
 import com.lucky.common.ai.service.AbstractImageService;
 import com.lucky.common.core.utils.StringUtils;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.image.ImageModel;
 import org.springframework.ai.image.ImageOptions;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
  * @author lucky
  */
 @Component
-public class ZhiPuServiceImpl implements AbstractChatService, AbstractImageService {
+public class ZhiPuServiceImplAbstract implements AbstractChatService, AbstractImageService {
 
     @Override
     public ChatModel buildChatModel(String baseUrl, String apiKey) {
@@ -45,8 +45,8 @@ public class ZhiPuServiceImpl implements AbstractChatService, AbstractImageServi
     }
 
     @Override
-    public String extractChatResponseReasoningContent(ChatResponse response) {
-        return ((ZhiPuAiAssistantMessage) (response.getResult().getOutput())).getReasoningContent();
+    public String extractReasoningContent(AssistantMessage assistantMessage) {
+        return ((ZhiPuAiAssistantMessage) assistantMessage).getReasoningContent();
     }
 
     @Override

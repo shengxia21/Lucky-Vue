@@ -96,4 +96,21 @@ public class ChatRequest {
      */
     private String url;
 
+    // =======用户信息相关=======
+
+    /**
+     * 用户id
+     */
+    private Long userId;
+
+    /**
+     * 创建部门
+     */
+    private Long deptId;
+
+    /**
+     * 用户名称
+     */
+    private String userName;
+
 }

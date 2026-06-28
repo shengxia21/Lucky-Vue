@@ -1,2 +1,3 @@
+com.lucky.common.ai.config.LuckyChatMemoryAutoConfiguration
 com.lucky.common.ai.factory.ChatServiceFactory
 com.lucky.common.ai.factory.ImageServiceFactory

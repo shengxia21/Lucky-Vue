@@ -9,7 +9,7 @@ import org.springframework.ai.chat.prompt.ChatOptions;
  *
  * @author lucky
  */
-public interface AbstractChatService extends AbstractResponseContent {
+public interface AbstractChatService extends ResponseContentExtractor {
 
     /**
      * 构建模型

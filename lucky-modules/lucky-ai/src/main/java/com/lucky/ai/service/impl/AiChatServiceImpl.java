@@ -9,6 +9,7 @@ import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiChatConversationService;
 import com.lucky.ai.service.IAiChatService;
 import com.lucky.ai.service.IAiModelService;
+import com.lucky.common.ai.chat.service.impl.ChatServiceFacade;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.core.constant.AiErrorConstants;
@@ -65,6 +66,9 @@ public class AiChatServiceImpl implements IAiChatService {
         chatRequest.setPlatform(model.getPlatform());
         chatRequest.setApiKey(apiKey.getApiKey());
         chatRequest.setUrl(apiKey.getUrl());
+        chatRequest.setUserId(SecurityUtils.getUserId());
+        chatRequest.setUserName(SecurityUtils.getUserName());
+        chatRequest.setDeptId(SecurityUtils.getDeptId());
         // 调用处理器处理流式聊天
         return chatServiceFacade.chat(chatRequest);
     }

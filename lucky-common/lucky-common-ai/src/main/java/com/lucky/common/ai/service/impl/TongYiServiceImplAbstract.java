@@ -12,8 +12,8 @@ import com.lucky.common.ai.enums.AiPlatformEnum;
 import com.lucky.common.ai.service.AbstractChatService;
 import com.lucky.common.ai.service.AbstractImageService;
 import com.lucky.common.core.utils.StringUtils;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.image.ImageModel;
 import org.springframework.ai.image.ImageOptions;
@@ -27,7 +27,7 @@ import java.util.Map;
  * @author lucky
  */
 @Component
-public class TongYiServiceImpl implements AbstractChatService, AbstractImageService {
+public class TongYiServiceImplAbstract implements AbstractChatService, AbstractImageService {
 
     @Override
     public ChatModel buildChatModel(String baseUrl, String apiKey) {
@@ -53,8 +53,8 @@ public class TongYiServiceImpl implements AbstractChatService, AbstractImageServ
     }
 
     @Override
-    public String extractChatResponseReasoningContent(ChatResponse response) {
-        return (String) response.getResult().getOutput().getMetadata().getOrDefault("reasoningContent", "");
+    public String extractReasoningContent(AssistantMessage assistantMessage) {
+        return (String) assistantMessage.getMetadata().getOrDefault("reasoningContent", "");
     }
 
     @Override

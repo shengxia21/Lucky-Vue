@@ -4,8 +4,8 @@ import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.enums.AiPlatformEnum;
 import com.lucky.common.ai.service.AbstractChatService;
 import com.lucky.common.core.utils.StringUtils;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.deepseek.DeepSeekAssistantMessage;
 import org.springframework.ai.deepseek.DeepSeekChatModel;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @author lucky
  */
 @Component
-public class DeepSeekServiceImpl implements AbstractChatService {
+public class DeepSeekServiceImplAbstract implements AbstractChatService {
 
     @Override
     public ChatModel buildChatModel(String baseUrl, String apiKey) {
@@ -43,8 +43,8 @@ public class DeepSeekServiceImpl implements AbstractChatService {
     }
 
     @Override
-    public String extractChatResponseReasoningContent(ChatResponse response) {
-        return ((DeepSeekAssistantMessage) (response.getResult().getOutput())).getReasoningContent();
+    public String extractReasoningContent(AssistantMessage assistantMessage) {
+        return ((DeepSeekAssistantMessage) assistantMessage).getReasoningContent();
     }
 
     @Override

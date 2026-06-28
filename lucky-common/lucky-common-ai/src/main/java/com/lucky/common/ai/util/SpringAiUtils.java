@@ -1,6 +1,6 @@
-package com.lucky.ai.util;
+package com.lucky.common.ai.util;
 
-import com.lucky.ai.domain.AiChatMessage;
+import com.lucky.common.ai.domain.dto.ChatMessageDTO;
 import com.lucky.common.core.utils.StringUtils;
 import org.springframework.ai.chat.messages.*;
 
@@ -17,7 +17,7 @@ public class SpringAiUtils {
      * @param message 消息实体
      * @return 消息对象
      */
-    public static Message convertMessage(AiChatMessage message) {
+    public static Message convertMessage(ChatMessageDTO message) {
         if (MessageType.USER.getValue().equals(message.getType())) {
             return new UserMessage(message.getContent());
         }

@@ -1,0 +1,162 @@
+package com.lucky.common.ai.chat.model;
+
+import com.lucky.common.ai.service.ResponseContentExtractor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.metadata.*;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.model.Generation;
+import org.springframework.ai.chat.model.MessageAggregator;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import reactor.core.publisher.Flux;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
+/**
+ * Lucky 消息聚合器
+ *
+ * @author lucky
+ */
+@Slf4j
+public class LuckyMessageAggregator {
+
+    public Flux<ChatResponse> aggregate(Flux<ChatResponse> fluxChatResponse, ResponseContentExtractor extractor, Consumer<ChatResponse> onAggregationComplete) {
+        AtomicReference<StringBuilder> messageTextContentRef = new AtomicReference<>(new StringBuilder());
+        AtomicReference<StringBuilder> reasoningContentRef = new AtomicReference<>(new StringBuilder());
+        AtomicReference<Map<String, Object>> messageMetadataMapRef = new AtomicReference<>();
+        AtomicReference<List<AssistantMessage.ToolCall>> toolCallsRef = new AtomicReference<>(new ArrayList<>());
+        AtomicReference<ChatGenerationMetadata> generationMetadataRef = new AtomicReference<>(ChatGenerationMetadata.NULL);
+        AtomicReference<Integer> metadataUsagePromptTokensRef = new AtomicReference<>(0);
+        AtomicReference<Integer> metadataUsageGenerationTokensRef = new AtomicReference<>(0);
+        AtomicReference<Integer> metadataUsageTotalTokensRef = new AtomicReference<>(0);
+        AtomicReference<PromptMetadata> metadataPromptMetadataRef = new AtomicReference<>(PromptMetadata.empty());
+        AtomicReference<RateLimit> metadataRateLimitRef = new AtomicReference<>(new EmptyRateLimit());
+        AtomicReference<String> metadataIdRef = new AtomicReference<>("");
+        AtomicReference<String> metadataModelRef = new AtomicReference<>("");
+        return fluxChatResponse.doOnSubscribe((subscription) -> {
+            messageTextContentRef.set(new StringBuilder());
+            reasoningContentRef.set(new StringBuilder());
+            messageMetadataMapRef.set(new HashMap<>());
+            toolCallsRef.set(new ArrayList<>());
+            metadataIdRef.set("");
+            metadataModelRef.set("");
+            metadataUsagePromptTokensRef.set(0);
+            metadataUsageGenerationTokensRef.set(0);
+            metadataUsageTotalTokensRef.set(0);
+            metadataPromptMetadataRef.set(PromptMetadata.empty());
+            metadataRateLimitRef.set(new EmptyRateLimit());
+        }).doOnNext((chatResponse) -> {
+            if (chatResponse.getResult() != null) {
+                if (chatResponse.getResult().getMetadata() != null && chatResponse.getResult().getMetadata() != ChatGenerationMetadata.NULL) {
+                    generationMetadataRef.set(chatResponse.getResult().getMetadata());
+                }
+
+                if (chatResponse.getResult().getOutput().getText() != null) {
+                    messageTextContentRef.get().append(chatResponse.getResult().getOutput().getText());
+                }
+
+                String reasoningContent = extractor.extractReasoningContent(chatResponse.getResult().getOutput());
+                if (reasoningContent != null) {
+                    reasoningContentRef.get().append(reasoningContent);
+                }
+
+                if (chatResponse.getResult().getOutput().getMetadata() != null) {
+                    messageMetadataMapRef.get().putAll(chatResponse.getResult().getOutput().getMetadata());
+                }
+
+                AssistantMessage outputMessage = chatResponse.getResult().getOutput();
+                if (!CollectionUtils.isEmpty(outputMessage.getToolCalls())) {
+                    toolCallsRef.get().addAll(outputMessage.getToolCalls());
+                }
+            }
+
+            if (chatResponse.getMetadata() != null) {
+                if (chatResponse.getMetadata().getUsage() != null) {
+                    Usage usage = chatResponse.getMetadata().getUsage();
+                    metadataUsagePromptTokensRef.set(usage.getPromptTokens() > 0 ? usage.getPromptTokens() : metadataUsagePromptTokensRef.get());
+                    metadataUsageGenerationTokensRef.set(usage.getCompletionTokens() > 0 ? usage.getCompletionTokens() : metadataUsageGenerationTokensRef.get());
+                    metadataUsageTotalTokensRef.set(usage.getTotalTokens() > 0 ? usage.getTotalTokens() : metadataUsageTotalTokensRef.get());
+                }
+
+                if (chatResponse.getMetadata().getPromptMetadata() != null && chatResponse.getMetadata().getPromptMetadata().iterator().hasNext()) {
+                    metadataPromptMetadataRef.set(chatResponse.getMetadata().getPromptMetadata());
+                }
+
+                if (chatResponse.getMetadata().getRateLimit() != null && !(metadataRateLimitRef.get() instanceof EmptyRateLimit)) {
+                    metadataRateLimitRef.set(chatResponse.getMetadata().getRateLimit());
+                }
+
+                if (StringUtils.hasText(chatResponse.getMetadata().getId())) {
+                    metadataIdRef.set(chatResponse.getMetadata().getId());
+                }
+
+                if (StringUtils.hasText(chatResponse.getMetadata().getModel())) {
+                    metadataModelRef.set(chatResponse.getMetadata().getModel());
+                }
+
+                Object toolCallsFromMetadata = chatResponse.getMetadata().get("toolCalls");
+                if (toolCallsFromMetadata instanceof List) {
+                    List<AssistantMessage.ToolCall> toolCallsList = (List) toolCallsFromMetadata;
+                    toolCallsRef.get().addAll(toolCallsList);
+                }
+            }
+
+        }).doOnComplete(() -> {
+            MessageAggregator.DefaultUsage usage = new MessageAggregator.DefaultUsage(metadataUsagePromptTokensRef.get(), metadataUsageGenerationTokensRef.get(), metadataUsageTotalTokensRef.get());
+            ChatResponseMetadata chatResponseMetadata = ChatResponseMetadata.builder().id(metadataIdRef.get()).model(metadataModelRef.get()).rateLimit(metadataRateLimitRef.get()).usage(usage).promptMetadata(metadataPromptMetadataRef.get()).build();
+            List<AssistantMessage.ToolCall> collectedToolCalls = toolCallsRef.get();
+
+            AssistantMessage finalAssistantMessage;
+            messageMetadataMapRef.get().put("reasoningContent", reasoningContentRef.get().toString());
+            if (!CollectionUtils.isEmpty(collectedToolCalls)) {
+                finalAssistantMessage = AssistantMessage.builder().content(messageTextContentRef.get().toString()).properties(messageMetadataMapRef.get()).toolCalls(collectedToolCalls).build();
+            } else {
+                finalAssistantMessage = AssistantMessage.builder().content(messageTextContentRef.get().toString()).properties(messageMetadataMapRef.get()).build();
+            }
+
+            onAggregationComplete.accept(new ChatResponse(List.of(new Generation(finalAssistantMessage, generationMetadataRef.get())), chatResponseMetadata));
+            messageTextContentRef.set(new StringBuilder());
+            reasoningContentRef.set(new StringBuilder());
+            messageMetadataMapRef.set(new HashMap<>());
+            toolCallsRef.set(new ArrayList<>());
+            metadataIdRef.set("");
+            metadataModelRef.set("");
+            metadataUsagePromptTokensRef.set(0);
+            metadataUsageGenerationTokensRef.set(0);
+            metadataUsageTotalTokensRef.set(0);
+            metadataPromptMetadataRef.set(PromptMetadata.empty());
+            metadataRateLimitRef.set(new EmptyRateLimit());
+        }).doOnError((e) -> log.error("Aggregation Error", e));
+    }
+
+    public record DefaultUsage(Integer promptTokens, Integer completionTokens, Integer totalTokens) implements Usage {
+
+        public Integer getPromptTokens() {
+            return this.promptTokens();
+        }
+
+        public Integer getCompletionTokens() {
+            return this.completionTokens();
+        }
+
+        public Integer getTotalTokens() {
+            return this.totalTokens();
+        }
+
+        public Map<String, Integer> getNativeUsage() {
+            Map<String, Integer> usage = new HashMap<>();
+            usage.put("promptTokens", this.promptTokens());
+            usage.put("completionTokens", this.completionTokens());
+            usage.put("totalTokens", this.totalTokens());
+            return usage;
+        }
+
+    }
+
+}
