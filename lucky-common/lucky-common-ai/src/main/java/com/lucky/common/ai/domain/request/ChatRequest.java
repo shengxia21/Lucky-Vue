@@ -43,11 +43,6 @@ public class ChatRequest {
     private Long conversationId;
 
     /**
-     * 角色编号
-     */
-    private Long roleId;
-
-    /**
      * 角色设定
      */
     private String systemMessage;
@@ -68,11 +63,6 @@ public class ChatRequest {
     private Integer maxContexts;
 
     // =======模型信息相关=======
-
-    /**
-     * 编号
-     */
-    private Long modelId;
 
     /**
      * 模型标志

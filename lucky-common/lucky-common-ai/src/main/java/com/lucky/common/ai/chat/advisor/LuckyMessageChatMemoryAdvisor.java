@@ -2,6 +2,7 @@ package com.lucky.common.ai.chat.advisor;
 
 import com.lucky.common.ai.chat.client.LuckyChatClientMessageAggregator;
 import com.lucky.common.ai.chat.memory.LuckyChatMemory;
+import com.lucky.common.ai.chat.model.LuckyMessageAggregator;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.service.ResponseContentExtractor;
 import org.springframework.ai.chat.client.ChatClientRequest;
@@ -86,11 +87,13 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
     @Override
     public ChatClientResponse after(ChatClientResponse chatClientResponse, AdvisorChain advisorChain) {
         List<Message> assistantMessages = new ArrayList<>();
+        LuckyMessageAggregator.DefaultUsage usage = null;
         if (chatClientResponse.chatResponse() != null) {
             assistantMessages = chatClientResponse.chatResponse().getResults().stream().map((g) -> (Message) g.getOutput()).toList();
+            usage = (LuckyMessageAggregator.DefaultUsage) chatClientResponse.chatResponse().getMetadata().getUsage();
         }
 
-        this.chatMemory.addAssistantMessage(chatClientResponse.context(), assistantMessages);
+        this.chatMemory.addAssistantMessage(chatClientResponse.context(), usage, assistantMessages);
         return chatClientResponse;
     }
 

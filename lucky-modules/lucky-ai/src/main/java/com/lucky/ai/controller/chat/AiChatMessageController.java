@@ -49,7 +49,6 @@ public class AiChatMessageController extends BaseController {
         if (CollUtil.isEmpty(messageList)) {
             return R.ok(Collections.emptyList());
         }
-        transService.transBatch(messageList);
         return R.ok(messageList);
     }
 
@@ -79,9 +78,7 @@ public class AiChatMessageController extends BaseController {
     @SaCheckPermission("ai:chat-conversation:list")
     @GetMapping("/list")
     public TableDataInfo<AiChatMessageVO> list(PageQuery pageQuery, AiChatMessagePageQuery query) {
-        TableDataInfo<AiChatMessageVO> page = chatMessageService.selectChatMessageList(pageQuery, query);
-        transService.transBatch(page.getRows());
-        return page;
+        return chatMessageService.selectChatMessageList(pageQuery, query);
     }
 
     /**

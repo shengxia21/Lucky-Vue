@@ -1,5 +1,6 @@
 package com.lucky.common.ai.chat.memory;
 
+import com.lucky.common.ai.chat.model.LuckyMessageAggregator;
 import com.lucky.common.ai.domain.dto.ChatMessageDTO;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.util.SpringAiUtils;
@@ -33,9 +34,7 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
         messageDTO.setConversationId(chatRequest.getConversationId());
         messageDTO.setType(MessageType.USER.getValue());
         messageDTO.setUserId(chatRequest.getUserId());
-        messageDTO.setRoleId(chatRequest.getRoleId());
         messageDTO.setModel(chatRequest.getModel());
-        messageDTO.setModelId(chatRequest.getModelId());
         messageDTO.setContent(message.getText());
         messageDTO.setAttachmentUrls(chatRequest.getAttachmentUrls());
         messageDTO.setDeptId(chatRequest.getDeptId());
@@ -44,7 +43,7 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
     }
 
     @Override
-    public void addAssistantMessage(Map<String, Object> context, List<Message> messages) {
+    public void addAssistantMessage(Map<String, Object> context, LuckyMessageAggregator.DefaultUsage usage, List<Message> messages) {
         Assert.notNull(context, "context cannot be null");
         Assert.notNull(messages, "messages cannot be null");
         Assert.noNullElements(messages, "messages cannot contain null elements");
@@ -54,11 +53,14 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
         messageDTO.setConversationId(chatRequest.getConversationId());
         messageDTO.setType(MessageType.ASSISTANT.getValue());
         messageDTO.setUserId(chatRequest.getUserId());
-        messageDTO.setRoleId(chatRequest.getRoleId());
         messageDTO.setModel(chatRequest.getModel());
-        messageDTO.setModelId(chatRequest.getModelId());
         messageDTO.setContent(assistant.getText());
         messageDTO.setReasoningContent(assistant.getMetadata().get("reasoningContent").toString());
+        if (usage != null) {
+            messageDTO.setPromptTokens(usage.getPromptTokens());
+            messageDTO.setCompletionTokens(usage.getCompletionTokens());
+            messageDTO.setTotalTokens(usage.getTotalTokens());
+        }
         messageDTO.setDeptId(chatRequest.getDeptId());
         messageDTO.setUserName(chatRequest.getUserName());
         luckyChatMemoryRepository.save(messageDTO);

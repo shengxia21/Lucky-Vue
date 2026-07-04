@@ -1,10 +1,7 @@
 package com.lucky.ai.domain.vo.message;
 
-import com.fhs.core.trans.anno.Trans;
-import com.fhs.core.trans.constant.TransType;
 import com.fhs.core.trans.vo.VO;
 import com.lucky.ai.domain.AiChatMessage;
-import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.domain.search.WebSearchResponse;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -27,6 +24,11 @@ public class AiChatMessageVO implements VO {
     private Long id;
 
     /**
+     * 用户编号
+     */
+    private Long userId;
+
+    /**
      * 对话编号
      */
     private Long conversationId;
@@ -37,25 +39,14 @@ public class AiChatMessageVO implements VO {
     private String type;
 
     /**
-     * 用户编号
-     */
-    private Long userId;
-
-    /**
-     * 角色编号
-     */
-    @Trans(type = TransType.SIMPLE, target = AiChatRole.class, fields = {"name"}, refs = {"roleName"})
-    private Long roleId;
-
-    /**
      * 模型标志
      */
     private String model;
 
     /**
-     * 模型编号
+     * 系统消息
      */
-    private Long modelId;
+    private String systemMessage;
 
     /**
      * 聊天内容
@@ -66,6 +57,21 @@ public class AiChatMessageVO implements VO {
      * 推理内容
      */
     private String reasoningContent;
+
+    /**
+     * 提示词 Token 数量
+     */
+    private Integer promptTokens;
+
+    /**
+     * 生成 Token 数量
+     */
+    private Integer completionTokens;
+
+    /**
+     * 总 Token 数量
+     */
+    private Integer totalTokens;
 
     /**
      * 知识库段落编号数组
@@ -91,13 +97,6 @@ public class AiChatMessageVO implements VO {
      * 创建时间
      */
     private Date createTime;
-
-    // ========== 仅在【对话管理】时加载 ==========
-
-    /**
-     * 角色名字
-     */
-    private String roleName;
 
     /**
      * 知识库段落

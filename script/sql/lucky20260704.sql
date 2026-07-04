@@ -90,11 +90,13 @@ CREATE TABLE `ai_chat_message`  (
   `user_id` bigint(0) NOT NULL COMMENT '用户编号',
   `conversation_id` bigint(0) NOT NULL COMMENT '对话编号',
   `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '消息类型',
-  `role_id` bigint(0) NULL DEFAULT NULL COMMENT '角色编号',
   `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
-  `model_id` bigint(0) NOT NULL COMMENT '模型编号',
+  `system_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '系统消息(角色设定)',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '聊天内容',
   `reasoning_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '推理内容',
+  `prompt_tokens` int NULL DEFAULT NULL COMMENT '提示词 Token 数量',
+  `completion_tokens` int NULL DEFAULT NULL COMMENT '生成 Token 数量',
+  `total_tokens` int NULL DEFAULT NULL COMMENT '总 Token 数量',
   `segment_ids` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '知识库段落编号数组',
   `web_search_pages` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '联网搜索的网页内容数组',
   `attachment_urls` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '附件 URL 数组',
@@ -106,9 +108,7 @@ CREATE TABLE `ai_chat_message`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_id`(`user_id`) USING BTREE,
-  INDEX `idx_conversation_id`(`conversation_id`) USING BTREE,
-  INDEX `idx_role_id`(`role_id`) USING BTREE,
-  INDEX `idx_model_id`(`model_id`) USING BTREE
+  INDEX `idx_conversation_id`(`conversation_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 聊天消息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------

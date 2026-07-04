@@ -6,7 +6,6 @@ import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.metadata.*;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
-import org.springframework.ai.chat.model.MessageAggregator;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
@@ -108,7 +107,7 @@ public class LuckyMessageAggregator {
             }
 
         }).doOnComplete(() -> {
-            MessageAggregator.DefaultUsage usage = new MessageAggregator.DefaultUsage(metadataUsagePromptTokensRef.get(), metadataUsageGenerationTokensRef.get(), metadataUsageTotalTokensRef.get());
+            LuckyMessageAggregator.DefaultUsage usage = new LuckyMessageAggregator.DefaultUsage(metadataUsagePromptTokensRef.get(), metadataUsageGenerationTokensRef.get(), metadataUsageTotalTokensRef.get());
             ChatResponseMetadata chatResponseMetadata = ChatResponseMetadata.builder().id(metadataIdRef.get()).model(metadataModelRef.get()).rateLimit(metadataRateLimitRef.get()).usage(usage).promptMetadata(metadataPromptMetadataRef.get()).build();
             List<AssistantMessage.ToolCall> collectedToolCalls = toolCallsRef.get();
 

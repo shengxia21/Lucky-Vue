@@ -35,6 +35,11 @@ public class AiChatMessage extends BaseEntity {
     private Long id;
 
     /**
+     * 用户编号
+     */
+    private Long userId;
+
+    /**
      * 对话编号
      */
     private Long conversationId;
@@ -45,24 +50,14 @@ public class AiChatMessage extends BaseEntity {
     private String type;
 
     /**
-     * 用户编号
-     */
-    private Long userId;
-
-    /**
-     * 角色编号
-     */
-    private Long roleId;
-
-    /**
      * 模型标志
      */
     private String model;
 
     /**
-     * 模型编号
+     * 系统消息
      */
-    private Long modelId;
+    private String systemMessage;
 
     /**
      * 聊天内容
@@ -73,6 +68,21 @@ public class AiChatMessage extends BaseEntity {
      * 推理内容
      */
     private String reasoningContent;
+
+    /**
+     * 提示词 Token 数量
+     */
+    private Integer promptTokens;
+
+    /**
+     * 生成 Token 数量
+     */
+    private Integer completionTokens;
+
+    /**
+     * 总 Token 数量
+     */
+    private Integer totalTokens;
 
     /**
      * 知识库段落编号数组
