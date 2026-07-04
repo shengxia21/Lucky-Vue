@@ -87,10 +87,9 @@ CREATE TABLE `ai_chat_conversation`  (
 DROP TABLE IF EXISTS `ai_chat_message`;
 CREATE TABLE `ai_chat_message`  (
   `id` bigint(0) NOT NULL COMMENT '编号',
-  `conversation_id` bigint(0) NOT NULL COMMENT '对话编号',
-  `reply_id` bigint(0) NULL DEFAULT NULL COMMENT '回复消息编号',
-  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '消息类型',
   `user_id` bigint(0) NOT NULL COMMENT '用户编号',
+  `conversation_id` bigint(0) NOT NULL COMMENT '对话编号',
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '消息类型',
   `role_id` bigint(0) NULL DEFAULT NULL COMMENT '角色编号',
   `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
   `model_id` bigint(0) NOT NULL COMMENT '模型编号',
@@ -106,9 +105,8 @@ CREATE TABLE `ai_chat_message`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_conversation_id`(`conversation_id`) USING BTREE,
-  INDEX `idx_reply_id`(`reply_id`) USING BTREE,
   INDEX `idx_user_id`(`user_id`) USING BTREE,
+  INDEX `idx_conversation_id`(`conversation_id`) USING BTREE,
   INDEX `idx_role_id`(`role_id`) USING BTREE,
   INDEX `idx_model_id`(`model_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 聊天消息表' ROW_FORMAT = Dynamic;

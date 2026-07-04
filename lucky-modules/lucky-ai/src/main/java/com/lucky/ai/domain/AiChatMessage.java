@@ -40,11 +40,6 @@ public class AiChatMessage extends BaseEntity {
     private Long conversationId;
 
     /**
-     * 回复消息编号
-     */
-    private Long replyId;
-
-    /**
      * 消息类型
      */
     private String type;
