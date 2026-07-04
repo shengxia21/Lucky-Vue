@@ -85,7 +85,6 @@ public class AiImageServiceImpl implements IAiImageService {
         AiImage image = MapstructUtils.convert(request, AiImage.class);
         image.setUserId(SecurityUtils.getUserId());
         image.setPlatform(model.getPlatform());
-        image.setModelId(model.getId());
         image.setModel(model.getModel());
         image.setPublicStatus(false);
         image.setStatus(AiImageStatusEnum.IN_PROGRESS.getStatus());

@@ -48,11 +48,6 @@ public class AiImage extends BaseEntity {
     private String platform;
 
     /**
-     * 模型编号
-     */
-    private Long modelId;
-
-    /**
      * 模型标识
      */
     private String model;
@@ -97,11 +92,6 @@ public class AiImage extends BaseEntity {
      */
     @TableField(typeHandler = JacksonTypeHandler.class)
     private Map<String, Object> options;
-
-    /**
-     * 任务编号
-     */
-    private String taskId;
 
     /**
      * 删除标志（0代表存在 2代表删除）
