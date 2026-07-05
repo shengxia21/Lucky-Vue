@@ -22,7 +22,7 @@ import reactor.core.publisher.Flux;
 @RequestMapping("/ai/chat")
 public class AiChatController extends BaseController {
 
-    @Resource
+    @Resource(name = "aiChatServiceImpl")
     private IAiChatService chatService;
 
     /**

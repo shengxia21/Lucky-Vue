@@ -12,7 +12,6 @@ import org.springframework.ai.image.ImageOptions;
 import org.springframework.ai.image.ImagePrompt;
 import org.springframework.ai.image.ImageResponse;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 
 /**
  * 图片服务外观类
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
  * @author lucky
  */
 @Slf4j
-@Service
 public class ImageServiceFacade implements ImageService {
 
     @Resource

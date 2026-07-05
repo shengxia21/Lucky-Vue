@@ -30,7 +30,7 @@ import java.util.List;
 @RequestMapping("/ai/image")
 public class AiImageController extends BaseController {
 
-    @Resource
+    @Resource(name = "aiImageServiceImpl")
     private IAiImageService imageService;
 
     /**
