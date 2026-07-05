@@ -73,8 +73,8 @@ public class AiImageController extends BaseController {
      * 生成图片
      */
     @PostMapping("/draw")
-    public R<Long> drawImage(@Validated @RequestBody ImageQuery request) {
-        return R.ok(imageService.drawImage(request));
+    public R<Void> drawImage(@Validated @RequestBody ImageQuery request) {
+        return toAjax(imageService.drawImage(request));
     }
 
     /**

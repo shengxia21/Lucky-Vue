@@ -75,7 +75,7 @@ public class AiImageServiceImpl implements IAiImageService {
     }
 
     @Override
-    public Long drawImage(ImageQuery request) {
+    public boolean drawImage(ImageQuery request) {
         // 校验模型是否存在
         AiModel model = modelService.validateModel(request.getModelId());
         // 校验apiKey是否存在
@@ -104,7 +104,7 @@ public class AiImageServiceImpl implements IAiImageService {
 
         // 异步绘制，后续前端通过返回的 id 进行轮询结果
         imageServiceFacade.generateImage(imageRequest);
-        return image.getId();
+        return true;
     }
 
     @Override

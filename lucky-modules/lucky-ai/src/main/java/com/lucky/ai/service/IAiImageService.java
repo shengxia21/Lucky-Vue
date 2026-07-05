@@ -55,9 +55,9 @@ public interface IAiImageService {
      * 生成图片
      *
      * @param request 绘图参数
-     * @return 绘图记录ID
+     * @return 结果
      */
-    Long drawImage(ImageQuery request);
+    boolean drawImage(ImageQuery request);
 
     /**
      * 删除【我的】绘图记录
