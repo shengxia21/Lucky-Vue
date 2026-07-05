@@ -1,13 +1,10 @@
-package com.lucky.ai.service.impl;
+package com.lucky.common.ai.image.impl;
 
-import com.lucky.ai.domain.AiImage;
-import com.lucky.ai.mapper.AiImageMapper;
 import com.lucky.common.ai.domain.request.ImageRequest;
-import com.lucky.common.ai.enums.AiImageStatusEnum;
 import com.lucky.common.ai.factory.ImageServiceFactory;
+import com.lucky.common.ai.image.ImagePersistenceHandler;
 import com.lucky.common.ai.image.ImageService;
 import com.lucky.common.ai.service.AbstractImageService;
-import com.lucky.common.core.utils.DateUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.image.ImageModel;
@@ -19,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 /**
  * 图片服务外观类
+ * <p>
+ * 负责编排图片生成流程（策略选择、请求构建、模型调用、文件上传），
+ * 持久化逻辑委托给 {@link ImagePersistenceHandler}，由业务模块实现，
  *
  * @author lucky
  */
@@ -27,10 +27,10 @@ import org.springframework.stereotype.Service;
 public class ImageServiceFacade implements ImageService {
 
     @Resource
-    private AiImageMapper imageMapper;
+    private ImageServiceFactory imageFactory;
 
     @Resource
-    private ImageServiceFactory imageFactory;
+    private ImagePersistenceHandler persistenceHandler;
 
     @Async
     @Override
@@ -46,26 +46,15 @@ public class ImageServiceFacade implements ImageService {
             ImagePrompt prompt = new ImagePrompt(imageRequest.getPrompt(), imageOptions);
             // 执行请求
             ImageResponse response = imageModel.call(prompt);
-            if (response.getResult() == null) {
-                String message = response.getMetadata().getRawMap().getOrDefault("message", "生成结果为空").toString();
-                throw new IllegalArgumentException(message);
-            }
+
             // 上传到文件服务
             String filePath = uploadImage(response);
-            // 更新数据库
-            AiImage aiImage = new AiImage();
-            aiImage.setId(imageRequest.getImageId());
-            aiImage.setStatus(AiImageStatusEnum.SUCCESS.getStatus());
-            aiImage.setPicUrl(filePath);
-            aiImage.setFinishTime(DateUtils.getNowDate());
-            imageMapper.updateById(aiImage);
+            // 持久化成功结果
+            persistenceHandler.onSuccess(imageRequest.getImageId(), filePath);
         } catch (Exception ex) {
             log.error("执行异步绘制图片失败, imageId={}, model={}", imageRequest.getImageId(), imageRequest.getModel());
-            AiImage aiImage = new AiImage();
-            aiImage.setId(imageRequest.getImageId());
-            aiImage.setStatus(AiImageStatusEnum.FAIL.getStatus());
-            aiImage.setErrorMessage(ex.getMessage());
-            imageMapper.updateById(aiImage);
+            // 持久化失败结果
+            persistenceHandler.onFailure(imageRequest.getImageId(), ex.getMessage());
         }
     }
 

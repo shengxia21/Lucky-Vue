@@ -86,7 +86,7 @@ public class ChatRequest {
      */
     private String url;
 
-    // =======用户信息相关=======
+    // =======用户信息相关(异步需要手动填充)=======
 
     /**
      * 用户id

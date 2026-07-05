@@ -17,6 +17,7 @@ import com.lucky.ai.service.IAiImageService;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.ai.domain.request.ImageRequest;
 import com.lucky.common.ai.enums.AiImageStatusEnum;
+import com.lucky.common.ai.image.ImageService;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -47,7 +48,7 @@ public class AiImageServiceImpl implements IAiImageService {
     private IAiApiKeyService apiKeyService;
 
     @Resource
-    private ImageServiceFacade imageServiceFacade;
+    private ImageService imageService;
 
     @Override
     public TableDataInfo<AiImageVO> selectMyImageList(PageQuery pageQuery, AiImagePageQuery query) {
@@ -101,9 +102,7 @@ public class AiImageServiceImpl implements IAiImageService {
         imageRequest.setPlatform(model.getPlatform());
         imageRequest.setApiKey(apiKey.getApiKey());
         imageRequest.setUrl(apiKey.getUrl());
-
-        // 异步绘制，后续前端通过返回的 id 进行轮询结果
-        imageServiceFacade.generateImage(imageRequest);
+        imageService.generateImage(imageRequest);
         return true;
     }
 

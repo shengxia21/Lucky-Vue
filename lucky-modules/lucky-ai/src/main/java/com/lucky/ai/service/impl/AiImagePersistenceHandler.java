@@ -1,0 +1,43 @@
+package com.lucky.ai.service.impl;
+
+import com.lucky.ai.domain.AiImage;
+import com.lucky.ai.mapper.AiImageMapper;
+import com.lucky.common.ai.enums.AiImageStatusEnum;
+import com.lucky.common.ai.image.ImagePersistenceHandler;
+import com.lucky.common.core.utils.DateUtils;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Component;
+
+/**
+ * AI 图片生成任务持久化处理器
+ * <p>
+ * 将图片生成结果更新到 ai_image 表，承接 {@link com.lucky.common.ai.image.ImageService} 的回调。
+ *
+ * @author lucky
+ */
+@Component
+public class AiImagePersistenceHandler implements ImagePersistenceHandler {
+
+    @Resource
+    private AiImageMapper imageMapper;
+
+    @Override
+    public void onSuccess(Long imageId, String filePath) {
+        AiImage aiImage = new AiImage();
+        aiImage.setId(imageId);
+        aiImage.setStatus(AiImageStatusEnum.SUCCESS.getStatus());
+        aiImage.setPicUrl(filePath);
+        aiImage.setFinishTime(DateUtils.getNowDate());
+        imageMapper.updateById(aiImage);
+    }
+
+    @Override
+    public void onFailure(Long imageId, String errorMessage) {
+        AiImage aiImage = new AiImage();
+        aiImage.setId(imageId);
+        aiImage.setStatus(AiImageStatusEnum.FAIL.getStatus());
+        aiImage.setErrorMessage(errorMessage);
+        imageMapper.updateById(aiImage);
+    }
+
+}
