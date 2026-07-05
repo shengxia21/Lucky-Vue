@@ -22,17 +22,17 @@ public interface IAiChatRoleService {
      * 创建聊天角色
      *
      * @param query 创建信息
-     * @return 编号
+     * @return 结果
      */
-    Long insertChatRole(AiChatRoleSaveQuery query);
+    int insertChatRole(AiChatRoleSaveQuery query);
 
     /**
      * 创建【我的】聊天角色
      *
      * @param query 创建信息
-     * @return 编号
+     * @return 结果
      */
-    Long insertMyChatRole(AiChatRoleSaveMyQuery query);
+    int insertMyChatRole(AiChatRoleSaveMyQuery query);
 
     /**
      * 更新聊天角色

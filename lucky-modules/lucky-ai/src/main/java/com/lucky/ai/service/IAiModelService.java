@@ -39,9 +39,9 @@ public interface IAiModelService {
      * 创建模型
      *
      * @param query 创建信息
-     * @return 编号
+     * @return 结果
      */
-    Long insertModel(AiModelSaveQuery query);
+    int insertModel(AiModelSaveQuery query);
 
     /**
      * 更新模型

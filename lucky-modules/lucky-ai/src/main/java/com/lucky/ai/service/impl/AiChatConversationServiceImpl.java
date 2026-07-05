@@ -51,7 +51,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
     private IAiChatMessageService chatMessageService;
 
     @Override
-    public Long insertMyChatConversation(AiChatConversationCreateMyQuery query) {
+    public int insertMyChatConversation(AiChatConversationCreateMyQuery query) {
         // 1.1 获得 AiChatRoleDO 聊天角色
         AiChatRole role = query.getRoleId() != null ? chatRoleService.validateChatRole(query.getRoleId()) : null;
         // 1.2 获得 AiModelDO 聊天模型
@@ -76,8 +76,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         } else {
             conversation.setTitle(AiChatConversation.TITLE_DEFAULT);
         }
-        chatConversationMapper.insert(conversation);
-        return conversation.getId();
+        return chatConversationMapper.insert(conversation);
     }
 
     @Override

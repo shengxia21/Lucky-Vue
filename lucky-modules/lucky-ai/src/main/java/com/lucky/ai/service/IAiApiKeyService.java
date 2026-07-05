@@ -22,7 +22,7 @@ public interface IAiApiKeyService {
      * @param query 创建请求vo
      * @return 结果
      */
-    Long insertApiKey(AiApiKeySaveQuery query);
+    int insertApiKey(AiApiKeySaveQuery query);
 
     /**
      * 更新 API 密钥

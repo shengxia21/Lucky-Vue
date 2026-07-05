@@ -39,20 +39,18 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     private AiChatRoleMapper chatRoleMapper;
 
     @Override
-    public Long insertChatRole(AiChatRoleSaveQuery query) {
+    public int insertChatRole(AiChatRoleSaveQuery query) {
         AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
-        chatRoleMapper.insert(chatRole);
-        return chatRole.getId();
+        return chatRoleMapper.insert(chatRole);
     }
 
     @Override
-    public Long insertMyChatRole(AiChatRoleSaveMyQuery query) {
+    public int insertMyChatRole(AiChatRoleSaveMyQuery query) {
         AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
         chatRole.setUserId(SecurityUtils.getUserId());
         chatRole.setStatus(CommonStatusEnum.ENABLE.getStatus());
         chatRole.setPublicStatus(false);
-        chatRoleMapper.insert(chatRole);
-        return chatRole.getId();
+        return chatRoleMapper.insert(chatRole);
     }
 
     @Override

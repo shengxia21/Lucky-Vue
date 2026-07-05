@@ -20,9 +20,9 @@ public interface IAiChatConversationService {
     /**
      * 创建我的聊天对话
      *
-     * @return 聊天对话ID
+     * @return 结果
      */
-    Long insertMyChatConversation(AiChatConversationCreateMyQuery query);
+    int insertMyChatConversation(AiChatConversationCreateMyQuery query);
 
     /**
      * 更新我的聊天对话

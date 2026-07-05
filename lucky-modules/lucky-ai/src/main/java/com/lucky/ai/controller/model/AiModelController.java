@@ -35,8 +35,8 @@ public class AiModelController extends BaseController {
     @Log(title = "创建模型", businessType = BusinessType.INSERT)
     @SaCheckPermission("ai:model:add")
     @PostMapping
-    public R<Long> add(@Validated @RequestBody AiModelSaveQuery query) {
-        return R.ok(modelService.insertModel(query));
+    public R<Void> add(@Validated @RequestBody AiModelSaveQuery query) {
+        return toAjax(modelService.insertModel(query));
     }
 
     /**

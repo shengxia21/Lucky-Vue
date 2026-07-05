@@ -33,10 +33,9 @@ public class AiApiKeyServiceImpl implements IAiApiKeyService {
     private AiApiKeyMapper apiKeyMapper;
 
     @Override
-    public Long insertApiKey(AiApiKeySaveQuery query) {
+    public int insertApiKey(AiApiKeySaveQuery query) {
         AiApiKey apiKey = MapstructUtils.convert(query, AiApiKey.class);
-        apiKeyMapper.insert(apiKey);
-        return apiKey.getId();
+        return apiKeyMapper.insert(apiKey);
     }
 
     @Override

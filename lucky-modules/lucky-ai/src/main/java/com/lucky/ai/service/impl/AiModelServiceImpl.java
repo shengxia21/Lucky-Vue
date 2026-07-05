@@ -54,14 +54,13 @@ public class AiModelServiceImpl implements IAiModelService {
     }
 
     @Override
-    public Long insertModel(AiModelSaveQuery query) {
+    public int insertModel(AiModelSaveQuery query) {
         // 1. 校验
         AiPlatformEnum.validatePlatform(query.getPlatform());
         apiKeyService.validateApiKey(query.getKeyId());
         // 2. 插入
         AiModel model = MapstructUtils.convert(query, AiModel.class);
-        modelMapper.insert(model);
-        return model.getId();
+        return modelMapper.insert(model);
     }
 
     @Override

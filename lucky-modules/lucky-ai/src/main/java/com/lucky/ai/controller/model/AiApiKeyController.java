@@ -35,8 +35,8 @@ public class AiApiKeyController extends BaseController {
     @Log(title = "创建 API 密钥", businessType = BusinessType.INSERT)
     @SaCheckPermission("ai:api-key:add")
     @PostMapping
-    public R<Long> add(@Validated @RequestBody AiApiKeySaveQuery query) {
-        return R.ok(apiKeyService.insertApiKey(query));
+    public R<Void> add(@Validated @RequestBody AiApiKeySaveQuery query) {
+        return toAjax(apiKeyService.insertApiKey(query));
     }
 
     /**

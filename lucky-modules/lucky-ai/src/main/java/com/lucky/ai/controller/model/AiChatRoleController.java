@@ -60,8 +60,8 @@ public class AiChatRoleController extends BaseController {
      */
     @Log(title = "创建【我的】聊天角色", businessType = BusinessType.INSERT)
     @PostMapping("/my")
-    public R<Long> addMy(@Validated @RequestBody AiChatRoleSaveMyQuery query) {
-        return R.ok(chatRoleService.insertMyChatRole(query));
+    public R<Void> addMy(@Validated @RequestBody AiChatRoleSaveMyQuery query) {
+        return toAjax(chatRoleService.insertMyChatRole(query));
     }
 
     /**
@@ -98,8 +98,8 @@ public class AiChatRoleController extends BaseController {
     @Log(title = "创建聊天角色", businessType = BusinessType.INSERT)
     @SaCheckPermission("ai:chat-role:add")
     @PostMapping
-    public R<Long> add(@Validated @RequestBody AiChatRoleSaveQuery query) {
-        return R.ok(chatRoleService.insertChatRole(query));
+    public R<Void> add(@Validated @RequestBody AiChatRoleSaveQuery query) {
+        return toAjax(chatRoleService.insertChatRole(query));
     }
 
     /**
