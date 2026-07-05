@@ -27,7 +27,7 @@ import java.util.Map;
  * @author lucky
  */
 @Component
-public class TongYiServiceImplAbstract implements AbstractChatService, AbstractImageService {
+public class TongYiServiceImpl implements AbstractChatService, AbstractImageService {
 
     @Override
     public ChatModel buildChatModel(String baseUrl, String apiKey) {

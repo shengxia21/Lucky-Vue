@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @author lucky
  */
 @Component
-public class DeepSeekServiceImplAbstract implements AbstractChatService {
+public class DeepSeekServiceImpl implements AbstractChatService {
 
     @Override
     public ChatModel buildChatModel(String baseUrl, String apiKey) {

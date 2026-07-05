@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
  * @author lucky
  */
 @Component
-public class ZhiPuServiceImplAbstract implements AbstractChatService, AbstractImageService {
+public class ZhiPuServiceImpl implements AbstractChatService, AbstractImageService {
 
     @Override
     public ChatModel buildChatModel(String baseUrl, String apiKey) {
