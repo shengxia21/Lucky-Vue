@@ -9,7 +9,7 @@ import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiChatConversationService;
 import com.lucky.ai.service.IAiChatService;
 import com.lucky.ai.service.IAiModelService;
-import com.lucky.common.ai.chat.service.impl.ChatServiceFacade;
+import com.lucky.common.ai.chat.service.ChatService;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.core.constant.AiErrorConstants;
@@ -35,7 +35,7 @@ public class AiChatServiceImpl implements IAiChatService {
     private IAiApiKeyService apiKeyService;
 
     @Resource
-    private ChatServiceFacade chatServiceFacade;
+    private ChatService chatService;
 
     @Override
     public Flux<ChatResponseVO> chatStream(ChatQuery query) {
@@ -68,7 +68,7 @@ public class AiChatServiceImpl implements IAiChatService {
         chatRequest.setUserName(SecurityUtils.getUserName());
         chatRequest.setDeptId(SecurityUtils.getDeptId());
         // 调用处理器处理流式聊天
-        return chatServiceFacade.chat(chatRequest);
+        return chatService.chat(chatRequest);
     }
 
 }
