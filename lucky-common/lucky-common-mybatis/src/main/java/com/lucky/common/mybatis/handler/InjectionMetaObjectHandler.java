@@ -9,6 +9,7 @@ import com.lucky.common.mybatis.core.domain.BaseEntity;
 import com.lucky.common.security.utils.SecurityUtils;
 import org.apache.ibatis.reflection.MetaObject;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -28,27 +29,37 @@ public class InjectionMetaObjectHandler implements MetaObjectHandler {
         try {
             if (ObjectUtil.isNotNull(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity baseEntity) {
                 // 获取当前时间作为创建时间
-                Date current = new Date();
+                LocalDateTime current = LocalDateTime.now();
                 baseEntity.setCreateTime(current);
+                baseEntity.setUpdateTime(current);
 
                 // 如果创建人为空，则填充当前登录用户的信息
                 if (ObjectUtil.isNull(baseEntity.getCreateBy())) {
                     LoginUser loginUser = getLoginUser();
+                    Long createDept = baseEntity.getCreateDept();
                     if (ObjectUtil.isNotNull(loginUser)) {
-                        // 填充创建部门、创建人信息
-                        baseEntity.setCreateDept(loginUser.getDeptId());
-                        baseEntity.setCreateBy(loginUser.getUserName());
+                        String userName = loginUser.getUserName();
+                        // 填充创建部门、创建人和更新人的信息
+                        baseEntity.setCreateDept(ObjectUtil.isNotNull(createDept) ? createDept : loginUser.getDeptId());
+                        baseEntity.setCreateBy(userName);
+                        baseEntity.setUpdateBy(userName);
                     } else {
-                        // 填充创建部门、创建人默认值
-                        baseEntity.setCreateDept(Long.valueOf(DEFAULT_USER_ID));
+                        // 填充创建部门、创建人和更新人的信息
+                        baseEntity.setCreateDept(ObjectUtil.isNotNull(createDept) ? createDept : Long.valueOf(DEFAULT_USER_ID));
                         baseEntity.setCreateBy(DEFAULT_USER_ID);
+                        baseEntity.setUpdateBy(DEFAULT_USER_ID);
                     }
                 }
             } else {
-                this.strictInsertFill(metaObject, "createTime", Date.class, new Date());
+                LocalDateTime date = LocalDateTime.now();
+                this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, date);
+                this.strictInsertFill(metaObject, "updateTime", LocalDateTime.class, date);
+                Date legacyDate = new Date();
+                this.strictInsertFill(metaObject, "createTime", Date.class, legacyDate);
+                this.strictInsertFill(metaObject, "updateTime", Date.class, legacyDate);
             }
         } catch (Exception e) {
-            throw new ServiceException("insertFill异常 => " + e.getMessage(), HttpStatus.UNAUTHORIZED);
+            throw new ServiceException("insertFill异常 => " + e.getMessage(), HttpStatus.ERROR);
         }
     }
 
@@ -57,7 +68,7 @@ public class InjectionMetaObjectHandler implements MetaObjectHandler {
         try {
             if (ObjectUtil.isNotNull(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity baseEntity) {
                 // 获取当前时间作为更新时间，无论原始对象中的更新时间是否为空都填充
-                Date current = new Date();
+                LocalDateTime current = LocalDateTime.now();
                 baseEntity.setUpdateTime(current);
 
                 // 如果更新人为空，则填充当前登录用户的信息
@@ -71,10 +82,11 @@ public class InjectionMetaObjectHandler implements MetaObjectHandler {
                     }
                 }
             } else {
+                this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
                 this.strictUpdateFill(metaObject, "updateTime", Date.class, new Date());
             }
         } catch (Exception e) {
-            throw new ServiceException("updateFill异常 => " + e.getMessage(), HttpStatus.UNAUTHORIZED);
+            throw new ServiceException("updateFill异常 => " + e.getMessage(), HttpStatus.ERROR);
         }
     }
 
