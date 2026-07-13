@@ -34,6 +34,8 @@ public class ImageServiceFacade implements ImageService {
     @Override
     public void generateImage(ImageRequest imageRequest) {
         try {
+            // 参数校验（url 允许为 null）
+            this.validateImageRequest(imageRequest);
             // 获取图片模型策略
             AbstractImageService strategy = imageFactory.getOriginalService(imageRequest.getPlatform());
             // 构建请求选项
@@ -50,9 +52,45 @@ public class ImageServiceFacade implements ImageService {
             // 持久化成功结果
             persistenceHandler.onSuccess(imageRequest.getImageId(), filePath);
         } catch (Exception ex) {
-            log.error("执行异步绘制图片失败, imageId={}, model={}", imageRequest.getImageId(), imageRequest.getModel());
+            log.error("执行异步绘制图片失败, imageId={}, model={}, error={}", imageRequest.getImageId(), imageRequest.getModel(), ex.getMessage());
             // 持久化失败结果
             persistenceHandler.onFailure(imageRequest.getImageId(), ex.getMessage());
+        }
+    }
+
+    /**
+     * 校验图片生成请求参数
+     * <p>除 url 外，其余参数均不可为 null</p>
+     *
+     * @param imageRequest 图片生成请求
+     */
+    private void validateImageRequest(ImageRequest imageRequest) {
+        if (imageRequest == null) {
+            throw new IllegalArgumentException("图片生成请求参数不能为空");
+        }
+        if (imageRequest.getPrompt() == null) {
+            throw new IllegalArgumentException("提示词(prompt)不能为空");
+        }
+        if (imageRequest.getWidth() == null) {
+            throw new IllegalArgumentException("图片宽度(width)不能为空");
+        }
+        if (imageRequest.getHeight() == null) {
+            throw new IllegalArgumentException("图片高度(height)不能为空");
+        }
+        if (imageRequest.getOptions() == null) {
+            throw new IllegalArgumentException("绘制参数(options)不能为空");
+        }
+        if (imageRequest.getImageId() == null) {
+            throw new IllegalArgumentException("图片ID(imageId)不能为空");
+        }
+        if (imageRequest.getModel() == null) {
+            throw new IllegalArgumentException("模型(model)不能为空");
+        }
+        if (imageRequest.getPlatform() == null) {
+            throw new IllegalArgumentException("平台(platform)不能为空");
+        }
+        if (imageRequest.getApiKey() == null) {
+            throw new IllegalArgumentException("密钥(apiKey)不能为空");
         }
     }
 

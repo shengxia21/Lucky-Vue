@@ -67,7 +67,9 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
     }
 
     @Override
-    public List<Message> get(Long conversationId, int maxContexts) {
+    public List<Message> get(Long conversationId, Integer maxContexts) {
+        Assert.notNull(conversationId, "conversationId cannot be null");
+        Assert.notNull(maxContexts, "maxContexts cannot be null");
         if (maxContexts <= 0) {
             return Collections.emptyList();
         }

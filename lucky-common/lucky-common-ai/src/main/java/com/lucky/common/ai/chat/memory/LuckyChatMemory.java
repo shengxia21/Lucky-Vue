@@ -39,6 +39,6 @@ public interface LuckyChatMemory {
      * @param maxContexts    携带历史消息数
      * @return 消息列表
      */
-    List<Message> get(Long conversationId, int maxContexts);
+    List<Message> get(Long conversationId, Integer maxContexts);
 
 }

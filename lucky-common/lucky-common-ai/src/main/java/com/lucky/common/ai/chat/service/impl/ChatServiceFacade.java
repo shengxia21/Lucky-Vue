@@ -9,7 +9,6 @@ import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.ai.factory.ChatServiceFactory;
 import com.lucky.common.ai.service.AbstractChatService;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -26,7 +25,6 @@ import java.util.List;
  *
  * @author lucky
  */
-@Slf4j
 public class ChatServiceFacade implements ChatService {
 
     @Resource
@@ -37,6 +35,8 @@ public class ChatServiceFacade implements ChatService {
 
     @Override
     public Flux<ChatResponseVO> chat(ChatRequest chatRequest) {
+        // 参数校验（attachmentUrls、systemMessage、url 允许为 null）
+        this.validateChatRequest(chatRequest);
         // 获取聊天服务
         AbstractChatService service = chatFactory.getOriginalService(chatRequest.getPlatform());
         // 构建聊天选项
@@ -70,6 +70,57 @@ public class ChatServiceFacade implements ChatService {
                     responseVo.setReasoningContent(reasoningContent);
                     return responseVo;
                 });
+    }
+
+    /**
+     * 校验聊天请求参数
+     * <p>除 attachmentUrls、systemMessage、url 外，其余参数均不可为 null</p>
+     *
+     * @param chatRequest 聊天请求
+     */
+    private void validateChatRequest(ChatRequest chatRequest) {
+        if (chatRequest == null) {
+            throw new IllegalArgumentException("聊天请求参数不能为空");
+        }
+        if (chatRequest.getContent() == null) {
+            throw new IllegalArgumentException("聊天内容(content)不能为空");
+        }
+        if (chatRequest.getUseThinking() == null) {
+            throw new IllegalArgumentException("是否深度思考(useThinking)不能为空");
+        }
+        if (chatRequest.getUseSearch() == null) {
+            throw new IllegalArgumentException("是否联网搜索(useSearch)不能为空");
+        }
+        if (chatRequest.getConversationId() == null) {
+            throw new IllegalArgumentException("会话ID(conversationId)不能为空");
+        }
+        if (chatRequest.getTemperature() == null) {
+            throw new IllegalArgumentException("温度参数(temperature)不能为空");
+        }
+        if (chatRequest.getMaxTokens() == null) {
+            throw new IllegalArgumentException("最大Token数(maxTokens)不能为空");
+        }
+        if (chatRequest.getMaxContexts() == null) {
+            throw new IllegalArgumentException("最大上下文数(maxContexts)不能为空");
+        }
+        if (chatRequest.getModel() == null) {
+            throw new IllegalArgumentException("模型(model)不能为空");
+        }
+        if (chatRequest.getPlatform() == null) {
+            throw new IllegalArgumentException("平台(platform)不能为空");
+        }
+        if (chatRequest.getApiKey() == null) {
+            throw new IllegalArgumentException("密钥(apiKey)不能为空");
+        }
+        if (chatRequest.getUserId() == null) {
+            throw new IllegalArgumentException("用户ID(userId)不能为空");
+        }
+        if (chatRequest.getDeptId() == null) {
+            throw new IllegalArgumentException("部门ID(deptId)不能为空");
+        }
+        if (chatRequest.getUserName() == null) {
+            throw new IllegalArgumentException("用户名称(userName)不能为空");
+        }
     }
 
 }
