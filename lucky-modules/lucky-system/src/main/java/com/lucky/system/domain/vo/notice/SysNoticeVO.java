@@ -4,7 +4,7 @@ import com.lucky.system.domain.SysNotice;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 通知公告VO
@@ -53,6 +53,6 @@ public class SysNoticeVO {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

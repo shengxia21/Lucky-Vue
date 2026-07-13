@@ -8,7 +8,7 @@ import com.lucky.ai.domain.AiModel;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -104,6 +104,6 @@ public class AiChatRoleVO implements VO {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

@@ -4,7 +4,7 @@ import com.lucky.system.domain.SysLoginInfo;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 系统登录日志VO
@@ -58,6 +58,6 @@ public class SysLoginInfoVO {
     /**
      * 访问时间
      */
-    private Date loginTime;
+    private LocalDateTime loginTime;
 
 }

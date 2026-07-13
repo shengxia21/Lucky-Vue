@@ -6,7 +6,7 @@ import com.lucky.common.excel.annotation.Excel;
 import com.lucky.common.excel.annotation.Excel.ColumnType;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 操作日志记录表 oper_log
@@ -112,7 +112,7 @@ public class SysOperLog {
      * 操作时间
      */
     @Excel(name = "操作时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    private Date operTime;
+    private LocalDateTime operTime;
 
     /**
      * 消耗时间

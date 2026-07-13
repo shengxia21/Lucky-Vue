@@ -4,7 +4,7 @@ import com.lucky.ai.domain.AiImage;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -79,11 +79,11 @@ public class AiImageVO {
     /**
      * 完成时间
      */
-    private Date finishTime;
+    private LocalDateTime finishTime;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

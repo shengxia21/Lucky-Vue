@@ -1,7 +1,6 @@
 package com.lucky.system.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import com.lucky.common.security.utils.SecurityUtils;
@@ -14,8 +13,8 @@ import jakarta.annotation.Resource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,7 +37,7 @@ public class SysNoticeReadServiceImpl implements ISysNoticeReadService {
         SysNoticeRead record = new SysNoticeRead();
         record.setNoticeId(noticeId);
         record.setUserId(userId);
-        record.setReadTime(DateUtils.getNowDate());
+        record.setReadTime(LocalDateTime.now());
         try {
             noticeReadMapper.insert(record);
         } catch (DuplicateKeyException e) {
@@ -64,7 +63,7 @@ public class SysNoticeReadServiceImpl implements ISysNoticeReadService {
         if (noticeIds == null || noticeIds.length == 0) {
             return;
         }
-        Date nowDate = DateUtils.getNowDate();
+        LocalDateTime nowDate = LocalDateTime.now();
         for (Long noticeId : noticeIds) {
             SysNoticeRead record = new SysNoticeRead();
             record.setNoticeId(noticeId);

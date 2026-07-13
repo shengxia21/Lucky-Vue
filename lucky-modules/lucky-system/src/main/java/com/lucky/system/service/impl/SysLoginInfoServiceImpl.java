@@ -3,7 +3,6 @@ package com.lucky.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.common.core.constant.Constants;
-import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.ip.AddressUtils;
 import com.lucky.common.core.utils.ip.IpUtils;
@@ -23,6 +22,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,7 +59,7 @@ public class SysLoginInfoServiceImpl implements ISysLoginInfoService {
         loginInfo.setBrowser(browser);
         loginInfo.setOs(os);
         loginInfo.setMsg(loginInfoEvent.getMessage());
-        loginInfo.setLoginTime(DateUtils.getNowDate());
+        loginInfo.setLoginTime(LocalDateTime.now());
         // 日志状态
         if (StringUtils.equalsAny(loginInfoEvent.getStatus(), Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER)) {
             loginInfo.setStatus(Constants.SUCCESS);

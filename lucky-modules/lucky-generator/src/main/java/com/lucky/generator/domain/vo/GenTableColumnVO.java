@@ -4,7 +4,7 @@ import com.lucky.generator.domain.GenTableColumn;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 业务字段VO
@@ -108,6 +108,6 @@ public class GenTableColumnVO {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

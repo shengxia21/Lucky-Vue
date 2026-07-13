@@ -2,7 +2,7 @@ package com.lucky.system.domain.vo.notice;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 公告已读用户VO
@@ -40,6 +40,6 @@ public class SysNoticeReadUserVO {
     /**
      * 读取时间
      */
-    private Date readTime;
+    private LocalDateTime readTime;
 
 }

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 公告已读记录表 sys_notice_read
@@ -34,6 +34,6 @@ public class SysNoticeRead {
     /**
      * 阅读时间
      */
-    private Date readTime;
+    private LocalDateTime readTime;
 
 }

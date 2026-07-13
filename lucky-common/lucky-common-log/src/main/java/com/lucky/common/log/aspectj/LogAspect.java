@@ -3,7 +3,6 @@ package com.lucky.common.log.aspectj;
 import com.alibaba.fastjson2.JSON;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.enums.HttpMethod;
-import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.ExceptionUtil;
 import com.lucky.common.core.utils.ServletUtils;
 import com.lucky.common.core.utils.StringUtils;
@@ -30,6 +29,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 
@@ -114,7 +114,7 @@ public class LogAspect {
             // 远程查询操作地点
             operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
             // 操作时间
-            operLog.setOperTime(DateUtils.getNowDate());
+            operLog.setOperTime(LocalDateTime.now());
             // 保存数据库
             SpringUtils.context().publishEvent(operLog);
         } catch (Exception exp) {

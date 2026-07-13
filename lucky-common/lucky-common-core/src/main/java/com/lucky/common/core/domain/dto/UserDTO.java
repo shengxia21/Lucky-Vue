@@ -3,7 +3,7 @@ package com.lucky.common.core.domain.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -73,17 +73,17 @@ public class UserDTO {
     /**
      * 最后登录时间
      */
-    private Date loginDate;
+    private LocalDateTime loginDate;
 
     /**
      * 密码最后更新时间
      */
-    private Date pwdUpdateDate;
+    private LocalDateTime pwdUpdateDate;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 删除标志（0代表存在 1代表删除）

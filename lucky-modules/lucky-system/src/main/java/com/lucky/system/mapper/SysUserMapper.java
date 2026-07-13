@@ -10,7 +10,7 @@ import com.lucky.system.domain.SysUser;
 import com.lucky.system.domain.query.user.SysUserQuery;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -104,7 +104,7 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
                 .eq(SysUser::getUserId, userId));
     }
 
-    default int updateLoginInfo(Long userId, String loginIp, Date loginDate) {
+    default int updateLoginInfo(Long userId, String loginIp, LocalDateTime loginDate) {
         return update(Wrappers.<SysUser>lambdaUpdate()
                 .set(SysUser::getLoginIp, loginIp)
                 .set(SysUser::getLoginDate, loginDate)
@@ -113,7 +113,7 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
 
     default int resetUserPwd(Long userId, String password) {
         return update(Wrappers.<SysUser>lambdaUpdate()
-                .set(SysUser::getPwdUpdateDate, new Date())
+                .set(SysUser::getPwdUpdateDate, LocalDateTime.now())
                 .set(SysUser::getPassword, password)
                 .eq(SysUser::getUserId, userId));
     }

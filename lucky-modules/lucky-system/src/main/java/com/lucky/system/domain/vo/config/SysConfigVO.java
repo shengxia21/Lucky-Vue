@@ -4,7 +4,7 @@ import com.lucky.system.domain.SysConfig;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 参数配置VO
@@ -48,6 +48,6 @@ public class SysConfigVO {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

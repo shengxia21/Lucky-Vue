@@ -20,7 +20,6 @@ import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.ai.enums.AiModelTypeEnum;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
-import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
@@ -28,6 +27,7 @@ import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +95,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         // 2. 更新对话信息
         AiChatConversation updateObj = MapstructUtils.convert(query, AiChatConversation.class);
         if (Boolean.TRUE.equals(query.getPinned())) {
-            updateObj.setPinnedTime(DateUtils.getNowDate());
+            updateObj.setPinnedTime(LocalDateTime.now());
         }
         if (model != null) {
             updateObj.setModel(model.getModel());

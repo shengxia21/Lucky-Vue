@@ -9,7 +9,7 @@ import com.lucky.ai.domain.AiModel;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * AI 聊天对话响应VO
@@ -85,7 +85,7 @@ public class AiChatConversationVO implements VO {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 角色头像

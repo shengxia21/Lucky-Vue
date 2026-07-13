@@ -6,7 +6,6 @@ import com.lucky.common.core.constant.UserConstants;
 import com.lucky.common.core.domain.model.RegisterBody;
 import com.lucky.common.core.exception.user.CaptchaException;
 import com.lucky.common.core.exception.user.CaptchaExpireException;
-import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.MessageUtils;
 import com.lucky.common.core.utils.ServletUtils;
 import com.lucky.common.core.utils.StringUtils;
@@ -19,6 +18,8 @@ import com.lucky.system.service.ISysConfigService;
 import com.lucky.system.service.ISysUserService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 /**
  * 注册校验方法
@@ -67,7 +68,7 @@ public class SysRegisterService {
             msg = "保存用户'" + userName + "'失败，注册账号已存在";
         } else {
             sysUser.setNickName(userName);
-            sysUser.setPwdUpdateDate(DateUtils.getNowDate());
+            sysUser.setPwdUpdateDate(LocalDateTime.now());
             sysUser.setPassword(SecurityUtils.encryptPassword(password));
             boolean regFlag = userService.registerUser(sysUser);
             if (!regFlag) {

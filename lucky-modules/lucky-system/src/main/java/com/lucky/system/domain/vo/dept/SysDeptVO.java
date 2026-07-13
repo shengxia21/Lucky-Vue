@@ -4,7 +4,7 @@ import com.lucky.system.domain.SysDept;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 部门VO
@@ -68,6 +68,6 @@ public class SysDeptVO {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

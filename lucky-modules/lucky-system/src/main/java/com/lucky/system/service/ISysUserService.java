@@ -7,7 +7,7 @@ import com.lucky.system.domain.SysUser;
 import com.lucky.system.domain.query.user.SysUserQuery;
 import com.lucky.system.domain.query.user.SysUserSaveQuery;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -189,7 +189,7 @@ public interface ISysUserService {
      * @param loginIp   登录IP地址
      * @param loginDate 登录时间
      */
-    void updateLoginInfo(Long userId, String loginIp, Date loginDate);
+    void updateLoginInfo(Long userId, String loginIp, LocalDateTime loginDate);
 
     /**
      * 重置用户密码

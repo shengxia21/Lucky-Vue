@@ -6,7 +6,7 @@ import com.lucky.common.excel.annotation.Excel;
 import com.lucky.common.excel.annotation.Excel.ColumnType;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 系统访问记录表 sys_login_info
@@ -70,6 +70,6 @@ public class SysLoginInfo {
      * 访问时间
      */
     @Excel(name = "访问时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    private Date loginTime;
+    private LocalDateTime loginTime;
 
 }

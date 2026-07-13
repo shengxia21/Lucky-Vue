@@ -29,9 +29,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -314,7 +314,7 @@ public class SysUserServiceImpl implements ISysUserService {
      * @param loginIp   登录IP地址
      * @param loginDate 登录时间
      */
-    public void updateLoginInfo(Long userId, String loginIp, Date loginDate) {
+    public void updateLoginInfo(Long userId, String loginIp, LocalDateTime loginDate) {
         userMapper.updateLoginInfo(userId, loginIp, loginDate);
     }
 

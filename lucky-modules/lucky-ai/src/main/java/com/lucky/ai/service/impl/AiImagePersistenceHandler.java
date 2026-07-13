@@ -4,9 +4,10 @@ import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.mapper.AiImageMapper;
 import com.lucky.common.ai.enums.AiImageStatusEnum;
 import com.lucky.common.ai.image.ImagePersistenceHandler;
-import com.lucky.common.core.utils.DateUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 /**
  * AI 图片生成任务持久化处理器
@@ -27,7 +28,7 @@ public class AiImagePersistenceHandler implements ImagePersistenceHandler {
         aiImage.setId(imageId);
         aiImage.setStatus(AiImageStatusEnum.SUCCESS.getStatus());
         aiImage.setPicUrl(filePath);
-        aiImage.setFinishTime(DateUtils.getNowDate());
+        aiImage.setFinishTime(LocalDateTime.now());
         imageMapper.updateById(aiImage);
     }
 

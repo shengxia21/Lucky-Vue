@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * AI 聊天对话对象 ai_chat_conversation
@@ -49,7 +49,7 @@ public class AiChatConversation extends BaseEntity {
     /**
      * 置顶时间
      */
-    private Date pinnedTime;
+    private LocalDateTime pinnedTime;
 
     /**
      * 角色编号

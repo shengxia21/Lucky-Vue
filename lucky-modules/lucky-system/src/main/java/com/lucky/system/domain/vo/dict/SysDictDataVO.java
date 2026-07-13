@@ -4,7 +4,7 @@ import com.lucky.system.domain.SysDictData;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 字典数据VO
@@ -68,6 +68,6 @@ public class SysDictDataVO {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

@@ -3,7 +3,7 @@ package com.lucky.system.domain.vo.notice;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 通知公告已读VO
@@ -47,6 +47,6 @@ public class SysNoticeReadVO {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

@@ -6,7 +6,6 @@ import com.lucky.common.core.domain.AjaxResult;
 import com.lucky.common.core.domain.R;
 import com.lucky.common.core.domain.dto.UserDTO;
 import com.lucky.common.core.domain.model.LoginUser;
-import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.file.FileUploadUtils;
 import com.lucky.common.core.utils.file.FileUtils;
@@ -21,6 +20,7 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -96,7 +96,7 @@ public class SysProfileController extends BaseController {
         newPassword = SecurityUtils.encryptPassword(newPassword);
         if (userService.resetUserPwd(userId, newPassword) > 0) {
             // 更新用户密码&密码最后更新时间
-            loginUser.getUser().setPwdUpdateDate(DateUtils.getNowDate());
+            loginUser.getUser().setPwdUpdateDate(LocalDateTime.now());
             loginUser.getUser().setPassword(newPassword);
             SecurityUtils.refreshLoginUser(loginUser);
             return R.ok();

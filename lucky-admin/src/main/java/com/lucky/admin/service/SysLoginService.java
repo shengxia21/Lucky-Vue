@@ -13,7 +13,6 @@ import com.lucky.common.core.enums.UserStatus;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.exception.user.*;
 import com.lucky.common.core.service.PermissionService;
-import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.MessageUtils;
 import com.lucky.common.core.utils.ServletUtils;
 import com.lucky.common.core.utils.StringUtils;
@@ -30,6 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 /**
  * 登录校验方法
@@ -220,7 +220,7 @@ public class SysLoginService {
      * @param userId 用户ID
      */
     public void updateLoginInfo(Long userId) {
-        userService.updateLoginInfo(userId, IpUtils.getIpAddr(), DateUtils.getNowDate());
+        userService.updateLoginInfo(userId, IpUtils.getIpAddr(), LocalDateTime.now());
     }
 
     /**

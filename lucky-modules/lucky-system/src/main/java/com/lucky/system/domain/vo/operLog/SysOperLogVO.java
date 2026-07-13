@@ -4,7 +4,7 @@ import com.lucky.system.domain.SysOperLog;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 操作日志VO
@@ -93,7 +93,7 @@ public class SysOperLogVO {
     /**
      * 操作时间
      */
-    private Date operTime;
+    private LocalDateTime operTime;
 
     /**
      * 消耗时间

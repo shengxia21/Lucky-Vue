@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -70,7 +70,7 @@ public class AiImage extends BaseEntity {
     /**
      * 完成时间
      */
-    private Date finishTime;
+    private LocalDateTime finishTime;
 
     /**
      * 绘画错误信息

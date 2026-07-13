@@ -8,7 +8,6 @@ import com.lucky.common.core.domain.R;
 import com.lucky.common.core.domain.dto.UserDTO;
 import com.lucky.common.core.domain.model.LoginBody;
 import com.lucky.common.core.domain.model.LoginUser;
-import com.lucky.common.core.utils.DateUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.text.Convert;
 import com.lucky.common.security.utils.SecurityUtils;
@@ -22,7 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -104,21 +104,20 @@ public class SysLoginController {
     }
 
     // 检查初始密码是否提醒修改
-    public boolean initPasswordIsModify(Date pwdUpdateDate) {
+    public boolean initPasswordIsModify(LocalDateTime pwdUpdateDate) {
         Integer initPasswordModify = Convert.toInt(configService.selectConfigByKey("sys.account.initPasswordModify"));
         return initPasswordModify != null && initPasswordModify == 1 && pwdUpdateDate == null;
     }
 
     // 检查密码是否过期
-    public boolean passwordIsExpiration(Date pwdUpdateDate) {
+    public boolean passwordIsExpiration(LocalDateTime pwdUpdateDate) {
         Integer passwordValidateDays = Convert.toInt(configService.selectConfigByKey("sys.account.passwordValidateDays"));
         if (passwordValidateDays != null && passwordValidateDays > 0) {
             if (StringUtils.isNull(pwdUpdateDate)) {
                 // 如果从未修改过初始密码，直接提醒过期
                 return true;
             }
-            Date nowDate = DateUtils.getNowDate();
-            return DateUtils.differentDaysByMillisecond(nowDate, pwdUpdateDate) > passwordValidateDays;
+            return ChronoUnit.DAYS.between(pwdUpdateDate, LocalDateTime.now()) > passwordValidateDays;
         }
         return false;
     }

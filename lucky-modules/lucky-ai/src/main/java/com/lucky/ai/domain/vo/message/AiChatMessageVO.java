@@ -6,7 +6,7 @@ import com.lucky.ai.domain.search.WebSearchResponse;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -96,7 +96,7 @@ public class AiChatMessageVO implements VO {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 知识库段落
