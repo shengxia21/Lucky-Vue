@@ -2,6 +2,7 @@ package com.lucky.common.ai.enums;
 
 import cn.hutool.core.util.ObjUtil;
 import com.lucky.common.core.enumeration.ArrayValuable;
+import lombok.Getter;
 
 import java.util.Arrays;
 
@@ -10,6 +11,7 @@ import java.util.Arrays;
  *
  * @author lucky
  */
+@Getter
 public enum CommonStatusEnum implements ArrayValuable<Integer> {
 
     ENABLE(0, "开启"),
@@ -27,14 +29,6 @@ public enum CommonStatusEnum implements ArrayValuable<Integer> {
     CommonStatusEnum(Integer status, String name) {
         this.status = status;
         this.name = name;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public static final Integer[] ARRAYS = Arrays.stream(values()).map(CommonStatusEnum::getStatus).toArray(Integer[]::new);

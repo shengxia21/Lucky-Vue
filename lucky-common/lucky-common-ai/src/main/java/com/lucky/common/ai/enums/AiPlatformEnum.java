@@ -1,6 +1,7 @@
 package com.lucky.common.ai.enums;
 
 import com.lucky.common.core.enumeration.ArrayValuable;
+import lombok.Getter;
 
 import java.util.Arrays;
 
@@ -9,6 +10,7 @@ import java.util.Arrays;
  *
  * @author lucky
  */
+@Getter
 public enum AiPlatformEnum implements ArrayValuable<String> {
 
     TONG_YI("TongYi", "通义千问"), // 阿里
@@ -36,14 +38,6 @@ public enum AiPlatformEnum implements ArrayValuable<String> {
     AiPlatformEnum(String platform, String name) {
         this.platform = platform;
         this.name = name;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public static final String[] ARRAYS = Arrays.stream(values()).map(AiPlatformEnum::getPlatform).toArray(String[]::new);

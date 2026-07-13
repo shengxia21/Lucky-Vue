@@ -1,10 +1,13 @@
 package com.lucky.common.ai.enums;
 
+import lombok.Getter;
+
 /**
  * 绘画状态枚举
  *
  * @author lucky
  */
+@Getter
 public enum AiImageStatusEnum {
 
     IN_PROGRESS(10, "进行中"),
@@ -24,14 +27,6 @@ public enum AiImageStatusEnum {
     AiImageStatusEnum(Integer status, String name) {
         this.status = status;
         this.name = name;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public static AiImageStatusEnum valueOfStatus(Integer status) {
