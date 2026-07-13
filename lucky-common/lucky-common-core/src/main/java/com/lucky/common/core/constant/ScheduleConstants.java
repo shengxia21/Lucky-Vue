@@ -1,5 +1,7 @@
 package com.lucky.common.core.constant;
 
+import lombok.Getter;
+
 /**
  * 任务调度通用常量
  *
@@ -34,7 +36,9 @@ public class ScheduleConstants {
      */
     public static final String MISFIRE_DO_NOTHING = "3";
 
+    @Getter
     public enum Status {
+
         /**
          * 正常
          */
@@ -50,9 +54,6 @@ public class ScheduleConstants {
             this.value = value;
         }
 
-        public String getValue() {
-            return value;
-        }
     }
 
 }

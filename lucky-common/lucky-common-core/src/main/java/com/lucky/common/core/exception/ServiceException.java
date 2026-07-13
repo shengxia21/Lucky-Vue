@@ -1,12 +1,18 @@
 package com.lucky.common.core.exception;
 
+import lombok.Getter;
+
+import java.io.Serial;
+
 /**
  * 业务异常
  *
  * @author ruoyi
  */
+@Getter
 public final class ServiceException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -41,10 +47,6 @@ public final class ServiceException extends RuntimeException {
         this.code = code;
     }
 
-    public String getDetailMessage() {
-        return detailMessage;
-    }
-
     public ServiceException setDetailMessage(String detailMessage) {
         this.detailMessage = detailMessage;
         return this;
@@ -58,10 +60,6 @@ public final class ServiceException extends RuntimeException {
     public ServiceException setMessage(String message) {
         this.message = message;
         return this;
-    }
-
-    public Integer getCode() {
-        return code;
     }
 
 }

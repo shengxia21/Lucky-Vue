@@ -1,5 +1,8 @@
 package com.lucky.common.core.exception.file;
 
+import lombok.Getter;
+
+import java.io.Serial;
 import java.util.Arrays;
 
 /**
@@ -7,8 +10,10 @@ import java.util.Arrays;
  *
  * @author ruoyi
  */
+@Getter
 public class InvalidExtensionException extends FileUploadException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final String[] allowedExtension;
@@ -22,19 +27,8 @@ public class InvalidExtensionException extends FileUploadException {
         this.filename = filename;
     }
 
-    public String[] getAllowedExtension() {
-        return allowedExtension;
-    }
-
-    public String getExtension() {
-        return extension;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
     public static class InvalidImageExtensionException extends InvalidExtensionException {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public InvalidImageExtensionException(String[] allowedExtension, String extension, String filename) {
@@ -43,6 +37,7 @@ public class InvalidExtensionException extends FileUploadException {
     }
 
     public static class InvalidFlashExtensionException extends InvalidExtensionException {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public InvalidFlashExtensionException(String[] allowedExtension, String extension, String filename) {
@@ -51,6 +46,7 @@ public class InvalidExtensionException extends FileUploadException {
     }
 
     public static class InvalidMediaExtensionException extends InvalidExtensionException {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public InvalidMediaExtensionException(String[] allowedExtension, String extension, String filename) {
@@ -59,6 +55,7 @@ public class InvalidExtensionException extends FileUploadException {
     }
 
     public static class InvalidVideoExtensionException extends InvalidExtensionException {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public InvalidVideoExtensionException(String[] allowedExtension, String extension, String filename) {

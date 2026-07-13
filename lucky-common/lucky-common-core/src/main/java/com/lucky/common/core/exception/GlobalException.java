@@ -1,12 +1,18 @@
 package com.lucky.common.core.exception;
 
+import lombok.Getter;
+
+import java.io.Serial;
+
 /**
  * 全局异常
  *
  * @author ruoyi
  */
+@Getter
 public class GlobalException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -29,10 +35,6 @@ public class GlobalException extends RuntimeException {
 
     public GlobalException(String message) {
         this.message = message;
-    }
-
-    public String getDetailMessage() {
-        return detailMessage;
     }
 
     public GlobalException setDetailMessage(String detailMessage) {

@@ -2,14 +2,19 @@ package com.lucky.common.core.exception.base;
 
 import com.lucky.common.core.utils.MessageUtils;
 import com.lucky.common.core.utils.StringUtils;
+import lombok.Getter;
+
+import java.io.Serial;
 
 /**
  * 基础异常
  *
  * @author ruoyi
  */
+@Getter
 public class BaseException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -65,22 +70,6 @@ public class BaseException extends RuntimeException {
             message = defaultMessage;
         }
         return message;
-    }
-
-    public String getModule() {
-        return module;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public Object[] getArgs() {
-        return args;
-    }
-
-    public String getDefaultMessage() {
-        return defaultMessage;
     }
 
 }

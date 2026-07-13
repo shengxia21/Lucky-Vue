@@ -7,6 +7,7 @@ package com.lucky.common.core.enums;
  */
 
 public enum LimitType {
+
     /**
      * 默认策略全局限流
      */

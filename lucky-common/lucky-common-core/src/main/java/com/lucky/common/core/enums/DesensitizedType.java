@@ -10,6 +10,7 @@ import java.util.function.Function;
  * @author ruoyi
  */
 public enum DesensitizedType {
+
     /**
      * AI大模型的 API 密钥，显示前5位和后3位字符，其他全部用*代替
      */
@@ -59,4 +60,5 @@ public enum DesensitizedType {
     public Function<String, String> desensitizer() {
         return desensitizer;
     }
+
 }

@@ -1,5 +1,7 @@
 package com.lucky.common.core.exception.user;
 
+import java.io.Serial;
+
 /**
  * 黑名单IP异常类
  *
@@ -7,6 +9,7 @@ package com.lucky.common.core.exception.user;
  */
 public class BlackListException extends UserException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public BlackListException() {

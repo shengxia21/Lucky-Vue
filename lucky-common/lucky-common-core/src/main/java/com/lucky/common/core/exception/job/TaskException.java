@@ -1,12 +1,18 @@
 package com.lucky.common.core.exception.job;
 
+import lombok.Getter;
+
+import java.io.Serial;
+
 /**
  * 计划策略异常
  *
  * @author ruoyi
  */
+@Getter
 public class TaskException extends Exception {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final Code code;
@@ -18,10 +24,6 @@ public class TaskException extends Exception {
     public TaskException(String msg, Code code, Exception nestedEx) {
         super(msg, nestedEx);
         this.code = code;
-    }
-
-    public Code getCode() {
-        return code;
     }
 
     public enum Code {
