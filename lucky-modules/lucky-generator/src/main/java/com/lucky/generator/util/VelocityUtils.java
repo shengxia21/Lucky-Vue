@@ -160,8 +160,8 @@ public class VelocityUtils {
         List<String> templates = new ArrayList<>();
         templates.add("vm/java/domain.java.vm");
         templates.add("vm/java/vo.java.vm");
-        templates.add("vm/java/saveQuery.java.vm");
-        templates.add("vm/java/Query.java.vm");
+        templates.add("vm/java/save-query.java.vm");
+        templates.add("vm/java/query.java.vm");
         templates.add("vm/java/controller.java.vm");
         templates.add("vm/java/service.java.vm");
         templates.add("vm/java/serviceImpl.java.vm");
@@ -212,10 +212,10 @@ public class VelocityUtils {
         if (template.contains("vo.java.vm")) {
             fileName = StringUtils.format("{}/domain/vo/{}/{}VO.java", javaPath, businessName, className);
         }
-        if (template.contains("saveQuery.java.vm")) {
+        if (template.contains("save-query.java.vm")) {
             fileName = StringUtils.format("{}/domain/query/{}/{}SaveQuery.java", javaPath, businessName, className);
         }
-        if (template.contains("Query.java.vm")) {
+        if (template.contains("query.java.vm")) {
             fileName = StringUtils.format("{}/domain/query/{}/{}Query.java", javaPath, businessName, className);
         }
         if (template.contains("sub-domain.java.vm") && StringUtils.equals(GenConstants.TPL_SUB, genTable.getTplCategory())) {
@@ -276,8 +276,7 @@ public class VelocityUtils {
         }
         for (GenTableColumn column : columns) {
             if (!column.isSuperColumn() && GenConstants.TYPE_DATE.equals(column.getJavaType())) {
-                importList.add("java.util.Date");
-                importList.add("com.fasterxml.jackson.annotation.JsonFormat");
+                importList.add("java.time.LocalDateTime");
             } else if (!column.isSuperColumn() && GenConstants.TYPE_BIGDECIMAL.equals(column.getJavaType())) {
                 importList.add("java.math.BigDecimal");
             }

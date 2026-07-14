@@ -34,8 +34,8 @@ public class ${subClassName} extends BaseEntity {
 #end
 #if($parentheseIndex != -1)
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-#elseif($column.javaType == 'Date')
-    @Excel(name = "${comment}", width = 30, dateFormat = "yyyy-MM-dd")
+#elseif($column.javaType == 'LocalDateTime')
+    @Excel(name = "${comment}", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
 #else
     @Excel(name = "${comment}")
 #end
