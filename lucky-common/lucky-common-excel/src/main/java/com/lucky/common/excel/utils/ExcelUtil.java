@@ -377,6 +377,18 @@ public class ExcelUtil<T> {
                         } else if (val instanceof Double) {
                             val = DateUtil.getJavaDate((Double) val);
                         }
+                    } else if (LocalDateTime.class == fieldType) {
+                        if (val instanceof String) {
+                            val = DateUtils.parseLocalDateTime(val);
+                        } else if (val instanceof Date) {
+                            val = DateUtils.toLocalDateTime((Date) val);
+                        }
+                    } else if (LocalDate.class == fieldType) {
+                        if (val instanceof String) {
+                            val = DateUtils.toLocalDate(DateUtils.parseDate(val));
+                        } else if (val instanceof Date) {
+                            val = DateUtils.toLocalDate((Date) val);
+                        }
                     } else if (Boolean.TYPE == fieldType || Boolean.class == fieldType) {
                         val = Convert.toBool(val, false);
                     }
