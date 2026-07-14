@@ -126,20 +126,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 日期型字符串 ==> Date
-     */
-    public static Date parseDate(Object str) {
-        if (str == null) {
-            return null;
-        }
-        try {
-            return parseDate(str.toString(), parsePatterns);
-        } catch (ParseException e) {
-            return null;
-        }
-    }
-
-    /**
      * 获取服务器启动时间
      */
     public static Date getServerStartDate() {
@@ -180,6 +166,20 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
+     * 日期型字符串 ==> Date
+     */
+    public static Date parseDate(Object str) {
+        if (str == null) {
+            return null;
+        }
+        try {
+            return parseDate(str.toString(), parsePatterns);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    /**
      * 增加 LocalDateTime ==> Date
      */
     public static Date toDate(LocalDateTime temporalAccessor) {
@@ -196,20 +196,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * Date ==> LocalDateTime
-     */
-    public static LocalDateTime toLocalDateTime(Date date) {
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-    }
-
-    /**
-     * Date ==> LocalDate
-     */
-    public static LocalDate toLocalDate(Date date) {
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    }
-
-    /**
      * 日期字符串 ==> LocalDateTime
      */
     public static LocalDateTime parseLocalDateTime(Object str) {
@@ -222,6 +208,35 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * Date ==> LocalDateTime
+     */
+    public static LocalDateTime toLocalDateTime(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
+    /**
+     * 日期字符串 ==> LocalDate
+     */
+    public static LocalDate parseLocalDate(Object str) {
+        if (str == null) {
+            return null;
+        }
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(YYYY_MM_DD_HH_MM_SS);
+            return LocalDate.parse(str.toString(), formatter);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Date ==> LocalDate
+     */
+    public static LocalDate toLocalDate(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
 }

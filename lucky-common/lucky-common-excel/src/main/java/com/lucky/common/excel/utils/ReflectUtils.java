@@ -8,6 +8,8 @@ import org.apache.commons.lang3.Validate;
 import org.apache.poi.ss.usermodel.DateUtil;
 
 import java.lang.reflect.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -151,6 +153,18 @@ public class ReflectUtils {
                     } else if (cs[i] == Date.class) {
                         if (args[i] instanceof String) {
                             args[i] = DateUtils.parseDate(args[i]);
+                        } else {
+                            args[i] = DateUtil.getJavaDate((Double) args[i]);
+                        }
+                    } else if (cs[i] == LocalDateTime.class) {
+                        if (args[i] instanceof String) {
+                            args[i] = DateUtils.parseLocalDateTime(args[i]);
+                        } else {
+                            args[i] = DateUtil.getJavaDate((Double) args[i]);
+                        }
+                    } else if (cs[i] == LocalDate.class) {
+                        if (args[i] instanceof String) {
+                            args[i] = DateUtils.parseLocalDate(args[i]);
                         } else {
                             args[i] = DateUtil.getJavaDate((Double) args[i]);
                         }
