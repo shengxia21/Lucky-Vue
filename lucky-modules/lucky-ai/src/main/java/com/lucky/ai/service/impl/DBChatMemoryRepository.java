@@ -25,9 +25,10 @@ public class DBChatMemoryRepository implements LuckyChatMemoryRepository {
     @Override
     public void save(ChatMessageDTO chatMessage) {
         AiChatMessage message = BeanUtil.toBean(chatMessage, AiChatMessage.class);
-        // 字段不同，这里手动设值
+        // 线程切换，非web主线程，这里手动设值
         message.setCreateDept(chatMessage.getDeptId());
         message.setCreateBy(chatMessage.getUserName());
+        message.setUpdateBy(chatMessage.getUserName());
         chatMessageMapper.insert(message);
     }
 
