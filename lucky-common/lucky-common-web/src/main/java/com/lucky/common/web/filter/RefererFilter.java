@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 防盗链过滤器
+ * 防盗链过滤器(防止外部站点盗用本站资源: 主要保护上传文件等静态资源)
  *
  * @author ruoyi
  */

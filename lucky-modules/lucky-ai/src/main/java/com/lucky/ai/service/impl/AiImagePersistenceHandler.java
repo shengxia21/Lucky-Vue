@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 /**
  * AI 图片生成任务持久化处理器
  * <p>
- * 将图片生成结果更新到 ai_image 表，承接 {@link com.lucky.common.ai.image.ImageService} 的回调。
+ * 将图片生成结果更新到 ai_image 表
  *
  * @author lucky
  */

@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 防止XSS攻击的过滤器
+ * 防止XSS攻击的过滤器(全局: 覆盖面广的兜底防线)
  *
  * @author ruoyi
  */

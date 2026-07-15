@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 自定义xss校验注解
+ * 自定义xss校验注解(局部: 关键字段的强约束)
  *
  * @author ruoyi
  */

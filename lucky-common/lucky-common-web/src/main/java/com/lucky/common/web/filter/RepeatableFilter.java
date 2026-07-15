@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import java.io.IOException;
 
 /**
- * Repeatable 过滤器
+ * 请求体可重复读取过滤器
  *
  * @author ruoyi
  */
