@@ -24,7 +24,9 @@ public class ImageServiceFactory implements ApplicationContextAware {
         // 初始化时收集所有AbstractImageService的实现
         Map<String, AbstractImageService> serviceMap = applicationContext.getBeansOfType(AbstractImageService.class);
         for (AbstractImageService service : serviceMap.values()) {
-            imageServiceMap.put(service.getProviderName(), service);
+            if (service != null ) {
+                imageServiceMap.put(service.getProviderName(), service);
+            }
         }
     }
 

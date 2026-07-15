@@ -24,7 +24,9 @@ public class ChatServiceFactory implements ApplicationContextAware {
         // 初始化时收集所有AbstractChatService的实现
         Map<String, AbstractChatService> serviceMap = applicationContext.getBeansOfType(AbstractChatService.class);
         for (AbstractChatService service : serviceMap.values()) {
-            chatServiceMap.put(service.getProviderName(), service);
+            if (service != null) {
+                chatServiceMap.put(service.getProviderName(), service);
+            }
         }
     }
 
