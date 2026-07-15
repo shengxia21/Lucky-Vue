@@ -9,7 +9,7 @@ import com.lucky.ai.mapper.AiModelMapper;
 import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.ai.enums.AiPlatformEnum;
-import com.lucky.common.ai.enums.CommonStatusEnum;
+import com.lucky.common.ai.enums.AiStatusEnum;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -37,7 +37,7 @@ public class AiModelServiceImpl implements IAiModelService {
 
     @Override
     public AiModel getDefaultModelByType(Integer type) {
-        AiModel model = modelMapper.selectOneByTypeAndStatus(type, CommonStatusEnum.ENABLE.getStatus());
+        AiModel model = modelMapper.selectOneByTypeAndStatus(type, AiStatusEnum.ENABLE.getStatus());
         if (model == null) {
             throw new ServiceException(AiErrorConstants.MODEL_DEFAULT_NOT_EXISTS);
         }
@@ -47,7 +47,7 @@ public class AiModelServiceImpl implements IAiModelService {
     @Override
     public AiModel validateModel(Long id) {
         AiModel model = validateModelExists(id);
-        if (CommonStatusEnum.isDisable(model.getStatus())) {
+        if (AiStatusEnum.isDisable(model.getStatus())) {
             throw new ServiceException(AiErrorConstants.MODEL_DISABLE);
         }
         return model;

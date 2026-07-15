@@ -9,7 +9,7 @@ import com.lucky.ai.domain.query.apiKey.AiApiKeySaveQuery;
 import com.lucky.ai.domain.vo.apikey.AiApiKeyVO;
 import com.lucky.ai.mapper.AiApiKeyMapper;
 import com.lucky.ai.service.IAiApiKeyService;
-import com.lucky.common.ai.enums.CommonStatusEnum;
+import com.lucky.common.ai.enums.AiStatusEnum;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -67,14 +67,14 @@ public class AiApiKeyServiceImpl implements IAiApiKeyService {
     public List<AiApiKeyVO> selectApiKeyAll() {
         LambdaQueryWrapper<AiApiKey> wrapper = Wrappers.<AiApiKey>lambdaQuery()
                 .select(AiApiKey::getId, AiApiKey::getName)
-                .eq(AiApiKey::getStatus, CommonStatusEnum.ENABLE.getStatus());
+                .eq(AiApiKey::getStatus, AiStatusEnum.ENABLE.getStatus());
         return apiKeyMapper.selectVoList(wrapper);
     }
 
     @Override
     public AiApiKey validateApiKey(Long id) {
         AiApiKey apiKey = validateApiKeyExists(id);
-        if (CommonStatusEnum.isDisable(apiKey.getStatus())) {
+        if (AiStatusEnum.isDisable(apiKey.getStatus())) {
             throw new ServiceException(AiErrorConstants.API_KEY_DISABLE);
         }
         return apiKey;

@@ -3,7 +3,7 @@ package com.lucky.ai.domain.query.model;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.common.ai.enums.AiModelTypeEnum;
 import com.lucky.common.ai.enums.AiPlatformEnum;
-import com.lucky.common.ai.enums.CommonStatusEnum;
+import com.lucky.common.ai.enums.AiStatusEnum;
 import com.lucky.common.core.enumeration.InEnum;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
@@ -65,7 +65,7 @@ public class AiModelSaveQuery {
     /**
      * 状态
      */
-    @InEnum(CommonStatusEnum.class)
+    @InEnum(AiStatusEnum.class)
     @NotNull(message = "状态不能为空")
     private Integer status;
 

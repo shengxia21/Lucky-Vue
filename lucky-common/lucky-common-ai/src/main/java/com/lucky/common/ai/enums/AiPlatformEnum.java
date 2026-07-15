@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.Arrays;
 
 /**
- * AI 模型平台
+ * AI 平台枚举
  *
  * @author lucky
  */

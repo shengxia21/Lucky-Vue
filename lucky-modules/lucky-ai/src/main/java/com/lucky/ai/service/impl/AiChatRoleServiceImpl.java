@@ -11,7 +11,7 @@ import com.lucky.ai.domain.query.chatRole.AiChatRoleSaveQuery;
 import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
 import com.lucky.ai.mapper.AiChatRoleMapper;
 import com.lucky.ai.service.IAiChatRoleService;
-import com.lucky.common.ai.enums.CommonStatusEnum;
+import com.lucky.common.ai.enums.AiStatusEnum;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -48,7 +48,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     public int insertMyChatRole(AiChatRoleSaveMyQuery query) {
         AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
         chatRole.setUserId(SecurityUtils.getUserId());
-        chatRole.setStatus(CommonStatusEnum.ENABLE.getStatus());
+        chatRole.setStatus(AiStatusEnum.ENABLE.getStatus());
         chatRole.setPublicStatus(false);
         return chatRoleMapper.insert(chatRole);
     }
@@ -106,7 +106,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     @Override
     public AiChatRole validateChatRole(Long id) {
         AiChatRole chatRole = validateChatRoleExists(id);
-        if (CommonStatusEnum.isDisable(chatRole.getStatus())) {
+        if (AiStatusEnum.isDisable(chatRole.getStatus())) {
             throw new ServiceException(StringUtils.format(AiErrorConstants.CHAT_ROLE_DISABLE, chatRole.getName()));
         }
         return chatRole;
@@ -126,7 +126,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
 
     @Override
     public List<String> selectChatRoleCategoryList() {
-        List<String> list = chatRoleMapper.selectListGroupByCategory(CommonStatusEnum.ENABLE.getStatus());
+        List<String> list = chatRoleMapper.selectListGroupByCategory(AiStatusEnum.ENABLE.getStatus());
         return list.stream().filter(StrUtil::isNotBlank).toList();
     }
 

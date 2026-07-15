@@ -7,12 +7,12 @@ import lombok.Getter;
 import java.util.Arrays;
 
 /**
- * 通用状态枚举
+ * AI 状态枚举
  *
  * @author lucky
  */
 @Getter
-public enum CommonStatusEnum implements ArrayValuable<Integer> {
+public enum AiStatusEnum implements ArrayValuable<Integer> {
 
     ENABLE(0, "开启"),
     DISABLE(1, "关闭");
@@ -26,12 +26,12 @@ public enum CommonStatusEnum implements ArrayValuable<Integer> {
      */
     private final String name;
 
-    CommonStatusEnum(Integer status, String name) {
+    AiStatusEnum(Integer status, String name) {
         this.status = status;
         this.name = name;
     }
 
-    public static final Integer[] ARRAYS = Arrays.stream(values()).map(CommonStatusEnum::getStatus).toArray(Integer[]::new);
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(AiStatusEnum::getStatus).toArray(Integer[]::new);
 
     public static boolean isEnable(Integer status) {
         return ObjUtil.equal(ENABLE.status, status);

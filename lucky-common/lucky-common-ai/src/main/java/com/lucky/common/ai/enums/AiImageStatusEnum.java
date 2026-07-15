@@ -3,7 +3,7 @@ package com.lucky.common.ai.enums;
 import lombok.Getter;
 
 /**
- * 绘画状态枚举
+ * AI 绘画状态枚举
  *
  * @author lucky
  */

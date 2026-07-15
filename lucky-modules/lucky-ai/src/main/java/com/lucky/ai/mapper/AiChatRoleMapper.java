@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.domain.query.chatRole.AiChatRolePageQuery;
 import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
-import com.lucky.common.ai.enums.CommonStatusEnum;
+import com.lucky.common.ai.enums.AiStatusEnum;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 
@@ -37,7 +37,7 @@ public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, AiChatRoleVO> 
                 .eq(Boolean.TRUE.equals(query.getPublicStatus()), AiChatRole::getPublicStatus, query.getPublicStatus())
                 // 情况二：私有
                 .eq(Boolean.FALSE.equals(query.getPublicStatus()), AiChatRole::getUserId, userId)
-                .eq(Boolean.FALSE.equals(query.getPublicStatus()), AiChatRole::getStatus, CommonStatusEnum.ENABLE.getStatus())
+                .eq(Boolean.FALSE.equals(query.getPublicStatus()), AiChatRole::getStatus, AiStatusEnum.ENABLE.getStatus())
                 .orderByAsc(AiChatRole::getSort);
         return selectVoPage(page, wrapper);
     }
