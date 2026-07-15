@@ -1,10 +1,10 @@
 package com.lucky.common.ai.config;
 
-import com.lucky.common.ai.chat.service.ChatService;
-import com.lucky.common.ai.chat.service.impl.ChatServiceFacade;
-import com.lucky.common.ai.image.ImagePersistenceHandler;
-import com.lucky.common.ai.image.ImageService;
-import com.lucky.common.ai.image.impl.ImageServiceFacade;
+import com.lucky.common.ai.service.chat.ChatService;
+import com.lucky.common.ai.service.chat.impl.ChatServiceFacade;
+import com.lucky.common.ai.service.image.ImagePersistenceHandler;
+import com.lucky.common.ai.service.image.ImageService;
+import com.lucky.common.ai.service.image.impl.ImageServiceFacade;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

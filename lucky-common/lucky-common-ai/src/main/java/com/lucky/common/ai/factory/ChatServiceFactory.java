@@ -1,6 +1,6 @@
 package com.lucky.common.ai.factory;
 
-import com.lucky.common.ai.service.AbstractChatService;
+import com.lucky.common.ai.service.chat.AbstractChatService;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

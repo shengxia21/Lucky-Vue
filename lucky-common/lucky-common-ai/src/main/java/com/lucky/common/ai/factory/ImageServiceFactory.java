@@ -1,6 +1,6 @@
 package com.lucky.common.ai.factory;
 
-import com.lucky.common.ai.service.AbstractImageService;
+import com.lucky.common.ai.service.image.AbstractImageService;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

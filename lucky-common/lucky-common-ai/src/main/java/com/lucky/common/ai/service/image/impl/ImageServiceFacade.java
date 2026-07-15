@@ -1,10 +1,10 @@
-package com.lucky.common.ai.image.impl;
+package com.lucky.common.ai.service.image.impl;
 
 import com.lucky.common.ai.domain.request.ImageRequest;
 import com.lucky.common.ai.factory.ImageServiceFactory;
-import com.lucky.common.ai.image.ImagePersistenceHandler;
-import com.lucky.common.ai.image.ImageService;
-import com.lucky.common.ai.service.AbstractImageService;
+import com.lucky.common.ai.service.image.AbstractImageService;
+import com.lucky.common.ai.service.image.ImagePersistenceHandler;
+import com.lucky.common.ai.service.image.ImageService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.image.ImageModel;

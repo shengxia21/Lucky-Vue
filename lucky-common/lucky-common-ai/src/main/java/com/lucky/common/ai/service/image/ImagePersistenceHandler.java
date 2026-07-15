@@ -1,4 +1,4 @@
-package com.lucky.common.ai.image;
+package com.lucky.common.ai.service.image;
 
 /**
  * 图片生成任务持久化处理器

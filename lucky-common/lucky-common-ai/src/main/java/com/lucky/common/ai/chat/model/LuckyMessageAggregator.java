@@ -1,6 +1,6 @@
 package com.lucky.common.ai.chat.model;
 
-import com.lucky.common.ai.service.ResponseContentExtractor;
+import com.lucky.common.ai.service.chat.ResponseContentExtractor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.metadata.*;

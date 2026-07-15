@@ -17,7 +17,7 @@ import com.lucky.ai.service.IAiImageService;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.ai.domain.request.ImageRequest;
 import com.lucky.common.ai.enums.AiImageStatusEnum;
-import com.lucky.common.ai.image.ImageService;
+import com.lucky.common.ai.service.image.ImageService;
 import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;

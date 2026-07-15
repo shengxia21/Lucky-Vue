@@ -1,19 +1,16 @@
-package com.lucky.common.ai.service.impl;
+package com.lucky.common.ai.service.chat.impl.provider;
 
 import com.lucky.common.ai.domain.request.ChatRequest;
-import com.lucky.common.ai.domain.request.ImageRequest;
 import com.lucky.common.ai.enums.AiPlatformEnum;
-import com.lucky.common.ai.service.AbstractChatService;
-import com.lucky.common.ai.service.AbstractImageService;
+import com.lucky.common.ai.service.chat.AbstractChatService;
 import com.lucky.common.core.utils.StringUtils;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.ChatOptions;
-import org.springframework.ai.image.ImageModel;
-import org.springframework.ai.image.ImageOptions;
-import org.springframework.ai.zhipuai.*;
+import org.springframework.ai.zhipuai.ZhiPuAiAssistantMessage;
+import org.springframework.ai.zhipuai.ZhiPuAiChatModel;
+import org.springframework.ai.zhipuai.ZhiPuAiChatOptions;
 import org.springframework.ai.zhipuai.api.ZhiPuAiApi;
-import org.springframework.ai.zhipuai.api.ZhiPuAiImageApi;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @author lucky
  */
 @Component
-public class ZhiPuServiceImpl implements AbstractChatService, AbstractImageService {
+public class ZhiPuServiceImpl implements AbstractChatService {
 
     @Override
     public ChatModel buildChatModel(String baseUrl, String apiKey) {
@@ -47,19 +44,6 @@ public class ZhiPuServiceImpl implements AbstractChatService, AbstractImageServi
     @Override
     public String extractReasoningContent(AssistantMessage assistantMessage) {
         return ((ZhiPuAiAssistantMessage) assistantMessage).getReasoningContent();
-    }
-
-    @Override
-    public ImageModel buildImageModel(String baseUrl, String apiKey) {
-        ZhiPuAiImageApi zhiPuAiImageApi = new ZhiPuAiImageApi(apiKey);
-        return new ZhiPuAiImageModel(zhiPuAiImageApi);
-    }
-
-    @Override
-    public ImageOptions buildImageOptions(ImageRequest imageRequest) {
-        return ZhiPuAiImageOptions.builder()
-                .model(imageRequest.getModel())
-                .build();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.lucky.common.ai.service;
+package com.lucky.common.ai.service.chat;
 
 import org.springframework.ai.chat.messages.AssistantMessage;
 

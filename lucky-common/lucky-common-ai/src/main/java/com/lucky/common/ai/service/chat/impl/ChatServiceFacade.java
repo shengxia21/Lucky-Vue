@@ -1,13 +1,13 @@
-package com.lucky.common.ai.chat.service.impl;
+package com.lucky.common.ai.service.chat.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.lucky.common.ai.chat.advisor.LuckyMessageChatMemoryAdvisor;
 import com.lucky.common.ai.chat.memory.LuckyChatMemory;
-import com.lucky.common.ai.chat.service.ChatService;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.ai.factory.ChatServiceFactory;
-import com.lucky.common.ai.service.AbstractChatService;
+import com.lucky.common.ai.service.chat.AbstractChatService;
+import com.lucky.common.ai.service.chat.ChatService;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;

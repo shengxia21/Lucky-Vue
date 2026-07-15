@@ -1,4 +1,4 @@
-package com.lucky.common.ai.chat.service;
+package com.lucky.common.ai.service.chat;
 
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.domain.vo.ChatResponseVO;

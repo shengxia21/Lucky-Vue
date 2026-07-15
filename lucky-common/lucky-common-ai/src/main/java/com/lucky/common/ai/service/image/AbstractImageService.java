@@ -1,4 +1,4 @@
-package com.lucky.common.ai.service;
+package com.lucky.common.ai.service.image;
 
 import com.lucky.common.ai.domain.request.ImageRequest;
 import org.springframework.ai.image.ImageModel;

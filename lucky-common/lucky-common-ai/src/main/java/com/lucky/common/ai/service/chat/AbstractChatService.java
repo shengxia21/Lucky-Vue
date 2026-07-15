@@ -1,4 +1,4 @@
-package com.lucky.common.ai.service;
+package com.lucky.common.ai.service.chat;
 
 import com.lucky.common.ai.domain.request.ChatRequest;
 import org.springframework.ai.chat.model.ChatModel;

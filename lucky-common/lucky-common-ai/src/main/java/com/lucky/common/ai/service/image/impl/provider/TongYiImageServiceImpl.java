@@ -1,20 +1,12 @@
-package com.lucky.common.ai.service.impl;
+package com.lucky.common.ai.service.image.impl.provider;
 
-import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
 import com.alibaba.cloud.ai.dashscope.api.DashScopeImageApi;
-import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
-import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageModel;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageOptions;
-import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.domain.request.ImageRequest;
 import com.lucky.common.ai.enums.AiPlatformEnum;
-import com.lucky.common.ai.service.AbstractChatService;
-import com.lucky.common.ai.service.AbstractImageService;
+import com.lucky.common.ai.service.image.AbstractImageService;
 import com.lucky.common.core.utils.StringUtils;
-import org.springframework.ai.chat.messages.AssistantMessage;
-import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.image.ImageModel;
 import org.springframework.ai.image.ImageOptions;
 import org.springframework.stereotype.Component;
@@ -27,35 +19,7 @@ import java.util.Map;
  * @author lucky
  */
 @Component
-public class TongYiServiceImpl implements AbstractChatService, AbstractImageService {
-
-    @Override
-    public ChatModel buildChatModel(String baseUrl, String apiKey) {
-        DashScopeApi.Builder builder = DashScopeApi.builder().apiKey(apiKey);
-        if (StringUtils.isNotBlank(baseUrl)) {
-            builder.baseUrl(baseUrl);
-        }
-        DashScopeApi dashScopeApi = builder.build();
-        return DashScopeChatModel.builder()
-                .dashScopeApi(dashScopeApi)
-                .build();
-    }
-
-    @Override
-    public ChatOptions buildChatOptions(ChatRequest chatRequest) {
-        return DashScopeChatOptions.builder()
-                .model(chatRequest.getModel())
-                .enableThinking(chatRequest.getUseThinking())
-                .enableSearch(chatRequest.getUseSearch())
-                .temperature(chatRequest.getTemperature())
-                .maxToken(chatRequest.getMaxTokens())
-                .build();
-    }
-
-    @Override
-    public String extractReasoningContent(AssistantMessage assistantMessage) {
-        return (String) assistantMessage.getMetadata().getOrDefault("reasoningContent", "");
-    }
+public class TongYiImageServiceImpl implements AbstractImageService {
 
     @Override
     public ImageModel buildImageModel(String baseUrl, String apiKey) {
