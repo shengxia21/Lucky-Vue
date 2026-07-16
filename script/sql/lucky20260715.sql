@@ -54,18 +54,15 @@ INSERT INTO `ai_api_key` VALUES (9, '百川智能', 'BaiChuan', '填写你自己
 -- ----------------------------
 DROP TABLE IF EXISTS `ai_chat_conversation`;
 CREATE TABLE `ai_chat_conversation`  (
-  `id` bigint(0) NOT NULL COMMENT 'ID 编号，自增',
+  `id` bigint(0) NOT NULL COMMENT '编号',
   `user_id` bigint(0) NOT NULL COMMENT '用户编号',
   `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '对话标题',
   `pinned` tinyint(0) NOT NULL DEFAULT 0 COMMENT '是否置顶（0否 1是）',
-  `pinned_time` datetime(0) NULL DEFAULT NULL COMMENT '置顶时间',
-  `role_id` bigint(0) NULL DEFAULT NULL COMMENT '角色编号',
-  `model_id` bigint(0) NOT NULL COMMENT '模型编号',
-  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色头像',
   `system_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '角色设定',
   `temperature` double NOT NULL COMMENT '温度参数',
   `max_tokens` int(0) NOT NULL COMMENT '单条回复的最大 Token 数量',
-  `max_contexts` int(0) NOT NULL COMMENT '上下文的最大 Message 数量',
+  `message_count` int(0) NOT NULL COMMENT '携带历史消息数',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 1代表删除）',
   `create_dept` bigint(0) NULL DEFAULT NULL COMMENT '创建部门',
   `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
@@ -73,8 +70,7 @@ CREATE TABLE `ai_chat_conversation`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_user_id`(`user_id`) USING BTREE,
-  INDEX `idx_model_id`(`model_id`) USING BTREE
+  INDEX `idx_user_id`(`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 聊天对话表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -89,9 +85,9 @@ CREATE TABLE `ai_chat_message`  (
   `id` bigint(0) NOT NULL COMMENT '编号',
   `user_id` bigint(0) NOT NULL COMMENT '用户编号',
   `conversation_id` bigint(0) NOT NULL COMMENT '对话编号',
-  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '消息类型',
   `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
   `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '消息类型',
   `system_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '系统消息(角色设定)',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '聊天内容',
   `reasoning_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '推理内容',
@@ -122,13 +118,10 @@ CREATE TABLE `ai_chat_message`  (
 DROP TABLE IF EXISTS `ai_chat_role`;
 CREATE TABLE `ai_chat_role`  (
   `id` bigint(0) NOT NULL COMMENT '编号',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色名称',
+  `user_id` bigint(0) NOT NULL COMMENT '用户编号',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色名称',
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色头像',
-  `category` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色分类',
-  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色描述',
   `system_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '角色设定',
-  `user_id` bigint(0) NULL DEFAULT NULL COMMENT '用户编号',
-  `model_id` bigint(0) NULL DEFAULT NULL COMMENT '模型编号',
   `knowledge_ids` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '引用的知识库编号列表',
   `tool_ids` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '引用的工具编号列表',
   `mcp_client_names` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '引用的 MCP Client 名字列表',
@@ -142,8 +135,7 @@ CREATE TABLE `ai_chat_role`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_user_id`(`user_id`) USING BTREE,
-  INDEX `idx_model_id`(`model_id`) USING BTREE
+  INDEX `idx_user_id`(`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 聊天角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
