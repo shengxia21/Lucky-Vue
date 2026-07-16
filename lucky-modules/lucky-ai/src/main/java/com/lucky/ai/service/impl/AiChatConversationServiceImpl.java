@@ -3,7 +3,6 @@ package com.lucky.ai.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatRole;
@@ -58,7 +57,6 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         AiModel model = role != null && role.getModelId() != null ? modelService.validateModel(role.getModelId())
                 : modelService.getDefaultModelByType(AiModelTypeEnum.CHAT.getType());
         Assert.notNull(model, "必须找到默认模型");
-        validateChatModel(model);
 
         // 2. 创建 AiChatConversation 聊天对话
         AiChatConversation conversation = new AiChatConversation();
@@ -66,9 +64,6 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         conversation.setPinned(false);
         conversation.setModelId(model.getId());
         conversation.setModel(model.getModel());
-        conversation.setTemperature(model.getTemperature());
-        conversation.setMaxTokens(model.getMaxTokens());
-        conversation.setMaxContexts(model.getMaxContexts());
         if (role != null) {
             conversation.setTitle(role.getName());
             conversation.setRoleId(role.getId());
@@ -163,19 +158,6 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
             throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
         }
         return conversation;
-    }
-
-    /**
-     * 校验聊天模型是否正确
-     *
-     * @param model 聊天模型
-     */
-    private void validateChatModel(AiModel model) {
-        if (ObjectUtil.isAllNotEmpty(model.getTemperature(), model.getMaxTokens(), model.getMaxContexts())) {
-            return;
-        }
-        Assert.equals(model.getType(), AiModelTypeEnum.CHAT.getType(), "模型类型不正确：" + model);
-        throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_MODEL_ERROR);
     }
 
 }

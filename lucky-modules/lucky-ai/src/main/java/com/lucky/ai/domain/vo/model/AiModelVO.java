@@ -31,14 +31,14 @@ public class AiModelVO {
     private String name;
 
     /**
-     * 模型标识
-     */
-    private String model;
-
-    /**
      * 模型平台
      */
     private String platform;
+
+    /**
+     * 模型标识
+     */
+    private String model;
 
     /**
      * 模型类型
@@ -54,21 +54,6 @@ public class AiModelVO {
      * 状态
      */
     private Integer status;
-
-    /**
-     * 温度参数
-     */
-    private Double temperature;
-
-    /**
-     * 单条回复的最大 Token 数量
-     */
-    private Integer maxTokens;
-
-    /**
-     * 上下文的最大 Message 数量
-     */
-    private Integer maxContexts;
 
     /**
      * 创建时间

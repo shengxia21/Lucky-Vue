@@ -34,6 +34,7 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
         messageDTO.setConversationId(chatRequest.getConversationId());
         messageDTO.setType(MessageType.USER.getValue());
         messageDTO.setUserId(chatRequest.getUserId());
+        messageDTO.setPlatform(chatRequest.getPlatform());
         messageDTO.setModel(chatRequest.getModel());
         messageDTO.setContent(message.getText());
         messageDTO.setAttachmentUrls(chatRequest.getAttachmentUrls());
@@ -53,6 +54,7 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
         messageDTO.setConversationId(chatRequest.getConversationId());
         messageDTO.setType(MessageType.ASSISTANT.getValue());
         messageDTO.setUserId(chatRequest.getUserId());
+        messageDTO.setPlatform(chatRequest.getPlatform());
         messageDTO.setModel(chatRequest.getModel());
         messageDTO.setContent(assistant.getText());
         messageDTO.setReasoningContent(assistant.getMetadata().get("reasoningContent").toString());

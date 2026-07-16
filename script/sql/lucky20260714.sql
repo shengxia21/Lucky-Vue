@@ -24,8 +24,8 @@ DROP TABLE IF EXISTS `ai_api_key`;
 CREATE TABLE `ai_api_key`  (
   `id` bigint(0) NOT NULL COMMENT '编号',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
-  `api_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '密钥',
   `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
+  `api_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '密钥',
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'API 地址',
   `status` tinyint(0) NOT NULL DEFAULT 0 COMMENT '状态（0开启 1关闭）',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 1代表删除）',
@@ -40,14 +40,14 @@ CREATE TABLE `ai_api_key`  (
 -- ----------------------------
 -- Records of ai_api_key
 -- ----------------------------
-INSERT INTO `ai_api_key` VALUES (1, 'DeepSeek', '填写你自己的api_key', 'DeepSeek', 'https://api.deepseek.com', 0, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_api_key` VALUES (2, '通义千问', '填写你自己的api_key', 'TongYi', 'https://dashscope.aliyuncs.com', 0, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_api_key` VALUES (4, '百度千帆', '填写你自己的api_key', 'YiYan', NULL, 0, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_api_key` VALUES (5, '豆包火山引擎', '填写你自己的api_key', 'DouBao', NULL, 0, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_api_key` VALUES (6, '腾讯混元', '填写你自己的api_key', 'HunYuan', NULL, 0, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_api_key` VALUES (7, '讯飞星火', '填写你自己的api_key', 'XingHuo', NULL, 0, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_api_key` VALUES (8, 'Kimi', '填写你自己的api_key', 'Moonshot', NULL, 0, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_api_key` VALUES (9, '百川智能', '填写你自己的api_key', 'BaiChuan', NULL, 0, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (1, 'DeepSeek', 'DeepSeek', '填写你自己的api_key', 'https://api.deepseek.com', 0, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (2, '通义千问', 'TongYi', '填写你自己的api_key', 'https://dashscope.aliyuncs.com', 0, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (4, '百度千帆', 'YiYan', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (5, '豆包火山引擎', 'DouBao', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (6, '腾讯混元', 'HunYuan', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (7, '讯飞星火', 'XingHuo', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (8, 'Kimi', 'Moonshot', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_api_key` VALUES (9, '百川智能', 'BaiChuan', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
 
 -- ----------------------------
 -- Table structure for ai_chat_conversation
@@ -90,6 +90,7 @@ CREATE TABLE `ai_chat_message`  (
   `user_id` bigint(0) NOT NULL COMMENT '用户编号',
   `conversation_id` bigint(0) NOT NULL COMMENT '对话编号',
   `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '消息类型',
+  `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
   `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
   `system_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '系统消息(角色设定)',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '聊天内容',
@@ -156,17 +157,17 @@ DROP TABLE IF EXISTS `ai_image`;
 CREATE TABLE `ai_image`  (
   `id` bigint(0) NOT NULL COMMENT '编号',
   `user_id` bigint(0) NOT NULL COMMENT '用户编号',
-  `prompt` varchar(1200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提示词',
   `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
   `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标识',
+  `prompt` varchar(1200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提示词',
   `width` int(0) NOT NULL COMMENT '图片宽度',
   `height` int(0) NOT NULL COMMENT '图片高度',
   `status` tinyint(0) NOT NULL DEFAULT 10 COMMENT '生成状态（10进行中 20已完成 30已失败）',
-  `finish_time` datetime(0) NULL DEFAULT NULL COMMENT '完成时间',
-  `error_message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '绘画错误信息',
   `pic_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片地址',
-  `public_status` tinyint(0) NOT NULL DEFAULT 0 COMMENT '是否公开（0否 1是）',
+  `finish_time` datetime(0) NULL DEFAULT NULL COMMENT '完成时间',
   `options` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '绘制参数',
+  `error_message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '绘画错误信息',
+  `public_status` tinyint(0) NOT NULL DEFAULT 0 COMMENT '是否公开（0否 1是）',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 1代表删除）',
   `create_dept` bigint(0) NULL DEFAULT NULL COMMENT '创建部门',
   `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
@@ -189,14 +190,11 @@ CREATE TABLE `ai_model`  (
   `id` bigint(0) NOT NULL COMMENT '编号',
   `key_id` bigint(0) NOT NULL COMMENT 'API 秘钥编号',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型名称',
-  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
   `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
+  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
   `type` tinyint(0) NOT NULL DEFAULT 1 COMMENT '模型类型（1对话 2图片 3语音 4视频 5向量 6重排序）',
   `status` tinyint(0) NOT NULL DEFAULT 0 COMMENT '状态（0开启 1关闭）',
   `sort` tinyint(0) NOT NULL COMMENT '排序',
-  `temperature` decimal(20, 2) NULL DEFAULT NULL COMMENT '温度参数',
-  `max_tokens` int(0) NULL DEFAULT NULL COMMENT '单条回复的最大 Token 数量',
-  `max_contexts` int(0) NULL DEFAULT NULL COMMENT '上下文的最大 Message 数量',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 1代表删除）',
   `create_dept` bigint(0) NULL DEFAULT NULL COMMENT '创建部门',
   `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
@@ -210,17 +208,17 @@ CREATE TABLE `ai_model`  (
 -- ----------------------------
 -- Records of ai_model
 -- ----------------------------
-INSERT INTO `ai_model` VALUES (1, 1, 'DeepSeek-Flash', 'deepseek-v4-flash', 'DeepSeek', 1, 0, 1, 1, 2000, 10, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (2, 1, 'DeepSeek-Pro', 'deepseek-v4-pro', 'DeepSeek', 1, 0, 2, 1, 2000, 10, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (3, 2, '通义千问-plus', 'qwen-plus', 'TongYi', 1, 0, 3, 1, 4000, 10, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (4, 2, '通义千问-image-plus', 'qwen-image-plus', 'TongYi', 2, 0, 4, NULL, NULL, NULL, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (5, 2, '通义万相2.2-文生图-plus', 'wan2.2-t2i-plus', 'TongYi', 2, 0, 5, NULL, NULL, NULL, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (6, 5, 'Doubao-Seed-1.6', 'doubao-seed-1-6-251015', 'DouBao', 1, 0, 6, 1, 4000, 10, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (7, 4, '千帆5.0', 'ernie-5.0-thinking-preview', 'YiYan', 1, 0, 7, 1, 4000, 10, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (8, 6, '混元turbos', 'hunyuan-turbos-latest', 'HunYuan', 1, 0, 8, 1, 4000, 10, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (9, 7, '讯飞星火-Max', 'generalv3.5', 'XingHuo', 1, 0, 9, 1, 4000, 10, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (10, 8, '月之暗面-kimi', 'kimi-k2-turbo-preview', 'Moonshot', 1, 0, 10, 1, 4000, 10, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (11, 9, '百川智能-M2', 'Baichuan-M2', 'BaiChuan', 1, 0, 11, 1, 4000, 10, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (1, 1, 'DeepSeek-Flash', 'DeepSeek', 'deepseek-v4-flash', 1, 0, 1, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (2, 1, 'DeepSeek-Pro', 'DeepSeek', 'deepseek-v4-pro', 1, 0, 2, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (3, 2, '通义千问-plus', 'TongYi', 'qwen-plus', 1, 0, 3, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (4, 2, '通义千问-image-plus', 'TongYi', 'qwen-image-plus', 2, 0, 4, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (5, 2, '通义万相2.2-文生图-plus', 'TongYi', 'wan2.2-t2i-plus', 2, 0, 5, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (6, 5, 'Doubao-Seed-1.6', 'DouBao', 'doubao-seed-1-6-251015', 1, 0, 6, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (7, 4, '千帆5.0', 'YiYan', 'ernie-5.0-thinking-preview', 1, 0, 7, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (8, 6, '混元turbos', 'HunYuan', 'hunyuan-turbos-latest', 1, 0, 8, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (9, 7, '讯飞星火-Max', 'XingHuo', 'generalv3.5', 1, 0, 9, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (10, 8, '月之暗面-kimi', 'Moonshot', 'kimi-k2-turbo-preview', 1, 0, 10, '0', '', '', NULL, '', NULL);
+INSERT INTO `ai_model` VALUES (11, 9, '百川智能-M2', 'BaiChuan', 'Baichuan-M2', 1, 0, 11, '0', '', '', NULL, '', NULL);
 
 -- ----------------------------
 -- Table structure for gen_table

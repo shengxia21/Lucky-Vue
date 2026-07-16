@@ -37,17 +37,17 @@ public class AiModelSaveQuery {
     private String name;
 
     /**
-     * 模型标识
-     */
-    @NotEmpty(message = "模型标识不能为空")
-    private String model;
-
-    /**
      * 模型平台
      */
     @InEnum(AiPlatformEnum.class)
     @NotEmpty(message = "模型平台不能为空")
     private String platform;
+
+    /**
+     * 模型标识
+     */
+    @NotEmpty(message = "模型标识不能为空")
+    private String model;
 
     /**
      * 模型类型
@@ -68,20 +68,5 @@ public class AiModelSaveQuery {
     @InEnum(AiStatusEnum.class)
     @NotNull(message = "状态不能为空")
     private Integer status;
-
-    /**
-     * 温度参数
-     */
-    private Double temperature;
-
-    /**
-     * 单条回复的最大 Token 数量
-     */
-    private Integer maxTokens;
-
-    /**
-     * 上下文的最大 Message 数量
-     */
-    private Integer maxContexts;
 
 }

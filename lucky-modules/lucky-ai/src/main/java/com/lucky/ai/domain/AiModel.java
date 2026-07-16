@@ -39,14 +39,14 @@ public class AiModel extends BaseEntity {
     private String name;
 
     /**
-     * 模型标志
-     */
-    private String model;
-
-    /**
      * 平台
      */
     private String platform;
+
+    /**
+     * 模型标志
+     */
+    private String model;
 
     /**
      * 模型类型（1对话 2图片 3语音 4视频 5向量 6重排序）
@@ -62,21 +62,6 @@ public class AiModel extends BaseEntity {
      * 排序
      */
     private Integer sort;
-
-    /**
-     * 温度参数
-     */
-    private Double temperature;
-
-    /**
-     * 单条回复的最大 Token 数量
-     */
-    private Integer maxTokens;
-
-    /**
-     * 上下文的最大 Message 数量
-     */
-    private Integer maxContexts;
 
     /**
      * 删除标志（0代表存在 2代表删除）

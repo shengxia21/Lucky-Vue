@@ -39,6 +39,11 @@ public class AiChatMessageVO implements VO {
     private String type;
 
     /**
+     * 平台
+     */
+    private String platform;
+
+    /**
      * 模型标志
      */
     private String model;
