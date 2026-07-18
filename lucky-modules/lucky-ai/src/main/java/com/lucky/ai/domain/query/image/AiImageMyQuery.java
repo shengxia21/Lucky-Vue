@@ -3,16 +3,21 @@ package com.lucky.ai.domain.query.image;
 import lombok.Data;
 
 /**
- * 公开的绘图分页查询对象
+ * AI 绘画分页【我的】请求对象
  *
  * @author lucky
  */
 @Data
-public class AiImagePagePublicQuery {
+public class AiImageMyQuery {
 
     /**
      * 提示词
      */
     private String prompt;
+
+    /**
+     * 是否发布
+     */
+    private Boolean publicStatus;
 
 }

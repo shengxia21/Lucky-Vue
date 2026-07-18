@@ -66,7 +66,7 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
     @Override
     public ChatClientRequest before(ChatClientRequest chatClientRequest, AdvisorChain advisorChain) {
         ChatRequest request = this.getRequest(chatClientRequest.context());
-        List<Message> memoryMessages = this.chatMemory.get(request.getConversationId(), request.getMaxContexts());
+        List<Message> memoryMessages = this.chatMemory.get(request.getConversationId(), request.getMessageCount());
         List<Message> processedMessages = new ArrayList<>(memoryMessages);
         processedMessages.addAll(chatClientRequest.prompt().getInstructions());
 

@@ -34,14 +34,14 @@ public class AiApiKey extends BaseEntity {
     private String name;
 
     /**
-     * 密钥
-     */
-    private String apiKey;
-
-    /**
      * 平台
      */
     private String platform;
+
+    /**
+     * 密钥
+     */
+    private String apiKey;
 
     /**
      * API 地址

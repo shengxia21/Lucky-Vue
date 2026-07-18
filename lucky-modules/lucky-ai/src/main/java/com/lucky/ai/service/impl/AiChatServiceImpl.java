@@ -12,7 +12,6 @@ import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.ai.service.chat.ChatService;
-import com.lucky.common.core.constant.AiErrorConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
@@ -39,14 +38,19 @@ public class AiChatServiceImpl implements IAiChatService {
 
     @Override
     public Flux<ChatResponseVO> chatStream(ChatQuery query) {
-        // 校验对话存在
-        AiChatConversation conversation = chatConversationService.validateChatConversationExists(query.getConversationId());
-        if (ObjUtil.notEqual(conversation.getUserId(), SecurityUtils.getUserId())) {
-            throw new ServiceException(AiErrorConstants.CHAT_CONVERSATION_NOT_EXISTS);
+        // 校验对话是否存在，不存在则创建
+        AiChatConversation conversation;
+        if (ObjUtil.isNull(query.getConversationId())) {
+            conversation = chatConversationService.insertMyChatConversation();
+        } else {
+            conversation = chatConversationService.validateChatConversationExists(query.getConversationId());
+            if (ObjUtil.notEqual(conversation.getUserId(), SecurityUtils.getUserId())) {
+                throw new ServiceException("对话不属于当前用户");
+            }
         }
-        // 校验模型
-        AiModel model = modelService.validateModel(conversation.getModelId());
-        // 校验key
+        // 校验模型是否有效
+        AiModel model = modelService.validateModel(query.getModelId());
+        // 校验apikey是否有效
         AiApiKey apiKey = apiKeyService.validateApiKey(model.getKeyId());
 
         // 构建聊天请求
@@ -59,9 +63,9 @@ public class AiChatServiceImpl implements IAiChatService {
         chatRequest.setSystemMessage(conversation.getSystemMessage());
         chatRequest.setTemperature(conversation.getTemperature());
         chatRequest.setMaxTokens(conversation.getMaxTokens());
-        chatRequest.setMaxContexts(conversation.getMaxContexts());
-        chatRequest.setModel(model.getModel());
+        chatRequest.setMessageCount(conversation.getMessageCount());
         chatRequest.setPlatform(model.getPlatform());
+        chatRequest.setModel(model.getModel());
         chatRequest.setApiKey(apiKey.getApiKey());
         chatRequest.setUrl(apiKey.getUrl());
         chatRequest.setUserId(SecurityUtils.getUserId());

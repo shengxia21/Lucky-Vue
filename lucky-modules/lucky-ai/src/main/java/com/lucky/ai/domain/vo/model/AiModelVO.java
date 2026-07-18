@@ -46,14 +46,14 @@ public class AiModelVO {
     private Integer type;
 
     /**
-     * 排序
-     */
-    private Integer sort;
-
-    /**
      * 状态
      */
     private Integer status;
+
+    /**
+     * 排序
+     */
+    private Integer sort;
 
     /**
      * 创建时间

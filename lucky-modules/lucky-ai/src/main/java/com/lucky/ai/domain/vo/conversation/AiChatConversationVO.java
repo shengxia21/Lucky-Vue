@@ -1,11 +1,7 @@
 package com.lucky.ai.domain.vo.conversation;
 
-import com.fhs.core.trans.anno.Trans;
-import com.fhs.core.trans.constant.TransType;
 import com.fhs.core.trans.vo.VO;
 import com.lucky.ai.domain.AiChatConversation;
-import com.lucky.ai.domain.AiChatRole;
-import com.lucky.ai.domain.AiModel;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
@@ -41,26 +37,9 @@ public class AiChatConversationVO implements VO {
     private Boolean pinned;
 
     /**
-     * 角色编号
+     * 角色头像
      */
-    @Trans(type = TransType.SIMPLE, target = AiChatRole.class, fields = {"name", "avatar"}, refs = {"roleName", "roleAvatar"})
-    private Long roleId;
-
-    /**
-     * 模型编号
-     */
-    @Trans(type = TransType.SIMPLE, target = AiModel.class, fields = {"name", "model"}, refs = {"modelName", "model"})
-    private Long modelId;
-
-    /**
-     * 模型标志
-     */
-    private String model;
-
-    /**
-     * 模型名字
-     */
-    private String modelName;
+    private String avatar;
 
     /**
      * 角色设定
@@ -78,28 +57,13 @@ public class AiChatConversationVO implements VO {
     private Integer maxTokens;
 
     /**
-     * 上下文的最大 Message 数量
+     * 携带历史消息数
      */
-    private Integer maxContexts;
+    private Integer messageCount;
 
     /**
      * 创建时间
      */
     private LocalDateTime createTime;
-
-    /**
-     * 角色头像
-     */
-    private String roleAvatar;
-
-    /**
-     * 角色名字
-     */
-    private String roleName;
-
-    /**
-     * 消息数量
-     */
-    private Integer messageCount;
 
 }

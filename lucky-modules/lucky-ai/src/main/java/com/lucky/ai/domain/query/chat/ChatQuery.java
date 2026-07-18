@@ -21,6 +21,12 @@ public class ChatQuery {
     private Long conversationId;
 
     /**
+     * 模型编号
+     */
+    @NotNull(message = "模型编号不能为空")
+    private Long modelId;
+
+    /**
      * 聊天内容
      */
     @NotEmpty(message = "聊天内容不能为空")

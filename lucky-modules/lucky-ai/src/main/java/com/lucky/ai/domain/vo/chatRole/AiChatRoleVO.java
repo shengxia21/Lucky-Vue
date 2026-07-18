@@ -1,10 +1,7 @@
 package com.lucky.ai.domain.vo.chatRole;
 
-import com.fhs.core.trans.anno.Trans;
-import com.fhs.core.trans.constant.TransType;
 import com.fhs.core.trans.vo.VO;
 import com.lucky.ai.domain.AiChatRole;
-import com.lucky.ai.domain.AiModel;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
@@ -31,22 +28,6 @@ public class AiChatRoleVO implements VO {
     private Long userId;
 
     /**
-     * 模型编号
-     */
-    @Trans(type = TransType.SIMPLE, target = AiModel.class, fields = {"name", "model"}, refs = {"modelName", "model"})
-    private Long modelId;
-
-    /**
-     * 模型名字
-     */
-    private String modelName;
-
-    /**
-     * 模型标识
-     */
-    private String model;
-
-    /**
      * 角色名称
      */
     private String name;
@@ -55,21 +36,6 @@ public class AiChatRoleVO implements VO {
      * 角色头像
      */
     private String avatar;
-
-    /**
-     * 角色类别
-     */
-    private String category;
-
-    /**
-     * 角色排序
-     */
-    private Integer sort;
-
-    /**
-     * 角色描述
-     */
-    private String description;
 
     /**
      * 角色设定
@@ -95,6 +61,11 @@ public class AiChatRoleVO implements VO {
      * 是否公开
      */
     private Boolean publicStatus;
+
+    /**
+     * 排序
+     */
+    private Integer sort;
 
     /**
      * 状态

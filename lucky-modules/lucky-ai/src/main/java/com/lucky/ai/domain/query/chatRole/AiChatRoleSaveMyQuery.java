@@ -1,8 +1,10 @@
 package com.lucky.ai.domain.query.chatRole;
 
 import com.lucky.ai.domain.AiChatRole;
+import com.lucky.common.core.validate.Update;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class AiChatRoleSaveMyQuery {
     /**
      * 角色编号
      */
+    @NotNull(message = "角色编号不能为空", groups = {Update.class})
     private Long id;
 
     /**
@@ -32,12 +35,6 @@ public class AiChatRoleSaveMyQuery {
      */
     @NotEmpty(message = "角色头像不能为空")
     private String avatar;
-
-    /**
-     * 角色描述
-     */
-    @NotEmpty(message = "角色描述不能为空")
-    private String description;
 
     /**
      * 角色设定

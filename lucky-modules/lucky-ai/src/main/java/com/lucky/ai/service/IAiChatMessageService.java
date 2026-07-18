@@ -1,13 +1,11 @@
 package com.lucky.ai.service;
 
-import com.lucky.ai.domain.query.message.AiChatMessagePageQuery;
+import com.lucky.ai.domain.query.message.AiChatMessageQuery;
 import com.lucky.ai.domain.vo.message.AiChatMessageVO;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * AI 聊天消息Service接口
@@ -17,15 +15,15 @@ import java.util.Map;
 public interface IAiChatMessageService {
 
     /**
-     * 根据会话ID查询聊天消息列表
+     * 查询【我的】指定对话的消息列表
      *
      * @param conversationId 会话ID
      * @return 聊天消息列表
      */
-    List<AiChatMessageVO> selectChatMessageListByConversationId(Long conversationId);
+    List<AiChatMessageVO> selectMyChatMessageListByConversationId(Long conversationId);
 
     /**
-     * 删除我的消息
+     * 删除【我的】消息
      *
      * @param id 消息ID
      * @return 结果
@@ -33,7 +31,7 @@ public interface IAiChatMessageService {
     int deleteMyChatMessageById(Long id);
 
     /**
-     * 删除我的指定对话的消息
+     * 删除【我的】指定对话的消息
      *
      * @param conversationId 会话ID
      * @return 结果
@@ -47,22 +45,14 @@ public interface IAiChatMessageService {
      * @param query     查询参数
      * @return 聊天消息分页列表
      */
-    TableDataInfo<AiChatMessageVO> selectChatMessageList(PageQuery pageQuery, AiChatMessagePageQuery query);
+    TableDataInfo<AiChatMessageVO> selectChatMessageList(PageQuery pageQuery, AiChatMessageQuery query);
 
     /**
-     * 删除消息（管理员）
+     * 删除消息
      *
      * @param ids 聊天消息ID数组
      * @return 结果
      */
     int deleteChatMessageByIds(Long[] ids);
-
-    /**
-     * 获得聊天对话的消息数量 Map
-     *
-     * @param conversationIds 对话编号数组
-     * @return 消息数量 Map
-     */
-    Map<Long, Integer> selectChatMessageCountMap(Collection<Long> conversationIds);
 
 }

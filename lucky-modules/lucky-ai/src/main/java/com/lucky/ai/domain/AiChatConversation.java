@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
-import java.time.LocalDateTime;
 
 /**
  * AI 聊天对话对象 ai_chat_conversation
@@ -26,7 +25,7 @@ public class AiChatConversation extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID 编号
+     * 编号
      */
     @TableId(value = "id")
     private Long id;
@@ -47,24 +46,9 @@ public class AiChatConversation extends BaseEntity {
     private Boolean pinned;
 
     /**
-     * 置顶时间
+     * 角色头像
      */
-    private LocalDateTime pinnedTime;
-
-    /**
-     * 角色编号
-     */
-    private Long roleId;
-
-    /**
-     * 模型编号
-     */
-    private Long modelId;
-
-    /**
-     * 模型标志
-     */
-    private String model;
+    private String avatar;
 
     /**
      * 角色设定
@@ -82,9 +66,9 @@ public class AiChatConversation extends BaseEntity {
     private Integer maxTokens;
 
     /**
-     * 上下文的最大 Message 数量
+     * 携带历史消息数
      */
-    private Integer maxContexts;
+    private Integer messageCount;
 
     /**
      * 删除标志（0代表存在 2代表删除）

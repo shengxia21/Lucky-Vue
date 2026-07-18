@@ -29,13 +29,4 @@ public enum AiImageStatusEnum {
         this.name = name;
     }
 
-    public static AiImageStatusEnum valueOfStatus(Integer status) {
-        for (AiImageStatusEnum statusEnum : AiImageStatusEnum.values()) {
-            if (statusEnum.getStatus().equals(status)) {
-                return statusEnum;
-            }
-        }
-        throw new IllegalArgumentException("未知绘画状态： " + status);
-    }
-
 }

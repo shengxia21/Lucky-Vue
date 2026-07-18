@@ -26,15 +26,15 @@ public class AiApiKeyVO {
     private String name;
 
     /**
+     * 平台
+     */
+    private String platform;
+
+    /**
      * 密钥
      */
     @Sensitive(desensitizedType = DesensitizedType.AI_API_KEY)
     private String apiKey;
-
-    /**
-     * 平台
-     */
-    private String platform;
 
     /**
      * 自定义 API 地址

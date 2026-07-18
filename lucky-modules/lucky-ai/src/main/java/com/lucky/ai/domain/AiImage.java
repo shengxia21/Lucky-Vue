@@ -38,11 +38,6 @@ public class AiImage extends BaseEntity {
     private Long userId;
 
     /**
-     * 提示词
-     */
-    private String prompt;
-
-    /**
      * 平台
      */
     private String platform;
@@ -51,6 +46,11 @@ public class AiImage extends BaseEntity {
      * 模型标识
      */
     private String model;
+
+    /**
+     * 提示词
+     */
+    private String prompt;
 
     /**
      * 图片宽度
@@ -68,9 +68,20 @@ public class AiImage extends BaseEntity {
     private Integer status;
 
     /**
+     * 图片地址
+     */
+    private String picUrl;
+
+    /**
      * 完成时间
      */
     private LocalDateTime finishTime;
+
+    /**
+     * 绘制参数
+     */
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private Map<String, Object> options;
 
     /**
      * 绘画错误信息
@@ -78,20 +89,9 @@ public class AiImage extends BaseEntity {
     private String errorMessage;
 
     /**
-     * 图片地址
-     */
-    private String picUrl;
-
-    /**
      * 是否公开（0否 1是）
      */
     private Boolean publicStatus;
-
-    /**
-     * 绘制参数
-     */
-    @TableField(typeHandler = JacksonTypeHandler.class)
-    private Map<String, Object> options;
 
     /**
      * 删除标志（0代表存在 2代表删除）

@@ -14,7 +14,7 @@ public interface IAiChatService {
     /**
      * 发送消息（流式）
      *
-     * @param query    发送消息（流式）请求VO
+     * @param query 聊天参数
      * @return Flux流式响应
      */
     Flux<ChatResponseVO> chatStream(ChatQuery query);

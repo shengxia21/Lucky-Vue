@@ -4,11 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiImage;
-import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
-import com.lucky.ai.domain.query.image.AiImagePageQuery;
+import com.lucky.ai.domain.query.image.AiImageMyQuery;
+import com.lucky.ai.domain.query.image.AiImageQuery;
 import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
+import com.lucky.common.security.utils.SecurityUtils;
 
 import java.util.List;
 
@@ -19,24 +20,37 @@ import java.util.List;
  */
 public interface AiImageMapper extends BaseMapperX<AiImage, AiImageVO> {
 
-    default IPage<AiImageVO> selectMyPage(IPage<AiImage> page, AiImagePageQuery query, Long userId) {
+    default IPage<AiImageVO> selectMyPage(IPage<AiImage> page, AiImageMyQuery query) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getPrompt()), AiImage::getPrompt, query.getPrompt())
                 .eq(StringUtils.isNotNull(query.getPublicStatus()), AiImage::getPublicStatus, query.getPublicStatus())
-                .eq(AiImage::getUserId, userId)
+                .eq(AiImage::getUserId, SecurityUtils.getUserId())
                 .orderByDesc(AiImage::getCreateTime);
         return selectVoPage(page, wrapper);
     }
 
-    default IPage<AiImageVO> selectPublicPage(IPage<AiImage> page, AiImagePagePublicQuery query) {
+    default AiImageVO selectMyById(Long id) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
-                .like(StringUtils.isNotEmpty(query.getPrompt()), AiImage::getPrompt, query.getPrompt())
-                .eq(AiImage::getPublicStatus, true)
-                .orderByDesc(AiImage::getCreateTime);
-        return selectVoPage(page, wrapper);
+                .eq(AiImage::getId, id)
+                .eq(AiImage::getUserId, SecurityUtils.getUserId());
+        return selectVoOne(wrapper, false);
     }
 
-    default IPage<AiImageVO> selectPage(IPage<AiImage> page, AiImagePageQuery query) {
+    default List<AiImageVO> selectMyListByIds(List<Long> ids) {
+        LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
+                .in(AiImage::getId, ids)
+                .eq(AiImage::getUserId, SecurityUtils.getUserId());
+        return selectVoList(wrapper);
+    }
+
+    default int deleteMyById(Long id) {
+        LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
+                .eq(AiImage::getId, id)
+                .eq(AiImage::getUserId, SecurityUtils.getUserId());
+        return delete(wrapper);
+    }
+
+    default IPage<AiImageVO> selectPage(IPage<AiImage> page, AiImageQuery query) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .eq(StringUtils.isNotNull(query.getUserId()), AiImage::getUserId, query.getUserId())
                 .eq(StringUtils.isNotEmpty(query.getPlatform()), AiImage::getPlatform, query.getPlatform())
@@ -45,13 +59,6 @@ public interface AiImageMapper extends BaseMapperX<AiImage, AiImageVO> {
                 .between(!query.getParams().isEmpty(), AiImage::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"))
                 .orderByDesc(AiImage::getCreateTime);
         return selectVoPage(page, wrapper);
-    }
-
-    default List<AiImageVO> selectListByIdsAndUserId(List<Long> ids, Long userId) {
-        LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
-                .in(AiImage::getId, ids)
-                .eq(AiImage::getUserId, userId);
-        return selectVoList(wrapper);
     }
 
 }

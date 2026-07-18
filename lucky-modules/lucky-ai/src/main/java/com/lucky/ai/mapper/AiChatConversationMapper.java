@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiChatConversation;
-import com.lucky.ai.domain.query.conversation.AiChatConversationPageQuery;
+import com.lucky.ai.domain.query.conversation.AiChatConversationQuery;
 import com.lucky.ai.domain.vo.conversation.AiChatConversationVO;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
+import com.lucky.common.security.utils.SecurityUtils;
 
 import java.util.List;
 
@@ -18,20 +19,34 @@ import java.util.List;
  */
 public interface AiChatConversationMapper extends BaseMapperX<AiChatConversation, AiChatConversationVO> {
 
-    default List<AiChatConversationVO> selectListByUserId(Long userId) {
+    default List<AiChatConversationVO> selectMyList() {
         LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
-                .eq(AiChatConversation::getUserId, userId);
+                .eq(AiChatConversation::getUserId, SecurityUtils.getUserId());
         return selectVoList(wrapper);
     }
 
-    default List<AiChatConversation> selectListByUserIdAndPinned(Long userId, Boolean pinned) {
+    default AiChatConversationVO selectMyById(Long id) {
         LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
-                .eq(AiChatConversation::getUserId, userId)
-                .eq(AiChatConversation::getPinned, pinned);
-        return selectList(wrapper);
+                .eq(AiChatConversation::getId, id)
+                .eq(AiChatConversation::getUserId, SecurityUtils.getUserId());
+        return selectVoOne(wrapper, false);
     }
 
-    default IPage<AiChatConversationVO> selectPage(IPage<AiChatConversation> page, AiChatConversationPageQuery query) {
+    default int deleteMyById(Long id) {
+        LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
+                .eq(AiChatConversation::getId, id)
+                .eq(AiChatConversation::getUserId, SecurityUtils.getUserId());
+        return delete(wrapper);
+    }
+
+    default int deleteMyUnpinned() {
+        LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
+                .eq(AiChatConversation::getUserId, SecurityUtils.getUserId())
+                .eq(AiChatConversation::getPinned, false);
+        return delete(wrapper);
+    }
+
+    default IPage<AiChatConversationVO> selectPage(IPage<AiChatConversation> page, AiChatConversationQuery query) {
         LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
                 .eq(StringUtils.isNotNull(query.getUserId()), AiChatConversation::getUserId, query.getUserId())
                 .like(StringUtils.isNotEmpty(query.getTitle()), AiChatConversation::getTitle, query.getTitle())

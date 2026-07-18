@@ -2,17 +2,17 @@ package com.lucky.ai.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.ai.domain.AiModel;
-import com.lucky.ai.domain.query.model.AiModelPageQuery;
+import com.lucky.ai.domain.query.model.AiModelQuery;
 import com.lucky.ai.domain.query.model.AiModelSaveQuery;
 import com.lucky.ai.domain.vo.model.AiModelVO;
 import com.lucky.ai.mapper.AiModelMapper;
 import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiModelService;
-import com.lucky.common.ai.enums.AiPlatformEnum;
 import com.lucky.common.ai.enums.AiStatusEnum;
-import com.lucky.common.core.constant.AiErrorConstants;
+import com.lucky.common.core.constant.AiConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
+import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
@@ -36,27 +36,19 @@ public class AiModelServiceImpl implements IAiModelService {
     private IAiApiKeyService apiKeyService;
 
     @Override
-    public AiModel getDefaultModelByType(Integer type) {
-        AiModel model = modelMapper.selectOneByTypeAndStatus(type, AiStatusEnum.ENABLE.getStatus());
-        if (model == null) {
-            throw new ServiceException(AiErrorConstants.MODEL_DEFAULT_NOT_EXISTS);
-        }
-        return model;
+    public TableDataInfo<AiModelVO> selectModelList(PageQuery pageQuery, AiModelQuery query) {
+        IPage<AiModelVO> selectPage = modelMapper.selectPage(pageQuery.build(), query);
+        return TableDataInfo.build(selectPage);
     }
 
     @Override
-    public AiModel validateModel(Long id) {
-        AiModel model = validateModelExists(id);
-        if (AiStatusEnum.isDisable(model.getStatus())) {
-            throw new ServiceException(AiErrorConstants.MODEL_DISABLE);
-        }
-        return model;
+    public AiModelVO selectModelById(Long id) {
+        return modelMapper.selectVoById(id);
     }
 
     @Override
     public int insertModel(AiModelSaveQuery query) {
-        // 1. 校验
-        AiPlatformEnum.validatePlatform(query.getPlatform());
+        // 1. 校验 api-key 是否有效
         apiKeyService.validateApiKey(query.getKeyId());
         // 2. 插入
         AiModel model = MapstructUtils.convert(query, AiModel.class);
@@ -65,9 +57,7 @@ public class AiModelServiceImpl implements IAiModelService {
 
     @Override
     public int updateModel(AiModelSaveQuery query) {
-        // 1. 校验
-        validateModelExists(query.getId());
-        AiPlatformEnum.validatePlatform(query.getPlatform());
+        // 1. 校验 api-key 是否有效
         apiKeyService.validateApiKey(query.getKeyId());
         // 2. 更新
         AiModel model = MapstructUtils.convert(query, AiModel.class);
@@ -80,25 +70,23 @@ public class AiModelServiceImpl implements IAiModelService {
     }
 
     @Override
-    public AiModelVO selectModelById(Long id) {
-        return modelMapper.selectVoById(id);
-    }
-
-    @Override
-    public TableDataInfo<AiModelVO> selectModelList(PageQuery pageQuery, AiModelPageQuery query) {
-        IPage<AiModelVO> selectPage = modelMapper.selectPage(pageQuery.build(), query);
-        return TableDataInfo.build(selectPage);
-    }
-
-    @Override
     public List<AiModelVO> selectModelAll(Integer type, String platform) {
-        return modelMapper.selectList(type, platform);
+        return modelMapper.selectOptionList(type, platform);
+    }
+
+    @Override
+    public AiModel validateModel(Long id) {
+        AiModel model = validateModelExists(id);
+        if (AiStatusEnum.isDisable(model.getStatus())) {
+            throw new ServiceException(StringUtils.format(AiConstants.MODEL_DISABLE, model.getName()));
+        }
+        return model;
     }
 
     private AiModel validateModelExists(Long id) {
         AiModel model = modelMapper.selectById(id);
         if (model == null) {
-            throw new ServiceException(AiErrorConstants.MODEL_NOT_EXISTS);
+            throw new ServiceException(AiConstants.MODEL_NOT_EXISTS);
         }
         return model;
     }

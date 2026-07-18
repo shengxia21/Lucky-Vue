@@ -8,7 +8,7 @@ import lombok.Data;
  * @author lucky
  */
 @Data
-public class AiApiKeyPageQuery {
+public class AiApiKeyQuery {
 
     /**
      * 名称

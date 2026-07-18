@@ -1,11 +1,9 @@
 package com.lucky.ai.controller.image;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.hutool.core.util.ObjUtil;
-import com.lucky.ai.domain.query.image.AiImagePagePublicQuery;
-import com.lucky.ai.domain.query.image.AiImagePageQuery;
+import com.lucky.ai.domain.query.image.AiImageMyQuery;
+import com.lucky.ai.domain.query.image.AiImageQuery;
 import com.lucky.ai.domain.query.image.AiImageUpdateQuery;
-import com.lucky.ai.domain.query.image.ImageQuery;
 import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.ai.service.IAiImageService;
 import com.lucky.common.core.domain.R;
@@ -14,7 +12,6 @@ import com.lucky.common.log.enums.BusinessType;
 import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
-import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,16 +34,8 @@ public class AiImageController extends BaseController {
      * 获取【我的】绘图分页
      */
     @GetMapping("/my/list")
-    public TableDataInfo<AiImageVO> myList(PageQuery pageQuery, AiImagePageQuery query) {
+    public TableDataInfo<AiImageVO> myList(PageQuery pageQuery, AiImageMyQuery query) {
         return imageService.selectMyImageList(pageQuery, query);
-    }
-
-    /**
-     * 获取公开的绘图分页
-     */
-    @GetMapping("/public/list")
-    public TableDataInfo<AiImageVO> publicList(PageQuery pageQuery, AiImagePagePublicQuery query) {
-        return imageService.selectPublicImageList(pageQuery, query);
     }
 
     /**
@@ -54,11 +43,7 @@ public class AiImageController extends BaseController {
      */
     @GetMapping("/my/{id}")
     public R<AiImageVO> getMyInfo(@PathVariable Long id) {
-        AiImageVO image = imageService.selectImageById(id);
-        if (image == null || ObjUtil.notEqual(image.getUserId(), SecurityUtils.getUserId())) {
-            return R.fail("绘图记录不存在或不属于当前用户");
-        }
-        return R.ok(image);
+        return R.ok(imageService.selectMyImageById(id));
     }
 
     /**
@@ -67,14 +52,6 @@ public class AiImageController extends BaseController {
     @GetMapping("/my/list/{ids}")
     public R<List<AiImageVO>> myListByIds(@PathVariable List<Long> ids) {
         return R.ok(imageService.selectMyImageListByIds(ids));
-    }
-
-    /**
-     * 生成图片
-     */
-    @PostMapping("/draw")
-    public R<Void> drawImage(@Validated @RequestBody ImageQuery request) {
-        return toAjax(imageService.drawImage(request));
     }
 
     /**
@@ -93,7 +70,7 @@ public class AiImageController extends BaseController {
      */
     @SaCheckPermission("ai:image:list")
     @GetMapping("/list")
-    public TableDataInfo<AiImageVO> list(PageQuery pageQuery, AiImagePageQuery query) {
+    public TableDataInfo<AiImageVO> list(PageQuery pageQuery, AiImageQuery query) {
         return imageService.selectImageList(pageQuery, query);
     }
 

@@ -3,6 +3,7 @@ package com.lucky.ai.domain.query.chatRole;
 import com.lucky.ai.domain.AiChatRole;
 import com.lucky.common.ai.enums.AiStatusEnum;
 import com.lucky.common.core.enumeration.InEnum;
+import com.lucky.common.core.validate.Update;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -22,12 +23,8 @@ public class AiChatRoleSaveQuery {
     /**
      * 角色编号
      */
+    @NotNull(message = "角色编号不能为空", groups = {Update.class})
     private Long id;
-
-    /**
-     * 模型编号
-     */
-    private Long modelId;
 
     /**
      * 角色名称
@@ -40,24 +37,6 @@ public class AiChatRoleSaveQuery {
      */
     @NotEmpty(message = "角色头像不能为空")
     private String avatar;
-
-    /**
-     * 角色类别
-     */
-    @NotEmpty(message = "角色类别不能为空")
-    private String category;
-
-    /**
-     * 角色排序
-     */
-    @NotNull(message = "角色排序不能为空")
-    private Integer sort;
-
-    /**
-     * 角色描述
-     */
-    @NotEmpty(message = "角色描述不能为空")
-    private String description;
 
     /**
      * 角色设定
@@ -85,6 +64,12 @@ public class AiChatRoleSaveQuery {
      */
     @NotNull(message = "是否公开不能为空")
     private Boolean publicStatus;
+
+    /**
+     * 角色排序
+     */
+    @NotNull(message = "角色排序不能为空")
+    private Integer sort;
 
     /**
      * 状态

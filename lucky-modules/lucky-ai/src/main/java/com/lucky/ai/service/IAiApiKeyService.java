@@ -1,7 +1,7 @@
 package com.lucky.ai.service;
 
 import com.lucky.ai.domain.AiApiKey;
-import com.lucky.ai.domain.query.apiKey.AiApiKeyPageQuery;
+import com.lucky.ai.domain.query.apiKey.AiApiKeyQuery;
 import com.lucky.ai.domain.query.apiKey.AiApiKeySaveQuery;
 import com.lucky.ai.domain.vo.apikey.AiApiKeyVO;
 import com.lucky.common.mybatis.core.page.PageQuery;
@@ -17,9 +17,26 @@ import java.util.List;
 public interface IAiApiKeyService {
 
     /**
+     * 查询 API 密钥分页
+     *
+     * @param pageQuery 分页查询对象
+     * @param query 查询参数
+     * @return API 密钥分页结果
+     */
+    TableDataInfo<AiApiKeyVO> selectApiKeyList(PageQuery pageQuery, AiApiKeyQuery query);
+
+    /**
+     * 查询 API 密钥
+     *
+     * @param id API 密钥主键
+     * @return API 密钥
+     */
+    AiApiKeyVO selectApiKeyById(Long id);
+
+    /**
      * 创建 API 密钥
      *
-     * @param query 创建请求vo
+     * @param query 创建参数
      * @return 结果
      */
     int insertApiKey(AiApiKeySaveQuery query);
@@ -27,7 +44,7 @@ public interface IAiApiKeyService {
     /**
      * 更新 API 密钥
      *
-     * @param query 更新请求vo
+     * @param query 更新参数
      * @return 结果
      */
     int updateApiKey(AiApiKeySaveQuery query);
@@ -39,23 +56,6 @@ public interface IAiApiKeyService {
      * @return 结果
      */
     int deleteApiKeyByIds(Long[] ids);
-
-    /**
-     * 查询 API 密钥
-     *
-     * @param id API 密钥主键
-     * @return API 密钥
-     */
-    AiApiKeyVO selectApiKeyById(Long id);
-
-    /**
-     * 查询 API 密钥分页
-     *
-     * @param pageQuery 分页查询对象
-     * @param query 查询参数
-     * @return API 密钥分页结果
-     */
-    TableDataInfo<AiApiKeyVO> selectApiKeyList(PageQuery pageQuery, AiApiKeyPageQuery query);
 
     /**
      * 获得 API 密钥列表

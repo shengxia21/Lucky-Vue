@@ -15,9 +15,4 @@ public class AiChatConversationCreateMyQuery {
      */
     private Long roleId;
 
-    /**
-     * 知识库编号
-     */
-    private Long knowledgeId;
-
 }

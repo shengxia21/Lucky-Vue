@@ -69,17 +69,17 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
     }
 
     @Override
-    public List<Message> get(Long conversationId, Integer maxContexts) {
+    public List<Message> get(Long conversationId, Integer messageCount) {
         Assert.notNull(conversationId, "conversationId cannot be null");
-        Assert.notNull(maxContexts, "maxContexts cannot be null");
-        if (maxContexts <= 0) {
+        Assert.notNull(messageCount, "messageCount cannot be null");
+        if (messageCount <= 0) {
             return Collections.emptyList();
         }
         List<ChatMessageDTO> messages = luckyChatMemoryRepository.findByConversationId(conversationId);
         if (messages.isEmpty()) {
             return Collections.emptyList();
         }
-        // 从后往前遍历，以用户+助手消息为一组，收集到 maxContexts 组即停止，避免无效遍历
+        // 从后往前遍历，以用户+助手消息为一组，收集到 messageCount 组即停止，避免无效遍历
         List<List<ChatMessageDTO>> groups = new ArrayList<>();
         List<ChatMessageDTO> currentGroup = new ArrayList<>();
         for (int i = messages.size() - 1; i >= 0; i--) {
@@ -94,7 +94,7 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
                 // 助手消息暂存，等待对应的用户消息
                 currentGroup.add(msg);
             }
-            if (groups.size() >= maxContexts) {
+            if (groups.size() >= messageCount) {
                 break;
             }
         }

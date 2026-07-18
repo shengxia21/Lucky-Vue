@@ -1,6 +1,7 @@
 package com.lucky.ai.domain.query.apiKey;
 
 import com.lucky.ai.domain.AiApiKey;
+import com.lucky.common.core.validate.Update;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +19,7 @@ public class AiApiKeySaveQuery {
     /**
      * 编号
      */
+    @NotNull(message = "编号不能为空", groups = {Update.class})
     private Long id;
 
     /**
@@ -27,16 +29,16 @@ public class AiApiKeySaveQuery {
     private String name;
 
     /**
-     * 密钥
-     */
-    @NotEmpty(message = "密钥不能为空")
-    private String apiKey;
-
-    /**
      * 平台
      */
     @NotEmpty(message = "平台不能为空")
     private String platform;
+
+    /**
+     * 密钥
+     */
+    @NotEmpty(message = "密钥不能为空")
+    private String apiKey;
 
     /**
      * 自定义 API 地址

@@ -1,4 +1,4 @@
-package com.lucky.ai.domain.query.conversation;
+package com.lucky.ai.domain.query.image;
 
 import lombok.Data;
 
@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 聊天对话分页查询请求对象
+ * AI 绘画分页查询对象
  *
  * @author lucky
  */
 @Data
-public class AiChatConversationPageQuery {
+public class AiImageQuery {
 
     /**
      * 用户编号
@@ -19,9 +19,19 @@ public class AiChatConversationPageQuery {
     private Long userId;
 
     /**
-     * 对话标题
+     * 平台
      */
-    private String title;
+    private String platform;
+
+    /**
+     * 绘画状态
+     */
+    private Integer status;
+
+    /**
+     * 是否发布
+     */
+    private Boolean publicStatus;
 
     /**
      * 查询参数（开始时间、结束时间）

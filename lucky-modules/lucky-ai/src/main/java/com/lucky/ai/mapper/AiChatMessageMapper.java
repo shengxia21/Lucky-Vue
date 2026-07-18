@@ -6,12 +6,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiChatMessage;
-import com.lucky.ai.domain.query.message.AiChatMessagePageQuery;
+import com.lucky.ai.domain.query.message.AiChatMessageQuery;
 import com.lucky.ai.domain.vo.message.AiChatMessageVO;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
+import com.lucky.common.security.utils.SecurityUtils;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,30 +23,29 @@ import java.util.stream.Collectors;
  */
 public interface AiChatMessageMapper extends BaseMapperX<AiChatMessage, AiChatMessageVO> {
 
-    default List<AiChatMessage> selectListByConversationId(Long conversationId) {
+    default List<AiChatMessageVO> selectMyListByConversationId(Long conversationId) {
         LambdaQueryWrapper<AiChatMessage> wrapper = Wrappers.<AiChatMessage>lambdaQuery()
                 .eq(AiChatMessage::getConversationId, conversationId)
-                .orderByAsc(AiChatMessage::getCreateTime);
-        return selectList(wrapper);
-    }
-
-    default List<AiChatMessageVO> selectVoListByConversationId(Long conversationId) {
-        LambdaQueryWrapper<AiChatMessage> wrapper = Wrappers.<AiChatMessage>lambdaQuery()
-                .eq(AiChatMessage::getConversationId, conversationId)
+                .eq(AiChatMessage::getUserId, SecurityUtils.getUserId())
                 .orderByAsc(AiChatMessage::getCreateTime);
         return selectVoList(wrapper);
     }
 
-    default Map<Long, Integer> selectCountMapByConversationIds(Collection<Long> conversationIds) {
-        QueryWrapper<AiChatMessage> wrapper = Wrappers.<AiChatMessage>query()
-                .select("conversation_id AS conversationId", "COUNT(id) AS count")
-                .in("conversation_id", conversationIds)
-                .groupBy("conversation_id");
-        List<Map<String, Object>> mapList = selectMaps(wrapper);
-        return mapList.stream().collect(Collectors.toMap(key -> MapUtil.getLong(key, "conversationId"), key -> MapUtil.getInt(key, "count")));
+    default int deleteMyById(Long id) {
+        LambdaQueryWrapper<AiChatMessage> wrapper = Wrappers.<AiChatMessage>lambdaQuery()
+                .eq(AiChatMessage::getId, id)
+                .eq(AiChatMessage::getUserId, SecurityUtils.getUserId());
+        return delete(wrapper);
     }
 
-    default IPage<AiChatMessageVO> selectPage(IPage<AiChatMessage> page, AiChatMessagePageQuery query) {
+    default int deleteMyByConversationId(Long conversationId) {
+        LambdaQueryWrapper<AiChatMessage> wrapper = Wrappers.<AiChatMessage>lambdaQuery()
+                .eq(AiChatMessage::getConversationId, conversationId)
+                .eq(AiChatMessage::getUserId, SecurityUtils.getUserId());
+        return delete(wrapper);
+    }
+
+    default IPage<AiChatMessageVO> selectPage(IPage<AiChatMessage> page, AiChatMessageQuery query) {
         LambdaQueryWrapper<AiChatMessage> wrapper = Wrappers.<AiChatMessage>lambdaQuery()
                 .eq(StringUtils.isNotNull(query.getConversationId()), AiChatMessage::getConversationId, query.getConversationId())
                 .eq(StringUtils.isNotNull(query.getUserId()), AiChatMessage::getUserId, query.getUserId())
@@ -54,6 +53,15 @@ public interface AiChatMessageMapper extends BaseMapperX<AiChatMessage, AiChatMe
                 .between(!query.getParams().isEmpty(), AiChatMessage::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"))
                 .orderByDesc(AiChatMessage::getCreateTime);
         return selectVoPage(page, wrapper);
+    }
+
+    default Map<Long, Integer> selectCountByConversationIds(List<Long> conversationIds) {
+        QueryWrapper<AiChatMessage> wrapper = Wrappers.<AiChatMessage>query()
+                .select("conversation_id AS conversationId", "COUNT(id) AS count")
+                .in("conversation_id", conversationIds)
+                .groupBy("conversation_id");
+        List<Map<String, Object>> mapList = selectMaps(wrapper);
+        return mapList.stream().collect(Collectors.toMap(key -> MapUtil.getLong(key, "conversationId"), key -> MapUtil.getInt(key, "count")));
     }
 
 }

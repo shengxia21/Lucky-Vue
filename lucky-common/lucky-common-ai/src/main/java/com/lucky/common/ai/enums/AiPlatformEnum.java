@@ -42,15 +42,6 @@ public enum AiPlatformEnum implements ArrayValuable<String> {
 
     public static final String[] ARRAYS = Arrays.stream(values()).map(AiPlatformEnum::getPlatform).toArray(String[]::new);
 
-    public static AiPlatformEnum validatePlatform(String platform) {
-        for (AiPlatformEnum platformEnum : AiPlatformEnum.values()) {
-            if (platformEnum.getPlatform().equals(platform)) {
-                return platformEnum;
-            }
-        }
-        throw new IllegalArgumentException("非法平台： " + platform);
-    }
-
     @Override
     public String[] array() {
         return ARRAYS;

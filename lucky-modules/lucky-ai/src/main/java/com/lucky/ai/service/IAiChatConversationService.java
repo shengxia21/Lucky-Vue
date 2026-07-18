@@ -2,7 +2,7 @@ package com.lucky.ai.service;
 
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.query.conversation.AiChatConversationCreateMyQuery;
-import com.lucky.ai.domain.query.conversation.AiChatConversationPageQuery;
+import com.lucky.ai.domain.query.conversation.AiChatConversationQuery;
 import com.lucky.ai.domain.query.conversation.AiChatConversationUpdateMyQuery;
 import com.lucky.ai.domain.vo.conversation.AiChatConversationVO;
 import com.lucky.common.mybatis.core.page.PageQuery;
@@ -18,14 +18,30 @@ import java.util.List;
 public interface IAiChatConversationService {
 
     /**
-     * 创建我的聊天对话
+     * 获得【我的】聊天对话列表
      *
+     * @return 聊天对话列表
+     */
+    List<AiChatConversationVO> selectMyChatConversationList();
+
+    /**
+     * 获得【我的】聊天对话
+     *
+     * @param id 对话ID
+     * @return 聊天对话
+     */
+    AiChatConversationVO selectMyChatConversationById(Long id);
+
+    /**
+     * 创建【我的】聊天对话
+     *
+     * @param query 创建对象
      * @return 结果
      */
     int insertMyChatConversation(AiChatConversationCreateMyQuery query);
 
     /**
-     * 更新我的聊天对话
+     * 更新【我的】聊天对话
      *
      * @param query 更新对象
      * @return 是否成功
@@ -33,22 +49,7 @@ public interface IAiChatConversationService {
     int updateMyChatConversation(AiChatConversationUpdateMyQuery query);
 
     /**
-     * 获得我的聊天对话列表
-     *
-     * @return 聊天对话列表
-     */
-    List<AiChatConversationVO> selectMyChatConversationList();
-
-    /**
-     * 获得我的聊天对话
-     *
-     * @param id 对话ID
-     * @return 聊天对话
-     */
-    AiChatConversationVO selectChatConversationById(Long id);
-
-    /**
-     * 删除我的聊天对话
+     * 删除【我的】聊天对话
      *
      * @param id 对话ID
      * @return 是否成功
@@ -56,7 +57,7 @@ public interface IAiChatConversationService {
     int deleteMyChatConversationById(Long id);
 
     /**
-     * 删除我的未置顶聊天对话
+     * 删除【我的】未置顶聊天对话
      *
      * @return 是否成功
      */
@@ -69,15 +70,22 @@ public interface IAiChatConversationService {
      * @param query     查询参数
      * @return 对话分页列表
      */
-    TableDataInfo<AiChatConversationVO> selectChatConversationList(PageQuery pageQuery, AiChatConversationPageQuery query);
+    TableDataInfo<AiChatConversationVO> selectChatConversationList(PageQuery pageQuery, AiChatConversationQuery query);
 
     /**
-     * 管理员删除对话
+     * 删除对话
      *
      * @param ids 对话ID数组
      * @return 是否成功
      */
     int deleteChatConversationByIds(Long[] ids);
+
+    /**
+     * 创建【我的】聊天对话
+     *
+     * @return 对话对象
+     */
+    AiChatConversation insertMyChatConversation();
 
     /**
      * 校验对话是否存在

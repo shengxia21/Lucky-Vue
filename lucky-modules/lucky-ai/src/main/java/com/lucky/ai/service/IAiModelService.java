@@ -1,10 +1,9 @@
 package com.lucky.ai.service;
 
 import com.lucky.ai.domain.AiModel;
-import com.lucky.ai.domain.query.model.AiModelPageQuery;
+import com.lucky.ai.domain.query.model.AiModelQuery;
 import com.lucky.ai.domain.query.model.AiModelSaveQuery;
 import com.lucky.ai.domain.vo.model.AiModelVO;
-import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 
@@ -18,22 +17,21 @@ import java.util.List;
 public interface IAiModelService {
 
     /**
-     * 获得默认的模型
-     * <p>
-     * 如果获取不到，则抛出 {@link ServiceException}
+     * 获得模型分页
      *
-     * @param type 模型类型
-     * @return 模型
+     * @param pageQuery 分页查询
+     * @param query 请求参数
+     * @return 模型分页
      */
-    AiModel getDefaultModelByType(Integer type);
+    TableDataInfo<AiModelVO> selectModelList(PageQuery pageQuery, AiModelQuery query);
 
     /**
-     * 校验模型是否可使用
+     * 获得模型
      *
      * @param id 编号
      * @return 模型
      */
-    AiModel validateModel(Long id);
+    AiModelVO selectModelById(Long id);
 
     /**
      * 创建模型
@@ -60,23 +58,6 @@ public interface IAiModelService {
     int deleteModelByIds(Long[] ids);
 
     /**
-     * 获得模型
-     *
-     * @param id 编号
-     * @return 模型
-     */
-    AiModelVO selectModelById(Long id);
-
-    /**
-     * 获得模型分页
-     *
-     * @param pageQuery 分页查询
-     * @param query 请求参数
-     * @return 模型分页
-     */
-    TableDataInfo<AiModelVO> selectModelList(PageQuery pageQuery, AiModelPageQuery query);
-
-    /**
      * 获得模型列表
      *
      * @param type     类型
@@ -84,5 +65,13 @@ public interface IAiModelService {
      * @return 模型列表
      */
     List<AiModelVO> selectModelAll(Integer type, String platform);
+
+    /**
+     * 校验模型是否有效
+     *
+     * @param id 编号
+     * @return 模型
+     */
+    AiModel validateModel(Long id);
 
 }

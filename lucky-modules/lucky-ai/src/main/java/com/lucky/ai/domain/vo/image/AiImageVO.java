@@ -57,19 +57,14 @@ public class AiImageVO {
     private Integer status;
 
     /**
-     * 是否发布
-     */
-    private Boolean publicStatus;
-
-    /**
      * 图片地址
      */
     private String picUrl;
 
     /**
-     * 绘画错误信息
+     * 完成时间
      */
-    private String errorMessage;
+    private LocalDateTime finishTime;
 
     /**
      * 绘制参数
@@ -77,9 +72,14 @@ public class AiImageVO {
     private Map<String, Object> options;
 
     /**
-     * 完成时间
+     * 绘画错误信息
      */
-    private LocalDateTime finishTime;
+    private String errorMessage;
+
+    /**
+     * 是否发布
+     */
+    private Boolean publicStatus;
 
     /**
      * 创建时间

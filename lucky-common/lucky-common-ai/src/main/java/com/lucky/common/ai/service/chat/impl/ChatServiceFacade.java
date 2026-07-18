@@ -100,8 +100,8 @@ public class ChatServiceFacade implements ChatService {
         if (chatRequest.getMaxTokens() == null) {
             throw new IllegalArgumentException("最大Token数(maxTokens)不能为空");
         }
-        if (chatRequest.getMaxContexts() == null) {
-            throw new IllegalArgumentException("最大上下文数(maxContexts)不能为空");
+        if (chatRequest.getMessageCount() == null) {
+            throw new IllegalArgumentException("携带历史消息数(messageCount)不能为空");
         }
         if (chatRequest.getModel() == null) {
             throw new IllegalArgumentException("模型(model)不能为空");

@@ -1,11 +1,12 @@
 package com.lucky.ai.controller.model;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.lucky.ai.domain.query.apiKey.AiApiKeyPageQuery;
+import com.lucky.ai.domain.query.apiKey.AiApiKeyQuery;
 import com.lucky.ai.domain.query.apiKey.AiApiKeySaveQuery;
 import com.lucky.ai.domain.vo.apikey.AiApiKeyVO;
 import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.common.core.domain.R;
+import com.lucky.common.core.validate.Update;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessType;
 import com.lucky.common.mybatis.core.controller.BaseController;
@@ -30,6 +31,24 @@ public class AiApiKeyController extends BaseController {
     private IAiApiKeyService apiKeyService;
 
     /**
+     * 获得 API 密钥分页
+     */
+    @SaCheckPermission("ai:api-key:list")
+    @GetMapping("/list")
+    public TableDataInfo<AiApiKeyVO> list(PageQuery pageQuery, AiApiKeyQuery query) {
+        return apiKeyService.selectApiKeyList(pageQuery, query);
+    }
+
+    /**
+     * 获取 API 密钥
+     */
+    @SaCheckPermission("ai:api-key:query")
+    @GetMapping("/{id}")
+    public R<AiApiKeyVO> getInfo(@PathVariable Long id) {
+        return R.ok(apiKeyService.selectApiKeyById(id));
+    }
+
+    /**
      * 创建 API 密钥
      */
     @Log(title = "创建 API 密钥", businessType = BusinessType.INSERT)
@@ -45,7 +64,7 @@ public class AiApiKeyController extends BaseController {
     @Log(title = "更新 API 密钥", businessType = BusinessType.UPDATE)
     @SaCheckPermission("ai:api-key:edit")
     @PutMapping
-    public R<Void> edit(@Validated @RequestBody AiApiKeySaveQuery query) {
+    public R<Void> edit(@Validated({Update.class}) @RequestBody AiApiKeySaveQuery query) {
         return toAjax(apiKeyService.updateApiKey(query));
     }
 
@@ -60,25 +79,7 @@ public class AiApiKeyController extends BaseController {
     }
 
     /**
-     * 获取 API 密钥
-     */
-    @SaCheckPermission("ai:api-key:query")
-    @GetMapping("/{id}")
-    public R<AiApiKeyVO> getInfo(@PathVariable Long id) {
-        return R.ok(apiKeyService.selectApiKeyById(id));
-    }
-
-    /**
-     * 获得 API 密钥分页
-     */
-    @SaCheckPermission("ai:api-key:list")
-    @GetMapping("/list")
-    public TableDataInfo<AiApiKeyVO> list(PageQuery pageQuery, AiApiKeyPageQuery query) {
-        return apiKeyService.selectApiKeyList(pageQuery, query);
-    }
-
-    /**
-     * 获得 API 密钥列表
+     * 获取 API 密钥选择框列表
      */
     @GetMapping("/optionSelect")
     public R<List<AiApiKeyVO>> optionSelect() {

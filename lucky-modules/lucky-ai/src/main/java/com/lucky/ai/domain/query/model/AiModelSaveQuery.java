@@ -5,6 +5,7 @@ import com.lucky.common.ai.enums.AiModelTypeEnum;
 import com.lucky.common.ai.enums.AiPlatformEnum;
 import com.lucky.common.ai.enums.AiStatusEnum;
 import com.lucky.common.core.enumeration.InEnum;
+import com.lucky.common.core.validate.Update;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ public class AiModelSaveQuery {
     /**
      * 编号
      */
+    @NotNull(message = "编号不能为空", groups = {Update.class})
     private Long id;
 
     /**
@@ -57,16 +59,16 @@ public class AiModelSaveQuery {
     private Integer type;
 
     /**
-     * 排序
-     */
-    @NotNull(message = "排序不能为空")
-    private Integer sort;
-
-    /**
      * 状态
      */
     @InEnum(AiStatusEnum.class)
     @NotNull(message = "状态不能为空")
     private Integer status;
+
+    /**
+     * 排序
+     */
+    @NotNull(message = "排序不能为空")
+    private Integer sort;
 
 }

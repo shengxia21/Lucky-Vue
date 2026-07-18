@@ -1,11 +1,12 @@
 package com.lucky.ai.controller.model;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.lucky.ai.domain.query.model.AiModelPageQuery;
+import com.lucky.ai.domain.query.model.AiModelQuery;
 import com.lucky.ai.domain.query.model.AiModelSaveQuery;
 import com.lucky.ai.domain.vo.model.AiModelVO;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.core.domain.R;
+import com.lucky.common.core.validate.Update;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessType;
 import com.lucky.common.mybatis.core.controller.BaseController;
@@ -30,6 +31,24 @@ public class AiModelController extends BaseController {
     private IAiModelService modelService;
 
     /**
+     * 获得模型分页
+     */
+    @SaCheckPermission("ai:model:list")
+    @GetMapping("/list")
+    public TableDataInfo<AiModelVO> list(PageQuery pageQuery, AiModelQuery query) {
+        return modelService.selectModelList(pageQuery, query);
+    }
+
+    /**
+     * 获得模型
+     */
+    @SaCheckPermission("ai:model:query")
+    @GetMapping("/{id}")
+    public R<AiModelVO> getInfo(@PathVariable Long id) {
+        return R.ok(modelService.selectModelById(id));
+    }
+
+    /**
      * 创建模型
      */
     @Log(title = "创建模型", businessType = BusinessType.INSERT)
@@ -45,7 +64,7 @@ public class AiModelController extends BaseController {
     @Log(title = "更新模型", businessType = BusinessType.UPDATE)
     @SaCheckPermission("ai:model:edit")
     @PutMapping
-    public R<Void> edit(@Validated @RequestBody AiModelSaveQuery query) {
+    public R<Void> edit(@Validated({Update.class}) @RequestBody AiModelSaveQuery query) {
         return toAjax(modelService.updateModel(query));
     }
 
@@ -60,25 +79,7 @@ public class AiModelController extends BaseController {
     }
 
     /**
-     * 获得模型
-     */
-    @SaCheckPermission("ai:model:query")
-    @GetMapping("/{id}")
-    public R<AiModelVO> getInfo(@PathVariable Long id) {
-        return R.ok(modelService.selectModelById(id));
-    }
-
-    /**
-     * 获得模型分页
-     */
-    @SaCheckPermission("ai:model:list")
-    @GetMapping("/list")
-    public TableDataInfo<AiModelVO> list(PageQuery pageQuery, AiModelPageQuery query) {
-        return modelService.selectModelList(pageQuery, query);
-    }
-
-    /**
-     * 获得模型列表
+     * 获得模型选择框列表
      */
     @GetMapping("/optionSelect")
     public R<List<AiModelVO>> optionSelect(@RequestParam Integer type, @RequestParam(required = false) String platform) {

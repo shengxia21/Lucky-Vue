@@ -45,11 +45,6 @@ public class AiChatMessage extends BaseEntity {
     private Long conversationId;
 
     /**
-     * 消息类型
-     */
-    private String type;
-
-    /**
      * 平台
      */
     private String platform;
@@ -58,6 +53,11 @@ public class AiChatMessage extends BaseEntity {
      * 模型标志
      */
     private String model;
+
+    /**
+     * 消息类型
+     */
+    private String type;
 
     /**
      * 系统消息

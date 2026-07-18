@@ -8,10 +8,10 @@ import lombok.Data;
  * @author lucky
  */
 @Data
-public class AiModelPageQuery {
+public class AiModelQuery {
 
     /**
-     * 模型名字
+     * 模型名称
      */
     private String name;
 
@@ -24,5 +24,10 @@ public class AiModelPageQuery {
      * 模型平台
      */
     private String platform;
+
+    /**
+     * 状态
+     */
+    private Integer status;
 
 }

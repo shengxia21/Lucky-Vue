@@ -58,9 +58,9 @@ public class ChatRequest {
     private Integer maxTokens;
 
     /**
-     * 上下文的最大 Message 数量
+     * 携带历史消息数
      */
-    private Integer maxContexts;
+    private Integer messageCount;
 
     // =======模型信息相关=======
 

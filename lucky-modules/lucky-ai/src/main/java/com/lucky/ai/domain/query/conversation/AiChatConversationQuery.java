@@ -1,4 +1,4 @@
-package com.lucky.ai.domain.query.message;
+package com.lucky.ai.domain.query.conversation;
 
 import lombok.Data;
 
@@ -6,17 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * AI 聊天消息分页查询对象
+ * 聊天对话分页查询请求对象
  *
  * @author lucky
  */
 @Data
-public class AiChatMessagePageQuery {
-
-    /**
-     * 对话编号
-     */
-    private Long conversationId;
+public class AiChatConversationQuery {
 
     /**
      * 用户编号
@@ -24,9 +19,9 @@ public class AiChatMessagePageQuery {
     private Long userId;
 
     /**
-     * 消息内容
+     * 对话标题
      */
-    private String content;
+    private String title;
 
     /**
      * 查询参数（开始时间、结束时间）
