@@ -17,7 +17,6 @@ public class ChatQuery {
     /**
      * 聊天对话编号
      */
-    @NotNull(message = "聊天对话编号不能为空")
     private Long conversationId;
 
     /**
