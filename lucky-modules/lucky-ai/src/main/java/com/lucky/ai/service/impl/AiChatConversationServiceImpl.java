@@ -100,7 +100,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         // 查询对话ID列表的消息数量
         Map<Long, Integer> countMap = chatMessageMapper.selectCountByConversationIds(ids);
         // 添加消息数量
-        page.getRecords().forEach(conversation -> conversation.setMessageCount(countMap.getOrDefault(conversation.getId(), 0)));
+        page.getRecords().forEach(conversation -> conversation.setMessageTotal(countMap.getOrDefault(conversation.getId(), 0)));
         return TableDataInfo.build(page);
     }
 

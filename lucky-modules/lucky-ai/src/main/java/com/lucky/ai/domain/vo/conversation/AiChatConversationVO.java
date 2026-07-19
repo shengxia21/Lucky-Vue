@@ -62,6 +62,11 @@ public class AiChatConversationVO implements VO {
     private Integer messageCount;
 
     /**
+     * 消息总数
+     */
+    private Integer messageTotal;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;
