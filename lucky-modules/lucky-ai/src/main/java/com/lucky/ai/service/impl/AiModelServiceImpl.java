@@ -70,8 +70,8 @@ public class AiModelServiceImpl implements IAiModelService {
     }
 
     @Override
-    public List<AiModelVO> selectModelAll(Integer type, String platform) {
-        return modelMapper.selectOptionList(type, platform);
+    public List<AiModelVO> selectModelAll(Integer type) {
+        return modelMapper.selectOptionList(type);
     }
 
     @Override

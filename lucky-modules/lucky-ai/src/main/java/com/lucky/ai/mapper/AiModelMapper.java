@@ -29,12 +29,11 @@ public interface AiModelMapper extends BaseMapperX<AiModel, AiModelVO> {
         return selectVoPage(page, wrapper);
     }
 
-    default List<AiModelVO> selectOptionList(Integer type, String platform) {
+    default List<AiModelVO> selectOptionList(Integer type) {
         LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
                 .select(AiModel::getId, AiModel::getName, AiModel::getPlatform, AiModel::getModel)
                 .eq(AiModel::getStatus, AiStatusEnum.ENABLE.getStatus())
-                .eq(StringUtils.isNotNull(type), AiModel::getType, type)
-                .eq(StringUtils.isNotEmpty(platform), AiModel::getPlatform, platform)
+                .eq(AiModel::getType, type)
                 .orderByAsc(AiModel::getSort);
         return selectVoList(wrapper);
     }

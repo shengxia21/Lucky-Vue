@@ -20,7 +20,7 @@ public interface IAiModelService {
      * 获得模型分页
      *
      * @param pageQuery 分页查询
-     * @param query 请求参数
+     * @param query     请求参数
      * @return 模型分页
      */
     TableDataInfo<AiModelVO> selectModelList(PageQuery pageQuery, AiModelQuery query);
@@ -60,11 +60,10 @@ public interface IAiModelService {
     /**
      * 获得模型列表
      *
-     * @param type     类型
-     * @param platform 平台
+     * @param type 类型
      * @return 模型列表
      */
-    List<AiModelVO> selectModelAll(Integer type, String platform);
+    List<AiModelVO> selectModelAll(Integer type);
 
     /**
      * 校验模型是否有效
