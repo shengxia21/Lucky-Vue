@@ -64,14 +64,4 @@ public class AiChatMessageController extends BaseController {
         return chatMessageService.selectChatMessageList(pageQuery, query);
     }
 
-    /**
-     * 删除消息
-     */
-    @Log(title = "删除消息", businessType = BusinessType.DELETE)
-    @SaCheckPermission("ai:chat-message:remove")
-    @DeleteMapping("/{ids}")
-    public R<Void> remove(@PathVariable Long[] ids) {
-        return toAjax(chatMessageService.deleteChatMessageByIds(ids));
-    }
-
 }

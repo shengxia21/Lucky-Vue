@@ -10,7 +10,6 @@ import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,11 +42,6 @@ public class AiChatMessageServiceImpl implements IAiChatMessageService {
     public TableDataInfo<AiChatMessageVO> selectChatMessageList(PageQuery pageQuery, AiChatMessageQuery query) {
         IPage<AiChatMessageVO> page = chatMessageMapper.selectPage(pageQuery.build(), query);
         return TableDataInfo.build(page);
-    }
-
-    @Override
-    public int deleteChatMessageByIds(Long[] ids) {
-        return chatMessageMapper.deleteByIds(Arrays.asList(ids));
     }
 
 }

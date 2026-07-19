@@ -73,14 +73,6 @@ public interface IAiChatConversationService {
     TableDataInfo<AiChatConversationVO> selectChatConversationList(PageQuery pageQuery, AiChatConversationQuery query);
 
     /**
-     * 删除对话
-     *
-     * @param ids 对话ID数组
-     * @return 是否成功
-     */
-    int deleteChatConversationByIds(Long[] ids);
-
-    /**
      * 创建【我的】聊天对话
      *
      * @return 对话对象

@@ -21,7 +21,6 @@ import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -102,11 +101,6 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         // 添加消息数量
         page.getRecords().forEach(conversation -> conversation.setMessageTotal(countMap.getOrDefault(conversation.getId(), 0)));
         return TableDataInfo.build(page);
-    }
-
-    @Override
-    public int deleteChatConversationByIds(Long[] ids) {
-        return chatConversationMapper.deleteByIds(Arrays.asList(ids));
     }
 
     @Override

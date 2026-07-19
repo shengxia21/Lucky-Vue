@@ -47,12 +47,4 @@ public interface IAiChatMessageService {
      */
     TableDataInfo<AiChatMessageVO> selectChatMessageList(PageQuery pageQuery, AiChatMessageQuery query);
 
-    /**
-     * 删除消息
-     *
-     * @param ids 聊天消息ID数组
-     * @return 结果
-     */
-    int deleteChatMessageByIds(Long[] ids);
-
 }

@@ -93,14 +93,4 @@ public class AiChatConversationController extends BaseController {
         return chatConversationService.selectChatConversationList(pageQuery, query);
     }
 
-    /**
-     * 删除对话
-     */
-    @Log(title = "删除对话", businessType = BusinessType.DELETE)
-    @SaCheckPermission("ai:chat-conversation:remove")
-    @DeleteMapping("/{ids}")
-    public R<Void> remove(@PathVariable Long[] ids) {
-        return toAjax(chatConversationService.deleteChatConversationByIds(ids));
-    }
-
 }
