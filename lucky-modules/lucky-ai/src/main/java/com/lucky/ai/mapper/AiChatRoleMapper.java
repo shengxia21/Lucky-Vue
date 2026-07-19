@@ -56,6 +56,7 @@ public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, AiChatRoleVO> 
 
     default IPage<AiChatRoleVO> selectPage(IPage<AiChatRole> page, AiChatRoleQuery query) {
         LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
+                .eq(StringUtils.isNotNull(query.getUserId()), AiChatRole::getUserId, query.getUserId())
                 .like(StringUtils.isNotEmpty(query.getName()), AiChatRole::getName, query.getName())
                 .eq(StringUtils.isNotNull(query.getStatus()), AiChatRole::getStatus, query.getStatus())
                 .eq(StringUtils.isNotNull(query.getPublicStatus()), AiChatRole::getPublicStatus, query.getPublicStatus())
