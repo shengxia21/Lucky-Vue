@@ -11,6 +11,7 @@ import com.lucky.ai.service.IAiChatService;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.domain.vo.ChatResponseVO;
+import com.lucky.common.ai.enums.AiModelTypeEnum;
 import com.lucky.common.ai.service.chat.ChatService;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.security.utils.SecurityUtils;
@@ -50,6 +51,10 @@ public class AiChatServiceImpl implements IAiChatService {
         }
         // 校验模型是否有效
         AiModel model = modelService.validateModel(query.getModelId());
+        // 校验模型类型是否匹配
+        if (ObjUtil.notEqual(model.getType(), AiModelTypeEnum.CHAT.getType())) {
+            throw new ServiceException("模型类型不匹配");
+        }
         // 校验apikey是否有效
         AiApiKey apiKey = apiKeyService.validateApiKey(model.getKeyId());
 
