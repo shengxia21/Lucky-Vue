@@ -50,7 +50,8 @@ public interface AiChatConversationMapper extends BaseMapperX<AiChatConversation
         LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
                 .eq(StringUtils.isNotNull(query.getUserId()), AiChatConversation::getUserId, query.getUserId())
                 .like(StringUtils.isNotEmpty(query.getTitle()), AiChatConversation::getTitle, query.getTitle())
-                .between(!query.getParams().isEmpty(), AiChatConversation::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"));
+                .between(!query.getParams().isEmpty(), AiChatConversation::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"))
+                .orderByDesc(AiChatConversation::getCreateTime);
         return selectVoPage(page, wrapper);
     }
 
