@@ -4,8 +4,6 @@ import com.lucky.ai.domain.AiModel;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 /**
  * AI 模型响应VO
  *
@@ -54,10 +52,5 @@ public class AiModelVO {
      * 排序
      */
     private Integer sort;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
 
 }
