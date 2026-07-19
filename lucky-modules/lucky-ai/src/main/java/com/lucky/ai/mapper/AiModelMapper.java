@@ -22,7 +22,6 @@ public interface AiModelMapper extends BaseMapperX<AiModel, AiModelVO> {
     default IPage<AiModelVO> selectPage(IPage<AiModel> page, AiModelQuery query) {
         LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getName()), AiModel::getName, query.getName())
-                .eq(StringUtils.isNotEmpty(query.getModel()), AiModel::getModel, query.getModel())
                 .eq(StringUtils.isNotEmpty(query.getPlatform()), AiModel::getPlatform, query.getPlatform())
                 .eq(StringUtils.isNotNull(query.getStatus()), AiModel::getStatus, query.getStatus())
                 .orderByAsc(AiModel::getSort);

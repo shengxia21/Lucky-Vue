@@ -16,11 +16,6 @@ public class AiModelQuery {
     private String name;
 
     /**
-     * 模型标识
-     */
-    private String model;
-
-    /**
      * 模型平台
      */
     private String platform;
