@@ -11,6 +11,7 @@ import com.lucky.common.mybatis.core.controller.BaseController;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import jakarta.annotation.Resource;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public class AiChatMessageController extends BaseController {
      */
     @SaCheckPermission("ai:chat-conversation:list")
     @GetMapping("/list")
-    public TableDataInfo<AiChatMessageVO> list(PageQuery pageQuery, AiChatMessageQuery query) {
+    public TableDataInfo<AiChatMessageVO> list(PageQuery pageQuery, @Validated AiChatMessageQuery query) {
         return chatMessageService.selectChatMessageList(pageQuery, query);
     }
 

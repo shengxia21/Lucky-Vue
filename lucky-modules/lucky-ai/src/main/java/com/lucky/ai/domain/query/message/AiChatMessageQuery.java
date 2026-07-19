@@ -1,5 +1,6 @@
 package com.lucky.ai.domain.query.message;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -16,6 +17,7 @@ public class AiChatMessageQuery {
     /**
      * 对话编号
      */
+    @NotNull(message = "对话编号不能为空")
     private Long conversationId;
 
     /**
