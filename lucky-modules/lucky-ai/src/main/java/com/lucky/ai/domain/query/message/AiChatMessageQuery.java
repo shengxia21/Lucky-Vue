@@ -21,11 +21,6 @@ public class AiChatMessageQuery {
     private Long conversationId;
 
     /**
-     * 用户编号
-     */
-    private Long userId;
-
-    /**
      * 消息内容
      */
     private String content;

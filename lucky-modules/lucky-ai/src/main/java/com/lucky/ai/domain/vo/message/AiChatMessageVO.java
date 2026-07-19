@@ -24,16 +24,6 @@ public class AiChatMessageVO implements VO {
     private Long id;
 
     /**
-     * 用户编号
-     */
-    private Long userId;
-
-    /**
-     * 对话编号
-     */
-    private Long conversationId;
-
-    /**
      * 平台
      */
     private String platform;

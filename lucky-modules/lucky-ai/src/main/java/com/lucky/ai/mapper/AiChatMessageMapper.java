@@ -48,7 +48,6 @@ public interface AiChatMessageMapper extends BaseMapperX<AiChatMessage, AiChatMe
     default IPage<AiChatMessageVO> selectPage(IPage<AiChatMessage> page, AiChatMessageQuery query) {
         LambdaQueryWrapper<AiChatMessage> wrapper = Wrappers.<AiChatMessage>lambdaQuery()
                 .eq(AiChatMessage::getConversationId, query.getConversationId())
-                .eq(StringUtils.isNotNull(query.getUserId()), AiChatMessage::getUserId, query.getUserId())
                 .like(StringUtils.isNotNull(query.getContent()), AiChatMessage::getContent, query.getContent())
                 .between(!query.getParams().isEmpty(), AiChatMessage::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"))
                 .orderByDesc(AiChatMessage::getCreateTime);
