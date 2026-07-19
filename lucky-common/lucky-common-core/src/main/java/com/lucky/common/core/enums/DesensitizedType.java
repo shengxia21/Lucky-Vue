@@ -14,7 +14,7 @@ public enum DesensitizedType {
     /**
      * AI大模型的 API 密钥，显示前5位和后3位字符，其他全部用*代替
      */
-    AI_API_KEY(DesensitizedUtil::aiApiKey),
+    API_KEY(DesensitizedUtil::apiKey),
 
     /**
      * 姓名，第2位星号替换

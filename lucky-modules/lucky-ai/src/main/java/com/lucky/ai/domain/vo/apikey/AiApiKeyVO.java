@@ -33,7 +33,7 @@ public class AiApiKeyVO {
     /**
      * 密钥
      */
-    @Sensitive(desensitizedType = DesensitizedType.AI_API_KEY)
+    @Sensitive(desensitizedType = DesensitizedType.API_KEY)
     private String apiKey;
 
     /**

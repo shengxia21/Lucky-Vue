@@ -41,19 +41,19 @@ public class DesensitizedUtil {
     }
 
     /**
-     * AI大模型的 API 密钥，显示前5位和后3位字符，其他全部用*代替
+     * AI大模型的 API 密钥，显示前5位和后3位字符，中间固定使用6位*代替
      *
      * @param apiKey AI大模型的 API 密钥
      * @return 脱敏后的 API 密钥
      */
-    public static String aiApiKey(String apiKey) {
+    public static String apiKey(String apiKey) {
         if (StringUtils.isBlank(apiKey)) {
             return StringUtils.EMPTY;
         }
-        if (apiKey.length() < 10) {
+        if (apiKey.length() <= 8) {
             return apiKey;
         }
-        return StringUtils.hide(apiKey, 5, apiKey.length() - 3);
+        return apiKey.substring(0, 5) + StringUtils.repeat('*', 6) + apiKey.substring(apiKey.length() - 3);
     }
 
 }
