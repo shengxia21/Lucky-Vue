@@ -50,9 +50,9 @@
 </template>
 
 <script setup name="${BusinessName}ViewDrawer">
-  import {get${BusinessName}} from '@/api/'
+import { get${BusinessName} } from '@/api/${moduleName}/${businessName}'
 
-      #if(${dicts} != '')
+#if(${dicts} != '')
 #set($dictsNoSymbol=$dicts.replace("'", ""))
 const { ${dictsNoSymbol} } = useDict(${dicts})
 #end
