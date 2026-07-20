@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type {AjaxResult, ${BusinessName}QueryParams, TableDataInfo} from '@/types'
+import type { AjaxResult, TableDataInfo, ${BusinessName}QueryParams, ${ClassName} } from '@/types'
 
 // 查询${functionName}列表
 #if($table.tree)
