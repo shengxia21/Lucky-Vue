@@ -50,8 +50,9 @@
 </template>
 
 <script setup lang="ts" name="${BusinessName}ViewDrawer">
-  import {get${BusinessName}} from '@/api/'
-      #if(${dicts} != '')
+import type { ${ClassName} } from "@/types/api/${moduleName}/${businessName}"
+import { get${BusinessName} } from '@/api/${moduleName}/${businessName}'
+#if(${dicts} != '')
 #set($dictsNoSymbol=$dicts.replace("'", ""))
 
 const { ${dictsNoSymbol} } = useDict(${dicts})
