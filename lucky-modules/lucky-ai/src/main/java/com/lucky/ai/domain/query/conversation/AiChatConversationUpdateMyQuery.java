@@ -56,6 +56,7 @@ public class AiChatConversationUpdateMyQuery {
      * 携带历史消息数
      */
     @Max(value = 30, message = "携带历史消息数不能超过30条")
+    @Min(value = 0, message = "携带历史消息数不能小于0")
     private Integer messageCount;
 
 }
