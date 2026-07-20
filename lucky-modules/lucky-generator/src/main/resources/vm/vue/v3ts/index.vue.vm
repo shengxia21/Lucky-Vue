@@ -387,17 +387,15 @@
 </template>
 
 <script setup lang="ts" name="${BusinessName}">
-        #if($table.sub)
-        import type {
-                ${BusinessName}QueryParams
-        }
-          from
-              "@/types/api/"
-        import {get${BusinessName}, list${BusinessName}} from "@/api/"
-        #else
+#if($table.sub)
+import type { ${ClassName}, ${subClassName}, ${BusinessName}QueryParams } from "@/types/api/${moduleName}/${businessName}"
+#else
+import type { ${ClassName}, ${BusinessName}QueryParams } from "@/types/api/${moduleName}/${businessName}"
 #end
-        #if($genView)
-        #end
+import { list${BusinessName}, get${BusinessName}, del${BusinessName}, add${BusinessName}, update${BusinessName} } from "@/api/${moduleName}/${businessName}"
+#if($genView)
+import ${BusinessName}ViewDrawer from "./view.vue"
+#end
 
 const { proxy } = getCurrentInstance()
 #if(${dicts} != '')
