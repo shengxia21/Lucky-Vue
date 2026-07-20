@@ -399,9 +399,9 @@
 </template>
 
 <script>
-  import {get${BusinessName}, list${BusinessName}} from "@/api/"
-  import ${BusinessName}ViewDrawer from "./view"
-      #if($genView)
+import { list${BusinessName}, get${BusinessName}, del${BusinessName}, add${BusinessName}, update${BusinessName} } from "@/api/${moduleName}/${businessName}"
+#if($genView)
+import ${BusinessName}ViewDrawer from "./view"
 #end
 
 export default {
