@@ -313,8 +313,9 @@
 </template>
 
 <script setup name="${BusinessName}">
-import {list${BusinessName}} from "@/api/"
+import { list${BusinessName}, get${BusinessName}, del${BusinessName}, add${BusinessName}, update${BusinessName} } from "@/api/${moduleName}/${businessName}"
 #if($genView)
+import ${BusinessName}ViewDrawer from "./view"
 #end
 
 const { proxy } = getCurrentInstance()
