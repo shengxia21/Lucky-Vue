@@ -48,9 +48,9 @@
 </template>
 
 <script>
-  import {get${BusinessName}} from '@/api/'
+import { get${BusinessName} } from '@/api/${moduleName}/${businessName}'
 
-  export default {
+export default {
   name: '${BusinessName}ViewDrawer',
 #foreach($column in $columns)
 #if("" != $column.dictType)
