@@ -35,11 +35,6 @@ public class AiChatConversationUpdateMyQuery {
     private Boolean pinned;
 
     /**
-     * 角色设定
-     */
-    private String systemMessage;
-
-    /**
      * 温度参数
      */
     @Max(value = 2, message = "温度参数不能大于2")

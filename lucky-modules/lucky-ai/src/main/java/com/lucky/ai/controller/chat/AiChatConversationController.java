@@ -35,7 +35,9 @@ public class AiChatConversationController extends BaseController {
      */
     @GetMapping("/my/list")
     public R<List<AiChatConversationVO>> myList() {
-        return R.ok(chatConversationService.selectMyChatConversationList());
+        List<AiChatConversationVO> list = chatConversationService.selectMyChatConversationList();
+        transService.transBatch(list);
+        return R.ok(list);
     }
 
     /**
@@ -43,7 +45,9 @@ public class AiChatConversationController extends BaseController {
      */
     @GetMapping("/my/{id}")
     public R<AiChatConversationVO> getMyInfo(@PathVariable Long id) {
-        return R.ok(chatConversationService.selectMyChatConversationById(id));
+        AiChatConversationVO vo = chatConversationService.selectMyChatConversationById(id);
+        transService.transOne(vo);
+        return R.ok(vo);
     }
 
     /**
@@ -90,7 +94,9 @@ public class AiChatConversationController extends BaseController {
     @SaCheckPermission("ai:chat-conversation:list")
     @GetMapping("/list")
     public TableDataInfo<AiChatConversationVO> list(PageQuery pageQuery, AiChatConversationQuery query) {
-        return chatConversationService.selectChatConversationList(pageQuery, query);
+        TableDataInfo<AiChatConversationVO> page = chatConversationService.selectChatConversationList(pageQuery, query);
+        transService.transBatch(page.getRows());
+        return page;
     }
 
 }

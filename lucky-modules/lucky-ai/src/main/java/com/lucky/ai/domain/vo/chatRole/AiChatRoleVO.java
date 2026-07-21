@@ -1,6 +1,5 @@
 package com.lucky.ai.domain.vo.chatRole;
 
-import com.fhs.core.trans.vo.VO;
 import com.lucky.ai.domain.AiChatRole;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 @Data
 @AutoMapper(target = AiChatRole.class)
-public class AiChatRoleVO implements VO {
+public class AiChatRoleVO {
 
     /**
      * 编号

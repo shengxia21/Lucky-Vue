@@ -58,16 +58,14 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
 
         AiChatConversation conversation = new AiChatConversation();
         conversation.setUserId(SecurityUtils.getUserId());
+        conversation.setTitle(AiChatConversation.TITLE_DEFAULT);
         conversation.setPinned(false);
+        conversation.setRoleId(query.getRoleId());
         conversation.setTemperature(1.0);
         conversation.setMaxTokens(2000);
         conversation.setMessageCount(10);
         if (role != null) {
             conversation.setTitle(role.getName());
-            conversation.setAvatar(role.getAvatar());
-            conversation.setSystemMessage(role.getSystemMessage());
-        } else {
-            conversation.setTitle(AiChatConversation.TITLE_DEFAULT);
         }
         return chatConversationMapper.insert(conversation);
     }

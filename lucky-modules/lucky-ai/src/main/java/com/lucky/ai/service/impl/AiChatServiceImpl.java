@@ -3,12 +3,10 @@ package com.lucky.ai.service.impl;
 import cn.hutool.core.util.ObjUtil;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiChatConversation;
+import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.domain.query.chat.ChatQuery;
-import com.lucky.ai.service.IAiApiKeyService;
-import com.lucky.ai.service.IAiChatConversationService;
-import com.lucky.ai.service.IAiChatService;
-import com.lucky.ai.service.IAiModelService;
+import com.lucky.ai.service.*;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.ai.enums.AiModelTypeEnum;
@@ -30,6 +28,8 @@ public class AiChatServiceImpl implements IAiChatService {
     @Resource
     private IAiChatConversationService chatConversationService;
     @Resource
+    private IAiChatRoleService chatRoleService;
+    @Resource
     private IAiModelService modelService;
     @Resource
     private IAiApiKeyService apiKeyService;
@@ -49,6 +49,11 @@ public class AiChatServiceImpl implements IAiChatService {
                 throw new ServiceException("对话不属于当前用户");
             }
         }
+        // 校验会话角色是否有效
+        AiChatRole role = new AiChatRole();
+        if (ObjUtil.isNotNull(conversation.getRoleId())) {
+            role = chatRoleService.validateChatRole(conversation.getRoleId());
+        }
         // 校验模型是否有效
         AiModel model = modelService.validateModel(query.getModelId());
         // 校验模型类型是否匹配
@@ -65,7 +70,7 @@ public class AiChatServiceImpl implements IAiChatService {
         chatRequest.setUseSearch(query.getUseSearch());
         chatRequest.setAttachmentUrls(query.getAttachmentUrls());
         chatRequest.setConversationId(conversation.getId());
-        chatRequest.setSystemMessage(conversation.getSystemMessage());
+        chatRequest.setSystemMessage(role.getSystemMessage());
         chatRequest.setTemperature(conversation.getTemperature());
         chatRequest.setMaxTokens(conversation.getMaxTokens());
         chatRequest.setMessageCount(conversation.getMessageCount());

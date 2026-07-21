@@ -1,7 +1,10 @@
 package com.lucky.ai.domain.vo.conversation;
 
+import com.fhs.core.trans.anno.Trans;
+import com.fhs.core.trans.constant.TransType;
 import com.fhs.core.trans.vo.VO;
 import com.lucky.ai.domain.AiChatConversation;
+import com.lucky.ai.domain.AiChatRole;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
@@ -35,6 +38,12 @@ public class AiChatConversationVO implements VO {
      * 是否置顶
      */
     private Boolean pinned;
+
+    /**
+     * 角色编号
+     */
+    @Trans(type = TransType.SIMPLE, target = AiChatRole.class, fields = {"avatar", "systemMessage"}, refs = {"avatar", "systemMessage"})
+    private Long roleId;
 
     /**
      * 角色头像

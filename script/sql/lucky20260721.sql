@@ -58,8 +58,7 @@ CREATE TABLE `ai_chat_conversation`  (
   `user_id` bigint(0) NOT NULL COMMENT '用户编号',
   `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '对话标题',
   `pinned` tinyint(0) NOT NULL DEFAULT 0 COMMENT '是否置顶（0否 1是）',
-  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色头像',
-  `system_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '角色设定',
+  `role_id` bigint(0) NULL DEFAULT NULL COMMENT '聊天角色编号',
   `temperature` double NOT NULL COMMENT '温度参数',
   `max_tokens` int(0) NOT NULL COMMENT '单条回复的最大 Token 数量',
   `message_count` int(0) NOT NULL COMMENT '携带历史消息数',
@@ -70,7 +69,8 @@ CREATE TABLE `ai_chat_conversation`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_user_id`(`user_id`) USING BTREE
+  INDEX `idx_user_id`(`user_id`) USING BTREE,
+  INDEX `idx_role_id`(`role_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 聊天对话表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------

@@ -46,14 +46,9 @@ public class AiChatConversation extends BaseEntity {
     private Boolean pinned;
 
     /**
-     * 角色头像
+     * 角色编号
      */
-    private String avatar;
-
-    /**
-     * 角色设定
-     */
-    private String systemMessage;
+    private Long roleId;
 
     /**
      * 温度参数
