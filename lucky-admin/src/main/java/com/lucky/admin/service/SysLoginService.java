@@ -9,7 +9,8 @@ import com.lucky.common.core.constant.UserConstants;
 import com.lucky.common.core.domain.dto.UserDTO;
 import com.lucky.common.core.domain.model.LoginBody;
 import com.lucky.common.core.domain.model.LoginUser;
-import com.lucky.common.core.enums.UserStatus;
+import com.lucky.common.core.enums.DeleteFlag;
+import com.lucky.common.core.enums.SystemStatus;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.exception.user.*;
 import com.lucky.common.core.service.PermissionService;
@@ -153,10 +154,10 @@ public class SysLoginService {
         if (StringUtils.isNull(user)) {
             log.info("登录用户：{} 不存在.", userName);
             throw new ServiceException(MessageUtils.message("user.not.exists"));
-        } else if (UserStatus.DELETED.getCode().equals(user.getDelFlag())) {
+        } else if (DeleteFlag.DELETE.getCode().equals(user.getDelFlag())) {
             log.info("登录用户：{} 已被删除.", userName);
             throw new ServiceException(MessageUtils.message("user.password.delete"));
-        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
+        } else if (SystemStatus.DISABLE.getCode().equals(user.getStatus())) {
             log.info("登录用户：{} 已被停用.", userName);
             throw new ServiceException(MessageUtils.message("user.blocked"));
         }
