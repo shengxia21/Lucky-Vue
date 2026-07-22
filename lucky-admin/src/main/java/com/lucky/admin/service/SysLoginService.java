@@ -82,8 +82,6 @@ public class SysLoginService {
         LoginUser loginUser = buildLoginUser(user);
         // Sa-Token 登录操作，触发doLogin方法
         SecurityUtils.login(loginUser);
-        // 更新登录用户信息
-        updateLoginInfo(loginUser.getUserId());
         // 获取登录token
         return StpUtil.getTokenValue();
     }
@@ -180,12 +178,14 @@ public class SysLoginService {
         }
 
         if (retryCount >= maxRetryCount) {
+            recordLoginInfo(userName, Constants.LOGIN_FAIL, MessageUtils.message("user.password.retry.limit.exceed", maxRetryCount, lockTime));
             throw new UserPasswordRetryLimitExceedException(maxRetryCount, lockTime);
         }
 
         if (!SecurityUtils.matchesPassword(inputPassword, password)) {
             retryCount = retryCount + 1;
             redisCache.setCacheObject(cacheKey, retryCount, Duration.ofMinutes(lockTime));
+            recordLoginInfo(userName, Constants.LOGIN_FAIL, MessageUtils.message("user.password.retry.limit.count", retryCount));
             throw new UserPasswordNotMatchException();
         } else {
             if (redisCache.hasKey(cacheKey)) {
