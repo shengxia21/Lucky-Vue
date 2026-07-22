@@ -24,14 +24,14 @@ public class SysOperLogQuery {
     private String title;
 
     /**
+     * 操作人员
+     */
+    private String operName;
+
+    /**
      * 业务类型
      */
     private Integer businessType;
-
-    /**
-     * 业务类型数组
-     */
-    private Integer[] businessTypes;
 
     /**
      * 操作状态（0正常 1异常）
@@ -48,13 +48,6 @@ public class SysOperLogQuery {
             params = new HashMap<>();
         }
         return params;
-    }
-
-    public Integer[] getBusinessTypes() {
-        if (businessTypes == null) {
-            businessTypes = new Integer[0];
-        }
-        return businessTypes;
     }
 
 }
