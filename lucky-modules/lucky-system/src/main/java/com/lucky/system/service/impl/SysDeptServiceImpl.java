@@ -4,7 +4,6 @@ import com.lucky.common.core.constant.UserConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.core.utils.StringUtils;
-import com.lucky.common.core.utils.spring.SpringUtils;
 import com.lucky.common.core.utils.text.Convert;
 import com.lucky.common.security.utils.SecurityUtils;
 import com.lucky.system.domain.SysDept;
@@ -47,7 +46,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
 
     @Override
     public List<TreeSelect> selectDeptTreeList(SysDeptQuery dept) {
-        List<SysDeptVO> depts = SpringUtils.getAopProxy(this).selectDeptList(dept);
+        List<SysDeptVO> depts = deptMapper.selectDeptList(dept);
         List<SysDept> deptList = MapstructUtils.convert(depts, SysDept.class);
         return buildDeptTreeSelect(deptList);
     }
@@ -116,7 +115,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
         if (!SecurityUtils.isAdmin() && StringUtils.isNotNull(deptId)) {
             SysDeptQuery query = new SysDeptQuery();
             query.setDeptId(deptId);
-            List<SysDeptVO> list = SpringUtils.getAopProxy(this).selectDeptList(query);
+            List<SysDeptVO> list = deptMapper.selectDeptList(query);
             if (StringUtils.isEmpty(list)) {
                 throw new ServiceException("没有权限访问部门数据！");
             }

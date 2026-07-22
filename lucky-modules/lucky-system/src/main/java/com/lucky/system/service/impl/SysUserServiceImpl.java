@@ -7,7 +7,6 @@ import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.bean.BeanValidators;
-import com.lucky.common.core.utils.spring.SpringUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import com.lucky.common.security.utils.SecurityUtils;
@@ -154,7 +153,7 @@ public class SysUserServiceImpl implements ISysUserService {
         if (!SecurityUtils.isAdmin()) {
             SysUserQuery user = new SysUserQuery();
             user.setUserId(userId);
-            List<SysUser> users = SpringUtils.getAopProxy(this).selectUserList(user);
+            List<SysUser> users = userMapper.selectUserList(user);
             if (StringUtils.isEmpty(users)) {
                 throw new ServiceException("没有权限访问用户数据！");
             }

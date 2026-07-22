@@ -5,7 +5,6 @@ import com.lucky.common.core.constant.UserConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.core.utils.StringUtils;
-import com.lucky.common.core.utils.spring.SpringUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
 import com.lucky.common.mybatis.core.page.TableDataInfo;
 import com.lucky.common.security.utils.SecurityUtils;
@@ -84,7 +83,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     @Override
     public List<SysRole> selectRoleAll() {
-        return SpringUtils.getAopProxy(this).selectRoleList(new SysRoleQuery());
+        return roleMapper.selectRoleList(new SysRoleQuery());
     }
 
     @Override
@@ -130,7 +129,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
             for (Long roleId : roleIds) {
                 SysRoleQuery query = new SysRoleQuery();
                 query.setRoleId(roleId);
-                List<SysRole> roles = SpringUtils.getAopProxy(this).selectRoleList(query);
+                List<SysRole> roles = roleMapper.selectRoleList(query);
                 if (StringUtils.isEmpty(roles)) {
                     throw new ServiceException("没有权限访问角色数据！");
                 }
