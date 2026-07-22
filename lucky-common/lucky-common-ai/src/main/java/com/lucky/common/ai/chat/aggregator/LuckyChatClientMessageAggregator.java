@@ -1,6 +1,5 @@
-package com.lucky.common.ai.chat.client;
+package com.lucky.common.ai.chat.aggregator;
 
-import com.lucky.common.ai.chat.model.LuckyMessageAggregator;
 import com.lucky.common.ai.service.chat.ResponseContentExtractor;
 import org.springframework.ai.chat.client.ChatClientResponse;
 import reactor.core.publisher.Flux;

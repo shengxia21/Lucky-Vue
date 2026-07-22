@@ -1,4 +1,4 @@
-package com.lucky.common.ai.chat.model;
+package com.lucky.common.ai.chat.aggregator;
 
 import com.lucky.common.ai.service.chat.ResponseContentExtractor;
 import lombok.extern.slf4j.Slf4j;

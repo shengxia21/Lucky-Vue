@@ -1,6 +1,6 @@
 package com.lucky.common.ai.chat.memory;
 
-import com.lucky.common.ai.chat.model.LuckyMessageAggregator;
+import com.lucky.common.ai.chat.aggregator.LuckyMessageAggregator;
 import org.springframework.ai.chat.messages.Message;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.lucky.common.ai.chat.advisor;
 
-import com.lucky.common.ai.chat.client.LuckyChatClientMessageAggregator;
+import com.lucky.common.ai.chat.aggregator.LuckyChatClientMessageAggregator;
+import com.lucky.common.ai.chat.aggregator.LuckyMessageAggregator;
 import com.lucky.common.ai.chat.memory.LuckyChatMemory;
-import com.lucky.common.ai.chat.model.LuckyMessageAggregator;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.service.chat.ResponseContentExtractor;
 import org.springframework.ai.chat.client.ChatClientRequest;
