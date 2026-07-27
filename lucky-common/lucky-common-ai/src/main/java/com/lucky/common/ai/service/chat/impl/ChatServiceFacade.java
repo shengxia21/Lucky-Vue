@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.lucky.common.ai.chat.advisor.LuckyMessageChatMemoryAdvisor;
 import com.lucky.common.ai.chat.memory.LuckyChatMemory;
 import com.lucky.common.ai.domain.request.ChatRequest;
-import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.ai.factory.ChatServiceFactory;
 import com.lucky.common.ai.service.chat.AbstractChatService;
 import com.lucky.common.ai.service.chat.ChatService;
@@ -14,6 +13,7 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import reactor.core.publisher.Flux;
 
@@ -34,7 +34,7 @@ public class ChatServiceFacade implements ChatService {
     private LuckyChatMemory luckyChatMemory;
 
     @Override
-    public Flux<ChatResponseVO> chat(ChatRequest chatRequest) {
+    public Flux<ChatResponse> chat(ChatRequest chatRequest) {
         // 参数校验（attachmentUrls、systemMessage、url 允许为 null）
         this.validateChatRequest(chatRequest);
         // 获取聊天服务
@@ -55,21 +55,12 @@ public class ChatServiceFacade implements ChatService {
         }
         // 添加用户消息
         messages.add(new UserMessage(chatRequest.getContent()));
-        // 响应类
-        ChatResponseVO responseVo = new ChatResponseVO();
         return chatClient.prompt()
                 .messages(messages)
                 .options(chatOptions)
                 .advisors(a -> a.param(LuckyChatMemory.REQUEST, chatRequest))
                 .stream()
-                .chatResponse()
-                .map(chatResponse -> {
-                    String content = service.extractContent(chatResponse.getResult().getOutput());
-                    String reasoningContent = service.extractReasoningContent(chatResponse.getResult().getOutput());
-                    responseVo.setContent(content);
-                    responseVo.setReasoningContent(reasoningContent);
-                    return responseVo;
-                });
+                .chatResponse();
     }
 
     /**

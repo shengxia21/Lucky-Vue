@@ -1,7 +1,7 @@
 package com.lucky.common.ai.service.chat;
 
 import com.lucky.common.ai.domain.request.ChatRequest;
-import com.lucky.common.ai.domain.vo.ChatResponseVO;
+import org.springframework.ai.chat.model.ChatResponse;
 import reactor.core.publisher.Flux;
 
 /**
@@ -17,6 +17,6 @@ public interface ChatService {
      * @param chatRequest 聊天请求
      * @return 流式响应
      */
-    Flux<ChatResponseVO> chat(ChatRequest chatRequest);
+    Flux<ChatResponse> chat(ChatRequest chatRequest);
 
 }

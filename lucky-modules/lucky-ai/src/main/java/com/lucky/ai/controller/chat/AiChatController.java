@@ -2,9 +2,9 @@ package com.lucky.ai.controller.chat;
 
 import com.lucky.ai.domain.query.chat.ChatQuery;
 import com.lucky.ai.service.IAiChatService;
-import com.lucky.common.ai.domain.vo.ChatResponseVO;
 import com.lucky.common.mybatis.core.controller.BaseController;
 import jakarta.annotation.Resource;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +29,7 @@ public class AiChatController extends BaseController {
      * 发送消息（流式 SSE）
      */
     @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<ChatResponseVO> chatStream(@Validated @RequestBody ChatQuery query) {
+    public Flux<ChatResponse> chatStream(@Validated @RequestBody ChatQuery query) {
         return chatService.chatStream(query);
     }
 
