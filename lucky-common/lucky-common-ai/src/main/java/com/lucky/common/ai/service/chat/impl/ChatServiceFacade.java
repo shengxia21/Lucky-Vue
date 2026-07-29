@@ -106,9 +106,6 @@ public class ChatServiceFacade implements ChatService {
         if (chatRequest.getUserId() == null) {
             throw new IllegalArgumentException("用户ID(userId)不能为空");
         }
-        if (chatRequest.getDeptId() == null) {
-            throw new IllegalArgumentException("部门ID(deptId)不能为空");
-        }
         if (chatRequest.getUserName() == null) {
             throw new IllegalArgumentException("用户名称(userName)不能为空");
         }
