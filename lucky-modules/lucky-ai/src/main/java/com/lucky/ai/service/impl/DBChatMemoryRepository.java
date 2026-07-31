@@ -33,9 +33,12 @@ public class DBChatMemoryRepository implements LuckyChatMemoryRepository {
     }
 
     @Override
-    public List<ChatMessageDTO> findByConversationId(Long conversationId) {
+    public List<ChatMessageDTO> findByConversationId(Long conversationId, int limit) {
+        // 按创建时间正序（旧 → 新），最新时间在下面，取最近 limit 条，避免长会话全量查询
         List<AiChatMessage> messageList = chatMessageMapper.selectList(Wrappers.<AiChatMessage>lambdaQuery()
-                .eq(AiChatMessage::getConversationId, conversationId));
+                .eq(AiChatMessage::getConversationId, conversationId)
+                .orderByAsc(AiChatMessage::getCreateTime)
+                .last("limit " + limit));
         return BeanUtil.copyToList(messageList, ChatMessageDTO.class);
     }
 

@@ -32,10 +32,18 @@ public class LuckyInMemoryChatMemoryRepository implements LuckyChatMemoryReposit
     }
 
     @Override
-    public List<ChatMessageDTO> findByConversationId(Long conversationId) {
+    public List<ChatMessageDTO> findByConversationId(Long conversationId, int limit) {
         Assert.hasText(conversationId.toString(), "conversationId cannot be null or empty");
         List<ChatMessageDTO> messages = this.chatMemoryStore.get(conversationId);
-        return (messages != null ? messages : List.of());
+        if (messages == null || messages.isEmpty()) {
+            return List.of();
+        }
+        // 内存场景：取尾部 limit 条（最新的），保持正序
+        int size = messages.size();
+        if (size <= limit) {
+            return new ArrayList<>(messages);
+        }
+        return new ArrayList<>(messages.subList(size - limit, size));
     }
 
 }

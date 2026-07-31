@@ -57,7 +57,8 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
         messageDTO.setPlatform(chatRequest.getPlatform());
         messageDTO.setModel(chatRequest.getModel());
         messageDTO.setContent(assistant.getText());
-        messageDTO.setReasoningContent(assistant.getMetadata().get("reasoningContent").toString());
+        String reasoningContent = assistant.getMetadata().getOrDefault("reasoningContent", "").toString();
+        messageDTO.setReasoningContent(reasoningContent);
         if (usage != null) {
             messageDTO.setPromptTokens(usage.getPromptTokens());
             messageDTO.setCompletionTokens(usage.getCompletionTokens());
@@ -75,7 +76,9 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
         if (messageCount <= 0) {
             return Collections.emptyList();
         }
-        List<ChatMessageDTO> messages = luckyChatMemoryRepository.findByConversationId(conversationId);
+        // messageCount 实际为对话轮数（user+assistant 一对算一轮），每轮最多 2 条
+        int limit = messageCount * 2;
+        List<ChatMessageDTO> messages = luckyChatMemoryRepository.findByConversationId(conversationId, limit);
         if (messages.isEmpty()) {
             return Collections.emptyList();
         }
