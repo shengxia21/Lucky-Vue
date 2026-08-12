@@ -1,7 +1,7 @@
 package com.lucky.common.web.interceptor;
 
-import com.alibaba.fastjson2.JSON;
 import com.lucky.common.core.domain.AjaxResult;
+import com.lucky.common.core.utils.JsonUtils;
 import com.lucky.common.core.utils.ServletUtils;
 import com.lucky.common.web.annotation.RepeatSubmit;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ public abstract class RepeatSubmitInterceptor implements HandlerInterceptor {
             if (annotation != null) {
                 if (this.isRepeatSubmit(request, annotation)) {
                     AjaxResult ajaxResult = AjaxResult.error(annotation.message());
-                    ServletUtils.renderString(response, JSON.toJSONString(ajaxResult));
+                    ServletUtils.renderString(response, JsonUtils.toJSONString(ajaxResult));
                     return false;
                 }
             }

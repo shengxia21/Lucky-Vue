@@ -1,9 +1,9 @@
 package com.lucky.common.log.aspectj;
 
-import com.alibaba.fastjson2.JSON;
 import com.lucky.common.core.domain.model.LoginUser;
 import com.lucky.common.core.enums.HttpMethod;
 import com.lucky.common.core.utils.ExceptionUtil;
+import com.lucky.common.core.utils.JsonUtils;
 import com.lucky.common.core.utils.ServletUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.ip.AddressUtils;
@@ -13,7 +13,6 @@ import com.lucky.common.core.utils.text.Convert;
 import com.lucky.common.log.annotation.Log;
 import com.lucky.common.log.enums.BusinessStatus;
 import com.lucky.common.log.event.OperLogEvent;
-import com.lucky.common.log.filter.PropertyPreExcludeFilter;
 import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -145,7 +144,7 @@ public class LogAspect {
         }
         // 是否需要保存response，参数和值
         if (log.isSaveResponseData() && StringUtils.isNotNull(jsonResult)) {
-            operLog.setJsonResult(StringUtils.substring(JSON.toJSONString(jsonResult), 0, 2000));
+            operLog.setJsonResult(StringUtils.substring(JsonUtils.toJSONString(jsonResult), 0, 2000));
         }
     }
 
@@ -161,7 +160,7 @@ public class LogAspect {
             String params = argsArrayToString(joinPoint.getArgs(), excludeParamNames);
             operLog.setOperParam(StringUtils.substring(params, 0, 2000));
         } else {
-            operLog.setOperParam(StringUtils.substring(JSON.toJSONString(paramsMap, excludePropertyPreFilter(excludeParamNames)), 0, 2000));
+            operLog.setOperParam(StringUtils.substring(JsonUtils.toJSONString(paramsMap, getExcludeFields(excludeParamNames)), 0, 2000));
         }
     }
 
@@ -174,7 +173,7 @@ public class LogAspect {
             for (Object o : paramsArray) {
                 if (StringUtils.isNotNull(o) && !isFilterObject(o)) {
                     try {
-                        String jsonObj = JSON.toJSONString(o, excludePropertyPreFilter(excludeParamNames));
+                        String jsonObj = JsonUtils.toJSONString(o, getExcludeFields(excludeParamNames));
                         params.append(jsonObj).append(" ");
                     } catch (Exception e) {
                         log.error("参数拼装异常:{}", e.getMessage());
@@ -186,10 +185,10 @@ public class LogAspect {
     }
 
     /**
-     * 忽略敏感属性
+     * 忽略敏感属性，返回需要排除的字段名数组
      */
-    public PropertyPreExcludeFilter excludePropertyPreFilter(String[] excludeParamNames) {
-        return new PropertyPreExcludeFilter().addExcludes(ArrayUtils.addAll(EXCLUDE_PROPERTIES, excludeParamNames));
+    public String[] getExcludeFields(String[] excludeParamNames) {
+        return ArrayUtils.addAll(EXCLUDE_PROPERTIES, excludeParamNames);
     }
 
     /**

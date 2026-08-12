@@ -1,9 +1,9 @@
 package com.lucky.common.core.utils.ip;
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.lucky.common.core.config.LuckyConfig;
 import com.lucky.common.core.constant.Constants;
+import com.lucky.common.core.utils.JsonUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.http.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +33,9 @@ public class AddressUtils {
                     log.error("获取地理位置异常 {}", ip);
                     return UNKNOWN;
                 }
-                JSONObject obj = JSON.parseObject(rspStr);
-                String region = obj.getString("pro");
-                String city = obj.getString("city");
+                JsonNode obj = JsonUtils.parseObject(rspStr);
+                String region = obj.get("pro").asText();
+                String city = obj.get("city").asText();
                 return String.format("%s %s", region, city);
             } catch (Exception e) {
                 log.error("获取地理位置异常 {}", ip);

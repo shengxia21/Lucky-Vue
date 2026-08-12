@@ -1,7 +1,7 @@
 package com.lucky.common.web.interceptor.impl;
 
-import com.alibaba.fastjson2.JSON;
 import com.lucky.common.core.constant.CacheConstants;
+import com.lucky.common.core.utils.JsonUtils;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.core.utils.http.HttpHelper;
 import com.lucky.common.redis.utils.RedisCache;
@@ -47,7 +47,7 @@ public class SameUrlDataInterceptor extends RepeatSubmitInterceptor {
 
         // body参数为空，获取Parameter的数据
         if (StringUtils.isEmpty(nowParams)) {
-            nowParams = JSON.toJSONString(request.getParameterMap());
+            nowParams = JsonUtils.toJSONString(request.getParameterMap());
         }
         Map<String, Object> nowDataMap = new HashMap<>();
         nowDataMap.put(REPEAT_PARAMS, nowParams);
