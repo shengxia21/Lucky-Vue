@@ -38,8 +38,6 @@ public class TongYiServiceImpl implements AbstractChatService {
                 .model(chatRequest.getModel())
                 .enableThinking(chatRequest.getUseThinking())
                 .enableSearch(chatRequest.getUseSearch())
-                .temperature(chatRequest.getTemperature())
-                .maxToken(chatRequest.getMaxTokens())
                 .build();
     }
 

@@ -71,8 +71,6 @@ public class AiChatServiceImpl implements IAiChatService {
         chatRequest.setAttachmentUrls(query.getAttachmentUrls());
         chatRequest.setConversationId(conversation.getId());
         chatRequest.setSystemMessage(role.getSystemMessage());
-        chatRequest.setTemperature(conversation.getTemperature());
-        chatRequest.setMaxTokens(conversation.getMaxTokens());
         chatRequest.setMessageCount(conversation.getMessageCount());
         chatRequest.setPlatform(model.getPlatform());
         chatRequest.setModel(model.getModel());

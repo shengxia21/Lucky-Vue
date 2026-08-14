@@ -132,12 +132,6 @@ public class ChatServiceFacade implements ChatService {
         if (chatRequest.getConversationId() == null) {
             throw new IllegalArgumentException("会话ID(conversationId)不能为空");
         }
-        if (chatRequest.getTemperature() == null) {
-            throw new IllegalArgumentException("温度参数(temperature)不能为空");
-        }
-        if (chatRequest.getMaxTokens() == null) {
-            throw new IllegalArgumentException("最大Token数(maxTokens)不能为空");
-        }
         if (chatRequest.getMessageCount() == null) {
             throw new IllegalArgumentException("携带历史消息数(messageCount)不能为空");
         }

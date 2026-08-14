@@ -56,16 +56,6 @@ public class AiChatConversationVO implements VO {
     private String systemMessage;
 
     /**
-     * 温度参数
-     */
-    private Double temperature;
-
-    /**
-     * 单条回复的最大 Token 数量
-     */
-    private Integer maxTokens;
-
-    /**
      * 携带历史消息数
      */
     private Integer messageCount;

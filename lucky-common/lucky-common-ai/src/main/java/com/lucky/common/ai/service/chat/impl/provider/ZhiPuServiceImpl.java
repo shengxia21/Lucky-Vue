@@ -36,8 +36,6 @@ public class ZhiPuServiceImpl implements AbstractChatService {
         return ZhiPuAiChatOptions.builder()
                 .model(chatRequest.getModel())
                 .thinking(chatRequest.getUseThinking() ? ZhiPuAiApi.ChatCompletionRequest.Thinking.enabled() : ZhiPuAiApi.ChatCompletionRequest.Thinking.disabled())
-                .temperature(chatRequest.getTemperature())
-                .maxTokens(chatRequest.getMaxTokens())
                 .build();
     }
 

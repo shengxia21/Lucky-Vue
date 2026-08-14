@@ -61,8 +61,6 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         conversation.setTitle(AiChatConversation.TITLE_DEFAULT);
         conversation.setPinned(false);
         conversation.setRoleId(query.getRoleId());
-        conversation.setTemperature(1.0);
-        conversation.setMaxTokens(2000);
         conversation.setMessageCount(10);
         if (role != null) {
             conversation.setTitle(role.getName());
@@ -107,8 +105,6 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         conversation.setUserId(SecurityUtils.getUserId());
         conversation.setTitle(AiChatConversation.TITLE_DEFAULT);
         conversation.setPinned(false);
-        conversation.setTemperature(1.0);
-        conversation.setMaxTokens(2000);
         conversation.setMessageCount(10);
         int row = chatConversationMapper.insert(conversation);
         if (row > 0) {

@@ -37,8 +37,6 @@ public class DeepSeekServiceImpl implements AbstractChatService {
     public ChatOptions buildChatOptions(ChatRequest chatRequest) {
         return DeepSeekChatOptions.builder()
                 .model(chatRequest.getModel())
-                .temperature(chatRequest.getTemperature())
-                .maxTokens(chatRequest.getMaxTokens())
                 .build();
     }
 

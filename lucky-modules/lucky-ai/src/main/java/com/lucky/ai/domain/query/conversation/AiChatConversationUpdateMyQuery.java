@@ -35,19 +35,6 @@ public class AiChatConversationUpdateMyQuery {
     private Boolean pinned;
 
     /**
-     * 温度参数
-     */
-    @Max(value = 2, message = "温度参数不能大于2")
-    @Min(value = 0, message = "温度参数不能小于0")
-    private Double temperature;
-
-    /**
-     * 单条回复的最大 Token 数量
-     */
-    @Min(value = 2000, message = "单条回复的最大 Token 数量不能小于2000")
-    private Integer maxTokens;
-
-    /**
      * 携带历史消息数
      */
     @Max(value = 30, message = "携带历史消息数不能超过30条")
