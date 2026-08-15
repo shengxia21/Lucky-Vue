@@ -1,7 +1,7 @@
 package com.lucky.ai.service;
 
 import com.lucky.ai.domain.query.chat.ChatQuery;
-import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.http.codec.ServerSentEvent;
 import reactor.core.publisher.Flux;
 
 /**
@@ -13,10 +13,11 @@ public interface IAiChatService {
 
     /**
      * 发送消息（流式）
+     * <p>返回按 SSE 命名事件封装的流：思考内容 → thinking、正文 → text、错误 → error、流结束 → done</p>
      *
      * @param query 聊天参数
-     * @return Flux流式响应
+     * @return SSE 事件流式响应
      */
-    Flux<ChatResponse> chatStream(ChatQuery query);
+    Flux<ServerSentEvent<String>> chatStream(ChatQuery query);
 
 }

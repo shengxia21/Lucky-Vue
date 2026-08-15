@@ -13,7 +13,7 @@ import com.lucky.common.ai.service.chat.ChatService;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
-import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -38,7 +38,7 @@ public class AiChatServiceImpl implements IAiChatService {
     private ChatService chatService;
 
     @Override
-    public Flux<ChatResponse> chatStream(ChatQuery query) {
+    public Flux<ServerSentEvent<String>> chatStream(ChatQuery query) {
         // 校验对话是否存在，不存在则创建
         AiChatConversation conversation;
         if (ObjUtil.isNull(query.getConversationId())) {

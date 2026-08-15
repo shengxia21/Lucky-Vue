@@ -6,27 +6,23 @@ import com.lucky.common.ai.chat.advisor.LuckyMessageChatMemoryAdvisor;
 import com.lucky.common.ai.chat.memory.LuckyChatMemory;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.factory.ChatServiceFactory;
+import com.lucky.common.ai.factory.SseEventFactory;
 import com.lucky.common.ai.service.chat.AbstractChatService;
 import com.lucky.common.ai.service.chat.ChatService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.http.codec.ServerSentEvent;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeoutException;
 
 /**
  * 聊天服务外观类
@@ -46,7 +42,7 @@ public class ChatServiceFacade implements ChatService {
     private ChatModelCache chatModelCache;
 
     @Override
-    public Flux<ChatResponse> chat(ChatRequest chatRequest) {
+    public Flux<ServerSentEvent<String>> chat(ChatRequest chatRequest) {
         // 参数校验（attachmentUrls、systemMessage、url 允许为 null）
         this.validateChatRequest(chatRequest);
         // 获取聊天服务
@@ -82,32 +78,15 @@ public class ChatServiceFacade implements ChatService {
                 .timeout(Duration.ofSeconds(30))
                 // 客户端取消时记录日志（下游模型 HTTP 调用由 Reactor 自动取消）
                 .doOnCancel(() -> log.warn("AI 流式聊天被客户端取消: conversationId={}", chatRequest.getConversationId()))
-                // 异常兜底：向 SSE 推送一个错误事件，前端可识别并提示用户
+                // 将每个 ChatResponse chunk 转为 SSE 命名事件（思考内容 → thinking、正文 → text）
+                .concatMapIterable(response -> SseEventFactory.toEvents(response, service))
+                // 异常兜底：直接向 SSE 推送 error 事件，前端可识别并提示用户
                 .onErrorResume(error -> {
                     log.error("AI 流式聊天异常: conversationId={}", chatRequest.getConversationId(), error);
-                    return Flux.just(buildErrorResponse(error));
-                });
-    }
-
-    /**
-     * 构造错误 ChatResponse，序列化为 SSE 后前端可识别
-     * <p>错误消息通过 output.text 传递，output.metadata.error=true 作为错误标识</p>
-     *
-     * @param error 异常
-     * @return 错误 ChatResponse
-     */
-    private ChatResponse buildErrorResponse(Throwable error) {
-        String errorMsg = (error instanceof TimeoutException)
-                ? "模型响应超时，请稍后重试"
-                : "AI 服务暂时不可用：" + error.getMessage();
-        Map<String, Object> errorMetadata = new HashMap<>();
-        errorMetadata.put("error", true);
-        AssistantMessage errorAssistant = AssistantMessage.builder()
-                .content(errorMsg)
-                .properties(errorMetadata)
-                .build();
-        Generation generation = new Generation(errorAssistant);
-        return new ChatResponse(List.of(generation));
+                    return Flux.just(SseEventFactory.errorEvent(error));
+                })
+                // 流结束：推送 done 事件，标识本次流式传输正常结束
+                .concatWithValues(SseEventFactory.doneEvent());
     }
 
     /**
