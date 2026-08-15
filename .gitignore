@@ -34,6 +34,9 @@ target/
 ### Qoder ###
 .qoder/
 
+### WorkBuddy ###
+.workbuddy/
+
 ### JRebel ###
 rebel.xml
 
