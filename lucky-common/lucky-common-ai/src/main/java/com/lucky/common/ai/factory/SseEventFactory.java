@@ -8,7 +8,6 @@ import org.springframework.http.codec.ServerSentEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 /**
  * AI 流式响应 SSE 事件工厂
@@ -81,14 +80,11 @@ public final class SseEventFactory {
      * 构造错误 SSE 事件（event=error）
      * <p>错误消息通过 data 传递，前端收到 error 事件后提示用户并结束本次流</p>
      *
-     * @param error 异常
+     * @param errorMessage 异常信息
      * @return 错误 SSE 事件
      */
-    public static ServerSentEvent<String> errorEvent(Throwable error) {
-        String errorMsg = (error instanceof TimeoutException)
-                ? "模型响应超时，请稍后重试"
-                : "AI 服务暂时不可用：" + error.getMessage();
-        return dataEvent(EVENT_ERROR, errorMsg);
+    public static ServerSentEvent<String> errorEvent(String errorMessage) {
+        return dataEvent(EVENT_ERROR, errorMessage);
     }
 
     /**

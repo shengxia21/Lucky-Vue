@@ -74,16 +74,16 @@ public class ChatServiceFacade implements ChatService {
                 .advisors(a -> a.param(LuckyChatMemory.REQUEST, chatRequest))
                 .stream()
                 .chatResponse()
+                // 将每个 ChatResponse chunk 转为 SSE 命名事件（思考内容 → thinking、正文 → text）
+                .concatMapIterable(response -> SseEventFactory.toEvents(response, service))
                 // 超时控制：模型 API 卡死时及时释放连接（默认 30 秒）
                 .timeout(Duration.ofSeconds(30))
                 // 客户端取消时记录日志（下游模型 HTTP 调用由 Reactor 自动取消）
                 .doOnCancel(() -> log.warn("AI 流式聊天被客户端取消: conversationId={}", chatRequest.getConversationId()))
-                // 将每个 ChatResponse chunk 转为 SSE 命名事件（思考内容 → thinking、正文 → text）
-                .concatMapIterable(response -> SseEventFactory.toEvents(response, service))
                 // 异常兜底：直接向 SSE 推送 error 事件，前端可识别并提示用户
                 .onErrorResume(error -> {
-                    log.error("AI 流式聊天异常: conversationId={}", chatRequest.getConversationId(), error);
-                    return Flux.just(SseEventFactory.errorEvent(error));
+                    log.error("AI 流式聊天异常: conversationId={}, error={}", chatRequest.getConversationId(), error.getMessage());
+                    return Flux.just(SseEventFactory.errorEvent(error.getMessage()));
                 })
                 // 流结束：推送 done 事件，标识本次流式传输正常结束
                 .concatWithValues(SseEventFactory.doneEvent());
