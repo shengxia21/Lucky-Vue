@@ -70,7 +70,7 @@ public final class SseEventFactory {
             events.add(dataEvent(EVENT_THINKING, reasoning));
         }
         // 正文 → text 事件
-        String text = output.getText();
+        String text = service.extractTextContent(output);
         if (StrUtil.isNotBlank(text)) {
             events.add(dataEvent(EVENT_TEXT, text));
         }

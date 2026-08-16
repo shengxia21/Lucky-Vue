@@ -15,7 +15,7 @@ public interface ResponseContentExtractor {
      * @param assistantMessage 聊天响应
      * @return 响应文本内容
      */
-    default String extractContent(AssistantMessage assistantMessage) {
+    default String extractTextContent(AssistantMessage assistantMessage) {
         return assistantMessage.getText();
     }
 
