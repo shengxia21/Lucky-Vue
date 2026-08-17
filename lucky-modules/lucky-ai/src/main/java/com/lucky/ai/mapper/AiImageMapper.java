@@ -23,7 +23,7 @@ public interface AiImageMapper extends BaseMapperX<AiImage, AiImageVO> {
     default IPage<AiImageVO> selectMyPage(IPage<AiImage> page, AiImageMyQuery query) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getPrompt()), AiImage::getPrompt, query.getPrompt())
-                .eq(StringUtils.isNotNull(query.getPublicStatus()), AiImage::getPublicStatus, query.getPublicStatus())
+                .eq(StringUtils.isNotNull(query.getIsPublic()), AiImage::getIsPublic, query.getIsPublic())
                 .eq(AiImage::getUserId, SecurityUtils.getUserId())
                 .orderByDesc(AiImage::getCreateTime);
         return selectVoPage(page, wrapper);
@@ -54,8 +54,8 @@ public interface AiImageMapper extends BaseMapperX<AiImage, AiImageVO> {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .eq(StringUtils.isNotNull(query.getUserId()), AiImage::getUserId, query.getUserId())
                 .eq(StringUtils.isNotEmpty(query.getPlatform()), AiImage::getPlatform, query.getPlatform())
-                .eq(StringUtils.isNotNull(query.getStatus()), AiImage::getStatus, query.getStatus())
-                .eq(StringUtils.isNotNull(query.getPublicStatus()), AiImage::getPublicStatus, query.getPublicStatus())
+                .eq(StringUtils.isNotNull(query.getGenerateStatus()), AiImage::getGenerateStatus, query.getGenerateStatus())
+                .eq(StringUtils.isNotNull(query.getIsPublic()), AiImage::getIsPublic, query.getIsPublic())
                 .between(!query.getParams().isEmpty(), AiImage::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"))
                 .orderByDesc(AiImage::getCreateTime);
         return selectVoPage(page, wrapper);

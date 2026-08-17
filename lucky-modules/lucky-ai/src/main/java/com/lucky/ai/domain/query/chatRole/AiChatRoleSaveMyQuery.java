@@ -40,7 +40,7 @@ public class AiChatRoleSaveMyQuery {
      * 角色设定
      */
     @NotEmpty(message = "角色设定不能为空")
-    private String systemMessage;
+    private String persona;
 
     /**
      * 引用的知识库编号列表

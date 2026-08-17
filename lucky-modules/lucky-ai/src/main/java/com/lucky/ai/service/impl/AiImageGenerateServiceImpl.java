@@ -47,8 +47,8 @@ public class AiImageGenerateServiceImpl implements IAiImageGenerateService {
         image.setUserId(SecurityUtils.getUserId());
         image.setPlatform(model.getPlatform());
         image.setModel(model.getModel());
-        image.setPublicStatus(false);
-        image.setStatus(AiImageStatusEnum.IN_PROGRESS.getStatus());
+        image.setIsPublic(false);
+        image.setGenerateStatus(AiImageStatusEnum.IN_PROGRESS.getStatus());
         imageMapper.insert(image);
 
         // 构建图片请求

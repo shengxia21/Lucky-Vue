@@ -18,6 +18,6 @@ public class AiImageMyQuery {
     /**
      * 是否发布
      */
-    private Boolean publicStatus;
+    private Boolean isPublic;
 
 }

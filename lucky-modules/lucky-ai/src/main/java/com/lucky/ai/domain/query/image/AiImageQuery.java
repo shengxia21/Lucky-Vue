@@ -26,12 +26,12 @@ public class AiImageQuery {
     /**
      * 绘画状态
      */
-    private Integer status;
+    private Integer generateStatus;
 
     /**
      * 是否发布
      */
-    private Boolean publicStatus;
+    private Boolean isPublic;
 
     /**
      * 查询参数（开始时间、结束时间）

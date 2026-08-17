@@ -49,7 +49,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
         AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
         chatRole.setUserId(SecurityUtils.getUserId());
         chatRole.setStatus(AiStatusEnum.ENABLE.getStatus());
-        chatRole.setPublicStatus(false);
+        chatRole.setIsPublic(false);
         return chatRoleMapper.insert(chatRole);
     }
 

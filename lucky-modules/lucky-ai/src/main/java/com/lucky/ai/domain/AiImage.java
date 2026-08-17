@@ -65,7 +65,7 @@ public class AiImage extends BaseEntity {
     /**
      * 生成状态（10进行中 20已完成 30已失败）
      */
-    private Integer status;
+    private Integer generateStatus;
 
     /**
      * 图片地址
@@ -91,7 +91,7 @@ public class AiImage extends BaseEntity {
     /**
      * 是否公开（0否 1是）
      */
-    private Boolean publicStatus;
+    private Boolean isPublic;
 
     /**
      * 删除标志（0代表存在 2代表删除）

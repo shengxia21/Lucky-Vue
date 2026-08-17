@@ -45,12 +45,12 @@ public class ChatRequest {
     /**
      * 角色设定
      */
-    private String systemMessage;
+    private String persona;
 
     /**
      * 携带历史消息数
      */
-    private Integer messageCount;
+    private Integer historyMessageCount;
 
     // =======模型信息相关=======
 

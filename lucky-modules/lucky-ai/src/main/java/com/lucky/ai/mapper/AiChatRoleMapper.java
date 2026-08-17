@@ -24,9 +24,9 @@ public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, AiChatRoleVO> 
         LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getName()), AiChatRole::getName, query.getName())
                 // 公开 查全部用户
-                .eq(Boolean.TRUE.equals(query.getPublicStatus()), AiChatRole::getPublicStatus, query.getPublicStatus())
+                .eq(Boolean.TRUE.equals(query.getIsPublic()), AiChatRole::getIsPublic, query.getIsPublic())
                 // 私有 查当前用户
-                .eq(Boolean.FALSE.equals(query.getPublicStatus()), AiChatRole::getUserId, SecurityUtils.getUserId())
+                .eq(Boolean.FALSE.equals(query.getIsPublic()), AiChatRole::getUserId, SecurityUtils.getUserId())
                 // 只返回已启用的聊天角色
                 .eq(AiChatRole::getStatus, AiStatusEnum.ENABLE.getStatus())
                 .orderByAsc(AiChatRole::getSort);
@@ -59,7 +59,7 @@ public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, AiChatRoleVO> 
                 .eq(StringUtils.isNotNull(query.getUserId()), AiChatRole::getUserId, query.getUserId())
                 .like(StringUtils.isNotEmpty(query.getName()), AiChatRole::getName, query.getName())
                 .eq(StringUtils.isNotNull(query.getStatus()), AiChatRole::getStatus, query.getStatus())
-                .eq(StringUtils.isNotNull(query.getPublicStatus()), AiChatRole::getPublicStatus, query.getPublicStatus())
+                .eq(StringUtils.isNotNull(query.getIsPublic()), AiChatRole::getIsPublic, query.getIsPublic())
                 .orderByAsc(AiChatRole::getSort);
         return selectVoPage(page, wrapper);
     }

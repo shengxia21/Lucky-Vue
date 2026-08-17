@@ -35,10 +35,10 @@ public interface LuckyChatMemory {
     /**
      * 获取历史消息列表
      *
-     * @param conversationId 会话id
-     * @param messageCount   携带历史消息数
+     * @param conversationId      会话id
+     * @param historyMessageCount 携带历史消息数
      * @return 消息列表
      */
-    List<Message> get(Long conversationId, Integer messageCount);
+    List<Message> get(Long conversationId, Integer historyMessageCount);
 
 }

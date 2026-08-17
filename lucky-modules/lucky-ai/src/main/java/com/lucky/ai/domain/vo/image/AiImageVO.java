@@ -54,7 +54,7 @@ public class AiImageVO {
     /**
      * 绘画状态
      */
-    private Integer status;
+    private Integer generateStatus;
 
     /**
      * 图片地址
@@ -79,7 +79,7 @@ public class AiImageVO {
     /**
      * 是否发布
      */
-    private Boolean publicStatus;
+    private Boolean isPublic;
 
     /**
      * 创建时间

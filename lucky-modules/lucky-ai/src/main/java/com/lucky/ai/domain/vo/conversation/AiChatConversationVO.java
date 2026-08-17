@@ -42,7 +42,7 @@ public class AiChatConversationVO implements VO {
     /**
      * 角色编号
      */
-    @Trans(type = TransType.SIMPLE, target = AiChatRole.class, fields = {"avatar", "systemMessage"}, refs = {"avatar", "systemMessage"})
+    @Trans(type = TransType.SIMPLE, target = AiChatRole.class, fields = {"avatar", "persona"}, refs = {"avatar", "persona"})
     private Long roleId;
 
     /**
@@ -53,12 +53,12 @@ public class AiChatConversationVO implements VO {
     /**
      * 角色设定
      */
-    private String systemMessage;
+    private String persona;
 
     /**
      * 携带历史消息数
      */
-    private Integer messageCount;
+    private Integer historyMessageCount;
 
     /**
      * 消息总数

@@ -53,7 +53,7 @@ public class AiChatConversation extends BaseEntity {
     /**
      * 携带历史消息数
      */
-    private Integer messageCount;
+    private Integer historyMessageCount;
 
     /**
      * 删除标志（0代表存在 2代表删除）

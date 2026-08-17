@@ -39,7 +39,7 @@ public class AiChatRoleVO {
     /**
      * 角色设定
      */
-    private String systemMessage;
+    private String persona;
 
     /**
      * 引用的知识库编号列表
@@ -59,7 +59,7 @@ public class AiChatRoleVO {
     /**
      * 是否公开
      */
-    private Boolean publicStatus;
+    private Boolean isPublic;
 
     /**
      * 排序

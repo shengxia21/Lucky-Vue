@@ -18,6 +18,6 @@ public class AiChatRoleMyQuery {
     /**
      * 是否公开
      */
-    private Boolean publicStatus;
+    private Boolean isPublic;
 
 }

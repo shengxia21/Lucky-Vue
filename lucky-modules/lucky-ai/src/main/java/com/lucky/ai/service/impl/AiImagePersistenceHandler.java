@@ -26,7 +26,7 @@ public class AiImagePersistenceHandler implements ImagePersistenceHandler {
     public void onSuccess(Long imageId, String filePath) {
         AiImage aiImage = new AiImage();
         aiImage.setId(imageId);
-        aiImage.setStatus(AiImageStatusEnum.SUCCESS.getStatus());
+        aiImage.setGenerateStatus(AiImageStatusEnum.SUCCESS.getStatus());
         aiImage.setPicUrl(filePath);
         aiImage.setFinishTime(LocalDateTime.now());
         imageMapper.updateById(aiImage);
@@ -36,7 +36,7 @@ public class AiImagePersistenceHandler implements ImagePersistenceHandler {
     public void onFailure(Long imageId, String errorMessage) {
         AiImage aiImage = new AiImage();
         aiImage.setId(imageId);
-        aiImage.setStatus(AiImageStatusEnum.FAIL.getStatus());
+        aiImage.setGenerateStatus(AiImageStatusEnum.FAIL.getStatus());
         aiImage.setErrorMessage(errorMessage);
         imageMapper.updateById(aiImage);
     }

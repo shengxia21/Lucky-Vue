@@ -43,7 +43,7 @@ public class ChatServiceFacade implements ChatService {
 
     @Override
     public Flux<ServerSentEvent<String>> chat(ChatRequest chatRequest) {
-        // 参数校验（attachmentUrls、systemMessage、url 允许为 null）
+        // 参数校验（attachmentUrls、persona、url 允许为 null）
         this.validateChatRequest(chatRequest);
         // 获取聊天服务
         AbstractChatService service = chatFactory.getOriginalService(chatRequest.getPlatform());
@@ -63,8 +63,8 @@ public class ChatServiceFacade implements ChatService {
 
         // 添加系统消息（聊天角色）
         List<Message> messages = new ArrayList<>();
-        if (StrUtil.isNotBlank(chatRequest.getSystemMessage())) {
-            messages.add(new SystemMessage(chatRequest.getSystemMessage()));
+        if (StrUtil.isNotBlank(chatRequest.getPersona())) {
+            messages.add(new SystemMessage(chatRequest.getPersona()));
         }
         // 添加用户消息
         messages.add(new UserMessage(chatRequest.getContent()));
@@ -91,7 +91,7 @@ public class ChatServiceFacade implements ChatService {
 
     /**
      * 校验聊天请求参数
-     * <p>除 attachmentUrls、systemMessage、url 外，其余参数均不可为 null</p>
+     * <p>除 attachmentUrls、persona、url 外，其余参数均不可为 null</p>
      *
      * @param chatRequest 聊天请求
      */
@@ -111,8 +111,8 @@ public class ChatServiceFacade implements ChatService {
         if (chatRequest.getConversationId() == null) {
             throw new IllegalArgumentException("会话ID(conversationId)不能为空");
         }
-        if (chatRequest.getMessageCount() == null) {
-            throw new IllegalArgumentException("携带历史消息数(messageCount)不能为空");
+        if (chatRequest.getHistoryMessageCount() == null) {
+            throw new IllegalArgumentException("携带历史消息数(historyMessageCount)不能为空");
         }
         if (chatRequest.getModel() == null) {
             throw new IllegalArgumentException("模型(model)不能为空");

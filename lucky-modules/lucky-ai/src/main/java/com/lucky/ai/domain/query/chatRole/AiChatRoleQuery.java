@@ -28,6 +28,6 @@ public class AiChatRoleQuery {
     /**
      * 是否公开
      */
-    private Boolean publicStatus;
+    private Boolean isPublic;
 
 }
