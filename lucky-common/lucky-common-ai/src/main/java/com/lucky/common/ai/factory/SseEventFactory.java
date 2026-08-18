@@ -66,14 +66,34 @@ public final class SseEventFactory {
         // 思考内容 → thinking 事件
         String reasoning = service.extractReasoningContent(output);
         if (StrUtil.isNotBlank(reasoning)) {
-            events.add(dataEvent(EVENT_THINKING, reasoning));
+            events.add(thinkingEvent(reasoning));
         }
         // 正文 → text 事件
         String text = service.extractTextContent(output);
         if (StrUtil.isNotBlank(text)) {
-            events.add(dataEvent(EVENT_TEXT, text));
+            events.add(textEvent(text));
         }
         return events;
+    }
+
+    /**
+     * 构造思考内容 SSE 事件（event=thinking）
+     *
+     * @param reasoning 思考内容
+     * @return thinking SSE 事件
+     */
+    public static ServerSentEvent<String> thinkingEvent(String reasoning) {
+        return dataEvent(EVENT_THINKING, reasoning);
+    }
+
+    /**
+     * 构造正文内容 SSE 事件（event=text）
+     *
+     * @param text 正文内容
+     * @return text SSE 事件
+     */
+    public static ServerSentEvent<String> textEvent(String text) {
+        return dataEvent(EVENT_TEXT, text);
     }
 
     /**
