@@ -1,6 +1,7 @@
 package com.lucky.ai.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.AiChatRole;
@@ -52,20 +53,31 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
     }
 
     @Override
-    public int insertMyChatConversation(AiChatConversationCreateMyQuery query) {
-        // 校验聊天角色是否有效
+    public Long insertMyChatConversation(AiChatConversationCreateMyQuery query) {
+        // 若角色id不为空，校验聊天角色是否有效
         AiChatRole role = query.getRoleId() != null ? chatRoleService.validateChatRole(query.getRoleId()) : null;
 
         AiChatConversation conversation = new AiChatConversation();
         conversation.setUserId(SecurityUtils.getUserId());
-        conversation.setTitle(AiChatConversation.TITLE_DEFAULT);
         conversation.setPinned(false);
         conversation.setRoleId(query.getRoleId());
         conversation.setHistoryMessageCount(10);
         if (role != null) {
+            // 有角色id，标题为角色名称
             conversation.setTitle(role.getName());
+        } else {
+            // 没有角色id，判断聊天内容是否存在字符
+            if (StrUtil.isNotBlank(query.getContent())) {
+                // 存在字符，标题截取至聊天内容的前12位
+                conversation.setTitle(StrUtil.maxLength(query.getContent(), 12));
+            } else {
+                // 不存在字符，使用默认标题
+                conversation.setTitle(AiConstants.TITLE_DEFAULT);
+            }
         }
-        return chatConversationMapper.insert(conversation);
+        chatConversationMapper.insert(conversation);
+        // 返回创建后的对话id
+        return conversation.getId();
     }
 
     @Override
@@ -97,20 +109,6 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
         // 添加消息数量
         page.getRecords().forEach(conversation -> conversation.setMessageTotal(countMap.getOrDefault(conversation.getId(), 0)));
         return TableDataInfo.build(page);
-    }
-
-    @Override
-    public AiChatConversation insertMyChatConversation() {
-        AiChatConversation conversation = new AiChatConversation();
-        conversation.setUserId(SecurityUtils.getUserId());
-        conversation.setTitle(AiChatConversation.TITLE_DEFAULT);
-        conversation.setPinned(false);
-        conversation.setHistoryMessageCount(10);
-        int row = chatConversationMapper.insert(conversation);
-        if (row > 0) {
-            return conversation;
-        }
-        throw new ServiceException("创建对话失败");
     }
 
     @Override

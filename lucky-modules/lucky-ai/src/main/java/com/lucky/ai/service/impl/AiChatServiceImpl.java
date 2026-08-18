@@ -39,15 +39,11 @@ public class AiChatServiceImpl implements IAiChatService {
 
     @Override
     public Flux<ServerSentEvent<String>> chatStream(ChatQuery query) {
-        // 校验对话是否存在，不存在则创建
-        AiChatConversation conversation;
-        if (ObjUtil.isNull(query.getConversationId())) {
-            conversation = chatConversationService.insertMyChatConversation();
-        } else {
-            conversation = chatConversationService.validateChatConversationExists(query.getConversationId());
-            if (ObjUtil.notEqual(conversation.getUserId(), SecurityUtils.getUserId())) {
-                throw new ServiceException("对话不属于当前用户");
-            }
+        // 校验对话是否存在
+        AiChatConversation conversation = chatConversationService.validateChatConversationExists(query.getConversationId());
+        // 校验对话是否属于当前用户
+        if (ObjUtil.notEqual(conversation.getUserId(), SecurityUtils.getUserId())) {
+            throw new ServiceException("对话不属于当前用户");
         }
         // 校验会话角色是否有效
         AiChatRole role = new AiChatRole();

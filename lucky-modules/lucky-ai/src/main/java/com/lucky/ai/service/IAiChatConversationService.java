@@ -36,9 +36,9 @@ public interface IAiChatConversationService {
      * 创建【我的】聊天对话
      *
      * @param query 创建对象
-     * @return 结果
+     * @return 创建的对话id
      */
-    int insertMyChatConversation(AiChatConversationCreateMyQuery query);
+    Long insertMyChatConversation(AiChatConversationCreateMyQuery query);
 
     /**
      * 更新【我的】聊天对话
@@ -71,13 +71,6 @@ public interface IAiChatConversationService {
      * @return 对话分页列表
      */
     TableDataInfo<AiChatConversationVO> selectChatConversationList(PageQuery pageQuery, AiChatConversationQuery query);
-
-    /**
-     * 创建【我的】聊天对话
-     *
-     * @return 对话对象
-     */
-    AiChatConversation insertMyChatConversation();
 
     /**
      * 校验对话是否存在

@@ -19,8 +19,6 @@ import java.io.Serial;
 @TableName("ai_chat_conversation")
 public class AiChatConversation extends BaseEntity {
 
-    public static final String TITLE_DEFAULT = "新对话";
-
     @Serial
     private static final long serialVersionUID = 1L;
 

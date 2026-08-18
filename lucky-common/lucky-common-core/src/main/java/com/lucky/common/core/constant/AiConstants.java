@@ -41,6 +41,12 @@ public class AiConstants {
     public static final String CHAT_ROLE_DISABLE = "聊天角色({})已禁用!";
 
     // ========== API 聊天会话 ==========
+
+    /**
+     * 默认对话标题
+     */
+    public static final String TITLE_DEFAULT = "新对话";
+
     /**
      * 对话不存在
      */

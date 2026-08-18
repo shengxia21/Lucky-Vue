@@ -15,4 +15,9 @@ public class AiChatConversationCreateMyQuery {
      */
     private Long roleId;
 
+    /**
+     * 聊天内容
+     */
+    private String content;
+
 }

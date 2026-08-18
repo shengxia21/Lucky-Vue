@@ -55,8 +55,8 @@ public class AiChatConversationController extends BaseController {
      */
     @Log(title = "创建【我的】聊天对话", businessType = BusinessType.INSERT)
     @PostMapping("/my")
-    public R<Void> addMy(@RequestBody AiChatConversationCreateMyQuery query) {
-        return toAjax(chatConversationService.insertMyChatConversation(query));
+    public R<Long> addMy(@RequestBody AiChatConversationCreateMyQuery query) {
+        return R.ok(chatConversationService.insertMyChatConversation(query));
     }
 
     /**
