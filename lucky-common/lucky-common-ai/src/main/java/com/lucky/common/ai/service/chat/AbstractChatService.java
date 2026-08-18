@@ -12,7 +12,7 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 public interface AbstractChatService extends ResponseContentExtractor {
 
     /**
-     * 构建模型
+     * 构建聊天模型
      *
      * @param baseUrl 基础Url
      * @param apiKey  apiKey
@@ -21,7 +21,7 @@ public interface AbstractChatService extends ResponseContentExtractor {
     ChatModel buildChatModel(String baseUrl, String apiKey);
 
     /**
-     * 构建选项
+     * 构建聊天选项
      *
      * @param chatRequest 聊天请求
      * @return 聊天选项

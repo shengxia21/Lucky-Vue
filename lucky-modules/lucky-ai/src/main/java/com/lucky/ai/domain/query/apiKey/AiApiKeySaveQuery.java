@@ -29,10 +29,10 @@ public class AiApiKeySaveQuery {
     private String name;
 
     /**
-     * 平台
+     * 提供商
      */
-    @NotEmpty(message = "平台不能为空")
-    private String platform;
+    @NotEmpty(message = "提供商不能为空")
+    private String provider;
 
     /**
      * 密钥

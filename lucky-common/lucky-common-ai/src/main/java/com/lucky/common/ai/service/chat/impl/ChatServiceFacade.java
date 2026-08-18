@@ -46,7 +46,7 @@ public class ChatServiceFacade implements ChatService {
         // 参数校验（attachmentUrls、persona、url 允许为 null）
         this.validateChatRequest(chatRequest);
         // 获取聊天服务
-        AbstractChatService service = chatFactory.getOriginalService(chatRequest.getPlatform());
+        AbstractChatService service = chatFactory.getOriginalService(chatRequest.getProvider());
         // 构建聊天选项
         ChatOptions chatOptions = service.buildChatOptions(chatRequest);
         // 构建聊天模型（优先从缓存复用，避免每次请求重建 HTTP 客户端与连接池）
@@ -117,8 +117,8 @@ public class ChatServiceFacade implements ChatService {
         if (chatRequest.getModel() == null) {
             throw new IllegalArgumentException("模型(model)不能为空");
         }
-        if (chatRequest.getPlatform() == null) {
-            throw new IllegalArgumentException("平台(platform)不能为空");
+        if (chatRequest.getProvider() == null) {
+            throw new IllegalArgumentException("提供商(provider)不能为空");
         }
         if (chatRequest.getApiKey() == null) {
             throw new IllegalArgumentException("密钥(apiKey)不能为空");

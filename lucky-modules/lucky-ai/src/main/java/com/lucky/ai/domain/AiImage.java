@@ -38,9 +38,9 @@ public class AiImage extends BaseEntity {
     private Long userId;
 
     /**
-     * 平台
+     * 提供商
      */
-    private String platform;
+    private String provider;
 
     /**
      * 模型标识

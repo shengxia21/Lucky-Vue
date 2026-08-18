@@ -44,10 +44,10 @@ public class ImageQuery {
     @NotNull(message = "图片宽度不能为空")
     private Integer width;
 
-    // ========== 各平台绘画的拓展参数 ==========
+    // ========== 各提供商绘画的拓展参数 ==========
 
     /**
-     * 绘制参数，不同 platform 的不同参数
+     * 绘制参数，不同 provider 的不同参数
      */
     private Map<String, String> options;
 

@@ -23,9 +23,9 @@ public class AiChatMessageVO {
     private Long id;
 
     /**
-     * 平台
+     * 提供商
      */
-    private String platform;
+    private String provider;
 
     /**
      * 模型标志

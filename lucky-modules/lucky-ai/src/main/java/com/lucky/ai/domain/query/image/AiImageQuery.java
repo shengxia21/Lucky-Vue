@@ -19,9 +19,9 @@ public class AiImageQuery {
     private Long userId;
 
     /**
-     * 平台
+     * 提供商
      */
-    private String platform;
+    private String provider;
 
     /**
      * 绘画状态

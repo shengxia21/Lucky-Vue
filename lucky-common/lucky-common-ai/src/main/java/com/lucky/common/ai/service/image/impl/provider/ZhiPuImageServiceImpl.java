@@ -1,7 +1,7 @@
 package com.lucky.common.ai.service.image.impl.provider;
 
 import com.lucky.common.ai.domain.request.ImageRequest;
-import com.lucky.common.ai.enums.Platform;
+import com.lucky.common.ai.enums.Provider;
 import com.lucky.common.ai.service.image.AbstractImageService;
 import org.springframework.ai.image.ImageModel;
 import org.springframework.ai.image.ImageOptions;
@@ -33,7 +33,7 @@ public class ZhiPuImageServiceImpl implements AbstractImageService {
 
     @Override
     public String getProviderName() {
-        return Platform.ZHI_PU.getCode();
+        return Provider.ZHI_PU.getCode();
     }
 
 }

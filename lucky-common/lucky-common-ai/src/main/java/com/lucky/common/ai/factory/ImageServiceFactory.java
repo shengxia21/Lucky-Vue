@@ -31,15 +31,15 @@ public class ImageServiceFactory implements ApplicationContextAware {
     }
 
     /**
-     * 根据平台获取图片模型策略（不包装代理）
+     * 根据提供商获取图片服务（不包装代理）
      *
-     * @param platform 平台枚举
+     * @param provider 提供商
      * @return 图片处理器
      */
-    public AbstractImageService getOriginalService(String platform) {
-        AbstractImageService service = imageServiceMap.get(platform);
+    public AbstractImageService getOriginalService(String provider) {
+        AbstractImageService service = imageServiceMap.get(provider);
         if (service == null) {
-            throw new IllegalArgumentException("暂不支持 " + platform + " 平台的图片生成功能");
+            throw new IllegalArgumentException("暂不支持 " + provider + " 提供商的图片服务功能");
         }
         return service;
     }

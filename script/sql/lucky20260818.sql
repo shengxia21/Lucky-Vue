@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `ai_api_key`;
 CREATE TABLE `ai_api_key`  (
   `id` bigint(0) NOT NULL COMMENT '编号',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
-  `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
+  `provider` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提供商',
   `api_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '密钥',
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'API 地址',
   `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
@@ -80,7 +80,7 @@ CREATE TABLE `ai_chat_message`  (
   `id` bigint(0) NOT NULL COMMENT '编号',
   `user_id` bigint(0) NOT NULL COMMENT '用户编号',
   `conversation_id` bigint(0) NOT NULL COMMENT '对话编号',
-  `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
+  `provider` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提供商',
   `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
   `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '消息类型',
   `system_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '系统消息',
@@ -149,7 +149,7 @@ DROP TABLE IF EXISTS `ai_image`;
 CREATE TABLE `ai_image`  (
   `id` bigint(0) NOT NULL COMMENT '编号',
   `user_id` bigint(0) NOT NULL COMMENT '用户编号',
-  `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
+  `provider` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提供商',
   `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标识',
   `prompt` varchar(1200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提示词',
   `width` int(0) NOT NULL COMMENT '图片宽度',
@@ -195,7 +195,7 @@ CREATE TABLE `ai_model`  (
   `id` bigint(0) NOT NULL COMMENT '编号',
   `key_id` bigint(0) NOT NULL COMMENT 'API 秘钥编号',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型名称',
-  `platform` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '平台',
+  `provider` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提供商',
   `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
   `type` tinyint(0) NOT NULL DEFAULT 1 COMMENT '模型类型（1对话 2图片 3语音 4视频 5向量 6重排序）',
   `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
@@ -420,13 +420,13 @@ INSERT INTO `sys_dict_data` VALUES (26, 8, '生成代码', '8', 'sys_oper_type',
 INSERT INTO `sys_dict_data` VALUES (27, 9, '清空数据', '9', 'sys_oper_type', '', 'danger', 'N', '0', NULL, 'admin', '2025-08-17 23:07:13', '', NULL, '清空操作');
 INSERT INTO `sys_dict_data` VALUES (28, 1, '成功', '0', 'sys_common_status', '', 'primary', 'N', '0', NULL, 'admin', '2025-08-17 23:07:13', '', NULL, '正常状态');
 INSERT INTO `sys_dict_data` VALUES (29, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', NULL, 'admin', '2025-08-17 23:07:13', '', NULL, '停用状态');
-INSERT INTO `sys_dict_data` VALUES (34, 5, '通义千问', 'TongYi', 'ai_platform', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
-INSERT INTO `sys_dict_data` VALUES (38, 9, 'DeepSeek', 'DeepSeek', 'ai_platform', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
-INSERT INTO `sys_dict_data` VALUES (39, 13, '智谱', 'ZhiPu', 'ai_platform', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
-INSERT INTO `sys_dict_data` VALUES (41, 10, '字节豆包', 'DouBao', 'ai_platform', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
-INSERT INTO `sys_dict_data` VALUES (42, 11, '腾讯混元', 'HunYuan', 'ai_platform', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
-INSERT INTO `sys_dict_data` VALUES (43, 12, '硅基流动', 'SiliconFlow', 'ai_platform', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
-INSERT INTO `sys_dict_data` VALUES (45, 15, '月之暗灭', 'Moonshot', 'ai_platform', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (34, 5, '通义千问', 'TongYi', 'ai_provider', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (38, 9, 'DeepSeek', 'DeepSeek', 'ai_provider', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (39, 13, '智谱', 'ZhiPu', 'ai_provider', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (41, 10, '字节豆包', 'DouBao', 'ai_provider', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (42, 11, '腾讯混元', 'HunYuan', 'ai_provider', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (43, 12, '硅基流动', 'SiliconFlow', 'ai_provider', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
+INSERT INTO `sys_dict_data` VALUES (45, 15, '月之暗灭', 'Moonshot', 'ai_provider', '', NULL, 'N', '0', NULL, 'admin', '2025-11-15 03:13:51', '', NULL, '');
 INSERT INTO `sys_dict_data` VALUES (47, 1, '进行中', '10', 'ai_image_generate_status', NULL, 'primary', 'N', '0', NULL, 'admin', '2025-12-09 02:26:57', '', NULL, '绘制中');
 INSERT INTO `sys_dict_data` VALUES (48, 2, '已完成', '20', 'ai_image_generate_status', NULL, 'success', 'N', '0', NULL, 'admin', '2025-12-09 02:27:18', '', NULL, '绘制完成');
 INSERT INTO `sys_dict_data` VALUES (49, 3, '已失败', '30', 'ai_image_generate_status', NULL, 'danger', 'N', '0', NULL, 'admin', '2025-12-09 02:27:39', '', NULL, '绘制失败');
@@ -472,7 +472,7 @@ INSERT INTO `sys_dict_type` VALUES (7, '通知类型', 'sys_notice_type', '0', N
 INSERT INTO `sys_dict_type` VALUES (8, '通知状态', 'sys_notice_status', '0', NULL, 'admin', '2025-08-17 23:07:13', '', NULL, '通知状态列表');
 INSERT INTO `sys_dict_type` VALUES (9, '操作类型', 'sys_oper_type', '0', NULL, 'admin', '2025-08-17 23:07:13', '', NULL, '操作类型列表');
 INSERT INTO `sys_dict_type` VALUES (10, '系统状态', 'sys_common_status', '0', NULL, 'admin', '2025-08-17 23:07:13', '', NULL, '登录状态列表');
-INSERT INTO `sys_dict_type` VALUES (11, 'AI 模型平台', 'ai_platform', '0', NULL, 'admin', '2025-11-15 02:15:43', '', NULL, 'AI 模型列表');
+INSERT INTO `sys_dict_type` VALUES (11, 'AI 服务提供商', 'ai_provider', '0', NULL, 'admin', '2025-11-15 02:15:43', '', NULL, 'AI 服务提供商列表');
 INSERT INTO `sys_dict_type` VALUES (12, 'AI 图片生成状态', 'ai_image_generate_status', '0', NULL, 'admin', '2025-12-09 02:24:51', '', NULL, 'AI 图片生成状态列表');
 INSERT INTO `sys_dict_type` VALUES (13, 'AI 模型类型', 'ai_model_type', '0', NULL, 'admin', '2025-12-09 02:28:46', '', NULL, 'AI 模型类型列表');
 INSERT INTO `sys_dict_type` VALUES (14, 'Bool是否类型', 'boolean_string', '0', NULL, 'admin', '2025-12-12 23:28:06', '', NULL, '是否类型列表');

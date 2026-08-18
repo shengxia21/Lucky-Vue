@@ -45,7 +45,7 @@ public class AiImageGenerateServiceImpl implements IAiImageGenerateService {
         // 保存数据库
         AiImage image = MapstructUtils.convert(query, AiImage.class);
         image.setUserId(SecurityUtils.getUserId());
-        image.setPlatform(model.getPlatform());
+        image.setProvider(model.getProvider());
         image.setModel(model.getModel());
         image.setIsPublic(false);
         image.setGenerateStatus(ImageGenerateStatus.IN_PROGRESS.getCode());
@@ -58,7 +58,7 @@ public class AiImageGenerateServiceImpl implements IAiImageGenerateService {
         imageRequest.setHeight(query.getHeight());
         imageRequest.setOptions(query.getOptions());
         imageRequest.setImageId(image.getId());
-        imageRequest.setPlatform(model.getPlatform());
+        imageRequest.setProvider(model.getProvider());
         imageRequest.setModel(model.getModel());
         imageRequest.setApiKey(apiKey.getApiKey());
         imageRequest.setUrl(apiKey.getUrl());

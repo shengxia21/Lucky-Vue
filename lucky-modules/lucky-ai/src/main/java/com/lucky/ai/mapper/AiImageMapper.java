@@ -53,7 +53,7 @@ public interface AiImageMapper extends BaseMapperX<AiImage, AiImageVO> {
     default IPage<AiImageVO> selectPage(IPage<AiImage> page, AiImageQuery query) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .eq(StringUtils.isNotNull(query.getUserId()), AiImage::getUserId, query.getUserId())
-                .eq(StringUtils.isNotEmpty(query.getPlatform()), AiImage::getPlatform, query.getPlatform())
+                .eq(StringUtils.isNotEmpty(query.getProvider()), AiImage::getProvider, query.getProvider())
                 .eq(StringUtils.isNotNull(query.getGenerateStatus()), AiImage::getGenerateStatus, query.getGenerateStatus())
                 .eq(StringUtils.isNotNull(query.getIsPublic()), AiImage::getIsPublic, query.getIsPublic())
                 .between(!query.getParams().isEmpty(), AiImage::getCreateTime, query.getParams().get("beginTime"), query.getParams().get("endTime"))

@@ -37,7 +37,7 @@ public class ImageServiceFacade implements ImageService {
             // 参数校验（url 允许为 null）
             this.validateImageRequest(imageRequest);
             // 获取图片模型策略
-            AbstractImageService strategy = imageFactory.getOriginalService(imageRequest.getPlatform());
+            AbstractImageService strategy = imageFactory.getOriginalService(imageRequest.getProvider());
             // 构建请求选项
             ImageOptions imageOptions = strategy.buildImageOptions(imageRequest);
             // 构建 ImageModel
@@ -86,8 +86,8 @@ public class ImageServiceFacade implements ImageService {
         if (imageRequest.getModel() == null) {
             throw new IllegalArgumentException("模型(model)不能为空");
         }
-        if (imageRequest.getPlatform() == null) {
-            throw new IllegalArgumentException("平台(platform)不能为空");
+        if (imageRequest.getProvider() == null) {
+            throw new IllegalArgumentException("提供商(provider)不能为空");
         }
         if (imageRequest.getApiKey() == null) {
             throw new IllegalArgumentException("密钥(apiKey)不能为空");

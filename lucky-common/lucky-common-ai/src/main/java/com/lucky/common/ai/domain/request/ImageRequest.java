@@ -31,7 +31,7 @@ public class ImageRequest {
     private Integer height;
 
     /**
-     * 绘制参数，不同 platform 的不同参数
+     * 绘制参数，不同 provider 的不同参数
      */
     private Map<String, String> options;
 
@@ -50,9 +50,9 @@ public class ImageRequest {
     private String model;
 
     /**
-     * 平台
+     * 提供商
      */
-    private String platform;
+    private String provider;
 
     // =======绘图请求参数相关=======
 

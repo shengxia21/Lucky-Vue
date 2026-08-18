@@ -60,9 +60,9 @@ public class ChatRequest {
     private String model;
 
     /**
-     * 平台
+     * 提供商
      */
-    private String platform;
+    private String provider;
 
     // =======api key相关=======
 

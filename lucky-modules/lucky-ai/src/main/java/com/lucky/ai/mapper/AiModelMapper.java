@@ -22,7 +22,7 @@ public interface AiModelMapper extends BaseMapperX<AiModel, AiModelVO> {
     default IPage<AiModelVO> selectPage(IPage<AiModel> page, AiModelQuery query) {
         LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getName()), AiModel::getName, query.getName())
-                .eq(StringUtils.isNotEmpty(query.getPlatform()), AiModel::getPlatform, query.getPlatform())
+                .eq(StringUtils.isNotEmpty(query.getProvider()), AiModel::getProvider, query.getProvider())
                 .eq(StringUtils.isNotNull(query.getStatus()), AiModel::getStatus, query.getStatus())
                 .orderByAsc(AiModel::getSort);
         return selectVoPage(page, wrapper);
@@ -30,7 +30,7 @@ public interface AiModelMapper extends BaseMapperX<AiModel, AiModelVO> {
 
     default List<AiModelVO> selectOptionList(Integer type) {
         LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
-                .select(AiModel::getId, AiModel::getName, AiModel::getPlatform, AiModel::getModel)
+                .select(AiModel::getId, AiModel::getName, AiModel::getProvider, AiModel::getModel)
                 .eq(AiModel::getStatus, DataStatus.OK.getCode())
                 .eq(AiModel::getType, type)
                 .orderByAsc(AiModel::getSort);

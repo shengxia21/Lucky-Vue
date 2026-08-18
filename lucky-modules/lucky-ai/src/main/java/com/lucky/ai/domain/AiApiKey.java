@@ -34,9 +34,9 @@ public class AiApiKey extends BaseEntity {
     private String name;
 
     /**
-     * 平台
+     * 提供商
      */
-    private String platform;
+    private String provider;
 
     /**
      * 密钥

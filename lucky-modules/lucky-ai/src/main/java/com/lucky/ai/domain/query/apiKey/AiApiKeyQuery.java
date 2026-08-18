@@ -16,9 +16,9 @@ public class AiApiKeyQuery {
     private String name;
 
     /**
-     * 平台
+     * 提供商
      */
-    private String platform;
+    private String provider;
 
     /**
      * 状态（0正常 1停用）

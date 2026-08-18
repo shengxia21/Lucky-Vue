@@ -27,9 +27,9 @@ public class AiImageVO {
     private Long userId;
 
     /**
-     * 平台（参见 AiPlatformEnum 枚举）
+     * 提供商（参见 Provider 枚举）
      */
-    private String platform;
+    private String provider;
 
     /**
      * 模型

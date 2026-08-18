@@ -31,15 +31,15 @@ public class ChatServiceFactory implements ApplicationContextAware {
     }
 
     /**
-     * 根据平台获取聊天模型
+     * 根据提供商获取聊天服务
      *
-     * @param platform 平台枚举
+     * @param provider 提供商
      * @return 聊天处理器
      */
-    public AbstractChatService getOriginalService(String platform) {
-        AbstractChatService service = chatServiceMap.get(platform);
+    public AbstractChatService getOriginalService(String provider) {
+        AbstractChatService service = chatServiceMap.get(provider);
         if (service == null) {
-            throw new IllegalArgumentException("暂不支持 " + platform + " 平台的聊天功能");
+            throw new IllegalArgumentException("暂不支持 " + provider + " 提供商的聊天服务");
         }
         return service;
     }

@@ -39,9 +39,9 @@ public class AiModel extends BaseEntity {
     private String name;
 
     /**
-     * 平台
+     * 提供商
      */
-    private String platform;
+    private String provider;
 
     /**
      * 模型标志

@@ -72,7 +72,7 @@ public class AiChatServiceImpl implements IAiChatService {
         chatRequest.setConversationId(conversation.getId());
         chatRequest.setPersona(role.getPersona());
         chatRequest.setHistoryMessageCount(conversation.getHistoryMessageCount());
-        chatRequest.setPlatform(model.getPlatform());
+        chatRequest.setProvider(model.getProvider());
         chatRequest.setModel(model.getModel());
         chatRequest.setApiKey(apiKey.getApiKey());
         chatRequest.setUrl(apiKey.getUrl());

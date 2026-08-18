@@ -22,7 +22,7 @@ public interface AiApiKeyMapper extends BaseMapperX<AiApiKey, AiApiKeyVO> {
     default IPage<AiApiKeyVO> selectPage(IPage<AiApiKey> page, AiApiKeyQuery query) {
         LambdaQueryWrapper<AiApiKey> wrapper = Wrappers.<AiApiKey>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getName()), AiApiKey::getName, query.getName())
-                .eq(StringUtils.isNotEmpty(query.getPlatform()), AiApiKey::getPlatform, query.getPlatform())
+                .eq(StringUtils.isNotEmpty(query.getProvider()), AiApiKey::getProvider, query.getProvider())
                 .eq(StringUtils.isNotNull(query.getStatus()), AiApiKey::getStatus, query.getStatus())
                 .orderByDesc(AiApiKey::getCreateTime);
         return selectVoPage(page, wrapper);

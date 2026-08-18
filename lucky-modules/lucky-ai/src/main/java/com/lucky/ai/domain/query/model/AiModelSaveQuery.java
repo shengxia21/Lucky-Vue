@@ -2,7 +2,7 @@ package com.lucky.ai.domain.query.model;
 
 import com.lucky.ai.domain.AiModel;
 import com.lucky.common.ai.enums.ModelType;
-import com.lucky.common.ai.enums.Platform;
+import com.lucky.common.ai.enums.Provider;
 import com.lucky.common.core.enumeration.InEnum;
 import com.lucky.common.core.enums.DataStatus;
 import com.lucky.common.core.validate.Update;
@@ -39,11 +39,11 @@ public class AiModelSaveQuery {
     private String name;
 
     /**
-     * 模型平台
+     * 服务提供商
      */
-    @InEnum(Platform.class)
-    @NotEmpty(message = "模型平台不能为空")
-    private String platform;
+    @InEnum(Provider.class)
+    @NotEmpty(message = "服务提供商不能为空")
+    private String provider;
 
     /**
      * 模型标识

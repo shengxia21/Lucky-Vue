@@ -29,9 +29,9 @@ public interface AbstractImageService {
     ImageOptions buildImageOptions(ImageRequest imageRequest);
 
     /**
-     * 获取策略名称
+     * 获取服务提供商名称
      *
-     * @return 策略名称
+     * @return 提供商名称
      */
     String getProviderName();
 

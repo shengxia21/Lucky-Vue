@@ -1,7 +1,7 @@
 package com.lucky.common.ai.service.chat.impl.provider;
 
 import com.lucky.common.ai.domain.request.ChatRequest;
-import com.lucky.common.ai.enums.Platform;
+import com.lucky.common.ai.enums.Provider;
 import com.lucky.common.ai.service.chat.AbstractChatService;
 import com.lucky.common.core.utils.StringUtils;
 import org.springframework.ai.chat.messages.AssistantMessage;
@@ -47,7 +47,7 @@ public class DeepSeekServiceImpl implements AbstractChatService {
 
     @Override
     public String getProviderName() {
-        return Platform.DEEP_SEEK.getCode();
+        return Provider.DEEP_SEEK.getCode();
     }
 
 }

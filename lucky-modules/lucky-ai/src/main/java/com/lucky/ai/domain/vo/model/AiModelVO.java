@@ -29,9 +29,9 @@ public class AiModelVO {
     private String name;
 
     /**
-     * 模型平台
+     * 服务提供商
      */
-    private String platform;
+    private String provider;
 
     /**
      * 模型标识

@@ -6,12 +6,12 @@ import lombok.Getter;
 import java.util.Arrays;
 
 /**
- * AI 平台枚举
+ * AI 提供商枚举
  *
  * @author lucky
  */
 @Getter
-public enum Platform implements ArrayValuable<String> {
+public enum Provider implements ArrayValuable<String> {
 
     TONG_YI("TongYi", "通义千问"), // 阿里
     DEEP_SEEK("DeepSeek", "DeepSeek"), // DeepSeek
@@ -24,12 +24,12 @@ public enum Platform implements ArrayValuable<String> {
     private final String code;
     private final String info;
 
-    Platform(String code, String info) {
+    Provider(String code, String info) {
         this.code = code;
         this.info = info;
     }
 
-    public static final String[] ARRAYS = Arrays.stream(values()).map(Platform::getCode).toArray(String[]::new);
+    public static final String[] ARRAYS = Arrays.stream(values()).map(Provider::getCode).toArray(String[]::new);
 
     @Override
     public String[] array() {

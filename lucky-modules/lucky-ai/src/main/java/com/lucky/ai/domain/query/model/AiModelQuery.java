@@ -16,9 +16,9 @@ public class AiModelQuery {
     private String name;
 
     /**
-     * 模型平台
+     * 模型提供商
      */
-    private String platform;
+    private String provider;
 
     /**
      * 状态（0正常 1停用）
