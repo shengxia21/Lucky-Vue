@@ -9,7 +9,7 @@ import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiImageGenerateService;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.ai.domain.request.ImageRequest;
-import com.lucky.common.ai.enums.AiImageStatusEnum;
+import com.lucky.common.ai.enums.AiImageGenerateStatusEnum;
 import com.lucky.common.ai.service.image.ImageService;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.security.utils.SecurityUtils;
@@ -48,7 +48,7 @@ public class AiImageGenerateServiceImpl implements IAiImageGenerateService {
         image.setPlatform(model.getPlatform());
         image.setModel(model.getModel());
         image.setIsPublic(false);
-        image.setGenerateStatus(AiImageStatusEnum.IN_PROGRESS.getStatus());
+        image.setGenerateStatus(AiImageGenerateStatusEnum.IN_PROGRESS.getStatus());
         imageMapper.insert(image);
 
         // 构建图片请求

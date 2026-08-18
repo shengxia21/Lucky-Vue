@@ -3,12 +3,12 @@ package com.lucky.common.ai.enums;
 import lombok.Getter;
 
 /**
- * AI 绘画状态枚举
+ * AI 图片生成状态枚举
  *
  * @author lucky
  */
 @Getter
-public enum AiImageStatusEnum {
+public enum AiImageGenerateStatusEnum {
 
     IN_PROGRESS(10, "进行中"),
     SUCCESS(20, "已完成"),
@@ -24,7 +24,7 @@ public enum AiImageStatusEnum {
      */
     private final String name;
 
-    AiImageStatusEnum(Integer status, String name) {
+    AiImageGenerateStatusEnum(Integer status, String name) {
         this.status = status;
         this.name = name;
     }

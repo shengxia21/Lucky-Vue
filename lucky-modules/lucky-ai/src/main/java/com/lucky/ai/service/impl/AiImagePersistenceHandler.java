@@ -2,7 +2,7 @@ package com.lucky.ai.service.impl;
 
 import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.mapper.AiImageMapper;
-import com.lucky.common.ai.enums.AiImageStatusEnum;
+import com.lucky.common.ai.enums.AiImageGenerateStatusEnum;
 import com.lucky.common.ai.service.image.ImagePersistenceHandler;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ public class AiImagePersistenceHandler implements ImagePersistenceHandler {
     public void onSuccess(Long imageId, String filePath) {
         AiImage aiImage = new AiImage();
         aiImage.setId(imageId);
-        aiImage.setGenerateStatus(AiImageStatusEnum.SUCCESS.getStatus());
+        aiImage.setGenerateStatus(AiImageGenerateStatusEnum.SUCCESS.getStatus());
         aiImage.setPicUrl(filePath);
         aiImage.setFinishTime(LocalDateTime.now());
         imageMapper.updateById(aiImage);
@@ -36,7 +36,7 @@ public class AiImagePersistenceHandler implements ImagePersistenceHandler {
     public void onFailure(Long imageId, String errorMessage) {
         AiImage aiImage = new AiImage();
         aiImage.setId(imageId);
-        aiImage.setGenerateStatus(AiImageStatusEnum.FAIL.getStatus());
+        aiImage.setGenerateStatus(AiImageGenerateStatusEnum.FAIL.getStatus());
         aiImage.setErrorMessage(errorMessage);
         imageMapper.updateById(aiImage);
     }

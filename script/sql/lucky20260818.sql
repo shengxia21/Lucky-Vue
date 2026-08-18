@@ -42,12 +42,9 @@ CREATE TABLE `ai_api_key`  (
 -- ----------------------------
 INSERT INTO `ai_api_key` VALUES (1, 'DeepSeek', 'DeepSeek', '填写你自己的api_key', 'https://api.deepseek.com', 0, '0', '', '', NULL, '', NULL);
 INSERT INTO `ai_api_key` VALUES (2, '通义千问', 'TongYi', '填写你自己的api_key', 'https://dashscope.aliyuncs.com', 0, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_api_key` VALUES (4, '百度千帆', 'YiYan', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
 INSERT INTO `ai_api_key` VALUES (5, '豆包火山引擎', 'DouBao', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
 INSERT INTO `ai_api_key` VALUES (6, '腾讯混元', 'HunYuan', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_api_key` VALUES (7, '讯飞星火', 'XingHuo', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
 INSERT INTO `ai_api_key` VALUES (8, 'Kimi', 'Moonshot', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_api_key` VALUES (9, '百川智能', 'BaiChuan', '填写你自己的api_key', NULL, 0, '0', '', '', NULL, '', NULL);
 
 -- ----------------------------
 -- Table structure for ai_chat_conversation
@@ -204,11 +201,8 @@ INSERT INTO `ai_model` VALUES (3, 2, '通义千问-plus', 'TongYi', 'qwen-plus',
 INSERT INTO `ai_model` VALUES (4, 2, '通义千问-image-plus', 'TongYi', 'qwen-image-plus', 2, 0, 4, '0', '', '', NULL, '', NULL);
 INSERT INTO `ai_model` VALUES (5, 2, '通义万相2.2-文生图-plus', 'TongYi', 'wan2.2-t2i-plus', 2, 0, 5, '0', '', '', NULL, '', NULL);
 INSERT INTO `ai_model` VALUES (6, 5, 'Doubao-Seed-1.6', 'DouBao', 'doubao-seed-1-6-251015', 1, 0, 6, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (7, 4, '千帆5.0', 'YiYan', 'ernie-5.0-thinking-preview', 1, 0, 7, '0', '', '', NULL, '', NULL);
 INSERT INTO `ai_model` VALUES (8, 6, '混元turbos', 'HunYuan', 'hunyuan-turbos-latest', 1, 0, 8, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (9, 7, '讯飞星火-Max', 'XingHuo', 'generalv3.5', 1, 0, 9, '0', '', '', NULL, '', NULL);
 INSERT INTO `ai_model` VALUES (10, 8, '月之暗面-kimi', 'Moonshot', 'kimi-k2-turbo-preview', 1, 0, 10, '0', '', '', NULL, '', NULL);
-INSERT INTO `ai_model` VALUES (11, 9, '百川智能-M2', 'BaiChuan', 'Baichuan-M2', 1, 0, 11, '0', '', '', NULL, '', NULL);
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -404,9 +398,6 @@ INSERT INTO `sys_dict_data` VALUES (26, 8, '生成代码', '8', 'sys_oper_type',
 INSERT INTO `sys_dict_data` VALUES (27, 9, '清空数据', '9', 'sys_oper_type', '', 'danger', 'N', '0', '', 'admin', '2025-08-17 23:07:13', '', NULL, '清空操作');
 INSERT INTO `sys_dict_data` VALUES (28, 1, '成功', '0', 'sys_common_status', '', 'primary', 'N', '0', '', 'admin', '2025-08-17 23:07:13', '', NULL, '正常状态');
 INSERT INTO `sys_dict_data` VALUES (29, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', '', 'admin', '2025-08-17 23:07:13', '', NULL, '停用状态');
-INSERT INTO `sys_dict_data` VALUES (31, 2, 'Ollama', 'Ollama', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
-INSERT INTO `sys_dict_data` VALUES (32, 3, '文心一言', 'YiYan', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
-INSERT INTO `sys_dict_data` VALUES (33, 4, '讯飞星火', 'XingHuo', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
 INSERT INTO `sys_dict_data` VALUES (34, 5, '通义千问', 'TongYi', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
 INSERT INTO `sys_dict_data` VALUES (38, 9, 'DeepSeek', 'DeepSeek', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
 INSERT INTO `sys_dict_data` VALUES (39, 13, '智谱', 'ZhiPu', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
@@ -414,7 +405,6 @@ INSERT INTO `sys_dict_data` VALUES (41, 10, '字节豆包', 'DouBao', 'ai_platfo
 INSERT INTO `sys_dict_data` VALUES (42, 11, '腾讯混元', 'HunYuan', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
 INSERT INTO `sys_dict_data` VALUES (43, 12, '硅基流动', 'SiliconFlow', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
 INSERT INTO `sys_dict_data` VALUES (45, 15, '月之暗灭', 'Moonshot', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
-INSERT INTO `sys_dict_data` VALUES (46, 16, '百川智能', 'BaiChuan', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
 INSERT INTO `sys_dict_data` VALUES (47, 1, '进行中', '10', 'ai_image_status', NULL, 'primary', 'N', '0', '', 'admin', '2025-12-09 02:26:57', '', NULL, '绘制中');
 INSERT INTO `sys_dict_data` VALUES (48, 2, '已完成', '20', 'ai_image_status', NULL, 'success', 'N', '0', '', 'admin', '2025-12-09 02:27:18', '', NULL, '绘制完成');
 INSERT INTO `sys_dict_data` VALUES (49, 3, '已失败', '30', 'ai_image_status', NULL, 'danger', 'N', '0', '', 'admin', '2025-12-09 02:27:39', '', NULL, '绘制失败');
