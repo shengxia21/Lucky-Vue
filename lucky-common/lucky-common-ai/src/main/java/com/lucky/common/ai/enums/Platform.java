@@ -11,7 +11,7 @@ import java.util.Arrays;
  * @author lucky
  */
 @Getter
-public enum AiPlatformEnum implements ArrayValuable<String> {
+public enum Platform implements ArrayValuable<String> {
 
     TONG_YI("TongYi", "通义千问"), // 阿里
     DEEP_SEEK("DeepSeek", "DeepSeek"), // DeepSeek
@@ -21,21 +21,15 @@ public enum AiPlatformEnum implements ArrayValuable<String> {
     SILICON_FLOW("SiliconFlow", "硅基流动"), // 硅基流动
     MOONSHOT("Moonshot", "月之暗灭"); // KIMI
 
-    /**
-     * 平台
-     */
-    private final String platform;
-    /**
-     * 平台名
-     */
-    private final String name;
+    private final String code;
+    private final String info;
 
-    AiPlatformEnum(String platform, String name) {
-        this.platform = platform;
-        this.name = name;
+    Platform(String code, String info) {
+        this.code = code;
+        this.info = info;
     }
 
-    public static final String[] ARRAYS = Arrays.stream(values()).map(AiPlatformEnum::getPlatform).toArray(String[]::new);
+    public static final String[] ARRAYS = Arrays.stream(values()).map(Platform::getCode).toArray(String[]::new);
 
     @Override
     public String[] array() {

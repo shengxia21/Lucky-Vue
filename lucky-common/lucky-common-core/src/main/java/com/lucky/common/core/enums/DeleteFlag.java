@@ -3,7 +3,7 @@ package com.lucky.common.core.enums;
 import lombok.Getter;
 
 /**
- * 删除标记
+ * 删除标志
  *
  * @author lucky
  */

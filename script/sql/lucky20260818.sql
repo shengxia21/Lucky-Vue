@@ -405,16 +405,16 @@ INSERT INTO `sys_dict_data` VALUES (41, 10, '字节豆包', 'DouBao', 'ai_platfo
 INSERT INTO `sys_dict_data` VALUES (42, 11, '腾讯混元', 'HunYuan', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
 INSERT INTO `sys_dict_data` VALUES (43, 12, '硅基流动', 'SiliconFlow', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
 INSERT INTO `sys_dict_data` VALUES (45, 15, '月之暗灭', 'Moonshot', 'ai_platform', '', NULL, 'N', '0', '', 'admin', '2025-11-15 03:13:51', '', NULL, '');
-INSERT INTO `sys_dict_data` VALUES (47, 1, '进行中', '10', 'ai_image_status', NULL, 'primary', 'N', '0', '', 'admin', '2025-12-09 02:26:57', '', NULL, '绘制中');
-INSERT INTO `sys_dict_data` VALUES (48, 2, '已完成', '20', 'ai_image_status', NULL, 'success', 'N', '0', '', 'admin', '2025-12-09 02:27:18', '', NULL, '绘制完成');
-INSERT INTO `sys_dict_data` VALUES (49, 3, '已失败', '30', 'ai_image_status', NULL, 'danger', 'N', '0', '', 'admin', '2025-12-09 02:27:39', '', NULL, '绘制失败');
+INSERT INTO `sys_dict_data` VALUES (47, 1, '进行中', '10', 'ai_image_generate_status', NULL, 'primary', 'N', '0', '', 'admin', '2025-12-09 02:26:57', '', NULL, '绘制中');
+INSERT INTO `sys_dict_data` VALUES (48, 2, '已完成', '20', 'ai_image_generate_status', NULL, 'success', 'N', '0', '', 'admin', '2025-12-09 02:27:18', '', NULL, '绘制完成');
+INSERT INTO `sys_dict_data` VALUES (49, 3, '已失败', '30', 'ai_image_generate_status', NULL, 'danger', 'N', '0', '', 'admin', '2025-12-09 02:27:39', '', NULL, '绘制失败');
 INSERT INTO `sys_dict_data` VALUES (50, 1, '聊天', '1', 'ai_model_type', NULL, 'info', 'N', '0', '', 'admin', '2025-12-09 02:29:44', '', NULL, '聊天模型');
 INSERT INTO `sys_dict_data` VALUES (51, 2, '图像', '2', 'ai_model_type', NULL, 'primary', 'N', '0', '', 'admin', '2025-12-09 02:30:16', '', NULL, '图像模型');
 INSERT INTO `sys_dict_data` VALUES (52, 3, '音频', '3', 'ai_model_type', NULL, 'success', 'N', '0', '', 'admin', '2025-12-09 02:30:34', '', NULL, '音频模型');
 INSERT INTO `sys_dict_data` VALUES (53, 4, '视频', '4', 'ai_model_type', NULL, 'warning', 'N', '0', '', 'admin', '2025-12-09 02:30:59', '', NULL, '视频模型');
 INSERT INTO `sys_dict_data` VALUES (54, 5, '向量', '5', 'ai_model_type', NULL, 'danger', 'N', '0', '', 'admin', '2025-12-09 02:31:17', '', NULL, '向量模型');
 INSERT INTO `sys_dict_data` VALUES (55, 6, '重排', '6', 'ai_model_type', NULL, 'danger', 'N', '0', '', 'admin', '2025-12-09 02:31:34', '', NULL, '重排模型');
-INSERT INTO `sys_dict_data` VALUES (56, 1, '是', 'true', 'boolean_string', NULL, 'primary', 'N', '0', '', 'admin', '2025-12-12 23:28:48', '', NULL, '是');
+INSERT INTO `sys_dict_data` VALUES (56, 1, '是', 'true', 'boolean_string', NULL, 'primary', 'Y', '0', '', 'admin', '2025-12-12 23:28:48', '', NULL, '是');
 INSERT INTO `sys_dict_data` VALUES (57, 2, '否', 'false', 'boolean_string', NULL, 'danger', 'N', '0', '', 'admin', '2025-12-12 23:29:03', '', NULL, '否');
 INSERT INTO `sys_dict_data` VALUES (58, 1, '文件系统', 'filesystem', 'ai_mcp_client_name', NULL, 'primary', 'N', '0', '', 'admin', '2026-01-28 20:23:12', '', NULL, '');
 
@@ -451,7 +451,7 @@ INSERT INTO `sys_dict_type` VALUES (8, '通知状态', 'sys_notice_status', '0',
 INSERT INTO `sys_dict_type` VALUES (9, '操作类型', 'sys_oper_type', '0', '', 'admin', '2025-08-17 23:07:13', '', NULL, '操作类型列表');
 INSERT INTO `sys_dict_type` VALUES (10, '系统状态', 'sys_common_status', '0', '', 'admin', '2025-08-17 23:07:13', '', NULL, '登录状态列表');
 INSERT INTO `sys_dict_type` VALUES (11, 'AI 模型平台', 'ai_platform', '0', '', 'admin', '2025-11-15 02:15:43', '', NULL, 'AI 模型列表');
-INSERT INTO `sys_dict_type` VALUES (12, 'AI 绘画状态', 'ai_image_status', '0', '', 'admin', '2025-12-09 02:24:51', '', NULL, '绘画状态列表');
+INSERT INTO `sys_dict_type` VALUES (12, 'AI 图片生成状态', 'ai_image_generate_status', '0', '', 'admin', '2025-12-09 02:24:51', '', NULL, 'AI 图片生成状态列表');
 INSERT INTO `sys_dict_type` VALUES (13, 'AI 模型类型', 'ai_model_type', '0', '', 'admin', '2025-12-09 02:28:46', '', NULL, 'AI 模型类型列表');
 INSERT INTO `sys_dict_type` VALUES (14, 'Bool是否类型', 'boolean_string', '0', '', 'admin', '2025-12-12 23:28:06', '', NULL, '是否类型列表');
 INSERT INTO `sys_dict_type` VALUES (15, 'AI MCP 客户端名称', 'ai_mcp_client_name', '0', '', 'admin', '2026-01-28 20:22:46', '', NULL, 'AI MCP 客户端名称列表');

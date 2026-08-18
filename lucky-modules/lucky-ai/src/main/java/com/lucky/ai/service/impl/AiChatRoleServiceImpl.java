@@ -9,7 +9,7 @@ import com.lucky.ai.domain.query.chatRole.AiChatRoleSaveQuery;
 import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
 import com.lucky.ai.mapper.AiChatRoleMapper;
 import com.lucky.ai.service.IAiChatRoleService;
-import com.lucky.common.ai.enums.AiStatusEnum;
+import com.lucky.common.ai.enums.AiStatus;
 import com.lucky.common.core.constant.AiConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -48,7 +48,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     public int insertMyChatRole(AiChatRoleSaveMyQuery query) {
         AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
         chatRole.setUserId(SecurityUtils.getUserId());
-        chatRole.setStatus(AiStatusEnum.ENABLE.getStatus());
+        chatRole.setStatus(AiStatus.ENABLE.getCode());
         chatRole.setIsPublic(false);
         return chatRoleMapper.insert(chatRole);
     }
@@ -95,7 +95,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
     @Override
     public AiChatRole validateChatRole(Long id) {
         AiChatRole chatRole = validateChatRoleExists(id);
-        if (AiStatusEnum.isDisable(chatRole.getStatus())) {
+        if (AiStatus.DISABLE.getCode().equals(chatRole.getStatus())) {
             throw new ServiceException(StringUtils.format(AiConstants.CHAT_ROLE_DISABLE, chatRole.getName()));
         }
         return chatRole;

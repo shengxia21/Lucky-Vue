@@ -8,7 +8,7 @@ import com.lucky.ai.domain.AiChatRole;
 import com.lucky.ai.domain.query.chatRole.AiChatRoleMyQuery;
 import com.lucky.ai.domain.query.chatRole.AiChatRoleQuery;
 import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
-import com.lucky.common.ai.enums.AiStatusEnum;
+import com.lucky.common.ai.enums.AiStatus;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 import com.lucky.common.security.utils.SecurityUtils;
@@ -28,7 +28,7 @@ public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, AiChatRoleVO> 
                 // 私有 查当前用户
                 .eq(Boolean.FALSE.equals(query.getIsPublic()), AiChatRole::getUserId, SecurityUtils.getUserId())
                 // 只返回已启用的聊天角色
-                .eq(AiChatRole::getStatus, AiStatusEnum.ENABLE.getStatus())
+                .eq(AiChatRole::getStatus, AiStatus.ENABLE.getCode())
                 .orderByAsc(AiChatRole::getSort);
         return selectVoPage(page, wrapper);
     }

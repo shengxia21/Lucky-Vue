@@ -8,7 +8,7 @@ import com.lucky.ai.domain.vo.model.AiModelVO;
 import com.lucky.ai.mapper.AiModelMapper;
 import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiModelService;
-import com.lucky.common.ai.enums.AiStatusEnum;
+import com.lucky.common.ai.enums.AiStatus;
 import com.lucky.common.core.constant.AiConstants;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -77,7 +77,7 @@ public class AiModelServiceImpl implements IAiModelService {
     @Override
     public AiModel validateModel(Long id) {
         AiModel model = validateModelExists(id);
-        if (AiStatusEnum.isDisable(model.getStatus())) {
+        if (AiStatus.DISABLE.getCode().equals(model.getStatus())) {
             throw new ServiceException(StringUtils.format(AiConstants.MODEL_DISABLE, model.getName()));
         }
         return model;

@@ -1,9 +1,9 @@
 package com.lucky.ai.domain.query.model;
 
 import com.lucky.ai.domain.AiModel;
-import com.lucky.common.ai.enums.AiModelTypeEnum;
-import com.lucky.common.ai.enums.AiPlatformEnum;
-import com.lucky.common.ai.enums.AiStatusEnum;
+import com.lucky.common.ai.enums.AiStatus;
+import com.lucky.common.ai.enums.ModelType;
+import com.lucky.common.ai.enums.Platform;
 import com.lucky.common.core.enumeration.InEnum;
 import com.lucky.common.core.validate.Update;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -41,7 +41,7 @@ public class AiModelSaveQuery {
     /**
      * 模型平台
      */
-    @InEnum(AiPlatformEnum.class)
+    @InEnum(Platform.class)
     @NotEmpty(message = "模型平台不能为空")
     private String platform;
 
@@ -54,14 +54,14 @@ public class AiModelSaveQuery {
     /**
      * 模型类型
      */
-    @InEnum(AiModelTypeEnum.class)
+    @InEnum(ModelType.class)
     @NotNull(message = "模型类型不能为空")
     private Integer type;
 
     /**
      * 状态
      */
-    @InEnum(AiStatusEnum.class)
+    @InEnum(AiStatus.class)
     @NotNull(message = "状态不能为空")
     private Integer status;
 

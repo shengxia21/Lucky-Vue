@@ -4,7 +4,7 @@ import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import com.lucky.common.ai.domain.request.ChatRequest;
-import com.lucky.common.ai.enums.AiPlatformEnum;
+import com.lucky.common.ai.enums.Platform;
 import com.lucky.common.ai.service.chat.AbstractChatService;
 import com.lucky.common.core.utils.StringUtils;
 import org.springframework.ai.chat.messages.AssistantMessage;
@@ -48,7 +48,7 @@ public class TongYiServiceImpl implements AbstractChatService {
 
     @Override
     public String getProviderName() {
-        return AiPlatformEnum.TONG_YI.getPlatform();
+        return Platform.TONG_YI.getCode();
     }
 
 }

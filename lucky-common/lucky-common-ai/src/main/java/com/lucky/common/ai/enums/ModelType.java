@@ -11,7 +11,7 @@ import java.util.Arrays;
  * @author lucky
  */
 @Getter
-public enum AiModelTypeEnum implements ArrayValuable<Integer> {
+public enum ModelType implements ArrayValuable<Integer> {
 
     CHAT(1, "对话"),
     IMAGE(2, "图片"),
@@ -20,21 +20,15 @@ public enum AiModelTypeEnum implements ArrayValuable<Integer> {
     EMBEDDING(5, "向量"),
     RERANK(6, "重排序");
 
-    /**
-     * 类型
-     */
-    private final Integer type;
-    /**
-     * 类型名
-     */
-    private final String name;
+    private final Integer code;
+    private final String info;
 
-    AiModelTypeEnum(Integer type, String name) {
-        this.type = type;
-        this.name = name;
+    ModelType(Integer code, String info) {
+        this.code = code;
+        this.info = info;
     }
 
-    public static final Integer[] ARRAYS = Arrays.stream(values()).map(AiModelTypeEnum::getType).toArray(Integer[]::new);
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(ModelType::getCode).toArray(Integer[]::new);
 
     @Override
     public Integer[] array() {

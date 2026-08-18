@@ -4,7 +4,7 @@ import com.alibaba.cloud.ai.dashscope.api.DashScopeImageApi;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageModel;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageOptions;
 import com.lucky.common.ai.domain.request.ImageRequest;
-import com.lucky.common.ai.enums.AiPlatformEnum;
+import com.lucky.common.ai.enums.Platform;
 import com.lucky.common.ai.service.image.AbstractImageService;
 import com.lucky.common.core.utils.StringUtils;
 import org.springframework.ai.image.ImageModel;
@@ -47,7 +47,7 @@ public class TongYiImageServiceImpl implements AbstractImageService {
 
     @Override
     public String getProviderName() {
-        return AiPlatformEnum.TONG_YI.getPlatform();
+        return Platform.TONG_YI.getCode();
     }
 
 }
