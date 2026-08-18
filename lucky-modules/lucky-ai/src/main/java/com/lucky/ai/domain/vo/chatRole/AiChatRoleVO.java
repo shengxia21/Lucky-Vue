@@ -67,9 +67,9 @@ public class AiChatRoleVO {
     private Integer sort;
 
     /**
-     * 状态
+     * 状态（0正常 1停用）
      */
-    private Integer status;
+    private String status;
 
     /**
      * 创建时间

@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lucky.common.core.constant.UserConstants;
 import com.lucky.common.core.domain.dto.DictDataDTO;
+import com.lucky.common.core.enums.DataStatus;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.service.DictService;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -107,7 +108,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService {
     @Override
     public void loadingDictCache() {
         SysDictDataQuery query = new SysDictDataQuery();
-        query.setStatus("0");
+        query.setStatus(DataStatus.OK.getCode());
         Map<String, List<SysDictData>> dictDataMap = dictDataMapper.selectList(query).stream().collect(Collectors.groupingBy(SysDictData::getDictType));
         for (Map.Entry<String, List<SysDictData>> entry : dictDataMap.entrySet()) {
             List<DictDataDTO> dtoList = BeanUtil.copyToList(entry.getValue(), DictDataDTO.class);

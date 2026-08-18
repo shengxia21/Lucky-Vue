@@ -36,7 +36,7 @@ public class SysOperLogQuery {
     /**
      * 操作状态（0正常 1异常）
      */
-    private Integer status;
+    private String status;
 
     /**
      * 查询参数

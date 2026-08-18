@@ -1,8 +1,8 @@
 package com.lucky.ai.domain.query.chatRole;
 
 import com.lucky.ai.domain.AiChatRole;
-import com.lucky.common.ai.enums.AiStatus;
 import com.lucky.common.core.enumeration.InEnum;
+import com.lucky.common.core.enums.DataStatus;
 import com.lucky.common.core.validate.Update;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
@@ -72,10 +72,10 @@ public class AiChatRoleSaveQuery {
     private Integer sort;
 
     /**
-     * 状态
+     * 状态（0正常 1停用）
      */
     @NotNull(message = "状态不能为空")
-    @InEnum(AiStatus.class)
-    private Integer status;
+    @InEnum(DataStatus.class)
+    private String status;
 
 }

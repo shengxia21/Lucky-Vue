@@ -1,6 +1,9 @@
 package com.lucky.common.core.enums;
 
+import com.lucky.common.core.enumeration.ArrayValuable;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 /**
  * 数据状态
@@ -8,7 +11,7 @@ import lombok.Getter;
  * @author lucky
  */
 @Getter
-public enum DataStatus {
+public enum DataStatus implements ArrayValuable<String> {
 
     OK("0", "正常"), DISABLE("1", "停用");
 
@@ -18,6 +21,13 @@ public enum DataStatus {
     DataStatus(String code, String info) {
         this.code = code;
         this.info = info;
+    }
+
+    public static final String[] ARRAYS = Arrays.stream(values()).map(DataStatus::getCode).toArray(String[]::new);
+
+    @Override
+    public String[] array() {
+        return ARRAYS;
     }
 
 }

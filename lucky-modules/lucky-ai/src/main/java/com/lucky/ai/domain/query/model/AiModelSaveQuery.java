@@ -1,10 +1,10 @@
 package com.lucky.ai.domain.query.model;
 
 import com.lucky.ai.domain.AiModel;
-import com.lucky.common.ai.enums.AiStatus;
 import com.lucky.common.ai.enums.ModelType;
 import com.lucky.common.ai.enums.Platform;
 import com.lucky.common.core.enumeration.InEnum;
+import com.lucky.common.core.enums.DataStatus;
 import com.lucky.common.core.validate.Update;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
@@ -59,11 +59,11 @@ public class AiModelSaveQuery {
     private Integer type;
 
     /**
-     * 状态
+     * 状态（0正常 1停用）
      */
-    @InEnum(AiStatus.class)
+    @InEnum(DataStatus.class)
     @NotNull(message = "状态不能为空")
-    private Integer status;
+    private String status;
 
     /**
      * 排序

@@ -44,9 +44,9 @@ public class AiModelVO {
     private Integer type;
 
     /**
-     * 状态
+     * 状态（0正常 1停用）
      */
-    private Integer status;
+    private String status;
 
     /**
      * 排序

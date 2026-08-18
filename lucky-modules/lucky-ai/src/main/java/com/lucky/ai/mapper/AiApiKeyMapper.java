@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.query.apiKey.AiApiKeyQuery;
 import com.lucky.ai.domain.vo.apikey.AiApiKeyVO;
-import com.lucky.common.ai.enums.AiStatus;
+import com.lucky.common.core.enums.DataStatus;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 
@@ -31,7 +31,7 @@ public interface AiApiKeyMapper extends BaseMapperX<AiApiKey, AiApiKeyVO> {
     default List<AiApiKeyVO> selectOptionList() {
         LambdaQueryWrapper<AiApiKey> wrapper = Wrappers.<AiApiKey>lambdaQuery()
                 .select(AiApiKey::getId, AiApiKey::getName)
-                .eq(AiApiKey::getStatus, AiStatus.ENABLE.getCode());
+                .eq(AiApiKey::getStatus, DataStatus.OK.getCode());
         return selectVoList(wrapper);
     }
 

@@ -46,9 +46,9 @@ public class AiApiKeySaveQuery {
     private String url;
 
     /**
-     * 状态
+     * 状态（0正常 1停用）
      */
     @NotNull(message = "状态不能为空")
-    private Integer status;
+    private String status;
 
 }
