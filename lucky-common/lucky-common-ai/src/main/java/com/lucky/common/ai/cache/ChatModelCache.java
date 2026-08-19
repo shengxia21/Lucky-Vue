@@ -1,6 +1,5 @@
 package com.lucky.common.ai.cache;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +20,6 @@ import java.util.function.Supplier;
  *
  * @author lucky
  */
-@Slf4j
 @Component
 public class ChatModelCache {
 

@@ -25,12 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 聊天服务外观类
+ * 默认聊天服务（外观）
  *
  * @author lucky
  */
 @Slf4j
-public class ChatServiceFacade implements ChatService {
+public class DefaultChatService implements ChatService {
 
     @Resource
     private ChatServiceFactory chatFactory;

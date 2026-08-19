@@ -38,7 +38,7 @@ public interface ImageService {
             String b64Json = response.getResult().getOutput().getB64Json();
             String url = response.getResult().getOutput().getUrl();
             byte[] fileContent = StrUtil.isNotEmpty(b64Json) ? Base64.decode(b64Json) : HttpUtil.downloadBytes(url);
-            return FileUtils.writeBytes(fileContent, LuckyConfig.getDrawImagePath());
+            return FileUtils.writeBytes(fileContent, LuckyConfig.getGenerateImagePath());
         } catch (IOException e) {
             throw new FileUploadException("上传图片到文件服务失败");
         }

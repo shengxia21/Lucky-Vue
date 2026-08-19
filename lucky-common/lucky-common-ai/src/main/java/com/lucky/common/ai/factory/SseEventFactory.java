@@ -57,7 +57,7 @@ public final class SseEventFactory {
      * <p>思考内容 → thinking 事件；正文 → text 事件；同一 chunk 可能同时包含两者，按思考优先顺序推送</p>
      *
      * @param response ChatResponse 流式响应
-     * @param service  当前平台聊天服务（用于提取思考内容）
+     * @param service  当前提供商的聊天服务（用于提取思考内容）
      * @return SSE 事件列表（可能为空）
      */
     public static List<ServerSentEvent<String>> toEvents(ChatResponse response, AbstractChatService service) {

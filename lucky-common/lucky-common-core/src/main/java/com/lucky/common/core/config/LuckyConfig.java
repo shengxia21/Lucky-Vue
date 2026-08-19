@@ -90,10 +90,10 @@ public class LuckyConfig {
     }
 
     /**
-     * 获取AI绘制图片路径
+     * 获取生成图片路径
      */
-    public static String getDrawImagePath() {
-        return getProfile() + "/drawImage";
+    public static String getGenerateImagePath() {
+        return getProfile() + "/generateImage";
     }
 
     public String getName() {
