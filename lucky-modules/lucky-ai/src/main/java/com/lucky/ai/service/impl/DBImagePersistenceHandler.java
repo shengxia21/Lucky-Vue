@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 /**
- * AI 图片生成任务持久化处理器
+ * 数据库图片持久化处理器
  * <p>
- * 将图片生成结果更新到 ai_image 表
+ * 将图片生成结果存储到 ai_image 表
  *
  * @author lucky
  */
 @Component
-public class AiImagePersistenceHandler implements ImagePersistenceHandler {
+public class DBImagePersistenceHandler implements ImagePersistenceHandler {
 
     @Resource
     private AiImageMapper imageMapper;
