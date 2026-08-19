@@ -1,6 +1,5 @@
 package com.lucky.common.ai.handler;
 
-import com.lucky.common.core.constant.HttpStatus;
 import com.lucky.common.core.domain.R;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -59,7 +58,7 @@ public class AiStreamExceptionHandler {
             return null;
         }
         log.error("请求地址'{}',发生IO异常.", request.getRequestURI(), e);
-        return R.fail(HttpStatus.ERROR, e.getMessage());
+        return R.fail(e.getMessage());
     }
 
     /**

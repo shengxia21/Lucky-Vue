@@ -102,7 +102,7 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
         Scheduler scheduler = this.getScheduler();
         Mono<ChatClientRequest> var10000 = Mono.just(chatClientRequest).publishOn(scheduler).map((request) -> this.before(request, streamAdvisorChain));
         Objects.requireNonNull(streamAdvisorChain);
-        return var10000.flatMapMany(streamAdvisorChain::nextStream).transform((flux) -> (new LuckyChatClientMessageAggregator()).aggregateChatClientResponse(flux, this.extractor, (response) -> this.after(response, streamAdvisorChain)));
+        return var10000.flatMapMany(streamAdvisorChain::nextStream).transform((flux) -> (new LuckyChatClientMessageAggregator()).aggregateChatClientResponse(flux, extractor, (response) -> this.after(response, streamAdvisorChain)));
     }
 
     public static Builder builder(LuckyChatMemory chatMemory, ResponseContentExtractor extractor) {

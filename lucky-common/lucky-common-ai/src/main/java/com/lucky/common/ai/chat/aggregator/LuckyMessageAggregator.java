@@ -56,8 +56,9 @@ public class LuckyMessageAggregator {
                     generationMetadataRef.set(chatResponse.getResult().getMetadata());
                 }
 
-                if (chatResponse.getResult().getOutput().getText() != null) {
-                    messageTextContentRef.get().append(chatResponse.getResult().getOutput().getText());
+                String textContent = extractor.extractTextContent(chatResponse.getResult().getOutput());
+                if (textContent != null) {
+                    messageTextContentRef.get().append(textContent);
                 }
 
                 String reasoningContent = extractor.extractReasoningContent(chatResponse.getResult().getOutput());
