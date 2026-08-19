@@ -19,29 +19,38 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
 
-        <!-- 依赖版本 -->
+        <!-- Spring 生态依赖版本 -->
         <spring-boot.version>3.5.16</spring-boot.version>
-        <mybatis-plus.version>3.5.16</mybatis-plus.version>
+        <springdoc.version>2.9.0</springdoc.version>
+        <spring-ai.version>1.1.8</spring-ai.version>
+
+        <!-- 阿里 AI 大模型相关依赖版本 -->
+        <spring-ai-alibaba.version>1.1.2.3</spring-ai-alibaba.version>
+
+        <!-- 数据访问与持久化相关依赖版本 -->
         <mybatis.version>3.5.19</mybatis.version>
-        <redisson.version>3.52.0</redisson.version>
-        <easy-trans.version>3.0.6</easy-trans.version>
+        <mybatis-plus.version>3.5.17</mybatis-plus.version>
         <dynamic-datasource.version>4.3.1</dynamic-datasource.version>
-        <yauaa.version>8.2.0</yauaa.version>
-        <kaptcha.version>2.3.3</kaptcha.version>
+        <easy-trans.version>3.0.6</easy-trans.version>
+
+        <!-- 安全认证与加密相关依赖版本 -->
+        <satoken.version>1.44.0</satoken.version>
+        <jwt.version>0.9.1</jwt.version>
+
+        <!-- 缓存、锁相关依赖版本 -->
+        <redisson.version>3.52.0</redisson.version>
+
+        <!-- 通用工具、编译增强与代码生成相关依赖版本 -->
+        <hutool.version>5.8.43</hutool.version>
         <lombok.version>1.18.40</lombok.version>
         <mapstruct-plus.version>1.5.0</mapstruct-plus.version>
         <mapstruct-plus.lombok.version>0.2.0</mapstruct-plus.lombok.version>
-        <satoken.version>1.44.0</satoken.version>
-        <oshi.version>7.4.4</oshi.version>
         <commons.io.version>2.22.0</commons.io.version>
         <poi.version>5.5.1</poi.version>
         <velocity.version>2.3</velocity.version>
-        <jwt.version>0.9.1</jwt.version>
-        <jaxb-api.version>2.3.1</jaxb-api.version>
-        <springdoc.version>2.9.0</springdoc.version>
-        <spring-ai.version>1.1.8</spring-ai.version>
-        <spring-ai-alibaba.version>1.1.2.3</spring-ai-alibaba.version>
-        <hutool.version>5.8.43</hutool.version>
+        <yauaa.version>8.2.0</yauaa.version>
+        <kaptcha.version>2.3.3</kaptcha.version>
+        <oshi.version>7.4.4</oshi.version>
 
         <!-- 插件版本 -->
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
@@ -99,7 +108,7 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- Spring AI Alibaba的依赖配置 -->
+            <!-- 阿里 AI 大模型的依赖配置 -->
             <dependency>
                 <groupId>com.alibaba.cloud.ai</groupId>
                 <artifactId>spring-ai-alibaba-bom</artifactId>
