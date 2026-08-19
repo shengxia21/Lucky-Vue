@@ -759,7 +759,7 @@ CREATE TABLE `sys_role`  (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', 1, 1, '0', '0', NULL, 'admin', '2025-08-17 23:07:13', '', NULL, '超级管理员');
-INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', 1, 1, '0', '0', NULL, 'admin', '2025-08-17 23:07:13', '', NULL, '普通角色');
+INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', 1, 1, '0', '0', '105', 'admin', '2025-08-17 23:07:13', '', NULL, '普通角色');
 
 -- ----------------------------
 -- Table structure for sys_role_dept
