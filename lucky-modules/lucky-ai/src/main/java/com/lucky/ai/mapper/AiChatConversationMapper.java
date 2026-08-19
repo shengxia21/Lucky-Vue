@@ -7,6 +7,8 @@ import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.query.conversation.AiChatConversationQuery;
 import com.lucky.ai.domain.vo.conversation.AiChatConversationVO;
 import com.lucky.common.core.utils.StringUtils;
+import com.lucky.common.mybatis.annotation.DataColumn;
+import com.lucky.common.mybatis.annotation.DataPermission;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 import com.lucky.common.security.utils.SecurityUtils;
 
@@ -46,6 +48,10 @@ public interface AiChatConversationMapper extends BaseMapperX<AiChatConversation
         return delete(wrapper);
     }
 
+    @DataPermission({
+            @DataColumn(key = "deptName", value = "create_dept"),
+            @DataColumn(key = "userName", value = "create_by")
+    })
     default IPage<AiChatConversationVO> selectPage(IPage<AiChatConversation> page, AiChatConversationQuery query) {
         LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
                 .eq(StringUtils.isNotNull(query.getUserId()), AiChatConversation::getUserId, query.getUserId())

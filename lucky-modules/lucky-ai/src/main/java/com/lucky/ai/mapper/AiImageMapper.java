@@ -8,6 +8,8 @@ import com.lucky.ai.domain.query.image.AiImageMyQuery;
 import com.lucky.ai.domain.query.image.AiImageQuery;
 import com.lucky.ai.domain.vo.image.AiImageVO;
 import com.lucky.common.core.utils.StringUtils;
+import com.lucky.common.mybatis.annotation.DataColumn;
+import com.lucky.common.mybatis.annotation.DataPermission;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 import com.lucky.common.security.utils.SecurityUtils;
 
@@ -50,6 +52,10 @@ public interface AiImageMapper extends BaseMapperX<AiImage, AiImageVO> {
         return delete(wrapper);
     }
 
+    @DataPermission({
+            @DataColumn(key = "deptName", value = "create_dept"),
+            @DataColumn(key = "userName", value = "create_by")
+    })
     default IPage<AiImageVO> selectPage(IPage<AiImage> page, AiImageQuery query) {
         LambdaQueryWrapper<AiImage> wrapper = Wrappers.<AiImage>lambdaQuery()
                 .eq(StringUtils.isNotNull(query.getUserId()), AiImage::getUserId, query.getUserId())

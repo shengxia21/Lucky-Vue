@@ -28,8 +28,8 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
      * @return 用户信息集合信息
      */
     @DataPermission({
-        @DataColumn(key = "deptName", value = "d.dept_id"),
-        @DataColumn(key = "userName", value = "u.create_by")
+            @DataColumn(key = "deptName", value = "d.dept_id"),
+            @DataColumn(key = "userName", value = "u.create_by")
     })
     IPage<SysUser> selectUserList(IPage<SysUser> page, @Param("query") SysUserQuery query);
 
@@ -40,8 +40,8 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
      * @return 用户信息集合信息
      */
     @DataPermission({
-        @DataColumn(key = "deptName", value = "d.dept_id"),
-        @DataColumn(key = "userName", value = "u.create_by")
+            @DataColumn(key = "deptName", value = "d.dept_id"),
+            @DataColumn(key = "userName", value = "u.create_by")
     })
     List<SysUser> selectUserList(@Param("query") SysUserQuery query);
 
@@ -53,8 +53,8 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
      * @return 用户信息集合信息
      */
     @DataPermission({
-        @DataColumn(key = "deptName", value = "d.dept_id"),
-        @DataColumn(key = "userName", value = "u.create_by")
+            @DataColumn(key = "deptName", value = "d.dept_id"),
+            @DataColumn(key = "userName", value = "u.create_by")
     })
     IPage<SysUser> selectAllocatedList(IPage<SysUser> page, @Param("query") SysUserQuery query);
 
@@ -66,8 +66,8 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
      * @return 用户信息集合信息
      */
     @DataPermission({
-        @DataColumn(key = "deptName", value = "d.dept_id"),
-        @DataColumn(key = "userName", value = "u.create_by")
+            @DataColumn(key = "deptName", value = "d.dept_id"),
+            @DataColumn(key = "userName", value = "u.create_by")
     })
     IPage<SysUser> selectUnallocatedList(IPage<SysUser> page, @Param("query") SysUserQuery query);
 
@@ -87,6 +87,10 @@ public interface SysUserMapper extends BaseMapperX<SysUser, SysUser> {
      */
     SysUser selectUserById(Long userId);
 
+    @DataPermission({
+            @DataColumn(key = "deptName", value = "dept_id"),
+            @DataColumn(key = "userName", value = "create_by")
+    })
     default List<SysUser> selectUserAll() {
         return selectList(Wrappers.<SysUser>lambdaQuery()
                 .select(SysUser::getUserId, SysUser::getNickName, SysUser::getUserName));

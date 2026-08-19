@@ -10,6 +10,8 @@ import com.lucky.ai.domain.query.chatRole.AiChatRoleQuery;
 import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
 import com.lucky.common.core.enums.DataStatus;
 import com.lucky.common.core.utils.StringUtils;
+import com.lucky.common.mybatis.annotation.DataColumn;
+import com.lucky.common.mybatis.annotation.DataPermission;
 import com.lucky.common.mybatis.core.mapper.BaseMapperX;
 import com.lucky.common.security.utils.SecurityUtils;
 
@@ -54,6 +56,10 @@ public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, AiChatRoleVO> 
         return delete(wrapper);
     }
 
+    @DataPermission({
+            @DataColumn(key = "deptName", value = "create_dept"),
+            @DataColumn(key = "userName", value = "create_by")
+    })
     default IPage<AiChatRoleVO> selectPage(IPage<AiChatRole> page, AiChatRoleQuery query) {
         LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
                 .eq(StringUtils.isNotNull(query.getUserId()), AiChatRole::getUserId, query.getUserId())
