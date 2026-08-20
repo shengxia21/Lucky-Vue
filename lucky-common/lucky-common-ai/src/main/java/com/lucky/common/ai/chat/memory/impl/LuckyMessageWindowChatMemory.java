@@ -1,6 +1,8 @@
-package com.lucky.common.ai.chat.memory;
+package com.lucky.common.ai.chat.memory.impl;
 
 import com.lucky.common.ai.chat.aggregator.LuckyMessageAggregator;
+import com.lucky.common.ai.chat.memory.LuckyChatMemory;
+import com.lucky.common.ai.chat.memory.LuckyChatMemoryRepository;
 import com.lucky.common.ai.domain.dto.ChatMessageDTO;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.util.SpringAiUtils;

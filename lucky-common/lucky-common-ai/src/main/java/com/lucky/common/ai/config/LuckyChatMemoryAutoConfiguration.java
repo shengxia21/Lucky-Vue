@@ -2,8 +2,8 @@ package com.lucky.common.ai.config;
 
 import com.lucky.common.ai.chat.memory.LuckyChatMemory;
 import com.lucky.common.ai.chat.memory.LuckyChatMemoryRepository;
-import com.lucky.common.ai.chat.memory.LuckyInMemoryChatMemoryRepository;
-import com.lucky.common.ai.chat.memory.LuckyMessageWindowChatMemory;
+import com.lucky.common.ai.chat.memory.impl.LuckyInMemoryChatMemoryRepository;
+import com.lucky.common.ai.chat.memory.impl.LuckyMessageWindowChatMemory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
