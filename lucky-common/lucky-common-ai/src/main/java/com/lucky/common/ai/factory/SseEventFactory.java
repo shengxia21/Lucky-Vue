@@ -65,12 +65,12 @@ public final class SseEventFactory {
         AssistantMessage output = response.getResult().getOutput();
         // 思考内容 → thinking 事件
         String reasoning = service.extractReasoningContent(output);
-        if (StrUtil.isNotBlank(reasoning)) {
+        if (StrUtil.isNotEmpty(reasoning)) {
             events.add(thinkingEvent(reasoning));
         }
         // 正文 → text 事件
         String text = service.extractTextContent(output);
-        if (StrUtil.isNotBlank(text)) {
+        if (StrUtil.isNotEmpty(text)) {
             events.add(textEvent(text));
         }
         return events;
