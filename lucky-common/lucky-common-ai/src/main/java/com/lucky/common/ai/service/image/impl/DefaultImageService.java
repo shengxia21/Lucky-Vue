@@ -1,5 +1,6 @@
 package com.lucky.common.ai.service.image.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.lucky.common.ai.domain.request.ImageRequest;
 import com.lucky.common.ai.factory.ImageServiceFactory;
 import com.lucky.common.ai.service.image.AbstractImageService;
@@ -34,7 +35,7 @@ public class DefaultImageService implements ImageService {
     @Override
     public void generateImage(ImageRequest imageRequest) {
         try {
-            // 参数校验（url 允许为 null）
+            // 参数校验（options、url 允许为 null/空）
             this.validateImageRequest(imageRequest);
             // 获取图片模型策略
             AbstractImageService strategy = imageFactory.getOriginalService(imageRequest.getProvider());
@@ -60,7 +61,8 @@ public class DefaultImageService implements ImageService {
 
     /**
      * 校验图片生成请求参数
-     * <p>除 url 外，其余参数均不可为 null</p>
+     * <p>String 类型参数校验非空字符（拦截 null、空串、纯空白），其余类型校验非 null;
+     * 其中 options、url 允许为 null/空</p>
      *
      * @param imageRequest 图片生成请求
      */
@@ -68,7 +70,7 @@ public class DefaultImageService implements ImageService {
         if (imageRequest == null) {
             throw new IllegalArgumentException("图片生成请求参数不能为空");
         }
-        if (imageRequest.getPrompt() == null) {
+        if (StrUtil.isBlank(imageRequest.getPrompt())) {
             throw new IllegalArgumentException("提示词(prompt)不能为空");
         }
         if (imageRequest.getWidth() == null) {
@@ -77,19 +79,16 @@ public class DefaultImageService implements ImageService {
         if (imageRequest.getHeight() == null) {
             throw new IllegalArgumentException("图片高度(height)不能为空");
         }
-        if (imageRequest.getOptions() == null) {
-            throw new IllegalArgumentException("绘制参数(options)不能为空");
-        }
         if (imageRequest.getImageId() == null) {
             throw new IllegalArgumentException("图片ID(imageId)不能为空");
         }
-        if (imageRequest.getModel() == null) {
+        if (StrUtil.isBlank(imageRequest.getModel())) {
             throw new IllegalArgumentException("模型(model)不能为空");
         }
-        if (imageRequest.getProvider() == null) {
+        if (StrUtil.isBlank(imageRequest.getProvider())) {
             throw new IllegalArgumentException("提供商(provider)不能为空");
         }
-        if (imageRequest.getApiKey() == null) {
+        if (StrUtil.isBlank(imageRequest.getApiKey())) {
             throw new IllegalArgumentException("密钥(apiKey)不能为空");
         }
     }

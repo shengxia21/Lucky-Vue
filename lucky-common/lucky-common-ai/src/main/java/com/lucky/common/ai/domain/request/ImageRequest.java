@@ -2,6 +2,7 @@ package com.lucky.common.ai.domain.request;
 
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,6 +35,13 @@ public class ImageRequest {
      * 绘制参数，不同 provider 的不同参数
      */
     private Map<String, String> options;
+
+    public Map<String, String> getOptions() {
+        if (options == null) {
+            options = new HashMap<>();
+        }
+        return options;
+    }
 
     // =======图片信息相关=======
 

@@ -18,17 +18,17 @@ public interface LuckyChatMemory {
     /**
      * 添加用户消息
      *
-     * @param context 参数map
-     * @param message 消息内容
+     * @param context 上下文
+     * @param message 消息
      */
     void addUserMessage(Map<String, Object> context, Message message);
 
     /**
      * 添加assistant消息
      *
-     * @param context  参数map
+     * @param context  上下文
      * @param usage    token使用情况
-     * @param messages 响应内容
+     * @param messages 消息列表
      */
     void addAssistantMessage(Map<String, Object> context, LuckyMessageAggregator.DefaultUsage usage, List<Message> messages);
 

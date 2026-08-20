@@ -43,7 +43,7 @@ public class DefaultChatService implements ChatService {
 
     @Override
     public Flux<ServerSentEvent<String>> chat(ChatRequest chatRequest) {
-        // 参数校验（attachmentUrls、persona、url 允许为 null）
+        // 参数校验（attachmentUrls、persona、url 允许为 null/空）
         this.validateChatRequest(chatRequest);
         // 获取聊天服务
         AbstractChatService service = chatFactory.getOriginalService(chatRequest.getProvider());
@@ -91,7 +91,8 @@ public class DefaultChatService implements ChatService {
 
     /**
      * 校验聊天请求参数
-     * <p>除 attachmentUrls、persona、url 外，其余参数均不可为 null</p>
+     * <p>String 类型参数校验非空字符（拦截 null、空串、纯空白），其余类型校验非 null;
+     * 其中 attachmentUrls、persona、url 允许为 null/空</p>
      *
      * @param chatRequest 聊天请求
      */
@@ -99,7 +100,7 @@ public class DefaultChatService implements ChatService {
         if (chatRequest == null) {
             throw new IllegalArgumentException("聊天请求参数不能为空");
         }
-        if (chatRequest.getContent() == null) {
+        if (StrUtil.isBlank(chatRequest.getContent())) {
             throw new IllegalArgumentException("聊天内容(content)不能为空");
         }
         if (chatRequest.getUseThinking() == null) {
@@ -114,19 +115,19 @@ public class DefaultChatService implements ChatService {
         if (chatRequest.getHistoryMessageCount() == null) {
             throw new IllegalArgumentException("携带历史消息数(historyMessageCount)不能为空");
         }
-        if (chatRequest.getModel() == null) {
+        if (StrUtil.isBlank(chatRequest.getModel())) {
             throw new IllegalArgumentException("模型(model)不能为空");
         }
-        if (chatRequest.getProvider() == null) {
+        if (StrUtil.isBlank(chatRequest.getProvider())) {
             throw new IllegalArgumentException("提供商(provider)不能为空");
         }
-        if (chatRequest.getApiKey() == null) {
+        if (StrUtil.isBlank(chatRequest.getApiKey())) {
             throw new IllegalArgumentException("密钥(apiKey)不能为空");
         }
         if (chatRequest.getUserId() == null) {
             throw new IllegalArgumentException("用户ID(userId)不能为空");
         }
-        if (chatRequest.getUserName() == null) {
+        if (StrUtil.isBlank(chatRequest.getUserName())) {
             throw new IllegalArgumentException("用户名称(userName)不能为空");
         }
     }
