@@ -80,7 +80,7 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
         }
         // historyMessageCount 实际为对话轮数（user+assistant 一对算一轮），每轮最多 2 条
         int limit = historyMessageCount * 2;
-        List<ChatMessageDTO> messages = luckyChatMemoryRepository.findByConversationId(conversationId, limit);
+        List<ChatMessageDTO> messages = luckyChatMemoryRepository.findRecentByConversationId(conversationId, limit);
         if (messages.isEmpty()) {
             return Collections.emptyList();
         }
