@@ -4,7 +4,6 @@ import com.lucky.common.ai.service.image.AbstractImageService;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author lucky
  */
-@Component
 public class ImageServiceFactory implements ApplicationContextAware {
 
     private final Map<String, AbstractImageService> imageServiceMap = new ConcurrentHashMap<>();

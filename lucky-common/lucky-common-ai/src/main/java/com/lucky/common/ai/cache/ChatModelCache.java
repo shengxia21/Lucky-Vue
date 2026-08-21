@@ -1,7 +1,6 @@
 package com.lucky.common.ai.cache;
 
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -20,7 +19,6 @@ import java.util.function.Supplier;
  *
  * @author lucky
  */
-@Component
 public class ChatModelCache {
 
     /**

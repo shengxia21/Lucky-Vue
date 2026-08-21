@@ -1,5 +1,8 @@
 package com.lucky.common.ai.config;
 
+import com.lucky.common.ai.cache.ChatModelCache;
+import com.lucky.common.ai.factory.ChatServiceFactory;
+import com.lucky.common.ai.factory.ImageServiceFactory;
 import com.lucky.common.ai.service.chat.ChatService;
 import com.lucky.common.ai.service.chat.impl.DefaultChatService;
 import com.lucky.common.ai.service.image.ImagePersistenceHandler;
@@ -12,22 +15,28 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 
 /**
- * Lucky AI 服务外观自动配置类
- * <p>
- * 注册 {@link ChatService} 与 {@link ImageService} 的默认外观实现：
- * <ul>
- *     <li>{@link DefaultChatService}：默认聊天服务，依赖 {@code ChatServiceFactory} 与 {@code LuckyChatMemory}</li>
- *     <li>{@link DefaultImageService}：默认图片服务，依赖 {@code ImageServiceFactory} 与 {@link ImagePersistenceHandler}</li>
- * </ul>
- * 业务模块可通过自定义同类型 Bean 覆盖默认实现（{@code @ConditionalOnMissingBean}）。
- * 当容器中不存在 {@link ImagePersistenceHandler} 时，不注册图片服务外观，
- * 使通用模块在无业务模块接入时仍可正常启动。
+ * Lucky AI 服务自动配置类
  *
  * @author lucky
  */
 @AutoConfiguration
 @ConditionalOnClass({ChatService.class, ImageService.class})
 public class LuckyAiServiceAutoConfiguration {
+
+    @Bean
+    ChatServiceFactory chatServiceFactory() {
+        return new ChatServiceFactory();
+    }
+
+    @Bean
+    ImageServiceFactory imageServiceFactory() {
+        return new ImageServiceFactory();
+    }
+
+    @Bean
+    ChatModelCache chatModelCache() {
+        return new ChatModelCache();
+    }
 
     @Bean
     @ConditionalOnMissingBean
