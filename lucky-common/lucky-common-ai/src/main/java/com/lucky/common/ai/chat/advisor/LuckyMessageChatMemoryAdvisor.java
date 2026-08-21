@@ -36,14 +36,14 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
     private final Scheduler scheduler;
     private final ResponseContentExtractor extractor;
 
-    private LuckyMessageChatMemoryAdvisor(LuckyChatMemory chatMemory, ResponseContentExtractor extractor, int order, Scheduler scheduler) {
+    private LuckyMessageChatMemoryAdvisor(LuckyChatMemory chatMemory, int order, Scheduler scheduler, ResponseContentExtractor extractor) {
         Assert.notNull(chatMemory, "chatMemory cannot be null");
-        Assert.notNull(extractor, "extractor cannot be null");
         Assert.notNull(scheduler, "scheduler cannot be null");
+        Assert.notNull(extractor, "extractor cannot be null");
         this.chatMemory = chatMemory;
-        this.extractor = extractor;
         this.order = order;
         this.scheduler = scheduler;
+        this.extractor = extractor;
     }
 
     private ChatRequest getRequest(Map<String, Object> context) {
@@ -80,7 +80,7 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
 
         ChatClientRequest processedChatClientRequest = chatClientRequest.mutate().prompt(chatClientRequest.prompt().mutate().messages(processedMessages).build()).build();
         Message userMessage = processedChatClientRequest.prompt().getLastUserOrToolResponseMessage();
-        this.chatMemory.addUserMessage(chatClientRequest.context(), userMessage);
+        this.chatMemory.addUserMessage(request, userMessage);
         return processedChatClientRequest;
     }
 
@@ -93,7 +93,7 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
             usage = (LuckyMessageAggregator.DefaultUsage) chatClientResponse.chatResponse().getMetadata().getUsage();
         }
 
-        this.chatMemory.addAssistantMessage(chatClientResponse.context(), usage, assistantMessages);
+        this.chatMemory.addAssistantMessage(this.getRequest(chatClientResponse.context()), usage, assistantMessages);
         return chatClientResponse;
     }
 
@@ -134,7 +134,7 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
         }
 
         public LuckyMessageChatMemoryAdvisor build() {
-            return new LuckyMessageChatMemoryAdvisor(this.chatMemory, this.extractor, this.order, this.scheduler);
+            return new LuckyMessageChatMemoryAdvisor(this.chatMemory, this.order, this.scheduler, this.extractor);
         }
 
     }

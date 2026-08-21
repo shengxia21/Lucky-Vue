@@ -1,10 +1,10 @@
 package com.lucky.common.ai.chat.memory;
 
 import com.lucky.common.ai.chat.aggregator.LuckyMessageAggregator;
+import com.lucky.common.ai.domain.request.ChatRequest;
 import org.springframework.ai.chat.messages.Message;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Lucky 聊天记忆接口
@@ -18,19 +18,19 @@ public interface LuckyChatMemory {
     /**
      * 添加用户消息
      *
-     * @param context 上下文
-     * @param message 消息
+     * @param chatRequest 聊天请求
+     * @param message     消息
      */
-    void addUserMessage(Map<String, Object> context, Message message);
+    void addUserMessage(ChatRequest chatRequest, Message message);
 
     /**
      * 添加assistant消息
      *
-     * @param context  上下文
-     * @param usage    token使用情况
-     * @param messages 消息列表
+     * @param chatRequest 聊天请求
+     * @param usage       token使用情况
+     * @param messages    消息列表
      */
-    void addAssistantMessage(Map<String, Object> context, LuckyMessageAggregator.DefaultUsage usage, List<Message> messages);
+    void addAssistantMessage(ChatRequest chatRequest, LuckyMessageAggregator.DefaultUsage usage, List<Message> messages);
 
     /**
      * 获取历史消息列表

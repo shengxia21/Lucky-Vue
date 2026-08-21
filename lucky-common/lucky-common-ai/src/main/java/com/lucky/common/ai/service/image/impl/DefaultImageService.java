@@ -73,11 +73,11 @@ public class DefaultImageService implements ImageService {
         if (StrUtil.isBlank(imageRequest.getPrompt())) {
             throw new IllegalArgumentException("提示词(prompt)不能为空");
         }
-        if (imageRequest.getWidth() == null) {
-            throw new IllegalArgumentException("图片宽度(width)不能为空");
+        if (imageRequest.getWidth() == null || imageRequest.getWidth() <= 0) {
+            throw new IllegalArgumentException("图片宽度(width)不能为空并且必须大于0");
         }
-        if (imageRequest.getHeight() == null) {
-            throw new IllegalArgumentException("图片高度(height)不能为空");
+        if (imageRequest.getHeight() == null || imageRequest.getHeight() <= 0) {
+            throw new IllegalArgumentException("图片高度(height)不能为空并且必须大于0");
         }
         if (imageRequest.getImageId() == null) {
             throw new IllegalArgumentException("图片ID(imageId)不能为空");

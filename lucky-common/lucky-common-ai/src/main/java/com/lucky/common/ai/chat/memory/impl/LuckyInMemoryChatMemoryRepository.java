@@ -20,21 +20,22 @@ public class LuckyInMemoryChatMemoryRepository implements LuckyChatMemoryReposit
 
     @Override
     public void save(ChatMessageDTO chatMessage) {
-        Long conversationId = chatMessage.getConversationId();
         Assert.notNull(chatMessage, "chatMessage cannot be null");
+        Long conversationId = chatMessage.getConversationId();
         Assert.notNull(conversationId, "conversationId cannot be null");
         List<ChatMessageDTO> messages = this.chatMemoryStore.get(conversationId);
-        if (messages == null || messages.isEmpty()) {
+        if (messages == null) {
             chatMemoryStore.put(conversationId, new ArrayList<>(List.of(chatMessage)));
         } else {
             messages.add(chatMessage);
-            chatMemoryStore.put(conversationId, messages);
         }
     }
 
     @Override
-    public List<ChatMessageDTO> findRecentByConversationId(Long conversationId, int limit) {
+    public List<ChatMessageDTO> findRecentByConversationId(Long conversationId, Integer limit) {
         Assert.notNull(conversationId, "conversationId cannot be null");
+        Assert.notNull(limit, "limit cannot be null");
+        Assert.isTrue(limit > 0, "limit must be greater than 0");
         List<ChatMessageDTO> messages = this.chatMemoryStore.get(conversationId);
         if (messages == null || messages.isEmpty()) {
             return List.of();

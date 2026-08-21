@@ -25,6 +25,6 @@ public interface LuckyChatMemoryRepository {
      * @param limit          最大查询条数
      * @return 最近 limit 条消息（按时间正序：旧 → 新，最新时间在下面）
      */
-    List<ChatMessageDTO> findRecentByConversationId(Long conversationId, int limit);
+    List<ChatMessageDTO> findRecentByConversationId(Long conversationId, Integer limit);
 
 }

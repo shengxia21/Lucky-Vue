@@ -34,7 +34,7 @@ public class DBChatMemoryRepository implements LuckyChatMemoryRepository {
     }
 
     @Override
-    public List<ChatMessageDTO> findRecentByConversationId(Long conversationId, int limit) {
+    public List<ChatMessageDTO> findRecentByConversationId(Long conversationId, Integer limit) {
         // 取最近 limit 条，避免长会话全量查询：先按创建时间倒序（新 → 旧）查出最近 limit 条，再反转为正序（旧 → 新）
         List<AiChatMessage> messageList = chatMessageMapper.selectList(Wrappers.<AiChatMessage>lambdaQuery()
                 .eq(AiChatMessage::getConversationId, conversationId)

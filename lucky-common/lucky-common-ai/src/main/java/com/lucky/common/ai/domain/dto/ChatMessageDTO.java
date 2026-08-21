@@ -23,11 +23,6 @@ public class ChatMessageDTO {
     private Long conversationId;
 
     /**
-     * 消息类型
-     */
-    private String type;
-
-    /**
      * 提供商
      */
     private String provider;
@@ -36,6 +31,11 @@ public class ChatMessageDTO {
      * 模型标志
      */
     private String model;
+
+    /**
+     * 消息类型
+     */
+    private String type;
 
     /**
      * 系统消息
@@ -72,7 +72,7 @@ public class ChatMessageDTO {
      */
     private List<String> attachmentUrls;
 
-    // ======= 用户信息(插入消息用) =======
+    // ======= 用户信息(异步插入消息) =======
 
     /**
      * 创建部门
