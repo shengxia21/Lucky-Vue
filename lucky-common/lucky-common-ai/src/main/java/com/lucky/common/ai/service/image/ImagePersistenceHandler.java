@@ -2,8 +2,6 @@ package com.lucky.common.ai.service.image;
 
 /**
  * 图片持久化处理器
- * <p>
- * 由业务模块实现，用于将图片生成结果持久化到数据库
  *
  * @author lucky
  */

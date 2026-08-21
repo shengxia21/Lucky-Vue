@@ -12,17 +12,12 @@ import com.lucky.common.ai.service.chat.ChatService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.messages.Message;
-import org.springframework.ai.chat.messages.SystemMessage;
-import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.http.codec.ServerSentEvent;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 默认聊天服务（外观）
@@ -61,25 +56,19 @@ public class DefaultChatService implements ChatService {
                 .defaultAdvisors(LuckyMessageChatMemoryAdvisor.builder(luckyChatMemory, service).build())
                 .build();
 
-        // 添加系统消息（聊天角色）
-        List<Message> messages = new ArrayList<>();
-        if (StrUtil.isNotBlank(chatRequest.getPersona())) {
-            messages.add(new SystemMessage(chatRequest.getPersona()));
-        }
-        // 添加用户消息
-        messages.add(new UserMessage(chatRequest.getContent()));
+        // 调用 LLM 大模型流式请求
         return chatClient.prompt()
-                .messages(messages)
+                .messages(chatRequest.getMessages())
                 .options(chatOptions)
                 .advisors(a -> a.param(LuckyChatMemory.REQUEST, chatRequest))
                 .stream()
                 .chatResponse()
-                // 将每个 ChatResponse chunk 转为 SSE 命名事件（思考内容 → thinking、正文 → text）
-                .concatMapIterable(response -> SseEventFactory.toEvents(response, service))
-                // 超时控制：模型 API 卡死时及时释放连接（默认 30 秒）
-                .timeout(Duration.ofSeconds(30))
+                // 超时控制：模型 API 卡死时及时释放连接（默认 15 秒）
+                .timeout(Duration.ofSeconds(15))
                 // 客户端取消时记录日志（下游模型 HTTP 调用由 Reactor 自动取消）
                 .doOnCancel(() -> log.warn("AI 流式聊天被客户端取消: conversationId={}", chatRequest.getConversationId()))
+                // 将每个 ChatResponse chunk 转为 SSE 命名事件（思考内容 → thinking、正文 → text）
+                .concatMapIterable(response -> SseEventFactory.toEvents(response, service))
                 // 异常兜底：直接向 SSE 推送 error 事件，前端可识别并提示用户
                 .onErrorResume(error -> {
                     log.error("AI 流式聊天异常: conversationId={}, error={}", chatRequest.getConversationId(), error.getMessage());
@@ -100,8 +89,8 @@ public class DefaultChatService implements ChatService {
         if (chatRequest == null) {
             throw new IllegalArgumentException("聊天请求参数不能为空");
         }
-        if (StrUtil.isBlank(chatRequest.getContent())) {
-            throw new IllegalArgumentException("聊天内容(content)不能为空");
+        if (chatRequest.getMessages() == null || chatRequest.getMessages().isEmpty()) {
+            throw new IllegalArgumentException("消息列表(messages)不能为空");
         }
         if (chatRequest.getUseThinking() == null) {
             throw new IllegalArgumentException("是否深度思考(useThinking)不能为空");
@@ -112,8 +101,8 @@ public class DefaultChatService implements ChatService {
         if (chatRequest.getConversationId() == null) {
             throw new IllegalArgumentException("会话ID(conversationId)不能为空");
         }
-        if (chatRequest.getHistoryMessageCount() == null) {
-            throw new IllegalArgumentException("携带历史消息数(historyMessageCount)不能为空");
+        if (chatRequest.getHistoryMessageCount() == null || chatRequest.getHistoryMessageCount() <= 0) {
+            throw new IllegalArgumentException("携带历史消息数(historyMessageCount)不能为空并且必须大于0");
         }
         if (StrUtil.isBlank(chatRequest.getModel())) {
             throw new IllegalArgumentException("模型(model)不能为空");
