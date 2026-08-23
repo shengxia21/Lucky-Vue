@@ -67,8 +67,8 @@ public class DefaultChatService implements ChatService {
 
         // 调用 LLM 大模型流式请求
         return chatClient.prompt()
-                .messages(chatRequest.getMessages())
                 .options(chatOptions)
+                .messages(chatRequest.getMessages())
                 .advisors(a -> a.param(LuckyChatMemory.REQUEST, chatRequest))
                 .stream()
                 .chatResponse()
