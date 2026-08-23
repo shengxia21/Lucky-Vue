@@ -33,16 +33,16 @@ public class ChatQuery {
     private String content;
 
     /**
-     * 是否深度思考
+     * 是否开启深度思考
      */
-    @NotNull(message = "深度思考不能为空")
-    private Boolean useThinking;
+    @NotNull(message = "是否开启深度思考不能为空")
+    private Boolean enableThinking;
 
     /**
-     * 是否联网搜索
+     * 是否开启联网搜索
      */
-    @NotNull(message = "联网搜索不能为空")
-    private Boolean useSearch;
+    @NotNull(message = "是否开启联网搜索不能为空")
+    private Boolean enableSearch;
 
     /**
      * 附件 URL 数组

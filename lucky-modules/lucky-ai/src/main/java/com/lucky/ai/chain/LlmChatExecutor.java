@@ -29,8 +29,8 @@ public class LlmChatExecutor {
     public Flux<ServerSentEvent<String>> chat(ChatStreamContext context) {
         // 构建聊天请求
         ChatRequest chatRequest = new ChatRequest();
-        chatRequest.setUseThinking(context.getQuery().getUseThinking());
-        chatRequest.setUseSearch(context.getQuery().getUseSearch());
+        chatRequest.setEnableThinking(context.getQuery().getEnableThinking());
+        chatRequest.setEnableSearch(context.getQuery().getEnableSearch());
         chatRequest.setAttachmentUrls(context.getQuery().getAttachmentUrls());
         chatRequest.setConversationId(context.getConversation().getId());
         chatRequest.setHistoryMessageCount(context.getConversation().getHistoryMessageCount());

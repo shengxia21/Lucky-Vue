@@ -101,11 +101,11 @@ public class DefaultChatService implements ChatService {
         if (chatRequest.getMessages() == null || chatRequest.getMessages().isEmpty()) {
             throw new IllegalArgumentException("消息列表(messages)不能为空");
         }
-        if (chatRequest.getUseThinking() == null) {
-            throw new IllegalArgumentException("是否深度思考(useThinking)不能为空");
+        if (chatRequest.getEnableThinking() == null) {
+            throw new IllegalArgumentException("是否开启深度思考(enableThinking)不能为空");
         }
-        if (chatRequest.getUseSearch() == null) {
-            throw new IllegalArgumentException("是否联网搜索(useSearch)不能为空");
+        if (chatRequest.getEnableSearch() == null) {
+            throw new IllegalArgumentException("是否开启联网搜索(enableSearch)不能为空");
         }
         if (chatRequest.getConversationId() == null) {
             throw new IllegalArgumentException("会话ID(conversationId)不能为空");

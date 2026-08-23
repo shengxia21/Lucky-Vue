@@ -35,7 +35,7 @@ public class ZhiPuServiceImpl implements AbstractChatService {
     public ChatOptions buildChatOptions(ChatRequest chatRequest) {
         return ZhiPuAiChatOptions.builder()
                 .model(chatRequest.getModel())
-                .thinking(chatRequest.getUseThinking() ? ZhiPuAiApi.ChatCompletionRequest.Thinking.enabled() : ZhiPuAiApi.ChatCompletionRequest.Thinking.disabled())
+                .thinking(chatRequest.getEnableThinking() ? ZhiPuAiApi.ChatCompletionRequest.Thinking.enabled() : ZhiPuAiApi.ChatCompletionRequest.Thinking.disabled())
                 .build();
     }
 

@@ -17,14 +17,14 @@ public class ChatRequest {
     // =======原始请求参数相关=======
 
     /**
-     * 是否深度思考
+     * 是否开启深度思考
      */
-    private Boolean useThinking;
+    private Boolean enableThinking;
 
     /**
-     * 是否联网搜索
+     * 是否开启联网搜索
      */
-    private Boolean useSearch;
+    private Boolean enableSearch;
 
     /**
      * 附件 URL 数组

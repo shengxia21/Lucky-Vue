@@ -36,8 +36,8 @@ public class TongYiServiceImpl implements AbstractChatService {
     public ChatOptions buildChatOptions(ChatRequest chatRequest) {
         return DashScopeChatOptions.builder()
                 .model(chatRequest.getModel())
-                .enableThinking(chatRequest.getUseThinking())
-                .enableSearch(chatRequest.getUseSearch())
+                .enableThinking(chatRequest.getEnableThinking())
+                .enableSearch(chatRequest.getEnableSearch())
                 .build();
     }
 
