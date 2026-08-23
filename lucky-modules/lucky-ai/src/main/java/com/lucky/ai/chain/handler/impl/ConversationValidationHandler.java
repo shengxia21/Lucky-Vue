@@ -30,7 +30,6 @@ public class ConversationValidationHandler implements ChatStreamHandler {
 
     @Override
     public void handle(ChatStreamContext context) {
-        context.sendEvent("validation", "正在校验对话");
         // 校验对话是否存在
         AiChatConversation conversation = chatConversationService.validateChatConversationExists(context.getQuery().getConversationId());
         // 校验对话是否属于当前用户

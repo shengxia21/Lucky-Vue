@@ -54,7 +54,6 @@ public final class SseEventFactory {
 
     /**
      * 将单个 ChatResponse chunk 转为 SSE 命名事件列表
-     * <p>思考内容 → thinking 事件；正文 → text 事件；同一 chunk 可能同时包含两者，按思考优先顺序推送</p>
      *
      * @param response ChatResponse 流式响应
      * @param service  当前提供商的聊天服务（用于提取思考内容）
@@ -98,7 +97,6 @@ public final class SseEventFactory {
 
     /**
      * 构造错误 SSE 事件（event=error）
-     * <p>错误消息通过 data 传递，前端收到 error 事件后提示用户并结束本次流</p>
      *
      * @param errorMessage 异常信息
      * @return 错误 SSE 事件

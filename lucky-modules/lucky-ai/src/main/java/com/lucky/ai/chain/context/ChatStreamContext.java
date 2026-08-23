@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.http.codec.ServerSentEvent;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.util.List;
@@ -27,6 +26,11 @@ public class ChatStreamContext {
      * 原始聊天请求参数
      */
     private final ChatQuery query;
+
+    /**
+     * 事件流（处理器执行中途推送的事件经此实时下发前端）
+     */
+    private final Sinks.Many<ServerSentEvent<String>> eventSink;
 
     /**
      * 对话信息（对话校验处理器写入）
@@ -54,22 +58,6 @@ public class ChatStreamContext {
     private List<Message> messages;
 
     /**
-     * 最终结果流（LLM 调用处理器写入，链路在此短路返回）
-     */
-    private Flux<ServerSentEvent<String>> result;
-
-    /**
-     * 事件流（由链创建并注入：处理器执行中途推送的事件经此实时下发前端，
-     * unicast 单订阅者，唯一订阅者为链出口处的 merge）
-     */
-    private Sinks.Many<ServerSentEvent<String>> eventSink;
-
-    /**
-     * 短路标志（处理器通过 shortCircuit 设置，链据此终止后续处理器执行）
-     */
-    private boolean shortCircuit = false;
-
-    /**
      * 向流实时发送自定义事件
      *
      * @param eventName 事件类型（与前端约定，如 search、notice）
@@ -89,16 +77,9 @@ public class ChatStreamContext {
         Sinks.EmitResult emitResult = eventSink.tryEmitNext(event);
         // 客户端已断开或流已终结时推送失败：仅记录日志，不影响责任链继续执行
         if (emitResult.isFailure()) {
-            /// TO DO 推送失败终结后续执行操作，并断开连接（某种原因可能已断开连接）
+            /// TODO 推送失败终结后续执行操作，并断开连接
             log.debug("流事件推送失败[{}]: event={}", emitResult, event.event());
         }
-    }
-
-    /**
-     * 动态短路：终止后续处理器的执行
-     */
-    public void shortCircuit() {
-        this.shortCircuit = true;
     }
 
 }

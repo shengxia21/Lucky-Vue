@@ -13,7 +13,6 @@ public interface ChatService {
 
     /**
      * 处理流式聊天消息
-     * <p>返回按 SSE 命名事件封装的流：思考内容 → thinking、正文 → text、错误 → error、流结束 → done</p>
      *
      * @param chatRequest 聊天请求
      * @return SSE 事件流式响应

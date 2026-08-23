@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 
 /**
  * 数据库图片持久化处理器
- * <p>
- * 将图片生成结果存储到 ai_image 表
  *
  * @author lucky
  */

@@ -16,9 +16,6 @@ import org.springframework.scheduling.annotation.Async;
 
 /**
  * 默认图片服务（外观）
- * <p>
- * 负责编排图片生成流程（策略选择、请求构建、模型调用、文件上传）
- * 持久化逻辑委托给 {@link ImagePersistenceHandler}，由业务模块实现
  *
  * @author lucky
  */

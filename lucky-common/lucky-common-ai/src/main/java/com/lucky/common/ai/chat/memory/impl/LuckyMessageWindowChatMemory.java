@@ -80,7 +80,7 @@ public class LuckyMessageWindowChatMemory implements LuckyChatMemory {
         if (historyMessageCount <= 0) {
             return Collections.emptyList();
         }
-        /// TO DO 前置保证：messages 中数据严格 user+assistant 成对、顺序规整
+        /// TODO 前置保证：messages 中数据严格 user+assistant 成对、顺序规整
         int limit = historyMessageCount * 2;
         List<ChatMessageDTO> messages = luckyChatMemoryRepository.findRecentByConversationId(conversationId, limit);
         if (messages.isEmpty()) {

@@ -38,10 +38,19 @@ public class DefaultChatService implements ChatService {
 
     @Override
     public Flux<ServerSentEvent<String>> chat(ChatRequest chatRequest) {
-        // 参数校验（attachmentUrls、persona、url 允许为 null/空）
-        this.validateChatRequest(chatRequest);
-        // 获取聊天服务
-        AbstractChatService service = chatFactory.getOriginalService(chatRequest.getProvider());
+        // 前置逻辑产物
+        AbstractChatService service;
+        try {
+            // 参数校验（attachmentUrls、persona、url 允许为 null/空）
+            this.validateChatRequest(chatRequest);
+            // 获取聊天服务
+            service = chatFactory.getOriginalService(chatRequest.getProvider());
+        } catch (Exception e) {
+            // 前置逻辑异常：直接返回 error + done 事件
+            log.error("AI 流式聊天前置逻辑异常: conversationId={}, error={}", chatRequest.getConversationId(), e.getMessage());
+            return Flux.just(SseEventFactory.errorEvent(e.getMessage()), SseEventFactory.doneEvent());
+        }
+
         // 构建聊天选项
         ChatOptions chatOptions = service.buildChatOptions(chatRequest);
         // 构建聊天模型（优先从缓存复用，避免每次请求重建 HTTP 客户端与连接池）
@@ -69,7 +78,7 @@ public class DefaultChatService implements ChatService {
                 .doOnCancel(() -> log.warn("AI 流式聊天被客户端取消: conversationId={}", chatRequest.getConversationId()))
                 // 将每个 ChatResponse chunk 转为 SSE 命名事件（思考内容 → thinking、正文 → text）
                 .concatMapIterable(response -> SseEventFactory.toEvents(response, service))
-                // 异常兜底：直接向 SSE 推送 error 事件，前端可识别并提示用户
+                // 流式请求异常兜底：直接向 SSE 推送 error 事件，前端可识别并提示用户
                 .onErrorResume(error -> {
                     log.error("AI 流式聊天异常: conversationId={}, error={}", chatRequest.getConversationId(), error.getMessage());
                     return Flux.just(SseEventFactory.errorEvent(error.getMessage()));

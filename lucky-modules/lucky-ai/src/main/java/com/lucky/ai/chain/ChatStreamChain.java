@@ -1,6 +1,5 @@
 package com.lucky.ai.chain;
 
-import cn.hutool.core.util.StrUtil;
 import com.lucky.ai.chain.context.ChatStreamContext;
 import com.lucky.ai.chain.handler.ChatStreamHandler;
 import com.lucky.ai.domain.query.chat.ChatQuery;
@@ -23,11 +22,11 @@ import java.util.List;
 @Component
 public class ChatStreamChain {
 
-    /**
-     * 处理器集合（Spring 注入时自动按 @Order 升序排序，循环顺序即链上顺序）
-     */
     @Resource
     private List<ChatStreamHandler> handlers;
+
+    @Resource
+    private LlmChatExecutor llmChatExecutor;
 
     /**
      * 执行责任链
@@ -40,8 +39,7 @@ public class ChatStreamChain {
         return Flux.defer(() -> {
             // 事件流：unicast 单订阅者（唯一订阅者为下方 merge），订阅前推送的事件先缓冲、订阅后回放
             Sinks.Many<ServerSentEvent<String>> eventSink = Sinks.many().unicast().onBackpressureBuffer();
-            ChatStreamContext context = new ChatStreamContext(query);
-            context.setEventSink(eventSink);
+            ChatStreamContext context = new ChatStreamContext(query, eventSink);
             // 出口流：责任链延迟到 merge 订阅时才同步执行，处理器中途推送的事件得以实时下发
             Flux<ServerSentEvent<String>> outlet = Flux.defer(() -> runChain(context))
                     // 出口流终结（完成/异常/取消）时关闭事件流，保证 merge 整体完成
@@ -54,39 +52,24 @@ public class ChatStreamChain {
     }
 
     /**
-     * 同步执行责任链全部处理器，返回出口流
+     * 同步执行责任链，返回出口流
      *
      * @param context 责任链上下文
-     * @return 出口流：正常完成为 LLM 结果流；动态短路为 done 事件；处理器异常为 error + done 事件
+     * @return 出口流：正常完成为 LLM 结果流；处理器异常为 error + done 事件
      */
     private Flux<ServerSentEvent<String>> runChain(ChatStreamContext context) {
         ChatQuery query = context.getQuery();
+        // 处理器：校验与准备，任一异常即终止链路
         for (ChatStreamHandler handler : handlers) {
             try {
                 handler.handle(context);
             } catch (Exception e) {
-                // 处理器异常：记录日志并以 error 事件返回前端，后续处理器不再执行
-                log.error("责任链处理器[{}]执行异常: conversationId={}, 原因={}",
-                        handler.getName(), query.getConversationId(), e.getMessage(), e);
-                String message = StrUtil.blankToDefault(e.getMessage(), "系统繁忙，请稍后重试");
-                return Flux.just(SseEventFactory.errorEvent(message), SseEventFactory.doneEvent());
-            }
-            // 动态短路：处理器主动终止链路，后续处理器不再执行
-            if (context.isShortCircuit()) {
-                log.info("责任链处理器[{}]触发短路: conversationId={}", handler.getName(), query.getConversationId());
-                return Flux.just(SseEventFactory.doneEvent());
-            }
-            // 已产出结果流：链路完成（链尾 LLM 调用处理器），后续处理器不再执行
-            if (context.getResult() != null) {
-                break;
+                log.error("责任链处理器[{}]执行异常: conversationId={}, 原因={}", handler.getName(), query.getConversationId(), e.getMessage());
+                return Flux.just(SseEventFactory.errorEvent(e.getMessage()), SseEventFactory.doneEvent());
             }
         }
-        // 链执行完毕仍未产出结果流且未短路：视为链装配不完整
-        if (context.getResult() == null) {
-            log.error("流式聊天责任链执行完毕但未产出结果流，请检查链装配是否完整");
-            return Flux.just(SseEventFactory.errorEvent("聊天服务未就绪，请稍后重试"), SseEventFactory.doneEvent());
-        }
-        return context.getResult();
+        // 调用 LLM 大模型，结果流作为出口流返回
+        return llmChatExecutor.chat(context);
     }
 
 }

@@ -35,11 +35,13 @@ public class ChatQuery {
     /**
      * 是否深度思考
      */
+    @NotNull(message = "深度思考不能为空")
     private Boolean useThinking;
 
     /**
      * 是否联网搜索
      */
+    @NotNull(message = "联网搜索不能为空")
     private Boolean useSearch;
 
     /**

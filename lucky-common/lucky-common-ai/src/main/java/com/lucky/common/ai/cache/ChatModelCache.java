@@ -22,9 +22,9 @@ import java.util.function.Supplier;
 public class ChatModelCache {
 
     /**
-     * 缓存条目存活时间：30 分钟
+     * 缓存条目存活时间：120 分钟
      */
-    private static final long TTL_MS = 30 * 60 * 1000L;
+    private static final long TTL_MS = 120 * 60 * 1000L;
 
     /**
      * 最大缓存条目数，超过时触发惰性清理
