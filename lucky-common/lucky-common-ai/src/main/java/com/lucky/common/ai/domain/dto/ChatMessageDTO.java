@@ -72,7 +72,7 @@ public class ChatMessageDTO {
      */
     private List<String> attachmentUrls;
 
-    // ======= 用户信息(异步插入消息) =======
+    // ======= 用户信息(异步执行，参数传递) =======
 
     /**
      * 创建部门

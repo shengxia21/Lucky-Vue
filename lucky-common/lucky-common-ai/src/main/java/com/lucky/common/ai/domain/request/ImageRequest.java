@@ -62,7 +62,7 @@ public class ImageRequest {
      */
     private String provider;
 
-    // =======绘图请求参数相关=======
+    // =======api key相关=======
 
     /**
      * API 地址

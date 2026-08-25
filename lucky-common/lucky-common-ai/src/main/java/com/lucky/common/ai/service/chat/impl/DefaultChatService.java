@@ -62,12 +62,12 @@ public class DefaultChatService implements ChatService {
         );
         // 构建聊天客户端
         ChatClient chatClient = ChatClient.builder(chatModel)
+                .defaultOptions(chatOptions)
                 .defaultAdvisors(LuckyMessageChatMemoryAdvisor.builder(luckyChatMemory, service).build())
                 .build();
 
         // 调用 LLM 大模型流式请求
         return chatClient.prompt()
-                .options(chatOptions)
                 .messages(chatRequest.getMessages())
                 .advisors(a -> a.param(LuckyChatMemory.REQUEST, chatRequest))
                 .stream()

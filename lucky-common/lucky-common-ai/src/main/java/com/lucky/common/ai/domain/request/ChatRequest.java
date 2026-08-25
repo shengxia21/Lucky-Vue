@@ -81,7 +81,7 @@ public class ChatRequest {
      */
     private List<Message> messages;
 
-    // =======用户信息相关(异步需要手动填充)=======
+    // =======用户信息相关(异步执行，参数传递)=======
 
     /**
      * 用户id

@@ -31,15 +31,16 @@ public class DefaultImageService implements ImageService {
     @Async
     @Override
     public void generateImage(ImageRequest imageRequest) {
+        // 校验异常走全局，确保持久化的错误信息为模型服务调用问题
+        // 参数校验（options、url 允许为 null/空）
+        this.validateImageRequest(imageRequest);
         try {
-            // 参数校验（options、url 允许为 null/空）
-            this.validateImageRequest(imageRequest);
             // 获取图片模型策略
-            AbstractImageService strategy = imageFactory.getOriginalService(imageRequest.getProvider());
+            AbstractImageService service = imageFactory.getOriginalService(imageRequest.getProvider());
             // 构建请求选项
-            ImageOptions imageOptions = strategy.buildImageOptions(imageRequest);
+            ImageOptions imageOptions = service.buildImageOptions(imageRequest);
             // 构建 ImageModel
-            ImageModel imageModel = strategy.buildImageModel(imageRequest.getUrl(), imageRequest.getApiKey());
+            ImageModel imageModel = service.buildImageModel(imageRequest.getUrl(), imageRequest.getApiKey());
             // 构建 Prompt
             ImagePrompt prompt = new ImagePrompt(imageRequest.getPrompt(), imageOptions);
             // 执行请求

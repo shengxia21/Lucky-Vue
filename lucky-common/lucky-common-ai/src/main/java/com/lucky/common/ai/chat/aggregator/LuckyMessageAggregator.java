@@ -106,7 +106,6 @@ public class LuckyMessageAggregator {
                     toolCallsRef.get().addAll(toolCallsList);
                 }
             }
-
         }).doOnComplete(() -> {
             LuckyMessageAggregator.DefaultUsage usage = new LuckyMessageAggregator.DefaultUsage(metadataUsagePromptTokensRef.get(), metadataUsageGenerationTokensRef.get(), metadataUsageTotalTokensRef.get());
             ChatResponseMetadata chatResponseMetadata = ChatResponseMetadata.builder().id(metadataIdRef.get()).model(metadataModelRef.get()).rateLimit(metadataRateLimitRef.get()).usage(usage).promptMetadata(metadataPromptMetadataRef.get()).build();
