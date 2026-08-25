@@ -3,7 +3,7 @@ lucky:
   # 名称
   name: lucky-vue
   # 版本
-  version: 1.0.0
+  version: 1.0.0-alpha.1
   # 版权年份
   copyrightYear: 2026
   # 获取ip地址开关
