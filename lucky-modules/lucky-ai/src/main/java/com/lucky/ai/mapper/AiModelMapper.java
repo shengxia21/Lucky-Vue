@@ -30,7 +30,8 @@ public interface AiModelMapper extends BaseMapperX<AiModel, AiModelVO> {
 
     default List<AiModelVO> selectOptionList(Integer type) {
         LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
-                .select(AiModel::getId, AiModel::getName, AiModel::getProvider, AiModel::getModel)
+                .select(AiModel::getId, AiModel::getName, AiModel::getProvider, AiModel::getModel
+                        , AiModel::getEnableSearch, AiModel::getEnableMultimodal)
                 .eq(AiModel::getStatus, DataStatus.OK.getCode())
                 .eq(AiModel::getType, type)
                 .orderByAsc(AiModel::getSort);

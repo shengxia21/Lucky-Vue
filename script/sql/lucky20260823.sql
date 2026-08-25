@@ -81,7 +81,7 @@ CREATE TABLE `ai_chat_message`  (
   `user_id` bigint(0) NOT NULL COMMENT '用户编号',
   `conversation_id` bigint(0) NOT NULL COMMENT '对话编号',
   `provider` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提供商',
-  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
+  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标识',
   `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '消息类型',
   `system_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '系统消息',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '聊天内容',
@@ -196,8 +196,10 @@ CREATE TABLE `ai_model`  (
   `key_id` bigint(0) NOT NULL COMMENT 'API 秘钥编号',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型名称',
   `provider` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提供商',
-  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标志',
+  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模型标识',
   `type` tinyint(0) NOT NULL DEFAULT 1 COMMENT '模型类型（1对话 2图片 3语音 4视频 5向量 6重排序）',
+  `enable_search` tinyint(0) NULL DEFAULT NULL COMMENT '是否支持联网搜索（0否 1是）',
+  `enable_multimodal` tinyint(0) NULL DEFAULT NULL COMMENT '是否支持多模态（0否 1是）',
   `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
   `sort` int(0) NOT NULL COMMENT '排序',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 1代表删除）',
@@ -213,18 +215,18 @@ CREATE TABLE `ai_model`  (
 -- ----------------------------
 -- Records of ai_model
 -- ----------------------------
-INSERT INTO `ai_model` VALUES (1, 1, 'deepseek-flash', 'DeepSeek', 'deepseek-v4-flash', 1, '0', 1, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
-INSERT INTO `ai_model` VALUES (2, 1, 'deepseek-pro', 'DeepSeek', 'deepseek-v4-pro', 1, '0', 1, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
-INSERT INTO `ai_model` VALUES (3, 2, '通义千问-kimi-k2.7-code', 'TongYi', 'kimi-k2.7-code', 1, '0', 2, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
-INSERT INTO `ai_model` VALUES (4, 2, '通义万象-wan2.6-i2v-flash', 'TongYi', 'wan2.6-i2v-flash', 2, '0', 3, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
-INSERT INTO `ai_model` VALUES (5, 2, '通义千问-qwen-image-plus', 'TongYi', 'qwen-image-plus-2026-01-09', 2, '0', 3, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
-INSERT INTO `ai_model` VALUES (6, 5, '豆包-doubao-seed-1.6', 'DouBao', 'doubao-seed-1-6-251015', 1, '1', 6, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
-INSERT INTO `ai_model` VALUES (8, 6, '混元turbos', 'HunYuan', 'hunyuan-turbos-latest', 1, '1', 8, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
-INSERT INTO `ai_model` VALUES (10, 8, '月之暗面-kimi', 'Moonshot', 'kimi-k2-turbo-preview', 1, '1', 10, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
-INSERT INTO `ai_model` VALUES (15, 2, '通义千问-glm-5.2', 'TongYi', 'glm-5.2', 1, '0', 2, '0', NULL, 'admin', '2026-02-06 19:20:22', '', NULL);
-INSERT INTO `ai_model` VALUES (16, 2, '通义千问-qwen3.7-max', 'TongYi', 'qwen3.7-max', 1, '0', 2, '0', NULL, 'admin', '2026-02-06 19:45:45', '', NULL);
-INSERT INTO `ai_model` VALUES (17, 2, '通义千问-qwen3.7-plus', 'TongYi', 'qwen3.7-plus', 1, '0', 2, '0', NULL, 'admin', '2026-02-06 19:46:24', '', NULL);
-INSERT INTO `ai_model` VALUES (19, 2, '通义千问-qwen-image-max', 'TongYi', 'qwen-image-max', 2, '1', 3, '0', NULL, 'admin', '2026-02-28 00:48:03', '', NULL);
+INSERT INTO `ai_model` VALUES (1, 1, 'deepseek-flash', 'DeepSeek', 'deepseek-v4-flash', 1, 0, 0, '0', 1, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
+INSERT INTO `ai_model` VALUES (2, 1, 'deepseek-pro', 'DeepSeek', 'deepseek-v4-pro', 1, 0, 0, '0', 1, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
+INSERT INTO `ai_model` VALUES (3, 2, '通义千问-kimi-k2.7-code', 'TongYi', 'kimi-k2.7-code', 1, 0, 0, '0', 2, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
+INSERT INTO `ai_model` VALUES (4, 2, '通义万象-wan2.6-i2v-flash', 'TongYi', 'wan2.6-i2v-flash', 2, NULL, NULL, '0', 3, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
+INSERT INTO `ai_model` VALUES (5, 2, '通义千问-qwen-image-plus', 'TongYi', 'qwen-image-plus-2026-01-09', 2, NULL, NULL, '0', 3, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
+INSERT INTO `ai_model` VALUES (6, 5, '豆包-doubao-seed-1.6', 'DouBao', 'doubao-seed-1-6-251015', 1, 0, 0, '1', 6, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
+INSERT INTO `ai_model` VALUES (8, 6, '混元turbos', 'HunYuan', 'hunyuan-turbos-latest', 1, 0, 0, '1', 8, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
+INSERT INTO `ai_model` VALUES (10, 8, '月之暗面-kimi', 'Moonshot', 'kimi-k2-turbo-preview', 1, 0, 0, '1', 10, '0', NULL, 'admin', '2026-01-27 12:18:31', '', NULL);
+INSERT INTO `ai_model` VALUES (15, 2, '通义千问-glm-5.2', 'TongYi', 'glm-5.2', 1, 0, 0, '0', 2, '0', NULL, 'admin', '2026-02-06 19:20:22', '', NULL);
+INSERT INTO `ai_model` VALUES (16, 2, '通义千问-qwen3.7-max', 'TongYi', 'qwen3.7-max', 1, 0, 0, '0', 2, '0', NULL, 'admin', '2026-02-06 19:45:45', '', NULL);
+INSERT INTO `ai_model` VALUES (17, 2, '通义千问-qwen3.7-plus', 'TongYi', 'qwen3.7-plus', 1, 0, 0, '0', 2, '0', NULL, 'admin', '2026-02-06 19:46:24', '', NULL);
+INSERT INTO `ai_model` VALUES (19, 2, '通义千问-qwen-image-max', 'TongYi', 'qwen-image-max', 2, NULL, NULL, '1', 3, '0', NULL, 'admin', '2026-02-28 00:48:03', '', NULL);
 
 -- ----------------------------
 -- Table structure for gen_table

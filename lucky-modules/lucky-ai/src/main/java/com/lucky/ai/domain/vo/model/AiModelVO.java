@@ -44,6 +44,16 @@ public class AiModelVO {
     private Integer type;
 
     /**
+     * 是否支持联网搜索（0否 1是），仅对话模型有值
+     */
+    private Boolean enableSearch;
+
+    /**
+     * 是否支持多模态（0否 1是），仅对话模型有值
+     */
+    private Boolean enableMultimodal;
+
+    /**
      * 状态（0正常 1停用）
      */
     private String status;

@@ -71,7 +71,7 @@ public class AiChatRole extends BaseEntity {
     private List<String> mcpClientNames;
 
     /**
-     * 是否公开
+     * 是否公开（0否 1是）
      */
     private Boolean isPublic;
 
