@@ -11,6 +11,7 @@ import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.ai.domain.request.ImageRequest;
 import com.lucky.common.ai.enums.ImageGenerateStatus;
 import com.lucky.common.ai.service.image.ImageService;
+import com.lucky.common.core.enums.YesNo;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.security.utils.SecurityUtils;
 import jakarta.annotation.Resource;
@@ -47,7 +48,7 @@ public class AiImageGenerateServiceImpl implements IAiImageGenerateService {
         image.setUserId(SecurityUtils.getUserId());
         image.setProvider(model.getProvider());
         image.setModel(model.getModel());
-        image.setIsPublic(false);
+        image.setIsPublic(YesNo.NO.getCode());
         image.setGenerateStatus(ImageGenerateStatus.IN_PROGRESS.getCode());
         imageMapper.insert(image);
 

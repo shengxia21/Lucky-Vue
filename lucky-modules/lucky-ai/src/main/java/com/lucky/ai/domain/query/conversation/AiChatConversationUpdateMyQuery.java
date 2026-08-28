@@ -1,6 +1,8 @@
 package com.lucky.ai.domain.query.conversation;
 
 import com.lucky.ai.domain.AiChatConversation;
+import com.lucky.common.core.enumeration.InEnum;
+import com.lucky.common.core.enums.YesNo;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -30,9 +32,10 @@ public class AiChatConversationUpdateMyQuery {
     private String title;
 
     /**
-     * 是否置顶
+     * 是否置顶（Y是 N否）
      */
-    private Boolean pinned;
+    @InEnum(YesNo.class)
+    private String pinned;
 
     /**
      * 携带历史消息数

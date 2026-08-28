@@ -52,9 +52,9 @@ public class AiImageVO {
     private Integer height;
 
     /**
-     * 绘画状态
+     * 生成状态（1进行中 2已完成 3已失败）
      */
-    private Integer generateStatus;
+    private String generateStatus;
 
     /**
      * 图片地址
@@ -77,9 +77,9 @@ public class AiImageVO {
     private String errorMessage;
 
     /**
-     * 是否发布
+     * 是否发布（Y是 N否）
      */
-    private Boolean isPublic;
+    private String isPublic;
 
     /**
      * 创建时间

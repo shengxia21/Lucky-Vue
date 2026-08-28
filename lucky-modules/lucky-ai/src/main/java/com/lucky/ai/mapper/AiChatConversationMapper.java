@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiChatConversation;
 import com.lucky.ai.domain.query.conversation.AiChatConversationQuery;
 import com.lucky.ai.domain.vo.conversation.AiChatConversationVO;
+import com.lucky.common.core.enums.YesNo;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.annotation.DataColumn;
 import com.lucky.common.mybatis.annotation.DataPermission;
@@ -44,7 +45,7 @@ public interface AiChatConversationMapper extends BaseMapperX<AiChatConversation
     default int deleteMyUnpinned() {
         LambdaQueryWrapper<AiChatConversation> wrapper = Wrappers.<AiChatConversation>lambdaQuery()
                 .eq(AiChatConversation::getUserId, SecurityUtils.getUserId())
-                .eq(AiChatConversation::getPinned, false);
+                .eq(AiChatConversation::getPinned, YesNo.NO.getCode());
         return delete(wrapper);
     }
 

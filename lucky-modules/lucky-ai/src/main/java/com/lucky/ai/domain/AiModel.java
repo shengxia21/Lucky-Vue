@@ -51,17 +51,17 @@ public class AiModel extends BaseEntity {
     /**
      * 模型类型（1对话 2图片 3语音 4视频 5向量 6重排序）
      */
-    private Integer type;
+    private String type;
 
     /**
-     * 是否支持联网搜索（0否 1是），仅对话模型有值
+     * 是否支持联网搜索（Y是 N否），仅对话模型有值
      */
-    private Boolean enableSearch;
+    private String enableSearch;
 
     /**
-     * 是否支持多模态（0否 1是），仅对话模型有值
+     * 是否支持多模态（Y是 N否），仅对话模型有值
      */
-    private Boolean enableMultimodal;
+    private String enableMultimodal;
 
     /**
      * 状态（0正常 1停用）

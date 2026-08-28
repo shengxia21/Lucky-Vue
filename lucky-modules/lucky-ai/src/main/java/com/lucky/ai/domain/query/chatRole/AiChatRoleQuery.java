@@ -26,8 +26,8 @@ public class AiChatRoleQuery {
     private String status;
 
     /**
-     * 是否公开
+     * 是否公开（Y是 N否）
      */
-    private Boolean isPublic;
+    private String isPublic;
 
 }

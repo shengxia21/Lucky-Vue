@@ -16,8 +16,8 @@ public class AiImageMyQuery {
     private String prompt;
 
     /**
-     * 是否发布
+     * 是否发布（Y是 N否）
      */
-    private Boolean isPublic;
+    private String isPublic;
 
 }

@@ -11,27 +11,27 @@ import java.util.Arrays;
  * @author lucky
  */
 @Getter
-public enum ModelType implements ArrayValuable<Integer> {
+public enum ModelType implements ArrayValuable<String> {
 
-    CHAT(1, "对话"),
-    IMAGE(2, "图片"),
-    VOICE(3, "语音"),
-    VIDEO(4, "视频"),
-    EMBEDDING(5, "向量"),
-    RERANK(6, "重排序");
+    CHAT("1", "对话"),
+    IMAGE("2", "图片"),
+    VOICE("3", "语音"),
+    VIDEO("4", "视频"),
+    EMBEDDING("5", "向量"),
+    RERANK("6", "重排序");
 
-    private final Integer code;
+    private final String code;
     private final String info;
 
-    ModelType(Integer code, String info) {
+    ModelType(String code, String info) {
         this.code = code;
         this.info = info;
     }
 
-    public static final Integer[] ARRAYS = Arrays.stream(values()).map(ModelType::getCode).toArray(Integer[]::new);
+    public static final String[] ARRAYS = Arrays.stream(values()).map(ModelType::getCode).toArray(String[]::new);
 
     @Override
-    public Integer[] array() {
+    public String[] array() {
         return ARRAYS;
     }
 

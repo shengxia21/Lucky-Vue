@@ -14,6 +14,7 @@ import com.lucky.ai.mapper.AiChatMessageMapper;
 import com.lucky.ai.service.IAiChatConversationService;
 import com.lucky.ai.service.IAiChatRoleService;
 import com.lucky.common.core.constant.AiConstants;
+import com.lucky.common.core.enums.YesNo;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.mybatis.core.page.PageQuery;
@@ -59,7 +60,7 @@ public class AiChatConversationServiceImpl implements IAiChatConversationService
 
         AiChatConversation conversation = new AiChatConversation();
         conversation.setUserId(SecurityUtils.getUserId());
-        conversation.setPinned(false);
+        conversation.setPinned(YesNo.NO.getCode());
         conversation.setRoleId(query.getRoleId());
         conversation.setHistoryMessageCount(10);
         if (role != null) {

@@ -10,14 +10,14 @@ import lombok.Getter;
 @Getter
 public enum ImageGenerateStatus {
 
-    IN_PROGRESS(10, "进行中"),
-    SUCCESS(20, "已完成"),
-    FAIL(30, "已失败");
+    IN_PROGRESS("1", "进行中"),
+    SUCCESS("2", "已完成"),
+    FAIL("3", "已失败");
 
-    private final Integer code;
+    private final String code;
     private final String info;
 
-    ImageGenerateStatus(Integer code, String info) {
+    ImageGenerateStatus(String code, String info) {
         this.code = code;
         this.info = info;
     }

@@ -5,6 +5,7 @@ import com.lucky.common.ai.enums.ModelType;
 import com.lucky.common.ai.enums.Provider;
 import com.lucky.common.core.enumeration.InEnum;
 import com.lucky.common.core.enums.DataStatus;
+import com.lucky.common.core.enums.YesNo;
 import com.lucky.common.core.validate.Update;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
@@ -55,18 +56,20 @@ public class AiModelSaveQuery {
      * 模型类型
      */
     @InEnum(ModelType.class)
-    @NotNull(message = "模型类型不能为空")
-    private Integer type;
+    @NotEmpty(message = "模型类型不能为空")
+    private String type;
 
     /**
-     * 是否支持联网搜索（0否 1是），仅对话模型有效
+     * 是否支持联网搜索（Y是 N否），仅对话模型有效
      */
-    private Boolean enableSearch;
+    @InEnum(YesNo.class)
+    private String enableSearch;
 
     /**
-     * 是否支持多模态（0否 1是），仅对话模型有效
+     * 是否支持多模态（Y是 N否），仅对话模型有效
      */
-    private Boolean enableMultimodal;
+    @InEnum(YesNo.class)
+    private String enableMultimodal;
 
     /**
      * 状态（0正常 1停用）

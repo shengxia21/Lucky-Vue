@@ -9,6 +9,7 @@ import com.lucky.ai.domain.query.chatRole.AiChatRoleMyQuery;
 import com.lucky.ai.domain.query.chatRole.AiChatRoleQuery;
 import com.lucky.ai.domain.vo.chatRole.AiChatRoleVO;
 import com.lucky.common.core.enums.DataStatus;
+import com.lucky.common.core.enums.YesNo;
 import com.lucky.common.core.utils.StringUtils;
 import com.lucky.common.mybatis.annotation.DataColumn;
 import com.lucky.common.mybatis.annotation.DataPermission;
@@ -26,9 +27,9 @@ public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, AiChatRoleVO> 
         LambdaQueryWrapper<AiChatRole> wrapper = Wrappers.<AiChatRole>lambdaQuery()
                 .like(StringUtils.isNotEmpty(query.getName()), AiChatRole::getName, query.getName())
                 // 公开 查全部用户
-                .eq(Boolean.TRUE.equals(query.getIsPublic()), AiChatRole::getIsPublic, query.getIsPublic())
+                .eq(YesNo.YES.getCode().equals(query.getIsPublic()), AiChatRole::getIsPublic, query.getIsPublic())
                 // 私有 查当前用户
-                .eq(Boolean.FALSE.equals(query.getIsPublic()), AiChatRole::getUserId, SecurityUtils.getUserId())
+                .eq(YesNo.NO.getCode().equals(query.getIsPublic()), AiChatRole::getUserId, SecurityUtils.getUserId())
                 // 只返回已启用的聊天角色
                 .eq(AiChatRole::getStatus, DataStatus.OK.getCode())
                 .orderByAsc(AiChatRole::getSort);
@@ -65,7 +66,7 @@ public interface AiChatRoleMapper extends BaseMapperX<AiChatRole, AiChatRoleVO> 
                 .eq(StringUtils.isNotNull(query.getUserId()), AiChatRole::getUserId, query.getUserId())
                 .like(StringUtils.isNotEmpty(query.getName()), AiChatRole::getName, query.getName())
                 .eq(StringUtils.isNotNull(query.getStatus()), AiChatRole::getStatus, query.getStatus())
-                .eq(StringUtils.isNotNull(query.getIsPublic()), AiChatRole::getIsPublic, query.getIsPublic())
+                .eq(StringUtils.isNotEmpty(query.getIsPublic()), AiChatRole::getIsPublic, query.getIsPublic())
                 .orderByAsc(AiChatRole::getSort);
         return selectVoPage(page, wrapper);
     }

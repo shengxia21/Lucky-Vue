@@ -3,6 +3,7 @@ package com.lucky.ai.domain.query.chatRole;
 import com.lucky.ai.domain.AiChatRole;
 import com.lucky.common.core.enumeration.InEnum;
 import com.lucky.common.core.enums.DataStatus;
+import com.lucky.common.core.enums.YesNo;
 import com.lucky.common.core.validate.Update;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotEmpty;
@@ -60,10 +61,11 @@ public class AiChatRoleSaveQuery {
     private List<String> mcpClientNames;
 
     /**
-     * 是否公开
+     * 是否公开（Y是 N否）
      */
     @NotNull(message = "是否公开不能为空")
-    private Boolean isPublic;
+    @InEnum(YesNo.class)
+    private String isPublic;
 
     /**
      * 角色排序

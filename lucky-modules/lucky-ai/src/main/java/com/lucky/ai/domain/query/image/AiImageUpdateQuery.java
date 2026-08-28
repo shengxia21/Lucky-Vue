@@ -1,6 +1,8 @@
 package com.lucky.ai.domain.query.image;
 
 import com.lucky.ai.domain.AiImage;
+import com.lucky.common.core.enumeration.InEnum;
+import com.lucky.common.core.enums.YesNo;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -21,8 +23,9 @@ public class AiImageUpdateQuery {
     private Long id;
 
     /**
-     * 是否发布
+     * 是否发布（Y是 N否）
      */
-    private Boolean isPublic;
+    @InEnum(YesNo.class)
+    private String isPublic;
 
 }

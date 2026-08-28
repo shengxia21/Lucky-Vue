@@ -11,6 +11,7 @@ import com.lucky.ai.mapper.AiChatRoleMapper;
 import com.lucky.ai.service.IAiChatRoleService;
 import com.lucky.common.core.constant.AiConstants;
 import com.lucky.common.core.enums.DataStatus;
+import com.lucky.common.core.enums.YesNo;
 import com.lucky.common.core.exception.ServiceException;
 import com.lucky.common.core.utils.MapstructUtils;
 import com.lucky.common.core.utils.StringUtils;
@@ -49,7 +50,7 @@ public class AiChatRoleServiceImpl implements IAiChatRoleService {
         AiChatRole chatRole = MapstructUtils.convert(query, AiChatRole.class);
         chatRole.setUserId(SecurityUtils.getUserId());
         chatRole.setStatus(DataStatus.OK.getCode());
-        chatRole.setIsPublic(false);
+        chatRole.setIsPublic(YesNo.NO.getCode());
         return chatRoleMapper.insert(chatRole);
     }
 

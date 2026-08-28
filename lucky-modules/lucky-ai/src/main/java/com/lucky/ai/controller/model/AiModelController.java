@@ -82,7 +82,7 @@ public class AiModelController extends BaseController {
      * 获得模型选择框列表
      */
     @GetMapping("/optionSelect")
-    public R<List<AiModelVO>> optionSelect(@RequestParam Integer type) {
+    public R<List<AiModelVO>> optionSelect(@RequestParam String type) {
         return R.ok(modelService.selectModelAll(type));
     }
 

@@ -39,9 +39,9 @@ public class AiChatConversation extends BaseEntity {
     private String title;
 
     /**
-     * 是否置顶（0否 1是）
+     * 是否置顶（Y是 N否）
      */
-    private Boolean pinned;
+    private String pinned;
 
     /**
      * 角色编号

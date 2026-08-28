@@ -63,7 +63,7 @@ public interface IAiModelService {
      * @param type 类型
      * @return 模型列表
      */
-    List<AiModelVO> selectModelAll(Integer type);
+    List<AiModelVO> selectModelAll(String type);
 
     /**
      * 校验模型是否有效

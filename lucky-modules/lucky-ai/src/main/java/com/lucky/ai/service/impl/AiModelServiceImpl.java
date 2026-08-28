@@ -75,7 +75,7 @@ public class AiModelServiceImpl implements IAiModelService {
     }
 
     @Override
-    public List<AiModelVO> selectModelAll(Integer type) {
+    public List<AiModelVO> selectModelAll(String type) {
         return modelMapper.selectOptionList(type);
     }
 

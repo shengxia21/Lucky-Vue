@@ -28,7 +28,7 @@ public interface AiModelMapper extends BaseMapperX<AiModel, AiModelVO> {
         return selectVoPage(page, wrapper);
     }
 
-    default List<AiModelVO> selectOptionList(Integer type) {
+    default List<AiModelVO> selectOptionList(String type) {
         LambdaQueryWrapper<AiModel> wrapper = Wrappers.<AiModel>lambdaQuery()
                 .select(AiModel::getId, AiModel::getName, AiModel::getProvider, AiModel::getModel
                         , AiModel::getEnableSearch, AiModel::getEnableMultimodal)
