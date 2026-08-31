@@ -1,5 +1,6 @@
 package com.lucky.common.core.utils;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -7,9 +8,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lucky.common.core.exception.UtilException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
@@ -28,28 +32,22 @@ public class JsonUtils {
      */
     private static final ObjectMapper OBJECT_MAPPER = createObjectMapper();
 
-    private JsonUtils() {
-    }
-
     /**
      * 创建默认的ObjectMapper
      */
     private static ObjectMapper createObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        // 序列化时忽略null属性
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        // 反序列化时忽略未知属性
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        // 不输出格式化后的字符串
-        mapper.disable(SerializationFeature.INDENT_OUTPUT);
-        return mapper;
-    }
-
-    /**
-     * 获取ObjectMapper实例
-     */
-    public static ObjectMapper getObjectMapper() {
-        return OBJECT_MAPPER;
+        return JsonMapper.builder()
+                // 注册 Java 8 日期时间模块，否则序列化 LocalDateTime 等类型会抛出异常
+                .addModule(new JavaTimeModule())
+                // LocalDateTime 统一序列化为 yyyy-MM-dd HH:mm:ss 字符串（序列化与反序列化同时生效）
+                .withConfigOverride(LocalDateTime.class, cfg -> cfg.setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd HH:mm:ss")))
+                // 序列化时忽略null：值包含策略覆盖 POJO 属性与 Map entry，内容包含策略覆盖集合/Map 内容，两者同时设置 NON_NULL
+                .defaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL))
+                // 反序列化时忽略未知属性
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                // 不输出格式化后的字符串
+                .disable(SerializationFeature.INDENT_OUTPUT)
+                .build();
     }
 
     /**
