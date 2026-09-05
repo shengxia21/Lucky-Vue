@@ -36,6 +36,7 @@ target/
 
 ### WorkBuddy ###
 .workbuddy/
+docs/
 
 ### JRebel ###
 rebel.xml
