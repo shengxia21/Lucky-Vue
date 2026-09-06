@@ -1,6 +1,7 @@
 package com.lucky.common.ai.chat.memory;
 
 import com.lucky.common.ai.domain.dto.ChatMessageDTO;
+import com.lucky.common.ai.domain.dto.ChatMessageUpdateDTO;
 
 import java.util.List;
 
@@ -15,8 +16,9 @@ public interface LuckyChatMemoryRepository {
      * 保存方法
      *
      * @param chatMessage 聊天消息
+     * @return 保存后的消息元数据
      */
-    void save(ChatMessageDTO chatMessage);
+    ChatMessageUpdateDTO save(ChatMessageDTO chatMessage);
 
     /**
      * 通过会话id查询最近的消息列表

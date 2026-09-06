@@ -1,7 +1,8 @@
-package com.lucky.common.ai.enums;
+package com.lucky.ai.enums;
 
 import com.lucky.common.core.enumeration.ArrayValuable;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 
@@ -11,6 +12,7 @@ import java.util.Arrays;
  * @author lucky
  */
 @Getter
+@RequiredArgsConstructor
 public enum ModelType implements ArrayValuable<String> {
 
     CHAT("1", "对话"),
@@ -22,11 +24,6 @@ public enum ModelType implements ArrayValuable<String> {
 
     private final String code;
     private final String info;
-
-    ModelType(String code, String info) {
-        this.code = code;
-        this.info = info;
-    }
 
     public static final String[] ARRAYS = Arrays.stream(values()).map(ModelType::getCode).toArray(String[]::new);
 

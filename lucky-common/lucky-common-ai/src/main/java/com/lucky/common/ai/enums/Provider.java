@@ -2,6 +2,7 @@ package com.lucky.common.ai.enums;
 
 import com.lucky.common.core.enumeration.ArrayValuable;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 
@@ -11,6 +12,7 @@ import java.util.Arrays;
  * @author lucky
  */
 @Getter
+@RequiredArgsConstructor
 public enum Provider implements ArrayValuable<String> {
 
     TONG_YI("TongYi", "通义千问"), // 阿里
@@ -23,11 +25,6 @@ public enum Provider implements ArrayValuable<String> {
 
     private final String code;
     private final String info;
-
-    Provider(String code, String info) {
-        this.code = code;
-        this.info = info;
-    }
 
     public static final String[] ARRAYS = Arrays.stream(values()).map(Provider::getCode).toArray(String[]::new);
 

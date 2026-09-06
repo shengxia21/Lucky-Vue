@@ -1,6 +1,7 @@
 package com.lucky.common.ai.chat.memory;
 
 import com.lucky.common.ai.chat.aggregator.LuckyMessageAggregator;
+import com.lucky.common.ai.domain.dto.ChatMessageUpdateDTO;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import org.springframework.ai.chat.messages.Message;
 
@@ -20,8 +21,9 @@ public interface LuckyChatMemory {
      *
      * @param chatRequest 聊天请求
      * @param message     消息
+     * @return 保存后的消息元数据（含存储库生成的编号与创建时间）
      */
-    void addUserMessage(ChatRequest chatRequest, Message message);
+    ChatMessageUpdateDTO addUserMessage(ChatRequest chatRequest, Message message);
 
     /**
      * 添加assistant消息
@@ -29,8 +31,9 @@ public interface LuckyChatMemory {
      * @param chatRequest 聊天请求
      * @param usage       token使用情况
      * @param messages    消息列表
+     * @return 保存后的消息元数据（含存储库生成的编号与创建时间、模型与 token 信息）
      */
-    void addAssistantMessage(ChatRequest chatRequest, LuckyMessageAggregator.DefaultUsage usage, List<Message> messages);
+    ChatMessageUpdateDTO addAssistantMessage(ChatRequest chatRequest, LuckyMessageAggregator.DefaultUsage usage, List<Message> messages);
 
     /**
      * 获取历史消息列表

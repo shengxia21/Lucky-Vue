@@ -1,23 +1,19 @@
 package com.lucky.common.ai.service.chat.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.lucky.common.ai.cache.ChatModelCache;
-import com.lucky.common.ai.chat.advisor.LuckyMessageChatMemoryAdvisor;
-import com.lucky.common.ai.chat.memory.LuckyChatMemory;
+import com.lucky.common.ai.chat.emitter.ChatMessageUpdateEmitter;
 import com.lucky.common.ai.domain.request.ChatRequest;
 import com.lucky.common.ai.factory.ChatServiceFactory;
 import com.lucky.common.ai.factory.SseEventFactory;
 import com.lucky.common.ai.service.chat.AbstractChatService;
 import com.lucky.common.ai.service.chat.ChatService;
+import com.lucky.common.ai.service.chat.stream.ChatStreamAssembler;
+import com.lucky.common.ai.service.chat.stream.ChatStreamPipeline;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.http.codec.ServerSentEvent;
 import reactor.core.publisher.Flux;
-
-import java.time.Duration;
 
 /**
  * 默认聊天服务（外观）
@@ -31,14 +27,13 @@ public class DefaultChatService implements ChatService {
     private ChatServiceFactory chatFactory;
 
     @Resource
-    private LuckyChatMemory luckyChatMemory;
+    private ChatStreamAssembler chatStreamAssembler;
 
     @Resource
-    private ChatModelCache chatModelCache;
+    private ChatStreamPipeline chatStreamPipeline;
 
     @Override
     public Flux<ServerSentEvent<String>> chat(ChatRequest chatRequest) {
-        // 前置逻辑产物
         AbstractChatService service;
         try {
             // 参数校验（attachmentUrls、persona、url 允许为 null/空）
@@ -47,44 +42,19 @@ public class DefaultChatService implements ChatService {
             service = chatFactory.getOriginalService(chatRequest.getProvider());
         } catch (Exception e) {
             // 前置逻辑异常：直接返回 error + done 事件
-            log.error("AI 流式聊天前置逻辑异常: conversationId={}, error={}", chatRequest.getConversationId(), e.getMessage());
+            log.error("AI 流式聊天前置逻辑异常: error={}", e.getMessage());
             return Flux.just(SseEventFactory.errorEvent(e.getMessage()), SseEventFactory.doneEvent());
         }
 
-        // 构建聊天选项
-        ChatOptions chatOptions = service.buildChatOptions(chatRequest);
-        // 构建聊天模型（优先从缓存复用，避免每次请求重建 HTTP 客户端与连接池）
-        ChatModel chatModel = chatModelCache.getOrCreate(
-                service.getProviderName(),
-                chatRequest.getUrl(),
-                chatRequest.getApiKey(),
-                () -> service.buildChatModel(chatRequest.getUrl(), chatRequest.getApiKey())
-        );
-        // 构建聊天客户端
-        ChatClient chatClient = ChatClient.builder(chatModel)
-                .defaultOptions(chatOptions)
-                .defaultAdvisors(LuckyMessageChatMemoryAdvisor.builder(luckyChatMemory, service).build())
-                .build();
-
-        // 调用 LLM 大模型流式请求
-        return chatClient.prompt()
-                .messages(chatRequest.getMessages())
-                .advisors(a -> a.param(LuckyChatMemory.REQUEST, chatRequest))
-                .stream()
-                .chatResponse()
-                // 超时控制：模型 API 卡死时及时释放连接（默认 15 秒）
-                .timeout(Duration.ofSeconds(15))
-                // 客户端取消时记录日志（下游模型 HTTP 调用由 Reactor 自动取消）
-                .doOnCancel(() -> log.warn("AI 流式聊天被客户端取消: conversationId={}", chatRequest.getConversationId()))
-                // 将每个 ChatResponse chunk 转为 SSE 命名事件（思考内容 → thinking、正文 → text）
-                .concatMapIterable(response -> SseEventFactory.toEvents(response, service))
-                // 流式请求异常兜底：直接向 SSE 推送 error 事件，前端可识别并提示用户
-                .onErrorResume(error -> {
-                    log.error("AI 流式聊天异常: conversationId={}, error={}", chatRequest.getConversationId(), error.getMessage());
-                    return Flux.just(SseEventFactory.errorEvent(error.getMessage()));
-                })
-                // 流结束：推送 done 事件，标识本次流式传输正常结束
-                .concatWithValues(SseEventFactory.doneEvent());
+        // 内层 defer：每次订阅都创建独立的元数据收集器并重新装配/编排，保证返回的流可重复订阅
+        return Flux.defer(() -> {
+            // 元数据收集器（按请求创建）：记忆顾问落库后回调，元数据作为 update 事件显式流出
+            ChatMessageUpdateEmitter updateEmitter = new ChatMessageUpdateEmitter();
+            // 装配 ChatClient（含记忆顾问）
+            ChatClient chatClient = chatStreamAssembler.assemble(chatRequest, service, updateEmitter);
+            // 编排最终 SSE 事件流
+            return chatStreamPipeline.stream(chatClient, chatRequest, service, updateEmitter);
+        });
     }
 
     /**

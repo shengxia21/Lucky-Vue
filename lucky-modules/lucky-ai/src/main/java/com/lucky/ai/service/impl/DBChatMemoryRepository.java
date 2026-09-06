@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.ai.domain.AiChatMessage;
 import com.lucky.ai.mapper.AiChatMessageMapper;
-import com.lucky.common.ai.chat.memory.LuckyChatMemoryRepository;
+import com.lucky.common.ai.chat.memory.AbstractChatMemoryRepository;
 import com.lucky.common.ai.domain.dto.ChatMessageDTO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
@@ -18,19 +18,21 @@ import java.util.List;
  * @author lucky
  */
 @Component
-public class DBChatMemoryRepository implements LuckyChatMemoryRepository {
+public class DBChatMemoryRepository extends AbstractChatMemoryRepository {
 
     @Resource
     private AiChatMessageMapper chatMessageMapper;
 
     @Override
-    public void save(ChatMessageDTO chatMessage) {
+    protected StoredMessageIdentity doSave(ChatMessageDTO chatMessage) {
         AiChatMessage message = BeanUtil.toBean(chatMessage, AiChatMessage.class);
         // 字段名不同，无法直接转换，需要手动设置
         message.setCreateDept(chatMessage.getDeptId());
         message.setCreateBy(chatMessage.getUserName());
         message.setUpdateBy(chatMessage.getUserName());
         chatMessageMapper.insert(message);
+        // insert 后编号与创建时间已由数据库及 MyBatis-Plus 自动填充至 entity，作为存储生成的标识返回
+        return new StoredMessageIdentity(message.getId(), message.getCreateTime());
     }
 
     @Override

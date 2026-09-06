@@ -4,12 +4,12 @@ import com.lucky.ai.domain.AiApiKey;
 import com.lucky.ai.domain.AiImage;
 import com.lucky.ai.domain.AiModel;
 import com.lucky.ai.domain.query.image.ImageQuery;
+import com.lucky.ai.enums.GenerateStatus;
 import com.lucky.ai.mapper.AiImageMapper;
 import com.lucky.ai.service.IAiApiKeyService;
 import com.lucky.ai.service.IAiImageGenerateService;
 import com.lucky.ai.service.IAiModelService;
 import com.lucky.common.ai.domain.request.ImageRequest;
-import com.lucky.common.ai.enums.ImageGenerateStatus;
 import com.lucky.common.ai.service.image.ImageService;
 import com.lucky.common.core.enums.YesNo;
 import com.lucky.common.core.utils.MapstructUtils;
@@ -49,7 +49,7 @@ public class AiImageGenerateServiceImpl implements IAiImageGenerateService {
         image.setProvider(model.getProvider());
         image.setModel(model.getModel());
         image.setIsPublic(YesNo.NO.getCode());
-        image.setGenerateStatus(ImageGenerateStatus.IN_PROGRESS.getCode());
+        image.setGenerateStatus(GenerateStatus.IN_PROGRESS.getCode());
         imageMapper.insert(image);
 
         // 构建图片请求

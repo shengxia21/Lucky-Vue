@@ -2,8 +2,11 @@ package com.lucky.common.ai.chat.advisor;
 
 import com.lucky.common.ai.chat.aggregator.LuckyChatClientMessageAggregator;
 import com.lucky.common.ai.chat.aggregator.LuckyMessageAggregator;
+import com.lucky.common.ai.chat.emitter.ChatMessageUpdateEmitter;
 import com.lucky.common.ai.chat.memory.LuckyChatMemory;
+import com.lucky.common.ai.domain.dto.ChatMessageUpdateDTO;
 import com.lucky.common.ai.domain.request.ChatRequest;
+import com.lucky.common.ai.enums.MessageRole;
 import com.lucky.common.ai.service.chat.ResponseContentExtractor;
 import org.springframework.ai.chat.client.ChatClientRequest;
 import org.springframework.ai.chat.client.ChatClientResponse;
@@ -35,8 +38,9 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
     private final int order;
     private final Scheduler scheduler;
     private final ResponseContentExtractor extractor;
+    private final ChatMessageUpdateEmitter updateEmitter;
 
-    private LuckyMessageChatMemoryAdvisor(LuckyChatMemory chatMemory, int order, Scheduler scheduler, ResponseContentExtractor extractor) {
+    private LuckyMessageChatMemoryAdvisor(LuckyChatMemory chatMemory, int order, Scheduler scheduler, ResponseContentExtractor extractor, ChatMessageUpdateEmitter updateEmitter) {
         Assert.notNull(chatMemory, "chatMemory cannot be null");
         Assert.notNull(scheduler, "scheduler cannot be null");
         Assert.notNull(extractor, "extractor cannot be null");
@@ -44,6 +48,7 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
         this.order = order;
         this.scheduler = scheduler;
         this.extractor = extractor;
+        this.updateEmitter = updateEmitter;
     }
 
     private ChatRequest getRequest(Map<String, Object> context) {
@@ -80,7 +85,11 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
 
         ChatClientRequest processedChatClientRequest = chatClientRequest.mutate().prompt(chatClientRequest.prompt().mutate().messages(processedMessages).build()).build();
         Message userMessage = processedChatClientRequest.prompt().getLastUserOrToolResponseMessage();
-        this.chatMemory.addUserMessage(request, userMessage);
+        // 保存用户消息：t0 立即回调发射器下发 update 事件
+        ChatMessageUpdateDTO userMessageMeta = this.chatMemory.addUserMessage(request, userMessage);
+        if (this.updateEmitter != null) {
+            this.updateEmitter.onMessageSaved(MessageRole.USER, userMessageMeta);
+        }
         return processedChatClientRequest;
     }
 
@@ -93,7 +102,11 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
             usage = (LuckyMessageAggregator.DefaultUsage) chatClientResponse.chatResponse().getMetadata().getUsage();
         }
 
-        this.chatMemory.addAssistantMessage(this.getRequest(chatClientResponse.context()), usage, assistantMessages);
+        // 保存助手消息：tN 回调发射器下发 update 事件
+        ChatMessageUpdateDTO assistantMessageMeta = this.chatMemory.addAssistantMessage(this.getRequest(chatClientResponse.context()), usage, assistantMessages);
+        if (this.updateEmitter != null) {
+            this.updateEmitter.onMessageSaved(MessageRole.ASSISTANT, assistantMessageMeta);
+        }
         return chatClientResponse;
     }
 
@@ -115,6 +128,7 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
         private Scheduler scheduler = Schedulers.boundedElastic();
         private final LuckyChatMemory chatMemory;
         private final ResponseContentExtractor extractor;
+        private ChatMessageUpdateEmitter updateEmitter;
 
         private Builder(LuckyChatMemory chatMemory, ResponseContentExtractor extractor) {
             Assert.notNull(chatMemory, "chatMemory cannot be null");
@@ -133,8 +147,13 @@ public class LuckyMessageChatMemoryAdvisor implements BaseAdvisor {
             return this;
         }
 
+        public Builder updateEmitter(ChatMessageUpdateEmitter updateEmitter) {
+            this.updateEmitter = updateEmitter;
+            return this;
+        }
+
         public LuckyMessageChatMemoryAdvisor build() {
-            return new LuckyMessageChatMemoryAdvisor(this.chatMemory, this.order, this.scheduler, this.extractor);
+            return new LuckyMessageChatMemoryAdvisor(this.chatMemory, this.order, this.scheduler, this.extractor, this.updateEmitter);
         }
 
     }

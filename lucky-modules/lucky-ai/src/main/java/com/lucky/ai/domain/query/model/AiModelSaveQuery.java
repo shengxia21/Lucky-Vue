@@ -1,7 +1,7 @@
 package com.lucky.ai.domain.query.model;
 
 import com.lucky.ai.domain.AiModel;
-import com.lucky.common.ai.enums.ModelType;
+import com.lucky.ai.enums.ModelType;
 import com.lucky.common.ai.enums.Provider;
 import com.lucky.common.core.enumeration.InEnum;
 import com.lucky.common.core.enums.DataStatus;

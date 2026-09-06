@@ -4,6 +4,8 @@ import com.lucky.common.ai.domain.dto.ChatMessageDTO;
 import com.lucky.common.core.utils.StringUtils;
 import org.springframework.ai.chat.messages.*;
 
+import java.util.List;
+
 /**
  * Spring AI 工具类
  *
@@ -31,6 +33,19 @@ public class SpringAiUtils {
             throw new UnsupportedOperationException("暂不支持 tool 消息：" + message.getContent());
         }
         throw new IllegalArgumentException(StringUtils.format("未知消息类型({})", message.getType()));
+    }
+
+    /**
+     * 查找消息列表中的第一条助手消息，不存在时返回内容为空的助手消息
+     *
+     * @param messages 消息列表
+     * @return 第一条助手消息；不存在时返回空助手消息
+     */
+    public static Message findFirstAssistantOrElseEmpty(List<Message> messages) {
+        return messages.stream()
+                .filter(message -> message.getMessageType().equals(MessageType.ASSISTANT))
+                .findFirst()
+                .orElseGet(() -> new AssistantMessage(""));
     }
 
 }

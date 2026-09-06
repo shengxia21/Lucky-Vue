@@ -1,34 +1,37 @@
 package com.lucky.common.ai.chat.memory.impl;
 
-import com.lucky.common.ai.chat.memory.LuckyChatMemoryRepository;
+import com.lucky.common.ai.chat.memory.AbstractChatMemoryRepository;
 import com.lucky.common.ai.domain.dto.ChatMessageDTO;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Lucky 内存聊天存储库
+ * Lucky 内存聊天记忆存储库
  *
  * @author lucky
  */
-public class LuckyInMemoryChatMemoryRepository implements LuckyChatMemoryRepository {
+public class LuckyInMemoryChatMemoryRepository extends AbstractChatMemoryRepository {
+
+    private static final AtomicLong ID_GENERATOR = new AtomicLong(1);
 
     Map<Long, List<ChatMessageDTO>> chatMemoryStore = new ConcurrentHashMap<>();
 
     @Override
-    public void save(ChatMessageDTO chatMessage) {
-        Assert.notNull(chatMessage, "chatMessage cannot be null");
-        Long conversationId = chatMessage.getConversationId();
-        Assert.notNull(conversationId, "conversationId cannot be null");
-        List<ChatMessageDTO> messages = this.chatMemoryStore.get(conversationId);
+    protected StoredMessageIdentity doSave(ChatMessageDTO chatMessage) {
+        List<ChatMessageDTO> messages = this.chatMemoryStore.get(chatMessage.getConversationId());
         if (messages == null) {
-            chatMemoryStore.put(conversationId, new ArrayList<>(List.of(chatMessage)));
+            chatMemoryStore.put(chatMessage.getConversationId(), new ArrayList<>(List.of(chatMessage)));
         } else {
             messages.add(chatMessage);
         }
+        // 内存存储：自增序列生成编号，当前时间作为创建时间
+        return new StoredMessageIdentity(ID_GENERATOR.getAndIncrement(), LocalDateTime.now());
     }
 
     @Override

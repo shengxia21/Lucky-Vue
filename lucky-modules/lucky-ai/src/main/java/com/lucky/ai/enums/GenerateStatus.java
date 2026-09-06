@@ -1,14 +1,16 @@
-package com.lucky.common.ai.enums;
+package com.lucky.ai.enums;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * AI 图片生成状态枚举
+ * 生成状态枚举
  *
  * @author lucky
  */
 @Getter
-public enum ImageGenerateStatus {
+@RequiredArgsConstructor
+public enum GenerateStatus {
 
     IN_PROGRESS("1", "进行中"),
     SUCCESS("2", "已完成"),
@@ -16,10 +18,5 @@ public enum ImageGenerateStatus {
 
     private final String code;
     private final String info;
-
-    ImageGenerateStatus(String code, String info) {
-        this.code = code;
-        this.info = info;
-    }
 
 }
