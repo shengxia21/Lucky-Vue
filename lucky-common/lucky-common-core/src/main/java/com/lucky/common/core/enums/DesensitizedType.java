@@ -1,6 +1,8 @@
 package com.lucky.common.core.enums;
 
 import com.lucky.common.core.utils.DesensitizedUtil;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.function.Function;
 
@@ -9,6 +11,8 @@ import java.util.function.Function;
  *
  * @author ruoyi
  */
+@Getter
+@RequiredArgsConstructor
 public enum DesensitizedType {
 
     /**
@@ -52,13 +56,5 @@ public enum DesensitizedType {
     CAR_LICENSE(DesensitizedUtil::carLicense);
 
     private final Function<String, String> desensitizer;
-
-    DesensitizedType(Function<String, String> desensitizer) {
-        this.desensitizer = desensitizer;
-    }
-
-    public Function<String, String> desensitizer() {
-        return desensitizer;
-    }
 
 }

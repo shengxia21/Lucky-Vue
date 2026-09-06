@@ -25,7 +25,7 @@ public class SensitiveJsonSerializer extends JsonSerializer<String> implements C
     @Override
     public void serialize(String value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         if (desensitization()) {
-            gen.writeString(desensitizedType.desensitizer().apply(value));
+            gen.writeString(desensitizedType.getDesensitizer().apply(value));
         } else {
             gen.writeString(value);
         }

@@ -1,5 +1,6 @@
 package com.lucky.common.core.constant;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -37,6 +38,7 @@ public class ScheduleConstants {
     public static final String MISFIRE_DO_NOTHING = "3";
 
     @Getter
+    @AllArgsConstructor
     public enum Status {
 
         /**
@@ -49,10 +51,6 @@ public class ScheduleConstants {
         PAUSE("1");
 
         private final String value;
-
-        Status(String value) {
-            this.value = value;
-        }
 
     }
 
